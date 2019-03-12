@@ -1,0 +1,40 @@
+{
+  "name": "dps-toggl",
+  "version": "0.0.1",
+  "description": "my own Toggl version in React.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline --colors --progress",
+    "build": "webpack -p --colors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidpoza/dps-toggl.git"
+  },
+  "author": "David Poza Suárez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidpoza/dps-toggl/issues"
+  },
+  "homepage": "https://github.com/davidpoza/dps-toggl#readme",
+  "dependencies": {
+    "file-loader": "^3.0.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "react-hot-loader": "^4.8.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
