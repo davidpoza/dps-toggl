@@ -13,10 +13,10 @@ class AppComponent extends Component{
         return(
             <div className={"container-flex " + styles.containerflex}>
                 <div className={"row " + styles.row}>
-                    <div className={"col-auto col-md-3 " + styles.menu}>
+                    <div className={"col-auto  " + styles.menu}>
                         <MenuComponent />
                     </div>
-                    <div className={"col col-md-9 " + styles.content}>
+                    <div className={"col   " + styles.content}>
                        <button className="btn btn-primary" >Prueba</button>
                     </div>
                 </div>

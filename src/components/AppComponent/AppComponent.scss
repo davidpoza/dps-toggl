@@ -8,6 +8,9 @@
 .menu{
     color: white;
     background-color: $quaternary-color;
+    @media screen and (min-width: $large-device) {
+        min-width: 300px;
+    }
 }
 
 

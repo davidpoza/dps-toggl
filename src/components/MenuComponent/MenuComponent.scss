@@ -12,7 +12,7 @@
     .text{
         color: white;
         font-size: 2em;
-        @media screen and (max-width: $medium-device) {
+        @media screen and (max-width: $large-device) {
             display: none
         }
     }    
@@ -38,12 +38,12 @@ li{
     i {
         font-size: 1.3em;
         margin-right: 10px;
-        @media screen and (max-width: $medium-device) {
+        @media screen and (max-width: $large-device) {
             margin: auto;
         }
     }
     .item_text{
-        @media screen and (max-width: $medium-device) {
+        @media screen and (max-width: $large-device) {
             display: none
         }
     }
