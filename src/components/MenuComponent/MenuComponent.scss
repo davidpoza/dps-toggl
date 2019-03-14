@@ -1,15 +1,50 @@
+@import "../../defaults.scss";
+
+.clase{
+    margin:auto;
+}
+
 .logo{
-    font-size: 2em;
     text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    .text{
+        color: white;
+        font-size: 2em;
+        @media screen and (max-width: $medium-device) {
+            display: none
+        }
+    }    
+    
+   
+
+    img{
+        width: 40px;
+        height: 40px;
+    }
 }
 
 ul{
     list-style: none;
+    padding-left: 10px !important;
 }
+
 li{
     font-size: 1.2em;
+    height: 1.2em;
+    margin-bottom: 10px;
     i {
         font-size: 1.3em;
+        margin-right: 10px;
+        @media screen and (max-width: $medium-device) {
+            margin: auto;
+        }
+    }
+    .item_text{
+        @media screen and (max-width: $medium-device) {
+            display: none
+        }
     }
 }
 
