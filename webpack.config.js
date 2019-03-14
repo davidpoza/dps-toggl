@@ -18,7 +18,6 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: entryPath,
-                exclude: path.join(__dirname, "node_modules"),
                 use: [
                     {
                         loader: 'babel-loader',
@@ -27,11 +26,11 @@ module.exports = {
                         loader: 'react-hot-loader/webpack',
                     },
                 ]
-            },
+            },        
             {
                 test: /\.scss$/,
                 include: entryPath,
-                exclude: path.join(__dirname, "node_modules"),
+                exclude: [path.join(entryPath, "defaults.scss"), path.join(entryPath, "imports.scss")],
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -47,7 +46,39 @@ module.exports = {
                     }                    
                 ]
            },
-            {
+           {
+            test: /defaults\.scss$/,
+            include: entryPath,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: false
+                    }
+                },
+                {
+                    loader: 'sass-loader'
+                }                    
+            ]
+           },
+           {
+            test: /imports\.scss$/,
+            include: entryPath,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: false
+                    }
+                },
+                {
+                    loader: 'sass-loader'
+                }                    
+            ]
+           },
+           {
                 test: /\.(png|jpg|gif)$/,
                 include: entryPath,
                 use: [

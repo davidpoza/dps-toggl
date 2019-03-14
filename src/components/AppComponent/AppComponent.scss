@@ -1,3 +1,9 @@
+@import "../../defaults.scss";
+
 .clase{
-    color: green;
+    color: $primary-color;
+}
+
+.content{
+    background-color: grey;
 }
