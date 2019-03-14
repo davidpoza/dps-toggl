@@ -17,7 +17,7 @@ class AppComponent extends Component{
                         <MenuComponent />
                     </div>
                     <div className={"col-10 " + styles.content}>
-                       contenido
+                       <button className="btn btn-primary" >Prueba</button>
                     </div>
                 </div>
 
