@@ -8,14 +8,14 @@ class MenuComponent extends Component{
     render(){
         return(
             <div className={styles.clase}>
-                <div className="logo">dpsToggl</div>
-                <ul>
-                    <li><i className="fas fa-stopwatch"></i> Timer</li>
-                    <li><i className="fas fa-chart-bar"></i>Dashboard</li>
-                    <li><i className="fas fa-folder-open"></i>Projects</li>
-                    <li><i className="fas fa-tags"></i>Tags</li>
-                    <li><i className="fas fa-file-alt"></i>Reports</li>
-                    <li><i className="fas fa-cogs"></i>Config</li>
+                <div className={styles.logo}>dpsToggl</div>
+                <ul className = "fa-ul">
+                    <li><span className = "fa-li"><i className="fas fa-stopwatch"></i></span>Timer</li>
+                    <li><span className = "fa-li"><i className="fas fa-chart-bar"></i></span>Dashboard</li>
+                    <li><span className = "fa-li"><i className="fas fa-folder-open"></i></span>Projects</li>
+                    <li><span className = "fa-li"><i className="fas fa-tags"></i></span>Tags</li>
+                    <li><span className = "fa-li"><i className="fas fa-file-alt"></i></span>Reports</li>
+                    <li><span className = "fa-li"><i className="fas fa-cogs"></i></span>Config</li>
                 </ul>
             </div>
         )
