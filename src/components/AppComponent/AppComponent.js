@@ -11,8 +11,8 @@ class AppComponent extends Component{
     }
     render(){
         return(
-            <div className="container-flex">
-                <div className="row">
+            <div className={"container-flex " + styles.containerflex}>
+                <div className={"row " + styles.row}>
                     <div className="col-2">
                         <MenuComponent />
                     </div>
