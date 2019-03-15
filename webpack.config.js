@@ -1,5 +1,6 @@
 //Vamos a usar el paquete path para que las rutas sean válidas tanto en windows como en linux
 var path = require("path");
+var HtmlWebPackPlugin = require("html-webpack-plugin");
 var entryPath = path.join(__dirname, "src"),
     outPath = path.join(__dirname, "dist");
 
@@ -101,5 +102,10 @@ module.exports = {
             filename: "styles.css",
             chunkFilename: "styles.css"
         }),
+        new HtmlWebPackPlugin({
+            title: "dpsToggl",
+            template: path.join(__dirname, "src", "index.html"),
+            filename: "index.html"
+        })
     ]    
 }
