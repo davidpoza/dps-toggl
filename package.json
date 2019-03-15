@@ -4,8 +4,8 @@
   "description": "my own Toggl version in React.js",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --colors --progress",
-    "build": "webpack -p --colors"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --colors --progress",
+    "build": "cross-env NODE_ENV=production webpack -p --colors --config webpack.config.prod.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/davidpoza/dps-toggl#readme",
   "dependencies": {
+    "cross-env": "^5.2.0",
     "file-loader": "^3.0.1",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -35,6 +38,8 @@
     "node-sass": "^4.11.0",
     "popper.js": "^1.14.7",
     "react-hot-loader": "^4.8.0",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.6",

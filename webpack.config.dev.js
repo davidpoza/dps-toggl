@@ -3,6 +3,7 @@ var path = require("path");
 var HtmlWebPackPlugin = require("html-webpack-plugin");
 var entryPath = path.join(__dirname, "src"),
     outPath = path.join(__dirname, "dist");
+const webpack = require('webpack');
 
 //Vamos a usar este plugin para combinar todos los ficheros scss
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -22,7 +23,10 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                    }
+                    },
+                    {
+                        loader: 'react-hot-loader/webpack',
+                    },
                 ]
             },        
             {
@@ -103,6 +107,10 @@ module.exports = {
             title: "dpsToggl",
             template: path.join(__dirname, "src", "index.html"),
             filename: "index.html"
-        })
-    ]    
+        }),
+        new webpack.DefinePlugin({
+            'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) || 'production' }
+        }),
+    ] ,
+    devtool: 'cheap-module-eval-source-map',   
 }
