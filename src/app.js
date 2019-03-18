@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 
@@ -16,9 +16,9 @@ const store = configureStore(initialState);
 ReactDOM.render(
 
 <Provider store={store}>
-    <BrowserRouter>
+    <HashRouter>
         <AppComponent />
-    </BrowserRouter>
+    </HashRouter>
 </Provider>,
 
 document.getElementById("app"));
