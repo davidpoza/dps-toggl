@@ -1,5 +1,5 @@
 const initialState = {
-    user: {
+    userReducer: {
         username: null,
         email: null,
         token: null,

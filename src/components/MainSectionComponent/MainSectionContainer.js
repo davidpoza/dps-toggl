@@ -27,7 +27,7 @@ class MainSectionContainer extends Component{
 
 function mapStateToProps (state) {
     return {
-      user: state.user
+      user: state.userReducer
     }
   }
   
