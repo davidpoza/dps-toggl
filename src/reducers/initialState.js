@@ -4,7 +4,7 @@ const initialState = {
         email: null,
         token: null,
         loading: false,
-        error: null
+        error: {}
     },
     interface: {
         menu_expanded: true

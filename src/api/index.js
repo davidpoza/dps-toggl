@@ -4,7 +4,7 @@ const api_url = "https://dpstogglapi1.davidinformatico.com/_";
 const API = {
     user: {
         login(email, password){
-            fetch(api_url+"/auth/authenticate", {
+            return fetch(api_url+"/auth/authenticate", {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",

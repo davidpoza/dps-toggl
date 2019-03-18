@@ -13,14 +13,14 @@ export default function userReducer (state = initialState.user, action){
             return {
                 ...state,
                 loading: true,
-                error: null
+                error: {}
             }
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
                 username: action.payload,
                 loading: false,
-                error: null
+                error: {}
             }
         case LOGIN_USER_FAIL:
             return {

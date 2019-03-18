@@ -26,8 +26,9 @@ class LoginContainer extends Component{
 }
 
 function mapStateToProps (state) {
+  console.log(state);
     return {
-      user: state.user
+      user: state.userReducer
     }
   }
   

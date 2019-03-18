@@ -34,7 +34,6 @@ export function loginUser(username, password){
             type: LOGIN_USER_ATTEMPT
         });
 
-
         api.user.login(username, password).then(
             (data) => dispatch(loginUserSuccess(data))                          
         ).catch(
