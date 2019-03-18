@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 import styles from './AppComponent.scss';
 import MenuComponent from '../MenuComponent/MenuComponent';
-
+import MainSectionContainer from '../MainSectionComponent/MainSectionContainer';
 
 class AppComponent extends Component{
     constructor(props){
@@ -16,7 +16,7 @@ class AppComponent extends Component{
                         <MenuComponent />
                     </div>
                     <div className={"col   " + styles.content}>
-                       <button className="btn btn-primary" >Prueba</button>
+                        <MainSectionContainer />
                     </div>
                 </div>
 
