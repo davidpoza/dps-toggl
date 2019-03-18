@@ -3,7 +3,7 @@
 /* CONFIG PARA BOOTSTRAP */
 /*sobrescribo el fichero _variables.scss de bootstrap*/
 
-$primary:       red;
+$primary: $primary-color;
 
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
