@@ -12,10 +12,22 @@ class LoginComponent extends Component{
     }
     render(){
         return(
-            <div>
-                Login
 
-            </div>
+            <form className={styles.form_signin}>
+                <div className={styles.form_label_group}>
+                    <label htmlFor="inputEmail">Email address</label>
+                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus />
+                    
+                </div>
+
+                <div className={styles.form_label_group}>
+                    <label htmlFor="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required />
+                    
+                </div>
+                <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            </form>
+
         )
     }
 }
