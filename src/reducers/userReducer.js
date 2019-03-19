@@ -6,7 +6,7 @@ import {
 
 import initialState from './initialState';
 
-export default function userReducer (state = initialState.user, action){
+export default function userReducer (state = initialState.userReducer, action){
     switch(action.type){
         case LOGIN_USER_ATTEMPT:
         //vamos a crear una copia del estado, es como usar Object.assign
@@ -18,17 +18,16 @@ export default function userReducer (state = initialState.user, action){
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
-                username: action.payload,
+                token: action.payload.token,
                 loading: false,
                 error: {}
             }
         case LOGIN_USER_FAIL:
             return {
                 ...state,
-                username: null,
                 loading: false,
                 error: action.payload
-            } 
+            }
         default:
             return state;
     }

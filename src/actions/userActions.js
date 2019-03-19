@@ -11,10 +11,10 @@ import api from '../api';
 /* Action creators síncronos */
 
 
-export function loginUserSuccess(user){
+export function loginUserSuccess(userData){
     return {
         type: LOGIN_USER_SUCCESS,
-        payload: user
+        payload: userData
     }
 }
 
@@ -28,17 +28,25 @@ export function loginUserError(error){
 
 /* Action creators asíncronos - thunks */
 
-export function loginUser(username, password){
+export function loginUser(email, password){
     return (dispatch) => {
         dispatch({
             type: LOGIN_USER_ATTEMPT
         });
 
-        api.user.login(username, password).then(
-            (data) => dispatch(loginUserSuccess(data))                          
+        api.user.login(email, password).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(loginUserSuccess(data.data))
+                }                    
+                else if(data.error)
+                    dispatch(loginUserError(data.error))
+            }                          
         ).catch(
             (error) => {
-            dispatch(loginUserError(error))
+                dispatch(loginUserError(error));
         });
     }
 }
+

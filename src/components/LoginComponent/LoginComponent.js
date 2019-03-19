@@ -14,24 +14,24 @@ class LoginComponent extends Component{
         this.handleOnChange = this.handleOnChange.bind(this);
 
         this.state = {
-            username: "",
-            passworld: ""
+            email: "",
+            password: ""
         };        
     }
 
     handleOnClick(){
-        this.props.actions.loginUser(this.state.username, this.state.password);
+        this.props.actions.loginUser(this.state.email, this.state.password);
     }
 
 
     handleOnChange(e){
         if(e.target.id == "inputEmail")
             this.setState({
-                username: e.target.value,
+                email: e.target.value,
             });
         else if(e.target.id == "inputPassword")
             this.setState({
-                passworld: e.target.value
+                password: e.target.value
             });
     }
 
@@ -42,7 +42,7 @@ class LoginComponent extends Component{
                 {this.props.user.error.message && <div className="alert alert-danger" role="alert">{this.props.user.error.message}</div>}
                 <div className={styles.form_label_group}>
                     <label htmlFor="inputEmail">Email address</label>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.username} onChange={this.handleOnChange}/>
+                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onChange={this.handleOnChange}/>
                     
                 </div>
 

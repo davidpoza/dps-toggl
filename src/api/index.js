@@ -20,6 +20,31 @@ const API = {
                 }
             ).then(
                 function(data){
+                    if(data.data)
+                        return(API.user.getUserInfo(data.data.token))
+                    return data;
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+        getUserInfo(token){
+            return fetch(api_url+"/users/me", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
                     return data;
                 }
             );

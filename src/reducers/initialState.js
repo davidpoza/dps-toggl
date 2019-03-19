@@ -1,6 +1,8 @@
 const initialState = {
     userReducer: {
-        username: null,
+        first_name: null,
+        last_name: null,
+        avatar_url: null,
         email: null,
         token: null,
         loading: false,
