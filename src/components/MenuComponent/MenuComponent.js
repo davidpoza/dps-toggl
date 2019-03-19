@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import styles from './MenuComponent.scss';
 import logo from '../../images/icon.png';
-import LoggedInfoComponent from '../LoggedInfoComponent/LoggedInfoComponent';
+import LoggedInfoContainer from '../LoggedInfoComponent/LoggedInfoContainer';
 
 class MenuComponent extends Component{
     constructor(props){
@@ -25,7 +25,7 @@ class MenuComponent extends Component{
                     </ul>
                 </div>
                  
-                        <LoggedInfoComponent username="David Poza" expanded="false" />
+                        <LoggedInfoContainer username="David Poza" expanded="false" />
                 
             </div>
         )

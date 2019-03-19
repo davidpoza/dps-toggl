@@ -32,7 +32,7 @@ const API = {
         },
 
         getUserInfo(token){
-            return fetch(api_url+"/users/me", {
+            return fetch(api_url+"/users/me?fields=*,avatar.*", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -45,6 +45,8 @@ const API = {
                 }
             ).then(
                 function(data){
+                    //quiero tener el token en el estado para renovarlo
+                    data.data.token = token;
                     return data;
                 }
             );
