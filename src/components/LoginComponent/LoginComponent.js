@@ -15,7 +15,8 @@ class LoginComponent extends Component{
 
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            btn_enabled: false,
         };        
     }
 
@@ -32,6 +33,14 @@ class LoginComponent extends Component{
         else if(e.target.id == "inputPassword")
             this.setState({
                 password: e.target.value
+            });
+        if(this.state.email == "" && this.state.password == "")
+            this.setState({
+                btn_enabled: false
+            });
+        else if(this.state.email != "" && this.state.password != "")
+            this.setState({
+                btn_enabled: true
             });
     }
 
@@ -51,7 +60,7 @@ class LoginComponent extends Component{
                     <input type="password" id="inputPassword" className="form-control" placeholder="Password" required text={this.state.password} onChange={this.handleOnChange}/>
                     
                 </div>
-                <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleOnClick}>Login</button>
+                <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleOnClick} disabled={!this.state.btn_enabled}>Login</button>
             </form>
 
         )
