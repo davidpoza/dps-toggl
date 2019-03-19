@@ -20,7 +20,7 @@ class LoggedInfoContainer extends Component{
 
     render(){
         return(
-            <LoggedInfoComponent user={this.props.user}/>
+            <LoggedInfoComponent user={this.props.user} actions={this.props.actions}/>
         )
     }
 }

@@ -16,7 +16,7 @@ class LoggedInfoComponent extends Component{
                         (   
                             <div>
                                 <p className="m-0">{this.props.user.first_name} {this.props.user.last_name}</p>
-                                <p className="m-0">Logout</p>
+                                <p className="m-0"><span className={styles.link} onClick={this.props.actions.logoutUser}>Logout</span></p>
                             </div>
                         ):
                         (
@@ -39,7 +39,7 @@ class LoggedInfoComponent extends Component{
                 }
                 <div className="dropdown-menu">
                     <a className="dropdown-item" href="#">Perfil</a>
-                    <a className="dropdown-item" href="#">Logout</a>
+                    <a className="dropdown-item" className={styles.link} onClick={this.props.actions.logoutUser}>Logout</a>
                 </div>
             </div>
         )
