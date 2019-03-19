@@ -4,8 +4,8 @@
   "description": "my own Toggl version in React.js",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --colors --progress",
-    "build": "cross-env NODE_ENV=production webpack -p --colors --config webpack.config.prod.js"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --hot --inline --colors --progress --config webpack.config.dev.js",
+    "build": "cross-env NODE_ENV=production webpack -p --colors --config webpack.config.js"
   },
   "repository": {
     "type": "git",
