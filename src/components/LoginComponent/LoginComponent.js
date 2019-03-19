@@ -4,6 +4,7 @@ import {BrowserRouter, Link, Route} from 'react-router-dom';
 
 import styles from './LoginComponent.scss';
 import ConfigComponent from '../ConfigComponent/ConfigComponent';
+import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
 
 class LoginComponent extends Component{
@@ -48,6 +49,7 @@ class LoginComponent extends Component{
         return(
 
             <form className={styles.form_signin}>
+                <LoadingComponent isLoading={this.props.user.loading} />
                 {this.props.user.error.message && <div className="alert alert-danger" role="alert">{this.props.user.error.message}</div>}
                 <div className={styles.form_label_group}>
                     <label htmlFor="inputEmail">Email address</label>
