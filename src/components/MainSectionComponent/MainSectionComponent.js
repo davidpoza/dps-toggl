@@ -3,8 +3,9 @@ import {Route} from 'react-router-dom';
 
 
 import styles from './MainSectionComponent.scss';
-import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import LoginContainer from '../LoginComponent/LoginContainer';
+import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
+import TimerDashboardContainer from '../TimerDashboardComponent/TimerDashboardContainer';
 
 
 class MainSectionComponent extends Component{
@@ -14,7 +15,7 @@ class MainSectionComponent extends Component{
     render(){
         return(
             <div>
-                <Route exact path="/" component={ConfigComponent} />
+                <PrivateRoute exact path="/" component={TimerDashboardContainer} />
                 <Route path="/login" component={LoginContainer} />
             </div>
         )
