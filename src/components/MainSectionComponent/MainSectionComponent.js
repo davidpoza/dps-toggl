@@ -6,6 +6,7 @@ import styles from './MainSectionComponent.scss';
 import LoginContainer from '../LoginComponent/LoginContainer';
 import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
 import TimerDashboardContainer from '../TimerDashboardComponent/TimerDashboardContainer';
+import ConfigComponent from '../ConfigComponent/ConfigComponent';
 
 
 class MainSectionComponent extends Component{
@@ -16,6 +17,7 @@ class MainSectionComponent extends Component{
         return(
             <div>
                 <PrivateRoute exact path="/" component={TimerDashboardContainer} />
+                <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
             </div>
         )

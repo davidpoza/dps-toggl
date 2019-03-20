@@ -22,7 +22,7 @@ class MenuComponent extends Component{
                         <li className={styles.li}><span className = "fa-li"><i className="fas fa-folder-open"></i></span><span className={styles.item_text}>Projects</span></li>
                         <li className={styles.li}><span className = "fa-li"><i className="fas fa-tags"></i></span><span className={styles.item_text}>Tags</span></li>
                         <li className={styles.li}><span className = "fa-li"><i className="fas fa-file-alt"></i></span><span className={styles.item_text}>Reports</span></li>
-                        <li className={styles.li}><span className = "fa-li"><i className="fas fa-cogs"></i></span><span className={styles.item_text}>Config</span></li>
+                        <li className={styles.li}><span className = "fa-li"><i className="fas fa-cogs"></i></span><span className={styles.item_text}><Link to="/config">Config</Link></span></li>
                     </ul>
                 </div>
                  
