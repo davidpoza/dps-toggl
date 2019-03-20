@@ -20,7 +20,7 @@ class LoginContainer extends Component{
 
     render(){
         return(
-            <LoginComponent user={this.props.user} actions={this.props.actions}/>
+            <LoginComponent history={this.props.history} user={this.props.user} actions={this.props.actions}/>
         )
     }
 }

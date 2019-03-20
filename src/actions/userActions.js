@@ -35,7 +35,7 @@ export function logoutUser(){
 
 /* Action creators asíncronos - thunks */
 
-export function loginUser(email, password){
+export function loginUser(email, password, history){
     return (dispatch) => {
         dispatch({
             type: LOGIN_USER_ATTEMPT
@@ -45,7 +45,8 @@ export function loginUser(email, password){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    dispatch(loginUserSuccess(data.data))
+                    dispatch(loginUserSuccess(data.data));
+                    history.push("/");
                 }                    
                 else if(data.error)
                     dispatch(loginUserError(data.error))
