@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import {BrowserRouter, Link, Route} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 
 import styles from './LoginComponent.scss';
-import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
 
@@ -47,26 +46,29 @@ class LoginComponent extends Component{
     }
 
     render(){
-        return(
+        if(this.props.user.token != null) //autenticado
+            return(<Redirect to="/" />)
+        else
+            return(
 
-            <form className={styles.form_signin}>
-                <LoadingComponent isLoading={this.props.user.loading} />
-                {this.props.user.error.message && <div className="alert alert-danger" role="alert">{this.props.user.error.message}</div>}
-                <div className={styles.form_label_group}>
-                    <label htmlFor="inputEmail">Email address</label>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onChange={this.handleOnChange}/>
-                    
-                </div>
+                <form className={styles.form_signin}>
+                    <LoadingComponent isLoading={this.props.user.loading} />
+                    {this.props.user.error.message && <div className="alert alert-danger" role="alert">{this.props.user.error.message}</div>}
+                    <div className={styles.form_label_group}>
+                        <label htmlFor="inputEmail">Email address</label>
+                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onChange={this.handleOnChange}/>
+                        
+                    </div>
 
-                <div className={styles.form_label_group}>
-                    <label htmlFor="inputPassword">Password</label>
-                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required text={this.state.password} onChange={this.handleOnChange}/>
-                    
-                </div>
-                <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleOnClick} disabled={!this.state.btn_enabled}>Login</button>
-            </form>
+                    <div className={styles.form_label_group}>
+                        <label htmlFor="inputPassword">Password</label>
+                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" required text={this.state.password} onChange={this.handleOnChange}/>
+                        
+                    </div>
+                    <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleOnClick} disabled={!this.state.btn_enabled}>Login</button>
+                </form>
 
-        )
+            )
     }
 }
 
