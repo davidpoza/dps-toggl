@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as userActions from '../../actions/userActions'
+import * as taskActions from '../../actions/taskActions'
 import NewBlockComponent from './NewBlockComponent';
 
 
@@ -33,7 +33,7 @@ function mapStateToProps (state) {
   
   function mapDispatchToProps (dispatch) {
     return {
-      actions: bindActionCreators(userActions, dispatch)
+      actions: bindActionCreators(taskActions, dispatch)
     }
   }
   

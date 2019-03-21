@@ -8,8 +8,8 @@ const initialState = {
         loading: false,
         error: {}
     },
-    interface: {
-        menu_expanded: true
+    taskReducer: {
+        
     
     }
 };

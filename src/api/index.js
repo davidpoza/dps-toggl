@@ -54,19 +54,23 @@ const API = {
     },
     task: {
         //en tags_id viene un array
-        createTask(description, date_start, date_end, project_id, tags_id){
+        createTask(token, description, date_start, date_end, project_id, tags_id){
+            let array_tags_obj = [];
+            tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});
             return fetch(api_url+"/items/tasks", {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+
                 },
                 body: JSON.stringify({
                     desc: description,
                     date_start: date_start,
                     date_end: date_end,
                     project: { id: project_id },
-                    tags: tags_id
+                    tags: array_tags_obj
                 })
             }).then(
                 function(response){
