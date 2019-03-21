@@ -7,7 +7,31 @@ import avatar from '../../images/avatar_sample.jpg'
 class LoggedInfoComponent extends Component{
     constructor(props){
         super(props);
+        this.refreshToken = this.refreshToken.bind(this);
+
+        this.state = {
+            setInterval: null
+        }
     }
+
+    refreshToken(){
+        if(this.props.user.token != null){
+            this.props.actions.refreshToken(this.props.user.token);
+        }
+    }
+
+    componentDidMount(){
+        if(this.state.setInterval == null)
+            this.setState({
+                setInterval: setInterval(this.refreshToken, 4*60*1000) //ponemos el refresco del token jwt a 4 minutos
+            });       
+    }
+
+    componentWillUnmount(){
+        if(this.state.setInterval != null)
+            clearInterval(this.state.setInterval)
+    }
+
     render(){
         return(
             <div className={"d-flex justify-content-between " + styles.box}> 

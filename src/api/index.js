@@ -31,6 +31,27 @@ const API = {
             );
         },
 
+        refreshToken(token){
+            return fetch(api_url+"/auth/refresh", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    token: token
+                })
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
         getUserInfo(token){
             return fetch(api_url+"/users/me?fields=*,avatar.*", {
                 method: "GET",

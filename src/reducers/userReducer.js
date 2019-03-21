@@ -2,7 +2,10 @@ import {
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
     LOGIN_USER_ATTEMPT,
-    LOGOUT_USER
+    LOGOUT_USER,
+    REFRESH_TOKEN_ATTEMPT,
+    REFRESH_TOKEN_FAIL,
+    REFRESH_TOKEN_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -44,6 +47,23 @@ export default function userReducer (state = initialState.userReducer, action){
                 first_name: null,
                 last_name: null,
                 avatar: null
+            }
+        case REFRESH_TOKEN_ATTEMPT:
+            return {
+                ...state,
+                error: {}
+            }
+        case REFRESH_TOKEN_SUCCESS:
+            return {
+                ...state,
+                token: action.payload,
+                error: {}
+            }
+        case REFRESH_TOKEN_FAIL:
+            return {
+                ...state,                
+                token: null,
+                error: action.payload
             }
         default:
             return state;
