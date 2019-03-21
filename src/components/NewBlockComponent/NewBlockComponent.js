@@ -15,10 +15,13 @@ class NewBlockComponent extends Component{
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
         this.handleOnClickCreate = this.handleOnClickCreate.bind(this);
         this.handleOnClickStart = this.handleOnClickStart.bind(this);
+        this.handleOnClickReset = this.handleOnClickReset.bind(this);
         this.incCounter = this.incCounter.bind(this);
+        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
 
         this.state = {
             placeholder: "¿En qué vas a trabajar?",
+            description: "",
             mode: "chrono",
             time: 0, //seconds,
             chrono_status: "paused", //paused, running
@@ -28,7 +31,8 @@ class NewBlockComponent extends Component{
 
     componentDidMount(){
         $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
-        $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"})
+        $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
+        $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
     }
 
     handleOnClickCronoMode(){
@@ -49,6 +53,15 @@ class NewBlockComponent extends Component{
 
     }
 
+    handleOnClickReset(){
+        this.setState({
+            placeholder: "¿En qué vas a trabajar?",
+            time: 0,
+            description: "",
+            chrono_status: "paused"
+        });
+    }
+
     incCounter(){
         if(this.state.chrono_status == "running")
             this.setState({
@@ -57,10 +70,11 @@ class NewBlockComponent extends Component{
     }
 
     handleOnClickStart(){
-        if(this.state.chrono_status == "paused")
+        if(this.state.chrono_status == "paused"){
             this.setState({
                 chrono_status: "running"
-            });
+            })            
+        }
         else if(this.state.chrono_status == "running")
             this.setState({
                 chrono_status: "paused"
@@ -72,12 +86,18 @@ class NewBlockComponent extends Component{
         }
     }
 
+    handleOnChangeInput(e){
+        this.setState({
+            description: e.target.value
+        });
+    }
+
     render(){
         return(
 
             <div className={"d-flex w-100 " + styles.box}>
                 <div className={"flex-grow-1"}>
-                    <input className={styles.description} id="task-description" placeholder={this.state.placeholder}></input>
+                    <input className={styles.description} id="task-description" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                 </div>
                 <div className="d-flex align-items-center">
                 { this.state.mode == "chrono" ?
@@ -95,9 +115,13 @@ class NewBlockComponent extends Component{
                         }                        
                     </button>
                 </div>
-                <div className="d-flex flex-column">
-                    <button id="btn-chrono-mode" className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
-                    <button id="btn-manual-mode" className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                <div className="d-flex align-items-center">
+                    <div className="d-flex flex-column">
+                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
+                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
+                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                    </div>
+
                 </div>
             </div>
 
