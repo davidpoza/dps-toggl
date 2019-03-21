@@ -1,0 +1,9 @@
+@import "../../defaults.scss";
+
+a{
+    color: white;
+}
+
+a:active, a:hover{
+    color: $complementary-color
+}

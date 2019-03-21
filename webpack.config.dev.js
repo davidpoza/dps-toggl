@@ -1,9 +1,9 @@
 //Vamos a usar el paquete path para que las rutas sean válidas tanto en windows como en linux
 var path = require("path");
 var HtmlWebPackPlugin = require("html-webpack-plugin");
-var entryPath = path.join(__dirname, "src"),
-    outPath = path.join(__dirname, "dist");
-const webpack = require('webpack');
+var entryPath = path.join(__dirname, "src");
+var outPath = path.join(__dirname, "dist");
+var webpack = require('webpack');
 
 //Vamos a usar este plugin para combinar todos los ficheros scss
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -110,7 +110,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) || 'production' }
-        }),
+        })
     ] ,
     devtool: 'cheap-module-eval-source-map',   
 }

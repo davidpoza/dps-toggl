@@ -1,8 +1,9 @@
 //Vamos a usar el paquete path para que las rutas sean válidas tanto en windows como en linux
 var path = require("path");
 var HtmlWebPackPlugin = require("html-webpack-plugin");
-var entryPath = path.join(__dirname, "src"),
-    outPath = path.join(__dirname, "dist");
+var entryPath = path.join(__dirname, "src");
+var outPath = path.join(__dirname, "dist");
+var CopyPlugin = require('copy-webpack-plugin');
 
 //Vamos a usar este plugin para combinar todos los ficheros scss
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -103,6 +104,10 @@ module.exports = {
             title: "dpsToggl",
             template: path.join(__dirname, "src", "index.html"),
             filename: "index.html"
-        })
+        }),
+        new CopyPlugin([
+            { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "./lib" },
+            { from: "./node_modules/jquery/dist/jquery.min.js", to: "./lib" },
+        ]),
     ]    
 }

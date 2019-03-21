@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import icon from '../../images/icon.png';
 
 import styles from './AppComponent.scss';
 import MenuComponent from '../MenuComponent/MenuComponent';
-
+import MainSectionContainer from '../MainSectionComponent/MainSectionContainer';
 
 class AppComponent extends Component{
     constructor(props){
@@ -16,8 +15,8 @@ class AppComponent extends Component{
                     <div className={"col-auto  " + styles.menu}>
                         <MenuComponent />
                     </div>
-                    <div className={"col   " + styles.content}>
-                       <button className="btn btn-primary" >Prueba</button>
+                    <div className={"col d-flex flex-column justify-content-center p-0 " + styles.content}>
+                        <MainSectionContainer />
                     </div>
                 </div>
 
