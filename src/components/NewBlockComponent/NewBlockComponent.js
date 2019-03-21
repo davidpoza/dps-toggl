@@ -35,6 +35,12 @@ class NewBlockComponent extends Component{
         $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
     }
 
+    componentWillUnmount(){
+        if(this.state.set_interval != null)
+            clearInterval(this.state.set_interval)
+    }
+
+
     handleOnClickCronoMode(){
         this.setState({
             mode: "chrono",
