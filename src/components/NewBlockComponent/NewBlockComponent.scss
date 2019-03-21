@@ -24,10 +24,17 @@
   font-size: 1.4em;
   padding: 0;
   margin: 4px;
+  margin-left: 10px;
   background: none;
   border: none;
+  &:focus {
+    outline: none;
+  }
   &:hover {
     color:$complementary-color;
+  }
+  &:active {
+    color: $quaternary-color;
   }
 }
 
@@ -40,4 +47,9 @@
 .btn_active{
   @extend .btn;
   color: $complementary-color;
+}
+
+.btn_stop{
+  @extend .btn_create;
+  color: red;
 }

@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 
 
 import styles from './NewBlockComponent.scss';
+import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
 
 
 
@@ -13,10 +14,15 @@ class NewBlockComponent extends Component{
         this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
         this.handleOnClickCreate = this.handleOnClickCreate.bind(this);
+        this.handleOnClickStart = this.handleOnClickStart.bind(this);
+        this.incCounter = this.incCounter.bind(this);
 
         this.state = {
             placeholder: "¿En qué vas a trabajar?",
-            mode: "chrono"
+            mode: "chrono",
+            time: 0, //seconds,
+            chrono_status: "paused", //paused, running
+            set_interval: null
         };        
     }
 
@@ -43,6 +49,29 @@ class NewBlockComponent extends Component{
 
     }
 
+    incCounter(){
+        if(this.state.chrono_status == "running")
+            this.setState({
+                time: this.state.time + 1
+            })
+    }
+
+    handleOnClickStart(){
+        if(this.state.chrono_status == "paused")
+            this.setState({
+                chrono_status: "running"
+            });
+        else if(this.state.chrono_status == "running")
+            this.setState({
+                chrono_status: "paused"
+            });
+        if(this.state.set_interval == null){
+            this.setState({
+                set_interval: setInterval(this.incCounter, 1000)
+            });
+        }
+    }
+
     render(){
         return(
 
@@ -50,8 +79,21 @@ class NewBlockComponent extends Component{
                 <div className={"flex-grow-1"}>
                     <input className={styles.description} id="task-description" placeholder={this.state.placeholder}></input>
                 </div>
-                <div className="d-flex align-content-center p-10">
-                    <button id="btn-create-block" className={styles.btn_create} onClick={this.handleOnClickCreate}><i class="fas fa-check-circle"></i></button>
+                <div className="d-flex align-items-center">
+                { this.state.mode == "chrono" ?
+                    <ChronometerComponent time={this.state.time} />:
+                    <div></div>
+                }
+                </div>
+                <div className="d-flex align-items-center">
+                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
+                        this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
+                    }>
+                        { this.state.mode == "chrono" ?
+                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
+                            (<i className="fas fa-check-circle"></i>)
+                        }                        
+                    </button>
                 </div>
                 <div className="d-flex flex-column">
                     <button id="btn-chrono-mode" className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
