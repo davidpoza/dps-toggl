@@ -51,6 +51,33 @@ const API = {
                 }
             );
         }
+    },
+    task: {
+        //en tags_id viene un array
+        createTask(description, date_start, date_end, project_id, tags_id){
+            return fetch(api_url+"/items/tasks", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    desc: description,
+                    date_start: date_start,
+                    date_end: date_end,
+                    project: { id: project_id },
+                    tags: tags_id
+                })
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
     }
 }
 
