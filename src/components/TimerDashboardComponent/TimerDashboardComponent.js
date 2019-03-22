@@ -22,7 +22,7 @@ class TimerDashboardComponent extends Component{
                 <div>
                     <NewBlockContainer />
                 </div>
-                <div className="flex-grow-1">
+                <div className={"flex-grow-1 " + styles.tasklist}>
                     <TaskListContainer />  
                 </div>
 
