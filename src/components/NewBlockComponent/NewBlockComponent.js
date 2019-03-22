@@ -85,8 +85,6 @@ class NewBlockComponent extends Component{
             let date_start = new Date(date_end - this.state.time*1000);
             let formated_date_start = utils.standarizeDate(date_start);
             let formated_date_end = utils.standarizeDate(date_end);
-            console.log(formated_date_start);
-            console.log(formated_date_end);
             this.props.actions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, 1, [2,3]);
 
             
