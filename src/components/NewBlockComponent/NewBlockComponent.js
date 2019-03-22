@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-
+import utils from '../../utils'
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
@@ -76,10 +75,6 @@ class NewBlockComponent extends Component{
     }
 
     handleOnClickStart(){
-        function pad (str, max) {
-            str = str.toString();
-            return str.length < max ? pad("0" + str, max) : str;
-        }
         if(this.state.chrono_status == "paused"){
             this.setState({
                 chrono_status: "running"
@@ -88,8 +83,8 @@ class NewBlockComponent extends Component{
         else if(this.state.chrono_status == "running"){            
             let date_end = new Date();
             let date_start = new Date(date_end - this.state.time*1000);
-            let formated_date_start = `${date_start.getFullYear()}-${pad(date_start.getMonth(),2)}-${pad(date_start.getDay(),2)} ${pad(date_start.getHours(),2)}:${pad(date_start.getMinutes(),2)}:${pad(date_start.getSeconds(),2)}`;
-            let formated_date_end = `${date_end.getFullYear()}-${pad(date_end.getMonth(),2)}-${pad(date_end.getDay(),2)} ${pad(date_end.getHours(),2)}:${pad(date_end.getMinutes(),2)}:${pad(date_end.getSeconds(),2)}`;
+            let formated_date_start = utils.standarizeDate(date_start);
+            let formated_date_end = utils.standarizeDate(date_end);
             console.log(formated_date_start);
             console.log(formated_date_end);
             this.props.actions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, 1, [2,3]);
