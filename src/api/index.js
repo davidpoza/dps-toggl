@@ -74,7 +74,7 @@ const API = {
         }
     },
     task: {
-        //en tags_id viene un array
+        //en tags_id viene un array de tags_id, hay que componer un objeto
         createTask(token, description, date_start, date_end, project_id, tags_id){
             let array_tags_obj = [];
             tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});
@@ -84,7 +84,6 @@ const API = {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
                     "Authorization": "Bearer "+ token
-
                 },
                 body: JSON.stringify({
                     desc: description,
@@ -93,6 +92,25 @@ const API = {
                     project: { id: project_id },
                     tags: array_tags_obj
                 })
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+        fetchTasks(token){
+            return fetch(api_url+"/items/tasks?fields=*.*", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
             }).then(
                 function(response){
                     return response.json();
