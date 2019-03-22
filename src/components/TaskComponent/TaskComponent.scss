@@ -1,0 +1,34 @@
+@import "../../defaults.scss";
+
+.task{
+    border-bottom: 1px solid lightgrey;
+    padding: 20px;
+
+    &:hover{
+        background-color: #fafafa;
+    }
+}
+
+.dates{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.btn{
+    color: grey;
+    font-size: 1em;
+    padding: 0;
+    margin: 4px;
+    margin-left: 10px;
+    background: none;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color:$complementary-color;
+    }
+    &:active {
+      color: $quaternary-color;
+    }
+  }

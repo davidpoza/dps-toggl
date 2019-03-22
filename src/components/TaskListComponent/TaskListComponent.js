@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 
 
 import styles from './TaskListComponent.scss';
+import TaskComponent from '../TaskComponent/TaskComponent';
 
 
 class TaskListComponent extends Component{
@@ -28,11 +29,13 @@ class TaskListComponent extends Component{
     render(){
         return(
             <div>
+               <ul className="p-0">
                {
                    this.props.task.tasks.map((e,index) => {
-                        return <li key={index}>{e.desc}</li>
+                        return <TaskComponent key={index} task={e} />
                    })
                }
+               </ul>
             </div>
           
 
