@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 
 import styles from './TimerDashboardComponent.scss';
 import NewBlockContainer from '../NewBlockComponent/NewBlockContainer';
+import TaskListContainer from '../TaskListComponent/TaskListContainer';
 
 
 class TimerDashboardComponent extends Component{
@@ -22,7 +23,7 @@ class TimerDashboardComponent extends Component{
                     <NewBlockContainer />
                 </div>
                 <div className="flex-grow-1">
-                    Listado....  
+                    <TaskListContainer />  
                 </div>
 
             </div>

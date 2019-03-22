@@ -93,6 +93,8 @@ class NewBlockComponent extends Component{
             console.log(formated_date_start);
             console.log(formated_date_end);
             this.props.actions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, 1, [2,3]);
+
+            
             this.setState({
                 chrono_status: "paused",
                 time: 0,

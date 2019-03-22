@@ -9,8 +9,8 @@ const initialState = {
         error: {}
     },
     taskReducer: {
-        
-    
+        tasks: [],
+        need_refreshing: false    
     }
 };
 
