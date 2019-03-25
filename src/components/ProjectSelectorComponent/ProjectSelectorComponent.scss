@@ -1,6 +1,13 @@
 @import "../../defaults.scss";
 
-
+.label{
+  font-size: 1.1em;
+  margin: 8px;
+  padding: 4px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f8f8f8;
+}
 
 .btn{
   color: lightgrey;
@@ -42,8 +49,10 @@
 }
 
 .item{
+  cursor: pointer;
   i{
     margin-right: 15px;
+    pointer-events: none;
   }
   
 }
