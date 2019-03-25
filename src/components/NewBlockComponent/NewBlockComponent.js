@@ -3,6 +3,7 @@ import utils from '../../utils'
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
+import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
 
 
 
@@ -115,11 +116,14 @@ class NewBlockComponent extends Component{
                     <input className={styles.description} id="task-description" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                 </div>
                 <div className="d-flex align-items-center">
+                   <ProjectSelectorComponent />
+                </div>
+                <div className="d-flex align-items-center">
                 { this.state.mode == "chrono" ?
                     <ChronometerComponent time={this.state.time} />:
                     <div></div>
                 }
-                </div>
+                </div>               
                 <div className="d-flex align-items-center">
                     <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
