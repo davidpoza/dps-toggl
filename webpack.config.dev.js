@@ -96,7 +96,8 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: outPath
+        contentBase: outPath,
+        host: '0.0.0.0',
     },
     plugins: [
         new MiniCssExtractPlugin({
