@@ -32,3 +32,15 @@
       color: $quaternary-color;
     }
   }
+
+  .label{
+    font-size: 0.8em;
+    margin: 8px;
+    padding: 4px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f8f8f8;
+    i{
+      font-size: 0.5em;
+    }
+  }
