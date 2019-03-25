@@ -121,6 +121,52 @@ const API = {
                 }
             );
         },
+    },
+
+    project: {
+        //en tags_id viene un array de tags_id, hay que componer un objeto
+        createProject(token, name, desc, color){
+            return fetch(api_url+"/items/projects", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                },
+                body: JSON.stringify({
+                    name: name,
+                    desc: desc,
+                    color: color,
+                })
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+        fetchProjects(token){
+            return fetch(api_url+"/items/projects", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
     }
 }
 

@@ -22,6 +22,10 @@ class ProjectSelectorComponent extends Component{
         }
     }
 
+    componentWillMount(){
+        this.props.actions.fetchProjects(this.props.token);
+    }
+
     render(){
         return(<div className={"btn-group dropleft "+styles.selector}>            
                 <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,13 +37,16 @@ class ProjectSelectorComponent extends Component{
                 <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton">
                     <div className={"input-group "+styles.selector}>
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            <span className="input-group-text" id="basic-addon1"><i className="fas fa-search"></i></span>
                         </div>
                         <input className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." />
                     </div>
-                    <a className="dropdown-item" href="#">Sin proyecto</a>
-                    <a className="dropdown-item" href="#">Another action</a>
-                    <a className="dropdown-item" href="#">Something else here</a>
+                    <ul className={styles.projectlist}>
+                    <li className={"dropdown-item " + styles.item} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
+                    { this.props.project.projects.map((e, index)=>{
+                        return(<li key={"projectlist-"+index} className={"dropdown-item " + styles.item}><i style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                    })}
+                    </ul>
                     <div className="dropdown-divider"></div>
                     <button type="button" className="btn btn-primary w-100">Crear nuevo proyecto</button>
                 </div>

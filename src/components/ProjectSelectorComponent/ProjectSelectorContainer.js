@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as userActions from '../../actions/userActions'
+import * as projectActions from '../../actions/projectActions'
 import ProjectSelectorComponent from './ProjectSelectorComponent';
 
 
@@ -18,20 +18,21 @@ class ProjectSelectorContainer extends Component{
 
     render(){
         return(
-            <ProjectSelectorComponent user={this.props.user} actions={this.props.actions}/>
+            <ProjectSelectorComponent token={this.props.user.token} project={this.props.project} actions={this.props.actions}/>
         )
     }
 }
 
 function mapStateToProps (state) {
     return {
+      project: state.projectReducer,
       user: state.userReducer
     }
   }
   
   function mapDispatchToProps (dispatch) {
     return {
-      actions: bindActionCreators(userActions, dispatch)
+      actions: bindActionCreators(projectActions, dispatch)
     }
   }
   

@@ -10,7 +10,14 @@ const initialState = {
     },
     taskReducer: {
         tasks: [],
-        need_refreshing: false    
+        need_refreshing: false,
+        loading: false    ,
+        error: {}
+    },
+    projectReducer: {
+        projects: [],
+        loading: false,
+        error: {}
     }
 };
 
