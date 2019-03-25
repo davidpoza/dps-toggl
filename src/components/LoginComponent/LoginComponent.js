@@ -25,6 +25,13 @@ class LoginComponent extends Component{
         
     }
 
+    
+    componentDidMount(){
+        this.setState({
+            email: document.getElementById("inputEmail"),
+            password: document.getElementById("inputPassword")
+        });
+    }
 
     handleOnChange(e){
         if(e.target.id == "inputEmail")
