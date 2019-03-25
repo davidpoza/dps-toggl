@@ -10,9 +10,19 @@ class TaskComponent extends Component{
         super(props);
         this.handleOnMouseOver = this.handleOnMouseOver.bind(this);
         this.handleOnMouseOut = this.handleOnMouseOut.bind(this);
+        this.handleOnClick = this.handleOnClick.bind(this);
+
         this.state = {
             hide_btns: true
         }
+    }
+
+    handleOnClick(){
+        this.setState(
+            {
+                hide_btns: this.state.hide_btns?true:false
+            }
+        );
     }
 
     handleOnMouseOver(){
@@ -35,9 +45,12 @@ class TaskComponent extends Component{
 
     render(){
         return(
-            <li className={"d-flex " + styles.task } onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
-                <div className={"flex-grow-1 " + styles.desc}>{this.props.task.desc}</div>
-                <div className={styles.dates}>{utils.getHour(this.props.task.date_start)} - {utils.getHour(this.props.task.date_end)}</div>
+            <li className={"d-flex " + styles.task } onClick={utils.isMobile() && this.handleOnClick} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
+                <div className={"flex-grow-1 " + styles.desc}>
+                {!utils.isMobile()?this.props.task.desc:this.props.task.desc.substring(0,10)}
+                {utils.isMobile() && this.props.task.desc.length>10 && "..."}
+                </div>
+                {!utils.isMobile() && <div className={styles.dates}>{utils.getHour(this.props.task.date_start)} - {utils.getHour(this.props.task.date_end)}</div>}                
                 <div className={styles.dates}>{utils.diffHoursBetDates(this.props.task.date_start, this.props.task.date_end)}</div>
                 <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-play"></i></button></div>
                 <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-ellipsis-v"></i></button></div>
