@@ -23,7 +23,6 @@ const utils = {
     },
 
     getHour(date){
-        console.log(date);
         let regex = /(\d{2}:\d{2}):\d{2}/;
         return date.match(regex)[1];
     },

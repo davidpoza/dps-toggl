@@ -16,7 +16,6 @@ class TaskComponent extends Component{
     }
 
     handleOnMouseOver(){
-        console.log("over")
         if(this.state.hide_btns)
             this.setState(
                 {
