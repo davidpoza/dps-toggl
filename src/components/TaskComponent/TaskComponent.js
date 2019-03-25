@@ -39,8 +39,8 @@ class TaskComponent extends Component{
                 <div className={"flex-grow-1 " + styles.desc}>{this.props.task.desc}</div>
                 <div className={styles.dates}>{utils.getHour(this.props.task.date_start)} - {utils.getHour(this.props.task.date_end)}</div>
                 <div className={styles.dates}>{utils.diffHoursBetDates(this.props.task.date_start, this.props.task.date_end)}</div>
-                <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i class="fas fa-play"></i></button></div>
-                <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i class="fas fa-ellipsis-v"></i></button></div>
+                <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-play"></i></button></div>
+                <div><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-ellipsis-v"></i></button></div>
             </li>
         )
     }
