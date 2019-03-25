@@ -14,47 +14,22 @@ const colors = [
 class ProjectSelectorComponent extends Component{
     constructor(props){
         super(props);
-        this.handleOnClick = this.handleOnClick.bind(this);
-        
-        this.state = {
-            project_selected_name: null,
-            project_selected_color: null
-        }
-    }
-
-    componentWillMount(){
-        this.props.actions.fetchProjects(this.props.token);
-    }
-
-    handleOnClick(e){
-        if(e.target.id=="project0")
-        {
-            this.setState({
-                project_selected_name: null,
-                project_selected_color:null
-            });
-        }
-        else{
-            this.setState({
-                project_selected_name: e.target.innerText,
-                project_selected_color: window.getComputedStyle(e.target.childNodes[0]).color
-            });
-        }
-
         
     }
+
+    
 
     render(){
         return(<div className={"btn-group dropleft "+styles.selector}>
                 {
-                    this.state.project_selected_name==null?
+                    this.props.project_selected_name==null?
 
                     <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-folder-open"></i>
                     </button>
                     :
-                    <button className={styles.label} style={{color: this.state.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i className="fas fa-circle"></i> {this.state.project_selected_name}
+                    <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i className="fas fa-circle"></i> {this.props.project_selected_name}
                     </button>    
                 
                 }
@@ -69,9 +44,9 @@ class ProjectSelectorComponent extends Component{
                         <input className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." />
                     </div>
                     <ul className={styles.projectlist}>
-                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnClick} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
-                    { this.props.project.projects.map((e, index)=>{
-                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.handleOnClick} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.props.onClick} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
+                    { this.props.projects.map((e, index)=>{
+                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.props.onClick} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
                     <div className="dropdown-divider"></div>
