@@ -61,7 +61,7 @@ class TaskComponent extends Component{
             project.color = window.getComputedStyle(e.target.childNodes[0]).color;
             project.name = e.target.innerText;
         }
-        this.props.actions.updateTask(this.props.token, this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project.id, null);
+        this.props.actions.updateTask(this.props.token, this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project!=null? project.id:null, null);
         this.props.onUpdate(this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project, null);
     }
 
