@@ -11,7 +11,7 @@ const initialState = {
     taskReducer: {
         tasks: [],
         need_refreshing: false,
-        loading: false    ,
+        loading: false,
         error: {}
     },
     projectReducer: {

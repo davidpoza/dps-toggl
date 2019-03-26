@@ -18,7 +18,7 @@ class TaskListContainer extends Component{
 
     render(){
         return(
-            <TaskListComponent token={this.props.user.token} task={this.props.task} actions={this.props.actions}/>
+            <TaskListComponent token={this.props.user.token} project={this.props.project} task={this.props.task} actions={this.props.actions}/>
         )
     }
 }
@@ -26,6 +26,7 @@ class TaskListContainer extends Component{
 function mapStateToProps (state) {
     return {
       task: state.taskReducer,
+      project: state.projectReducer,
       user: state.userReducer
     }
   }

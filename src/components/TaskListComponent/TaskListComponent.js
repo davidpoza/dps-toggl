@@ -10,7 +10,7 @@ class TaskListComponent extends Component{
     constructor(props){
         super(props);
 
-       
+        this.handleDeleteTaskVisually = this.handleDeleteTaskVisually.bind(this);
         this.state = {
 
         };        
@@ -24,7 +24,16 @@ class TaskListComponent extends Component{
     componentDidUpdate(prevProps) {
         if (!prevProps.task.need_refreshing && this.props.task.need_refreshing)
             this.props.actions.fetchTasks(this.props.token);
-      }
+    }
+
+    handleDeleteTaskVisually(task_id){
+        let new_task_array = this.props.task.tasks.filter((e)=>{
+            return e.id != task_id
+        });
+
+        this.props.actions.deleteTasksVisually(new_task_array);
+    }
+
 
     render(){
         return(
@@ -32,7 +41,7 @@ class TaskListComponent extends Component{
                <ul className="p-0">
                {
                    this.props.task.tasks.map((e,index) => {
-                        return <TaskComponent key={index} task={e} />
+                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} actions={this.props.actions} onDeleteFromList={this.handleDeleteTaskVisually} />
                    })
                }
                </ul>
