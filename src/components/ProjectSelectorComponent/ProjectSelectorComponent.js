@@ -14,10 +14,28 @@ const colors = [
 class ProjectSelectorComponent extends Component{
     constructor(props){
         super(props);
-        
+        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        this.state = {
+            projects: []
+        }
     }
 
-    
+    componentDidMount(){
+        this.setState({
+            projects: this.props.projects.slice()
+        });
+    }
+
+    handleOnChangeInput(e){        
+        console.log(e.target);
+        let filtered_projects = this.props.projects.filter((elem)=>{
+            let regex = new RegExp(e.target.value, "i");            
+            return regex.test(elem.name);
+        })
+        this.setState({
+            projects: filtered_projects
+        });
+    }
 
     render(){
         return(<div className={"btn-group dropleft "+styles.selector}>
@@ -41,11 +59,11 @@ class ProjectSelectorComponent extends Component{
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1"><i className="fas fa-search"></i></span>
                         </div>
-                        <input className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." />
+                        <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." />
                     </div>
                     <ul className={styles.projectlist}>
                     <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.props.onClick} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
-                    { this.props.projects.map((e, index)=>{
+                    { this.state.projects.map((e, index)=>{
                         return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.props.onClick} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
