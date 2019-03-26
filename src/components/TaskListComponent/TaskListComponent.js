@@ -11,6 +11,7 @@ class TaskListComponent extends Component{
         super(props);
 
         this.handleDeleteTaskVisually = this.handleDeleteTaskVisually.bind(this);
+        this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
         this.state = {
 
         };        
@@ -34,6 +35,25 @@ class TaskListComponent extends Component{
         this.props.actions.deleteTasksVisually(new_task_array);
     }
 
+    handleUpdateTaskVisually(task_id, desc, date_start, date_end, project, tags){
+        let new_task_array = this.props.task.tasks.map((e)=>{
+            if(e.id == task_id){
+                return ({
+                    id: task_id,
+                    desc,
+                    date_start,
+                    date_end,
+                    project,
+                    tags: []
+                });
+            }
+            else
+                return e;
+        });
+
+        this.props.actions.updateTasksVisually(new_task_array);
+    }
+
 
     render(){
         return(
@@ -41,7 +61,7 @@ class TaskListComponent extends Component{
                <ul className="p-0">
                {
                    this.props.task.tasks.map((e,index) => {
-                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} actions={this.props.actions} onDeleteFromList={this.handleDeleteTaskVisually} />
+                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} actions={this.props.actions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
                    })
                }
                </ul>

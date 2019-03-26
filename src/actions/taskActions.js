@@ -9,7 +9,11 @@ import {
     DELETE_TASK_ATTEMPT,
     DELETE_TASK_FAIL,
     DELETE_TASK_SUCCESS,
-    DELETE_TASK_VISUALLY
+    DELETE_TASK_VISUALLY,
+    UPDATE_TASK_ATTEMPT,
+    UPDATE_TASK_FAIL,
+    UPDATE_TASK_SUCCESS,
+    UPDATE_TASK_VISUALLY
 } from './types';
 
 
@@ -68,6 +72,27 @@ export function fetchTasksError(error){
 }
 
 
+export function updateTaskSuccess(taskData){
+    return {
+        type: UPDATE_TASK_SUCCESS,
+        payload: taskData
+    }
+}
+
+export function updateTaskError(error){
+    return {
+        type: UPDATE_TASK_FAIL,
+        payload: error
+    }
+}
+
+export function updateTasksVisually(taskData){
+    return {
+        type: UPDATE_TASK_VISUALLY,
+        payload: taskData
+    }
+}
+
 
 /* Action creators asíncronos - thunks */
 
@@ -111,6 +136,28 @@ export function deleteTask(token, task_id){
         ).catch(
             (error) => {
                 dispatch(deleteTaskError(error));
+        });
+    }
+}
+
+export function updateTask(token, task_id, description, date_start, date_end, project_id, tags_id){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TASK_ATTEMPT
+        });
+
+        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTaskSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(updateTaskError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(updateTaskError(error));
         });
     }
 }

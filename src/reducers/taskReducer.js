@@ -8,7 +8,11 @@ import {
     DELETE_TASK_ATTEMPT,
     DELETE_TASK_FAIL,
     DELETE_TASK_SUCCESS,
-    DELETE_TASK_VISUALLY
+    DELETE_TASK_VISUALLY,
+    UPDATE_TASK_ATTEMPT,
+    UPDATE_TASK_FAIL,
+    UPDATE_TASK_SUCCESS,
+    UPDATE_TASK_VISUALLY
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -59,6 +63,33 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case DELETE_TASK_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case UPDATE_TASK_ATTEMPT:        
+            return {
+                ...state,
+                loading: true,
+                need_refreshing: false,
+                error: {}
+            }
+        case UPDATE_TASK_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
+                error: {}
+            }
+        case UPDATE_TASK_VISUALLY:
+            return {
+                ...state,
+                loading: false,
+                tasks: action.payload,
+                error: {}
+            }
+        case UPDATE_TASK_FAIL:
             return {
                 ...state,
                 loading: false,
