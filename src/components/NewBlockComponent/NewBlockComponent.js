@@ -4,6 +4,7 @@ import utils from '../../utils'
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
 import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
+import ManualComponent from '../ManualComponent/ManualComponent';
 
 
 
@@ -149,7 +150,7 @@ class NewBlockComponent extends Component{
                 <div className="d-flex align-items-center">
                 { this.state.mode == "chrono" ?
                     <ChronometerComponent time={this.state.time} />:
-                    <div></div>
+                    <ManualComponent />
                 }
                 </div>               
                 <div className="d-flex align-items-center">
