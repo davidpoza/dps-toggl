@@ -14,10 +14,15 @@ const colors = [
 class ProjectSelectorComponent extends Component{
     constructor(props){
         super(props);
-        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        
+
         this.state = {
-            projects: []
+            projects: [],
+            value: ""
         }
+
+        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        this.handleOnSelect = this.handleOnSelect.bind(this);
     }
 
     componentDidMount(){
@@ -26,14 +31,24 @@ class ProjectSelectorComponent extends Component{
         });
     }
 
-    handleOnChangeInput(e){        
-        console.log(e.target);
+    handleOnChangeInput(e){   
+        this.setState({
+            value: e.target.value
+        });
         let filtered_projects = this.props.projects.filter((elem)=>{
             let regex = new RegExp(e.target.value, "i");            
             return regex.test(elem.name);
-        })
+        });
         this.setState({
             projects: filtered_projects
+        });
+    }
+
+    handleOnSelect(e){
+        this.props.onClick(e);
+        this.setState({
+            value: "",
+            projects: this.props.projects.slice()
         });
     }
 
@@ -42,11 +57,11 @@ class ProjectSelectorComponent extends Component{
                 {
                     this.props.project_selected_name==null?
 
-                    <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i className="fas fa-folder-open"></i>
                     </button>
                     :
-                    <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     <i className="fas fa-circle"></i> {this.props.project_selected_name}
                     </button>    
                 
@@ -54,17 +69,17 @@ class ProjectSelectorComponent extends Component{
                 
                 
 
-                <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton">
+                <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
                     <div className={"input-group "+styles.selector}>
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1"><i className="fas fa-search"></i></span>
                         </div>
-                        <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." />
+                        <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." value={this.state.value}/>
                     </div>
                     <ul className={styles.projectlist}>
-                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.props.onClick} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
+                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnSelect} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
                     { this.state.projects.map((e, index)=>{
-                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.props.onClick} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.handleOnSelect} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
                     <div className="dropdown-divider"></div>
