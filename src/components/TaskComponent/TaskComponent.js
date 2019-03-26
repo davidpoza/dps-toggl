@@ -60,8 +60,10 @@ class TaskComponent extends Component{
                     <div className={"flex-grow-1 " + styles.desc}>
                     {!utils.isMobile()?this.props.task.desc:this.props.task.desc.substring(0,10)}
                     {utils.isMobile() && this.props.task.desc.length>10 && "..."}
-                        {this.props.task.project!=null &&
+                        {this.props.task.project!=null ?
                         <ProjectSelectorComponent onClick={undefined} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
+                        :
+                        <ProjectSelectorComponent onClick={undefined} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
                         //<span style={{color: this.props.task.project.color}} className={styles.label}><i className="fas fa-circle"></i> {this.props.task.project.name}</span>
                         }
                     </div>                
