@@ -15,7 +15,7 @@ class MainSectionComponent extends Component{
     }
     render(){
         return(
-            <div>
+            <div className="h-100">
                 <PrivateRoute exact path="/" component={TimerDashboardContainer} />
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />

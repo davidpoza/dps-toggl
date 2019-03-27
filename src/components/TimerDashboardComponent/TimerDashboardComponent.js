@@ -18,7 +18,7 @@ class TimerDashboardComponent extends Component{
     render(){
         return(
 
-            <div className={"d-flex flex-column h-100"}>
+            <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div>
                     <NewBlockContainer />
                 </div>

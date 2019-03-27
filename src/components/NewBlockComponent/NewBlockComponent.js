@@ -139,40 +139,42 @@ class NewBlockComponent extends Component{
 
     render(){
         return(
+            <div className="container-flex" >
+                <div className={"row align-items-center justify-content-between " + styles.box} >
 
-            <div className={"d-flex w-100 " + styles.box}>
-                <div className={"flex-grow-1"}>
-                    <input className={styles.description} id="task-description" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
-                </div>
-                <div className="d-flex align-items-center">
-                   <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
-                </div>
-                <div className="d-flex align-items-center">
-                { this.state.mode == "chrono" ?
-                    <ChronometerComponent time={this.state.time} />:
-                    <ManualComponent />
-                }
-                </div>               
-                <div className="d-flex align-items-center">
-                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
-                        this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
-                    }>
+                        <div className="col-8 col-lg order-1 order-lg-1 p-0">
+                            <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
+                        </div>
+                        <div className="col-auto col-lg-auto order-4 order-lg-1 p-1">
+                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
+                        </div>
+                        <div className="col-auto col-lg-auto order-5 order-lg-3">
                         { this.state.mode == "chrono" ?
-                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
-                            (<i className="fas fa-check-circle"></i>)
-                        }                        
-                    </button>
-                </div>
-                <div className="d-flex align-items-center">
-                    <div className="d-flex flex-column">
-                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
-                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
-                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
-                    </div>
+                            <ChronometerComponent time={this.state.time} />:
+                            <ManualComponent />
+                        }
+                        </div>
+                        
+                        <div className="col-auto col-lg-auto order-2 order-lg-4 p-0 d-flex">
 
+                                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
+                                        this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
+                                    }>
+                                        { this.state.mode == "chrono" ?
+                                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
+                                            (<i className="fas fa-check-circle"></i>)
+                                        }                        
+                                    </button>
+                                    <div className="d-flex flex-column">
+                                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
+                                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
+                                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                                    </div>
+
+                        </div>  
+                        
                 </div>
             </div>
-
         )
     }
 }
