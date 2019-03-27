@@ -27,6 +27,10 @@ const utils = {
         return date.match(regex)[1];
     },
 
+    getHourFromDate(date){
+        return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2);
+    },
+
     //two dates are of the same day
     diffHoursBetDates(date_start, date_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
