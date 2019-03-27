@@ -20,6 +20,8 @@ class NewBlockComponent extends Component{
         this.incCounter = this.incCounter.bind(this);
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
         this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
+        this.handleHourChange = this.handleHourChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
 
         this.state = {
             placeholder: "¿En qué vas a trabajar?",
@@ -31,14 +33,26 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            projects: []
+            projects: [],
+            start_date: new Date(),            
+            start_hour: null,
+            end_hour: null
         };        
     }
 
     componentDidMount(){
-        $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
-        $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
-        $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+        this.start = new Date(Date.now());
+        this.end = new Date();
+        this.end.setHours(this.start.getHours()+1);
+        this.setState({
+            start_hour: utils.getHourFromDate(this.start),
+            end_hour: utils.getHourFromDate(this.end)
+        });
+        if(!utils.isMobile()){
+            $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
+            $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
+            $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+        }        
         this.props.projectActions.fetchProjects(this.props.user.token);
     }
 
@@ -66,6 +80,22 @@ class NewBlockComponent extends Component{
         }
     }
 
+    handleHourChange(e) {
+        let regex = /^\d{0,2}:\d{0,2}$/;
+        if(e.target.id == "start_hour"){
+            if(e.target.value.match(regex))
+                this.setState({
+                    start_hour: e.target.value          
+                });
+        }
+        else if(e.target.id == "end_hour"){
+            if(e.target.value.match(regex))
+                this.setState({
+                    end_hour: e.target.value          
+                });
+        }
+        
+    }
 
     handleOnClickCronoMode(){
         this.setState({
@@ -81,8 +111,27 @@ class NewBlockComponent extends Component{
         });
     }
     
-    handleOnClickCreate(){
 
+    handleDateChange(date) {
+        this.setState({
+          start_date: date          
+        });
+    }
+
+    handleOnClickCreate(){
+        let start_date = new Date(this.state.start_date);
+        let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
+        let formated_date_end = utils.standarizeDate(start_date).slice(0,-9); 
+        formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
+        formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";
+
+        this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, [2,3]);
+        this.setState({
+            description: "",
+            project_selected_name: null,
+            project_selected_color: null,
+            project_selected_id: null,
+        });
     }
 
     handleOnClickReset(){
@@ -142,7 +191,7 @@ class NewBlockComponent extends Component{
             <div className="container-flex" >
                 <div className={"row align-items-center justify-content-between " + styles.box} >
 
-                        <div className="col-8 col-lg order-1 order-lg-1 p-0">
+                        <div className="col-8 col-sm-9 col-md-10 col-lg order-1 order-lg-1 p-0">
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                         </div>
                         <div className="col-auto col-lg-auto order-4 order-lg-1 p-1">
@@ -151,11 +200,11 @@ class NewBlockComponent extends Component{
                         <div className="col-auto col-lg-auto order-5 order-lg-3">
                         { this.state.mode == "chrono" ?
                             <ChronometerComponent time={this.state.time} />:
-                            <ManualComponent />
+                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} start_date={this.state.start_date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
                         
-                        <div className="col-auto col-lg-auto order-2 order-lg-4 p-0 d-flex">
+                        <div className="col-auto col-lg-auto order-3 order-lg-4 p-0 d-flex">
 
                                     <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
@@ -171,7 +220,8 @@ class NewBlockComponent extends Component{
                                         <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
                                     </div>
 
-                        </div>  
+                        </div>
+                         
                         
                 </div>
             </div>

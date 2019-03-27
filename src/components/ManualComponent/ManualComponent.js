@@ -4,29 +4,27 @@ import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es';
 
 import styles from './ManualComponent.scss';
-import utils from '../../utils';
+
 
 
 class ManualComponent extends Component{
     constructor(props){
         super(props); 
-        this.handleChange = this.handleChange.bind(this);     
-        this.state = {
-            startDate: new Date()
-        };
+
+
     }
 
-    handleChange(date) {
-        this.setState({
-          startDate: date
-        });
-      }
+
+
+    
 
     render(){
         return(
             <div>
-                <DatePicker locale={es} selected={this.state.startDate} onChange={this.handleChange}
-                />
+                <DatePicker locale={es} className={styles.date_input} dateFormat="dd/MM/yyyy" selected={this.props.start_date} onChange={this.props.handleDateChange} />
+                <input id="start_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.start_hour}/>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <input id="end_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.end_hour}/>
             </div>
         )
     }

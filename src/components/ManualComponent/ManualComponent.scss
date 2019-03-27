@@ -1,2 +1,15 @@
 @import "../../defaults.scss";
 
+.date_input{
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 4px;
+
+    
+    width: 6em;
+}
+
+.hour_input{
+    @extend .date_input;
+    width: 3.2em;
+}
