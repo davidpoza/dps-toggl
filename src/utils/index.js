@@ -19,11 +19,30 @@ const utils = {
     },
 
     standarizeDate(date){
-        return `${date.getFullYear()}-${this.pad(date.getMonth(),2)}-${this.pad(date.getDay(),2)} ${this.pad(date.getHours(),2)}:${this.pad(date.getMinutes(),2)}:${this.pad(date.getSeconds(),2)}`;
+        return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)} ${this.pad(date.getHours(),2)}:${this.pad(date.getMinutes(),2)}:${this.pad(date.getSeconds(),2)}`;
+    },
+
+    removeHour(date){
+        return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
+    },
+
+    removeSeconds(date){
+        let regex = /(\d{2}:\d{2}):\d{2}/;
+        return date.match(regex)[1];
+    },
+
+    removeSeconds(date){
+        let regex = /(\d{2}:\d{2}):\d{2}/;
+        return date.match(regex)[1];
     },
 
     getHour(date){
-        let regex = /(\d{2}:\d{2}):\d{2}/;
+        let regex = /(\d{2}):\d{2}/;
+        return date.match(regex)[1];
+    },
+
+    getMinutes(date){
+        let regex = /\d{2}:(\d{2})/;
         return date.match(regex)[1];
     },
 
