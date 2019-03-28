@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import * as taskActions from '../../actions/taskActions';
 import * as projectActions from '../../actions/projectActions';
+import * as tagActions from '../../actions/tagActions';
 import NewBlockComponent from './NewBlockComponent';
 
 
@@ -21,7 +22,7 @@ class NewBlockContainer extends Component{
 
     render(){
         return(
-            <NewBlockComponent user={this.props.user} project={this.props.project} taskActions={this.props.taskActions} projectActions={this.props.projectActions}/>
+            <NewBlockComponent user={this.props.user} project={this.props.project} tag={this.props.tag} tagActions={this.props.tagActions} taskActions={this.props.taskActions} projectActions={this.props.projectActions}/>
         )
     }
 }
@@ -29,7 +30,8 @@ class NewBlockContainer extends Component{
 function mapStateToProps (state) {
     return {
       user: state.userReducer,
-      project: state.projectReducer
+      project: state.projectReducer,
+      tag: state.tagReducer
     }
   }
   
@@ -37,6 +39,7 @@ function mapStateToProps (state) {
     return {
       taskActions: bindActionCreators(taskActions, dispatch),
       projectActions: bindActionCreators(projectActions, dispatch),
+      tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
   

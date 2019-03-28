@@ -18,6 +18,11 @@ const initialState = {
         projects: [],
         loading: false,
         error: {}
+    },
+    tagReducer: {
+        tags: [],
+        loading: false,
+        error: {}
     }
 };
 

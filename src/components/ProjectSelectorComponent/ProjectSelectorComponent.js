@@ -31,6 +31,18 @@ class ProjectSelectorComponent extends Component{
         });
     }
 
+    /** cuando redux cambia las propiedades hay que cambiar el estado para que se ejecute el render,
+     * si no lo hacemos la primera carga de la pagina no muestra las props que vienen de async actions
+     * porque no ha dado tiempo a llegar en las props cuando se monta el componente
+     */
+    componentDidUpdate(prevProps){
+        if(prevProps.projects != this.props.projects)
+            this.setState({
+                projects: this.props.projects.slice()
+            });
+    }
+
+
     handleOnChangeInput(e){   
         this.setState({
             value: e.target.value

@@ -212,6 +212,26 @@ const API = {
                 }
             );
         },
+    },
+    tag: {
+        fetchTags(token){
+            return fetch(api_url+"/items/tags", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
     }
 }
 

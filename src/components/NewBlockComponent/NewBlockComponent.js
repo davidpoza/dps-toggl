@@ -4,6 +4,7 @@ import utils from '../../utils'
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
 import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
+import TagSelectorComponent from '../TagSelectorComponent/TagSelectorComponent';
 import ManualComponent from '../ManualComponent/ManualComponent';
 
 
@@ -20,6 +21,7 @@ class NewBlockComponent extends Component{
         this.incCounter = this.incCounter.bind(this);
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
         this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
+        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);        
         this.handleHourChange = this.handleHourChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
 
@@ -33,7 +35,7 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            projects: [], // listado de proyectos(objetos) disponibles
+            tags: [], // listado de ids de tags marcados
             start_date: new Date(),            
             start_hour: null, // solo modo manual. hora de inicio en HH:MM
             end_hour: null // solo modo manual. hora de fin en HH:MM
@@ -53,7 +55,12 @@ class NewBlockComponent extends Component{
             $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
             $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
         }        
+        
+    }
+
+    componentWillMount(){
         this.props.projectActions.fetchProjects(this.props.user.token);
+        this.props.tagActions.fetchTags(this.props.user.token);
     }
 
     componentWillUnmount(){
@@ -79,6 +86,21 @@ class NewBlockComponent extends Component{
                 project_selected_id: project_id
             });
         }
+    }
+
+    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
+    handleOnClickTagSelector(e){
+        let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
+        let array_tags = this.state.tags;
+        if(!array_tags.includes(tag_id)){ //si no estaba marcado lo apuntamos en la lista
+            array_tags.push(parseInt(tag_id));            
+        }
+        else{
+            array_tags.splice(array_tags.indexOf(tag_id), 1); //pero si ya estaba marcado lo borramos de la lista
+        }
+        this.setState({
+            tags: array_tags
+        });
     }
 
     /** Al producirse un cambio en el input de la hora inicio o fin del componente ManualComponent */
@@ -218,17 +240,20 @@ class NewBlockComponent extends Component{
                         <div className="col-8 col-sm-9 col-md-10 col-lg order-1 order-lg-1 p-0">
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                         </div>
-                        <div className="col-auto col-lg-auto order-4 order-lg-1 p-1">
+                        <div className="col-1 col-lg-auto order-4 order-lg-2 p-1">
                         <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
                         </div>
-                        <div className="col-auto col-lg-auto order-5 order-lg-3">
+                        <div className="col-1 col-lg-auto order-5 order-lg-3 p-1">
+                        <TagSelectorComponent onClick={this.handleOnClickTagSelector} selected_tags={this.state.tags} tags={this.props.tag.tags}/>
+                        </div>
+                        <div className="col col-lg-auto order-6 order-lg-4">
                         { this.state.mode == "chrono" ?
                             <ChronometerComponent time={this.state.time} />:
                             <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} start_date={this.state.start_date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
                         
-                        <div className="col-auto col-lg-auto order-3 order-lg-4 p-0 d-flex">
+                        <div className="col-auto col-lg-auto order-3 order-lg-5 p-0 d-flex">
 
                                     <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
