@@ -129,16 +129,27 @@ class NewBlockComponent extends Component{
         let start_date = new Date(this.state.start_date);
         let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
         let formated_date_end = utils.standarizeDate(start_date).slice(0,-9); 
-        formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
-        formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";
 
-        this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, [2,3]);
-        this.setState({
-            description: "",
-            project_selected_name: null,
-            project_selected_color: null,
-            project_selected_id: null,
-        });
+        if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
+            if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
+                formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
+                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";        
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, [2,3]);
+                this.setState({
+                    description: "",
+                    project_selected_name: null,
+                    project_selected_color: null,
+                    project_selected_id: null,
+                });
+            }
+            else{
+                this.props.taskActions.createTaskError({message:"Ending hour must occur after starting hour."});
+            }           
+        }
+        else{
+            this.props.taskActions.createTaskError({message:"Invalid hour format. Must be 24h and HH:MM"});
+        }
+        
     }
 
     /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
