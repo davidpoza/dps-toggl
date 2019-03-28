@@ -19,11 +19,11 @@ class MainSectionComponent extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.task.error.message && this.props.task.error.message)
+        if (this.props.task.error.message)
             $('#toast1').toast("show");
-        if (!prevProps.user.error.message && this.props.user.error.message)
+        if (this.props.user.error.message)
             $('#toast2').toast("show");
-        if (!prevProps.project.error.message && this.props.project.error.message)
+        if (this.props.project.error.message)
             $('#toast3').toast("show");
     }
 
