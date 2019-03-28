@@ -33,10 +33,10 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            projects: [],
+            projects: [], // listado de proyectos(objetos) disponibles
             start_date: new Date(),            
-            start_hour: null,
-            end_hour: null
+            start_hour: null, // solo modo manual. hora de inicio en HH:MM
+            end_hour: null // solo modo manual. hora de fin en HH:MM
         };        
     }
 
@@ -48,7 +48,7 @@ class NewBlockComponent extends Component{
             start_hour: utils.getHourFromDate(this.start),
             end_hour: utils.getHourFromDate(this.end)
         });
-        if(!utils.isMobile()){
+        if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
             $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
             $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
             $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
@@ -61,6 +61,7 @@ class NewBlockComponent extends Component{
             clearInterval(this.state.set_interval)
     }
 
+    /** Al producirse un click en un proyecto del dropdown del ProjectSelectorComponent */
     handleOnClickProjectSelector(e){
         if(e.target.id=="project0")
         {
@@ -80,6 +81,7 @@ class NewBlockComponent extends Component{
         }
     }
 
+    /** Al producirse un cambio en el input de la hora inicio o fin del componente ManualComponent */
     handleHourChange(e) {
         let regex = /^\d{0,2}:\d{0,2}$/;
         if(e.target.id == "start_hour"){
@@ -97,6 +99,7 @@ class NewBlockComponent extends Component{
         
     }
 
+    /** Al hacer click en botón de modo cronómetro */
     handleOnClickCronoMode(){
         this.setState({
             mode: "chrono",
@@ -104,6 +107,7 @@ class NewBlockComponent extends Component{
         });
     }
 
+    /** Al hacer click en botón de modo manual */
     handleOnClickManualMode(){
         this.setState({
             mode: "manual",
@@ -111,13 +115,16 @@ class NewBlockComponent extends Component{
         });
     }
     
-
+    /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
     handleDateChange(date) {
         this.setState({
           start_date: date          
         });
     }
 
+    /** Al hacer click en el botón crear tarea del modo manual.
+     * LLama a un action creator asíncrono para crear la tarea
+    */
     handleOnClickCreate(){
         let start_date = new Date(this.state.start_date);
         let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
@@ -134,6 +141,7 @@ class NewBlockComponent extends Component{
         });
     }
 
+    /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
     handleOnClickReset(){
         this.setState({
             placeholder: "¿En qué vas a trabajar?",
@@ -146,6 +154,7 @@ class NewBlockComponent extends Component{
         });
     }
 
+    /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
     incCounter(){
         if(this.state.chrono_status == "running")
             this.setState({
@@ -153,6 +162,9 @@ class NewBlockComponent extends Component{
             })
     }
 
+    /** Al hacer click en el botón empezar cuenta cuando estamos en el modo cronómetro.
+     * LLama a un action creator asíncrono para crear la tarea
+    */
     handleOnClickStart(){
         if(this.state.chrono_status == "paused"){
             this.setState({
@@ -180,6 +192,7 @@ class NewBlockComponent extends Component{
         }
     }
 
+    /** Se ejecuta cada vez que modificamos el input de descripción de nueva tarea */
     handleOnChangeInput(e){
         this.setState({
             description: e.target.value
