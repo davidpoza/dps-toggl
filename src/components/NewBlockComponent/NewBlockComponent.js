@@ -89,7 +89,7 @@ class NewBlockComponent extends Component{
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
-    handleOnClickTagSelector(e){
+    handleOnClickTagSelector(e){        
         let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
         let array_tags = this.state.tags;
         if(!array_tags.includes(tag_id)){ //si no estaba marcado lo apuntamos en la lista

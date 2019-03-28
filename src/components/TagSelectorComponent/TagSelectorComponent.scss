@@ -28,6 +28,11 @@
   }
 }
 
+.btn_activated{
+  @extend .btn;
+  color: grey;
+}
+
 
 .search_input{
 

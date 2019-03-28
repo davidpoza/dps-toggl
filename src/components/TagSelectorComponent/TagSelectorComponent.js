@@ -14,7 +14,7 @@ class TagSelectorComponent extends Component{
 
         this.state = {
             tags: [],
-            value: ""
+            active: false, // lo activamos cuando hay al menos un tag chequeado
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
@@ -40,8 +40,10 @@ class TagSelectorComponent extends Component{
             else
                 new_tags_array[i].checked = false;
         }
+        let actived = new_tags_array.filter((e)=>{return e.checked}).lenght > 0;
         this.setState({
-            tags: new_tags_array
+            tags: new_tags_array,
+            active: actived
         });
     }
 
@@ -100,27 +102,20 @@ class TagSelectorComponent extends Component{
             if(this.props.selected_tags.includes(new_tags_array[i].id))
                 new_tags_array[i].checked = true;
         }
+        let actived = new_tags_array.filter((e)=>{return e.checked}).lenght > 0;
         this.setState({
-            tags: new_tags_array
-        });       
+            tags: new_tags_array,
+            active: actived
+        });    
     }
 
     render(){
-        return(<div className={"btn-group dropleft "+styles.selector}>
+        return(<div className={"btn-group dropleft"}>
                 {
-                    this.props.project_selected_name==null?
-
-                    <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    <button className={this.state.actived ? styles.btn_activated:styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i className="fas fa-tags"></i>
                     </button>
-                    :
-                    <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    <i className="fas fa-circle"></i> {this.props.project_selected_name}
-                    </button>    
-                
-                }
-                
-                
+                }              
 
                 <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
                     <div className={"input-group "+styles.selector}>
@@ -133,7 +128,7 @@ class TagSelectorComponent extends Component{
                     { this.state.tags.map((e, index)=>{
                         return(
                         <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnSelect} className={"dropdown-item " + styles.item}>
-                         <input type="checkbox" id={"tagcbx-"+e.id} checked = {e.checked}></input>
+                         {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
                          {e.name} {e.id}
                          </li>
                          )
