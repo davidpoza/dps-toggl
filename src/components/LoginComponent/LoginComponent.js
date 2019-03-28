@@ -60,7 +60,7 @@ class LoginComponent extends Component{
 
                 <form className={styles.form_signin}>
                     <LoadingComponent isLoading={this.props.user.loading} />
-                    {this.props.user.error.message && <div className="alert alert-danger" role="alert">{this.props.user.error.message}</div>}
+                    
                     <div className={styles.form_label_group}>
                         <label htmlFor="inputEmail">Email address</label>
                         <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onChange={this.handleOnChange}/>
