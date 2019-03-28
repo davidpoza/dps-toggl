@@ -1,0 +1,12 @@
+@import "../../defaults.scss";
+
+.mytoast{
+  .header{
+      background-color: $warning-color;
+  }
+  
+  i{
+      color: red;
+      margin-right: 5px;
+  }
+}
