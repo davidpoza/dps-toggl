@@ -14,7 +14,7 @@ class ChronometerComponent extends Component{
 
     render(){
         return(
-            <div id="counter" className={styles.counter}>{utils.format(this.props.time)}</div>
+            <div id="counter" className={styles.counter}>{utils.secondsToFormatedString(this.props.time)}</div>
         )
     }
 }
