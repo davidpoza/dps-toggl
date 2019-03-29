@@ -153,21 +153,21 @@ export function updateTask(token, task_id, description, date_start, date_end, pr
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
-        api.task_tag.deleteTaskTags(token, task_id).then(()=>{
-            api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
-                (data) => {
-                    //directus devuelve los errores en una objeto error y los datos en uno data
-                    if(data.data){
-                        dispatch(updateTaskSuccess(data.data));
-                    }                    
-                    else if(data.error)
-                        dispatch(updateTaskError(data.error))
-                }                          
-            ).catch(
-                (error) => {
-                    dispatch(updateTaskError(error));
-            });
-        })
+       
+        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTaskSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(updateTaskError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(updateTaskError(error));
+        });
+        
         
     }
 }

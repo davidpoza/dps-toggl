@@ -150,7 +150,8 @@ const API = {
             );
         },
         fetchTasks(token){
-            return fetch(api_url+"/items/tasks?fields=*.*", {
+            //?fields=*.*
+            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

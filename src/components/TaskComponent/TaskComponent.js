@@ -19,11 +19,19 @@ class TaskComponent extends Component{
 
         this.state = {
             hide_btns: true,
+           /* tags: this.props.task.tags.map((e)=>{
+                return {
+                    checked: false,
+                    id: e.tags_id.id,
+                    name: e.tags_id.name,
+                    relation_id: e.id
+                }}),
+                */
             tags: this.props.tags.map((e)=>{
                 e.checked = false;
                 return e;
             })
-        }
+       }
     }
 
     handleOnClick(){
