@@ -13,7 +13,7 @@ class TagSelectorComponent extends Component{
         
 
         this.state = {
-            tags: [],
+            value:"",
             active: false, // lo activamos cuando hay al menos un tag chequeado
         }
 
@@ -22,49 +22,21 @@ class TagSelectorComponent extends Component{
     }
 
     componentDidMount(){
-        this.setState({
-            tags: this.props.tags.map((e)=>{
-                return(
-                    {
-                        id: e.id,
-                        name: e.name,
-                        checked: false
-                    }
-                )
-            })
-        });
-        let new_tags_array = this.props.tags.slice();
-        for(let i=0; i<new_tags_array.lenght; i++){
-            if(this.props.selected_tags.includes(new_tags_array[i]))
-                new_tags_array[i].checked = true;
-            else
-                new_tags_array[i].checked = false;
+        if(this.props.tags){
+            this.setState({
+                tags: this.props.tags
+            });
         }
-        let actived = new_tags_array.filter((e)=>{return e.checked}).lenght > 0;
-        this.setState({
-            tags: new_tags_array,
-            active: actived
-        });
     }
 
-    /** cuando redux cambia las propiedades hay que cambiar el estado para que se ejecute el render,
-     * si no lo hacemos la primera carga de la pagina no muestra las props que vienen de async actions
-     * porque no ha dado tiempo a llegar en las props cuando se monta el componente
-     */
     componentDidUpdate(prevProps){
-        if(prevProps.tags != this.props.tags)
+        if(prevProps.tags != this.props.tags){
             this.setState({
-                tags: this.props.tags.map((e)=>{
-                    return(
-                        {   
-                            id: e.id,
-                            name: e.name,
-                            checked: false
-                        }
-                    )
-                })
-            });        
+                tags: this.props.tags
+            });
+        }
     }
+
 
     handleOnChangeInput(e){   
         this.setState({
@@ -89,6 +61,7 @@ class TagSelectorComponent extends Component{
      */
     handleOnSelect(e){
         this.props.onClick(e);
+        /*
         let new_tags_array = this.props.tags.map((e)=>{
             return(
                 {   
@@ -106,15 +79,41 @@ class TagSelectorComponent extends Component{
         this.setState({
             tags: new_tags_array,
             active: actived
-        });    
+        });    */
     }
 
     render(){
         return(<div className={"btn-group dropleft"}>
                 {
+                    this.props.displayAsLabel != true ?
                     <button className={this.state.actived ? styles.btn_activated:styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i className="fas fa-tags"></i>
-                    </button>
+                    </button> :
+                    <span id="dropdownMenuButton" className={styles.label} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        { 
+                            this.state.tags.filter((e)=>(e.checked)).length > 0 ? this.state.tags.reduce((prev, curr)=>{
+                                    if(prev.checked && curr.checked)
+                                    return(
+                                        prev.name + ", " + curr.name
+                                    )
+                                    else if(prev.checked && !curr.checked)
+                                        return(
+                                            prev.name
+                                    )
+                                    else if(!prev.checked && curr.checked)
+                                        return(
+                                            curr.name
+                                    )
+
+                    
+                                  
+                        }):
+                            <button className={this.state.actived ? styles.btn_activated:styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                <i className="fas fa-tags"></i>
+                            </button>
+                    
+                        }
+                    </span>
                 }              
 
                 <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
@@ -125,11 +124,11 @@ class TagSelectorComponent extends Component{
                         <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar tag..." value={this.state.value}/>
                     </div>
                     <ul className={styles.taglist}>
-                    { this.state.tags.map((e, index)=>{
+                    { this.state.tags && this.state.tags.map((e, index)=>{
                         return(
                         <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnSelect} className={"dropdown-item " + styles.item}>
                          {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
-                         {e.name} {e.id}
+                         {e.name}
                          </li>
                          )
                     })}

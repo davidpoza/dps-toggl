@@ -35,7 +35,7 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            tags: [], // listado de ids de tags marcados
+            tags: [], // listado los id de los tag que hemos seleccionado
             start_date: new Date(),            
             start_hour: null, // solo modo manual. hora de inicio en HH:MM
             end_hour: null // solo modo manual. hora de fin en HH:MM
@@ -56,6 +56,18 @@ class NewBlockComponent extends Component{
             $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
         }        
         
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.tag.tags != this.props.tag.tags){
+            //le añadimos la propiedad checked al objeto tag que viene de la api
+            this.setState({
+                tags: this.props.tag.tags.map((e)=>{
+                    e.checked = false;
+                    return e;
+                })
+            })
+        }
     }
 
     componentWillMount(){
@@ -91,12 +103,10 @@ class NewBlockComponent extends Component{
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
     handleOnClickTagSelector(e){        
         let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
-        let array_tags = this.state.tags;
-        if(!array_tags.includes(tag_id)){ //si no estaba marcado lo apuntamos en la lista
-            array_tags.push(parseInt(tag_id));            
-        }
-        else{
-            array_tags.splice(array_tags.indexOf(tag_id), 1); //pero si ya estaba marcado lo borramos de la lista
+        let array_tags = this.state.tags.slice();
+        for(let i=0; i<array_tags.length;i++){
+            if(array_tags[i].id == tag_id)
+                array_tags[i].checked = array_tags[i].checked ? false: true;
         }
         this.setState({
             tags: array_tags
@@ -155,13 +165,17 @@ class NewBlockComponent extends Component{
         if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
             if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
                 formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
-                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";        
-                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, [2,3]);
+                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";      
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
                 this.setState({
                     description: "",
                     project_selected_name: null,
                     project_selected_color: null,
                     project_selected_id: null,
+                    tags: this.props.tag.tags.map((e)=>{
+                        e.checked = false;
+                        return e;
+                    })
                 });
             }
             else{
@@ -183,7 +197,11 @@ class NewBlockComponent extends Component{
             chrono_status: "paused",
             project_selected_name: null,
             project_selected_color: null,
-            project_selected_id: null
+            project_selected_id: null,
+            tags: this.props.tag.tags.map((e)=>{
+                e.checked = false;
+                return e;
+            })
         });
     }
 
@@ -209,13 +227,17 @@ class NewBlockComponent extends Component{
             let date_start = new Date(date_end - this.state.time*1000);
             let formated_date_start = utils.standarizeDate(date_start);
             let formated_date_end = utils.standarizeDate(date_end);
-            this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, [2,3]);
+            this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
 
             
             this.setState({
                 chrono_status: "paused",
                 time: 0,
-                description: ""
+                description: "",
+                tags: this.props.tag.tags.map((e)=>{
+                    e.checked = false;
+                    return e;
+                })
             });
         }
         if(this.state.set_interval == null){
@@ -244,7 +266,7 @@ class NewBlockComponent extends Component{
                         <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
                         </div>
                         <div className="col-1 col-lg-auto order-5 order-lg-3 p-1">
-                        <TagSelectorComponent onClick={this.handleOnClickTagSelector} selected_tags={this.state.tags} tags={this.props.tag.tags}/>
+                        <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
                         </div>
                         <div className="col col-lg-auto order-6 order-lg-4">
                         { this.state.mode == "chrono" ?

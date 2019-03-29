@@ -96,7 +96,11 @@ export function updateTasksVisually(taskData){
 
 /* Action creators asíncronos - thunks */
 
-export function createTask(token, desc, date_start, date_end, project_id, tags_id){
+//recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
+export function createTask(token, desc, date_start, date_end, project_id, tags){
+    let tags_id;
+    if(tags!=null )
+        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});
     return (dispatch) => {
         dispatch({
             type: CREATE_TASK_ATTEMPT
@@ -140,25 +144,31 @@ export function deleteTask(token, task_id){
     }
 }
 
-export function updateTask(token, task_id, description, date_start, date_end, project_id, tags_id){
+//recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
+export function updateTask(token, task_id, description, date_start, date_end, project_id, tags){
+    let tags_id;
+    if(tags!=null )
+        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
-
-        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(updateTaskSuccess(data.data));
-                }                    
-                else if(data.error)
-                    dispatch(updateTaskError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(updateTaskError(error));
-        });
+        api.task_tag.deleteTaskTags(token, task_id).then(()=>{
+            api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
+                (data) => {
+                    //directus devuelve los errores en una objeto error y los datos en uno data
+                    if(data.data){
+                        dispatch(updateTaskSuccess(data.data));
+                    }                    
+                    else if(data.error)
+                        dispatch(updateTaskError(data.error))
+                }                          
+            ).catch(
+                (error) => {
+                    dispatch(updateTaskError(error));
+            });
+        })
+        
     }
 }
 

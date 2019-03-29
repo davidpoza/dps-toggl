@@ -18,13 +18,23 @@ class TaskListComponent extends Component{
     }
 
     componentDidMount(){
-        this.props.actions.fetchTasks(this.props.token);        
+        this.props.taskActions.fetchTasks(this.props.token);        
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.task.need_refreshing && this.props.task.need_refreshing)
-            this.props.actions.fetchTasks(this.props.token);
+            this.props.taskActions.fetchTasks(this.props.token);
+
+        if(prevProps.tag.tags != this.props.tag.tags){
+            //le añadimos la propiedad checked al objeto tag que viene de la api
+            this.setState({
+                tags: this.props.tag.tags.map((e)=>{
+                    e.checked = false;
+                    return e;
+                })
+            })
+        }
     }
 
     handleDeleteTaskVisually(task_id){
@@ -32,7 +42,7 @@ class TaskListComponent extends Component{
             return e.id != task_id
         });
 
-        this.props.actions.deleteTasksVisually(new_task_array);
+        this.props.taskActions.deleteTasksVisually(new_task_array);
     }
 
     handleUpdateTaskVisually(task_id, desc, date_start, date_end, project, tags){
@@ -51,7 +61,7 @@ class TaskListComponent extends Component{
                 return e;
         });
 
-        this.props.actions.updateTasksVisually(new_task_array);
+        this.props.taskActions.updateTasksVisually(new_task_array);
     }
 
 
@@ -61,7 +71,7 @@ class TaskListComponent extends Component{
                <ul className="p-0">
                {
                    this.props.task.tasks.map((e,index) => {
-                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} actions={this.props.actions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
+                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} tags={this.props.tag.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
                    })
                }
                </ul>
