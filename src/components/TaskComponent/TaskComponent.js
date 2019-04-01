@@ -17,20 +17,34 @@ class TaskComponent extends Component{
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
 
-        this.state = {
-            hide_btns: true,
-           /* tags: this.props.task.tags.map((e)=>{
-                return {
-                    checked: false,
-                    id: e.tags_id.id,
-                    name: e.tags_id.name,
-                    relation_id: e.id
-                }}),
-                */
-            tags: this.props.tags.map((e)=>{
+        let all_tags = this.props.tags.map((e)=>{
                 e.checked = false;
                 return e;
-            })
+            });
+
+
+        let selected_tags = this.props.task.tags.map((e)=>{
+            return {
+                id: e.tags_id.id,
+                name: e.tags_id.name,
+                relation_id: e.id,
+                checked: true,
+            }});
+
+        /*let merged_tags = _.map(all_tags, (e)=>
+        (_.extend(e, _.find(selected_tags, {id: e,id}))));*/
+
+        let merged_tags = all_tags.concat(selected_tags).reduce((prev, curr) => {
+            prev[curr.id] = Object.assign(prev[curr.id] || {}, curr);
+            return prev;
+        }, {});
+
+        merged_tags = Object.values(merged_tags);
+
+
+        this.state = {
+            hide_btns: true,
+            tags: merged_tags
        }
     }
 
