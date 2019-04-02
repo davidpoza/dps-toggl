@@ -110,6 +110,7 @@ class TaskComponent extends Component{
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
     handleOnClickTagSelector(e){
+        
         console.log("handleOnClickTagSelector");
         let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
         let array_tags = this.state.tags.slice();
@@ -129,28 +130,29 @@ class TaskComponent extends Component{
         });
 
         //preparamos el array de tags que necesita el api
-        let array_tags_api = this.props.task.tags.slice();
+        let array_tags_api = [];
         if(array_tags[index].checked == false) { //estamos borrando
-            console.log("borrando el tag con id: "+tag_id);
-            for(let j=0; j<array_tags_api.length;j++){
-                if(array_tags_api[j].tags_id.id == tag_id){
-                    console.log("borrando el tag de la posicion "+ j);
-                    array_tags_api[j] = {
-                        id: array_tags_api[j].id,
+
+                    console.log("borrando el tag de la posicion");
+                    array_tags_api.push({
+                        id: array_tags[index].relation_id,
                         "$delete": true
-                    }
-                }
-            }
+                    });
+
         }else{ //estampos añadiendo un tag
             console.log("añadiendo el tag con id: "+tag_id);
             array_tags_api.push({
                 tags_id: { id: tag_id }
             });
+            
         }
         
         
         //aquí vamos persistiendo los cambios en la base de datos, solo aquellos que sean necesarios
-        this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api);
+        //this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api);
+        //this.props.taskActions.fetchTasks(this.props.token);  //necesitamos conocer el id de relacion que ha dado al nuevo tag.
+        this.props.taskActions.updateTagsAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api)
+        
     }
 
 //<TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} selected_tags={this.state.tags} tags={this.props.tags}/>

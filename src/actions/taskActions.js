@@ -172,6 +172,46 @@ export function updateTask(token, task_id, description, date_start, date_end, pr
     }
 }
 
+
+export function updateTagsAndFetchTask(token, task_id, description, date_start, date_end, project_id, tags){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TASK_ATTEMPT
+        });
+       
+        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTaskSuccess(data.data));
+                    dispatch({
+                        type: FETCH_TASKS_ATTEMPT
+                    });
+                    api.task.fetchTasks(token).then(
+                        (data) => {
+                            //directus devuelve los errores en una objeto error y los datos en uno data
+                            if(data.data){
+                                dispatch(fetchTasksSuccess(data.data));
+                            }                    
+                            else if(data.error)
+                                dispatch(fetchTasksError(data.error))
+                        }                          
+                    ).catch(
+                        (error) => {
+                            dispatch(fetchTasksError(error));
+                    });
+                    
+                }                    
+                else if(data.error)
+                    dispatch(updateTaskError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(updateTaskError(error));
+        });
+    }
+}
+
 export function fetchTasks(token){
     return (dispatch) => {
         dispatch({

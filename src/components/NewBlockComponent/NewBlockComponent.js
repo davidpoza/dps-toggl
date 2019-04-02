@@ -59,15 +59,15 @@ class NewBlockComponent extends Component{
     }
 
     componentDidUpdate(prevProps){
-        /*if(prevProps.tag.tags != this.props.tag.tags){
+        if(prevProps.tag.tags != this.props.tag.tags){
             //le añadimos la propiedad checked al objeto tag que viene de la api
             this.setState({
-                tags: this.props.tag.tags.map((e)=>{
+                tags: this.props.tag.tags/*.map((e)=>{
                     e.checked = false;
                     return e;
-                })
+                })*/
             })
-        }*/
+        }
     }
 
     componentWillMount(){
