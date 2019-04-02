@@ -173,7 +173,7 @@ export function updateTask(token, task_id, description, date_start, date_end, pr
 }
 
 
-export function updateTagsAndFetchTask(token, task_id, description, date_start, date_end, project_id, tags){
+export function updateAndFetchTask(token, task_id, description, date_start, date_end, project_id, tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT

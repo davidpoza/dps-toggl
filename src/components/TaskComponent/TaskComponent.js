@@ -102,10 +102,12 @@ class TaskComponent extends Component{
             project.name = e.target.innerText;
         }
         // persistimos el cambio en la bd
-        this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null);
+        //this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null);
         
         //lanzamos la función del padre para que borre el elemento de la lita visualmente
-        this.props.onUpdate(this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project, null);
+        //this.props.onUpdate(this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project, null);
+    
+        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project!=null? project.id:null, null)
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
@@ -151,7 +153,7 @@ class TaskComponent extends Component{
         //aquí vamos persistiendo los cambios en la base de datos, solo aquellos que sean necesarios
         //this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api);
         //this.props.taskActions.fetchTasks(this.props.token);  //necesitamos conocer el id de relacion que ha dado al nuevo tag.
-        this.props.taskActions.updateTagsAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api)
+        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, -1, array_tags_api)
         
     }
 
@@ -168,7 +170,7 @@ class TaskComponent extends Component{
                     <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
                     //<span style={{color: this.props.task.project.color}} className={styles.label}><i className="fas fa-circle"></i> {this.props.task.project.name}</span>
                     }
-                    <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
+                    <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>                
                 {!utils.isMobile() && <div className={styles.dates}>{utils.removeSeconds(this.props.task.date_start)} - {utils.removeSeconds(this.props.task.date_end)}</div>}                
                 <div className={styles.dates}>{utils.diffHoursBetDates(this.props.task.date_start, this.props.task.date_end)}</div>
