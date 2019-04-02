@@ -146,15 +146,15 @@ export function deleteTask(token, task_id){
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
 export function updateTask(token, task_id, description, date_start, date_end, project_id, tags){
-    let tags_id;
+    /*let tags_id;
     if(tags!=null )
-        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});
+        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});*/
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
        
-        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags_id).then(
+        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

@@ -18,7 +18,6 @@ class TagSelectorComponent extends Component{
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
     }
 
     componentDidMount(){
@@ -51,36 +50,6 @@ class TagSelectorComponent extends Component{
         });
     }
 
-    /** Esta función llama al manejador del padre, que hará actualizaciones en las propiedades que esta recibiendo
-     * este componente.
-     * Mapeamos de nuevo la lista completa de tags a un array de objetos.
-     * Y en cada uno de esos objetos activamos la propiedad checked si su id se encuentra en la lista se seleccionados
-     * que también recibimos por props.
-     * Finalmente modificamos el estado, estableciendo la lista de objetos tags con sus propiedades checked correctas,
-     * conforme lo indica la lista selected_tags.
-     */
-    handleOnSelect(e){
-        this.props.onClick(e);
-        /*
-        let new_tags_array = this.props.tags.map((e)=>{
-            return(
-                {   
-                    id: e.id,
-                    name: e.name,
-                    checked: false
-                }
-            )
-        });
-        for(let i=0; i<new_tags_array.length; i++){
-            if(this.props.selected_tags.includes(new_tags_array[i].id))
-                new_tags_array[i].checked = true;
-        }
-        let actived = new_tags_array.filter((e)=>{return e.checked}).lenght > 0;
-        this.setState({
-            tags: new_tags_array,
-            active: actived
-        });    */
-    }
 
     render(){
         return(<div className={"btn-group dropleft"}>
@@ -126,7 +95,7 @@ class TagSelectorComponent extends Component{
                     <ul className={styles.taglist}>
                     { this.state.tags && this.state.tags.map((e, index)=>{
                         return(
-                        <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnSelect} className={"dropdown-item " + styles.item}>
+                        <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.props.onClick} className={"dropdown-item " + styles.item}>
                          {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
                          {e.name}
                          </li>

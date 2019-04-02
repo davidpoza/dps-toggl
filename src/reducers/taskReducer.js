@@ -102,7 +102,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
-        console.log(action.payload);
             return {
                 ...state,
                 loading: false,

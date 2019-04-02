@@ -18,7 +18,8 @@ class TaskListComponent extends Component{
     }
 
     componentDidMount(){
-        this.props.taskActions.fetchTasks(this.props.token);        
+        this.props.taskActions.fetchTasks(this.props.token);       
+        //this.props.tagActions.updateTags("kaka2"); 
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
@@ -26,15 +27,6 @@ class TaskListComponent extends Component{
         if (!prevProps.task.need_refreshing && this.props.task.need_refreshing)
             this.props.taskActions.fetchTasks(this.props.token);
 
-        if(prevProps.tag.tags != this.props.tag.tags){
-            //le añadimos la propiedad checked al objeto tag que viene de la api
-            this.setState({
-                tags: this.props.tag.tags.map((e)=>{
-                    e.checked = false;
-                    return e;
-                })
-            })
-        }
     }
 
     handleDeleteTaskVisually(task_id){

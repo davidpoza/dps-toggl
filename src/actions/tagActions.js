@@ -2,7 +2,8 @@
 import {
 FETCH_TAGS_ATTEMPT,
 FETCH_TAGS_FAIL,
-FETCH_TAGS_SUCCESS
+FETCH_TAGS_SUCCESS,
+UPDATE_TAGS
 } from './types';
 
 
@@ -25,6 +26,14 @@ export function fetchTagsError(error){
     }
 }
 
+export function updateTags(tagData){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TAGS,
+            payload: tagData
+        });
+    }
+}
 
 
 /* Action creators asíncronos - thunks */

@@ -16,23 +16,36 @@ class TaskComponent extends Component{
         this.handleOnDelete = this.handleOnDelete.bind(this);
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
+        this.composeTagsListState = this.composeTagsListState.bind(this);
 
+        this.state = {
+            hide_btns: true,
+            tags: []
+        }
+    }
+
+   componentWillMount(){
+        this.composeTagsListState();
+   }
+
+   componentDidUpdate(prevProps){
+        if(prevProps.task.tags != this.props.task.tags)
+            this.composeTagsListState();
+   }
+
+   composeTagsListState(){
         let all_tags = this.props.tags.map((e)=>{
-                e.checked = false;
-                return e;
-            });
+            e.checked = false;
+            return e
+        });
 
 
         let selected_tags = this.props.task.tags.map((e)=>{
             return {
                 id: e.tags_id.id,
-                name: e.tags_id.name,
                 relation_id: e.id,
-                checked: true,
+                checked: true
             }});
-
-        /*let merged_tags = _.map(all_tags, (e)=>
-        (_.extend(e, _.find(selected_tags, {id: e,id}))));*/
 
         let merged_tags = all_tags.concat(selected_tags).reduce((prev, curr) => {
             prev[curr.id] = Object.assign(prev[curr.id] || {}, curr);
@@ -41,12 +54,11 @@ class TaskComponent extends Component{
 
         merged_tags = Object.values(merged_tags);
 
-
-        this.state = {
+        this.setState({
             hide_btns: true,
             tags: merged_tags
-       }
-    }
+        });
+   }
 
     handleOnClick(){
         this.setState(
@@ -98,19 +110,47 @@ class TaskComponent extends Component{
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
     handleOnClickTagSelector(e){
+        console.log("handleOnClickTagSelector");
         let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
         let array_tags = this.state.tags.slice();
+        let index;
         for(let i=0; i<array_tags.length;i++){
-            if(array_tags[i].id == tag_id)
+            if(array_tags[i].id == tag_id){
                 array_tags[i].checked = array_tags[i].checked ? false: true;
+                index = i;
+            }
+               
         }
+
+        array_tags = array_tags.map(e => Object.assign({}, e));
+
         this.setState({
             tags: array_tags
         });
 
+        //preparamos el array de tags que necesita el api
+        let array_tags_api = this.props.task.tags.slice();
+        if(array_tags[index].checked == false) { //estamos borrando
+            console.log("borrando el tag con id: "+tag_id);
+            for(let j=0; j<array_tags_api.length;j++){
+                if(array_tags_api[j].tags_id.id == tag_id){
+                    console.log("borrando el tag de la posicion "+ j);
+                    array_tags_api[j] = {
+                        id: array_tags_api[j].id,
+                        "$delete": true
+                    }
+                }
+            }
+        }else{ //estampos añadiendo un tag
+            console.log("añadiendo el tag con id: "+tag_id);
+            array_tags_api.push({
+                tags_id: { id: tag_id }
+            });
+        }
+        
+        
         //aquí vamos persistiendo los cambios en la base de datos, solo aquellos que sean necesarios
-
-        this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, this.state.tags);
+        this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api);
     }
 
 //<TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} selected_tags={this.state.tags} tags={this.props.tags}/>
