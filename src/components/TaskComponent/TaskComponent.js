@@ -161,7 +161,7 @@ class TaskComponent extends Component{
     render(){
         return(
             <li className={"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
-                <div className={"col-8 col-lg-6 order-1 order-lg-1 p-0 " + styles.desc}>
+                <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc}>
                 {!utils.isMobile()?this.props.task.desc:this.props.task.desc.substring(0,10)}
                 {utils.isMobile() && this.props.task.desc.length>10 && "..."}
                 </div>
