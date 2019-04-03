@@ -161,9 +161,18 @@ class TaskComponent extends Component{
     render(){
         return(
             <li className={"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
-                <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc}>
-                {!utils.isMobile()?this.props.task.desc:this.props.task.desc.substring(0,10)}
-                {utils.isMobile() && this.props.task.desc.length>10 && "..."}
+                <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
+                    <div className={"btn-group dropleft "}>
+                        <div id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            {!utils.isMobile()?this.props.task.desc.substring(0,100):this.props.task.desc.substring(0,10)}
+                            {utils.isMobile() && this.props.task.desc.length>10 && "..."}
+                            {!utils.isMobile() && this.props.task.desc.length>100 && "..."}
+                        </div>
+
+                        <div className={"dropdown-menu p-2 " + styles.desc_dropdown } aria-labelledby="dropdownMenuButton" >
+                            {this.props.task.desc}
+                        </div>
+                    </div>
                 </div>
                 <div className="col-auto col-lg-auto p-0 order-4 order-lg-2">                
                     {this.props.task.project!=null ?
