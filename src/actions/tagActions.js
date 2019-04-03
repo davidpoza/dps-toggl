@@ -2,8 +2,7 @@
 import {
 FETCH_TAGS_ATTEMPT,
 FETCH_TAGS_FAIL,
-FETCH_TAGS_SUCCESS,
-UPDATE_TAGS
+FETCH_TAGS_SUCCESS
 } from './types';
 
 
@@ -23,15 +22,6 @@ export function fetchTagsError(error){
     return {
         type: FETCH_TAGS_FAIL,
         payload: error
-    }
-}
-
-export function updateTags(tagData){
-    return (dispatch) => {
-        dispatch({
-            type: UPDATE_TAGS,
-            payload: tagData
-        });
     }
 }
 
