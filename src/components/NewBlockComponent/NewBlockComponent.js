@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
-import utils from '../../utils'
+import React, {Component} from 'react';
+import utils from '../../utils';
+import config from '../../config';
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
@@ -207,22 +208,26 @@ class NewBlockComponent extends Component{
 
     /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
     incCounter(){
-        if(this.state.chrono_status == "running")
+        if(this.state.chrono_status == "running"){
             this.setState({
                 time: this.state.time + 1
-            })
+            }, ()=>{
+                document.title = utils.secondsToFormatedString(this.state.time);
+            });
+            
+        }
     }
 
-    /** Al hacer click en el botón empezar cuenta cuando estamos en el modo cronómetro.
-     * LLama a un action creator asíncrono para crear la tarea
+    /** Al hacer click en el botón empezar/parar cuenta cuando estamos en el modo cronómetro.
+     * Si se comienza la cuenta llama a un action creator asíncrono para crear la tarea
     */
     handleOnClickStart(){
-        if(this.state.chrono_status == "paused"){
+        if(this.state.chrono_status == "paused"){ //iniciamos contador
             this.setState({
                 chrono_status: "running"
             })            
         }
-        else if(this.state.chrono_status == "running"){            
+        else if(this.state.chrono_status == "running"){  // paramos contador          
             let date_end = new Date();
             let date_start = new Date(date_end - this.state.time*1000);
             let formated_date_start = utils.standarizeDate(date_start);
@@ -238,6 +243,8 @@ class NewBlockComponent extends Component{
                     e.checked = false;
                     return e;
                 })
+            },()=>{
+                document.title = config.app_title;
             });
         }
         if(this.state.set_interval == null){
