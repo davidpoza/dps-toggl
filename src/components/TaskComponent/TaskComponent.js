@@ -33,6 +33,13 @@ class TaskComponent extends Component{
             this.composeTagsListState();
    }
 
+   /** Esta función hace un join de dos arrays:
+    * - El array con todos los tags disponibles. (tendrán prop checked=false)
+    * - El array con los tags que tiene asignados una tarea (tendrán prop checked=true y un relation_id)
+    * El join se realiza con la propiedad id de que tienen los objetos de ambos arrays.
+    * El relation_id es el id de la entrada que relaciona esa tag con ese task en la tabla tasks_tags, ya que 
+    * es una relación m:m
+    */
    composeTagsListState(){
         let all_tags = this.props.tags.map((e)=>{
             e.checked = false;
@@ -52,6 +59,7 @@ class TaskComponent extends Component{
             return prev;
         }, {});
 
+        //al final hemos objetenido un objeto y nosotros queremos convertirlo a un array
         merged_tags = Object.values(merged_tags);
 
         this.setState({
@@ -60,6 +68,8 @@ class TaskComponent extends Component{
         });
    }
 
+   /** Se dispara cuando hacemos click en una tarea y muestra los controles adicionales.    * 
+    * Pensado para móviles donde no tenemos onMouseOver. */
     handleOnClick(){
         this.setState(
             {
@@ -68,6 +78,7 @@ class TaskComponent extends Component{
         );
     }
 
+    /**Al pasar por encima de una tarea muestra los controles adicionales*/
     handleOnMouseOver(){
         if(this.state.hide_btns)
             this.setState(
@@ -77,6 +88,7 @@ class TaskComponent extends Component{
             );
     }
 
+    /**Al quitar el cursor de la tarea se ocultan los controles adicionales */
     handleOnMouseOut(){
         if(!this.state.hide_btns)
         this.setState(

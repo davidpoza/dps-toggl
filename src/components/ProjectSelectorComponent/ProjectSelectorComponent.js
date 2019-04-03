@@ -18,7 +18,7 @@ class ProjectSelectorComponent extends Component{
 
         this.state = {
             projects: [],
-            value: ""
+            value: "" //es el valor del input para filtrar el listado de proyectos
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
@@ -42,13 +42,13 @@ class ProjectSelectorComponent extends Component{
             });
     }
 
-
+    /** se ejecuta onChange del input de filtrado de proyectos */
     handleOnChangeInput(e){   
         this.setState({
             value: e.target.value
         });
         let filtered_projects = this.props.projects.filter((elem)=>{
-            let regex = new RegExp(e.target.value, "i");            
+            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
             return regex.test(elem.name);
         });
         this.setState({
@@ -56,6 +56,10 @@ class ProjectSelectorComponent extends Component{
         });
     }
 
+    /**se ejecuta cuando seleccionamos un proyecto.
+     * Pasamos el evento al padre: NewBlockComponent
+     * Además cuando hacemos esto se resetea el componente a la lista inicial y se borra el input
+     */
     handleOnSelect(e){
         this.props.onClick(e);
         this.setState({

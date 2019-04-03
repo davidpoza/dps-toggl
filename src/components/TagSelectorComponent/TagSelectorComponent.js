@@ -9,14 +9,13 @@ import utils from '../../utils';
 
 class TagSelectorComponent extends Component{
     constructor(props){
-        super(props);
-        
+        super(props);        
 
         this.state = {
-            tags: [],
-            filtered_tags: [],
-            value:"",
-            active: false, // lo activamos cuando hay al menos un tag chequeado
+            tags: [], //la lista de tags que vamos a usar para mostrarlos como labels
+            filtered_tags: [], //la lista que vamos a listar en el dropdown, deben ser independientes para que no deseaparezcan labels durante el filtrado
+            value:"", //el valor del input de filtrdo de la lista de tags
+            active: false, // lo activamos cuando hay al menos un tag chequeado, para indicar visualmente que ya se han marcado tags
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
@@ -37,18 +36,18 @@ class TagSelectorComponent extends Component{
             this.setState({
                 tags: this.props.tags,
                 filtered_tags: this.props.tags,
-                active: this.props.tags.filter((e)=>(e.checked)).length > 0 ? true:false
+                active: this.props.tags.filter((e)=>(e.checked)).length > 0 ? true:false //indica si hay al menos un tag marcado
             });
         }
     }
 
-
+    /** se ejecuta onChange del input de filtrado de tags */
     handleOnChangeInput(e){   
         this.setState({
             value: e.target.value
         });
         let filtered_tags = this.props.tags.filter((elem)=>{
-            let regex = new RegExp(e.target.value, "i");            
+            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
             return regex.test(elem.name);
         });
         this.setState({
@@ -56,6 +55,9 @@ class TagSelectorComponent extends Component{
         });
     }
 
+    /**al chequear un tag para añadirlo, borramos el input de filtrado si lo hubiera
+     * y pasamos el evento al padre: NewBlockComponent
+     */
     handleOnClick(e){
         this.props.onClick(e);
         this.setState({

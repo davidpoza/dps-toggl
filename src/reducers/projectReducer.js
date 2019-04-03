@@ -16,7 +16,6 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case FETCH_PROJECTS_SUCCESS:
-        console.log(action.payload);
             return {
                 ...state,
                 loading: false,

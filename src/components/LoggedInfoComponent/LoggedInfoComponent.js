@@ -14,6 +14,7 @@ class LoggedInfoComponent extends Component{
         }
     }
 
+    /**llama al thunk de redux que hace una petición al api para refrescar el token jwt */
     refreshToken(){
         if(this.props.user.token != null){
             this.props.actions.refreshToken(this.props.user.token);
@@ -21,14 +22,15 @@ class LoggedInfoComponent extends Component{
     }
 
     componentDidMount(){
-        //antes de nada, hay que hacer un refreshtoken, por si podemos continuar la sesión anterior
+        //antes de nada, hay que hacer un refreshtoken, para no perder la sesión anterior si es posible
         this.refreshToken();
         if(this.state.setInterval == null)
             this.setState({
-                setInterval: setInterval(this.refreshToken, 3*60*1000) //ponemos el refresco del token jwt a 3 minutos
+                setInterval: setInterval(this.refreshToken, 4*60*1000) //ponemos el refresco del token jwt a 4 minutos
             });       
     }
 
+    /**Limpiamos los setInterval para que no se acumulen durante la navegación entre routes */
     componentWillUnmount(){
         if(this.state.setInterval != null)
             clearInterval(this.state.setInterval)

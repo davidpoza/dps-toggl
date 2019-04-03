@@ -44,7 +44,8 @@ class NewBlockComponent extends Component{
         };        
     }
 
-    componentDidMount(){
+
+    updateStartEndHours(){
         this.start = new Date(Date.now());
         this.end = new Date();
         this.end.setHours(this.start.getHours()+1);
@@ -52,6 +53,10 @@ class NewBlockComponent extends Component{
             start_hour: utils.getHourFromDate(this.start),
             end_hour: utils.getHourFromDate(this.end)
         });
+    }
+
+    componentDidMount(){
+        this.updateStartEndHours();
         if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
             $('#btn-chrono-mode').popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
             $('#btn-manual-mode').popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
@@ -64,10 +69,7 @@ class NewBlockComponent extends Component{
         if(prevProps.tag.tags != this.props.tag.tags){
             //le añadimos la propiedad checked al objeto tag que viene de la api
             this.setState({
-                tags: this.props.tag.tags/*.map((e)=>{
-                    e.checked = false;
-                    return e;
-                })*/
+                tags: this.props.tag.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
             })
         }
     }
@@ -77,6 +79,7 @@ class NewBlockComponent extends Component{
         this.props.tagActions.fetchTags(this.props.user.token);
     }
 
+    /**hay que ir limpiando los setInterval para que no se acumulen según navegamos entre routes */
     componentWillUnmount(){
         if(this.state.set_interval != null)
             clearInterval(this.state.set_interval)
@@ -147,6 +150,7 @@ class NewBlockComponent extends Component{
             mode: "manual",
             placeholder: lang[config.lang].desc_placeholder_manual_mode
         });
+        this.updateStartEndHours();
     }
     
     /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
@@ -200,7 +204,7 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            tags: this.props.tag.tags.map((e)=>{
+            tags: this.props.tag.tags.map((e)=>{ //desmarco todos los tags
                 e.checked = false;
                 return e;
             })

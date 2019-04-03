@@ -4,6 +4,9 @@ import React, {Component} from 'react'
 import styles from './ToastComponent.scss';
 
 
+/** Este componente muestra mensajes flotantes apilados en la esquina inferior derecha 
+ * usando bootstrap toast.
+*/
 class ToastComponent extends Component{
     constructor(props){
         super(props);

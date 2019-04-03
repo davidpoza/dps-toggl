@@ -6,9 +6,9 @@ import tagReducer from './tagReducer';
 
 const rootReducer = combineReducers({
 
-  //despues el estado estará dentro del objeto userReducer
-    userReducer,
-    taskReducer,
+  
+    userReducer,//despues el estado estará dentro del objeto userReducer
+    taskReducer,//en taskReducer, etc
     projectReducer,
     tagReducer
   });

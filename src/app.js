@@ -1,3 +1,6 @@
+
+/**Entrypoint del proyecto */
+
 import './imports.scss'; //provocamos que webpack procese el archivo con un filter que lo concatenará al style.css
 
 import React from 'react';
@@ -12,6 +15,7 @@ import './store/configureStore';
 import initialState from './reducers/initialState';
 
 const store = configureStore(initialState);
+
 
 ReactDOM.render(
 
