@@ -1,5 +1,6 @@
 const config = {
     app_title: "dpsToggl",
+    lang: "ES"
 };
 
 

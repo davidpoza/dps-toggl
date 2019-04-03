@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import utils from '../../utils';
-import config from '../../config';
+import config from '../../config/config';
+import lang from '../../config/lang';
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
@@ -27,7 +28,7 @@ class NewBlockComponent extends Component{
         this.handleDateChange = this.handleDateChange.bind(this);
 
         this.state = {
-            placeholder: "¿En qué vas a trabajar?",
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode,
             description: "",
             mode: "chrono",
             time: 0, //seconds,
@@ -52,9 +53,9 @@ class NewBlockComponent extends Component{
             end_hour: utils.getHourFromDate(this.end)
         });
         if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
-            $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
-            $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
-            $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+            $('#btn-chrono-mode').popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
+            $('#btn-manual-mode').popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
+            $('#btn-chrono-reset').popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
         }        
         
     }
@@ -136,7 +137,7 @@ class NewBlockComponent extends Component{
     handleOnClickCronoMode(){
         this.setState({
             mode: "chrono",
-            placeholder: "¿En qué vas a trabajar?"
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode
         });
     }
 
@@ -144,7 +145,7 @@ class NewBlockComponent extends Component{
     handleOnClickManualMode(){
         this.setState({
             mode: "manual",
-            placeholder: "¿En qué has estado trabajando?"
+            placeholder: lang[config.lang].desc_placeholder_manual_mode
         });
     }
     
@@ -180,11 +181,11 @@ class NewBlockComponent extends Component{
                 });
             }
             else{
-                this.props.taskActions.createTaskError({message:"Ending hour must occur after starting hour."});
+                this.props.taskActions.createTaskError({message:lang[config.lang].err_end_hour_before});
             }           
         }
         else{
-            this.props.taskActions.createTaskError({message:"Invalid hour format. Must be 24h and HH:MM"});
+            this.props.taskActions.createTaskError({message:lang[config.lang].err_hour_format});
         }
         
     }
@@ -192,7 +193,7 @@ class NewBlockComponent extends Component{
     /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
     handleOnClickReset(){
         this.setState({
-            placeholder: "¿En qué vas a trabajar?",
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode,
             time: 0,
             description: "",
             chrono_status: "paused",
@@ -290,7 +291,7 @@ class NewBlockComponent extends Component{
                                         { this.state.mode == "chrono" ?
                                             (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
                                             (<i className="fas fa-check-circle"></i>)
-                                        }                        
+                                        }             
                                     </button>
                                     <div className="d-flex flex-column">
                                         <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
