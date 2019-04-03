@@ -78,9 +78,9 @@ class TagSelectorComponent extends Component{
                                 {
                                     this.state.tags.filter((e)=>(e.checked)).map((e,index, arr)=>{
                                     if(index == arr.length -1)
-                                        return e.name
+                                        return utils.isMobile() ? e.name.substring(0,4) : e.name
                                     else
-                                        return e.name + ","
+                                        return utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ","
                                     })
                                 }
                                 </span>

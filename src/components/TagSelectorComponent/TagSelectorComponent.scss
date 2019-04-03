@@ -2,11 +2,15 @@
 
 .label{
   font-size: 1.1em;
-  margin: 8px;
-  padding: 4px;
+  padding: 0px 4px 0px 4px;
   border-radius: 5px;
   border: none;
-  background-color: #f8f8f8;
+  background-color: #ebebeb;
+  @media screen and (max-width: $large-device) {
+    line-height: 1.9em;
+    font-size: 0.8em;
+  }
+  
 }
 
 .btn{
@@ -66,10 +70,4 @@
 input[type=checkbox]{
   margin-right: 10px;
   pointer-events: none;
-}
-
-.label {
-  border-radius: 5px;
-  padding: 4px;
-  background-color: lightgrey;
 }

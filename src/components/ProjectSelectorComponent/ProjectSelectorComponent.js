@@ -65,7 +65,7 @@ class ProjectSelectorComponent extends Component{
     }
 
     render(){
-        return(<div className={"btn-group dropleft "+styles.selector}>
+        return(<div className={"btn-group dropleft "}>
                 {
                     this.props.project_selected_name==null?
 

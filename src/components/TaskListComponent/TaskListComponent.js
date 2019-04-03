@@ -60,7 +60,7 @@ class TaskListComponent extends Component{
     render(){
         return(
             <div>
-               <ul className="p-0">
+               <ul className="p-0 container-flex">
                {
                    this.props.task.tasks.map((e,index) => {
                         return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} tags={this.props.tag.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>

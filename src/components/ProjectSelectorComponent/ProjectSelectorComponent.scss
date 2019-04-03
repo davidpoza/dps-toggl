@@ -2,11 +2,18 @@
 
 .label{
   font-size: 1.1em;
-  margin: 8px;
-  padding: 4px;
   border-radius: 5px;
   border: none;
-  background-color: #f8f8f8;
+  background-color: transparent;
+  line-height: 1.1em;
+  @media screen and (max-width: $large-device) {
+    line-height: 1.9em;
+    font-size: 0.8em;
+  }
+
+  i{
+    vertical-align: middle;
+  }
 }
 
 .btn{
