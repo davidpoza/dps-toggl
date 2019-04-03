@@ -1,6 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
-import utils from '../../utils'
+import utils from '../../utils';
+import config from '../../config/config';
+import lang from '../../config/lang';
 import styles from './TaskComponent.scss';
 import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
 import TagSelectorComponent from '../TagSelectorComponent/TagSelectorComponent';
@@ -18,9 +20,17 @@ class TaskComponent extends Component{
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
 
+        /** 
+         * tags: almacena un array de tags con las propiedades:
+         * - id
+         * - name
+         * - slug
+         * - checked
+         * - relation_id (si checked: true)
+         */
         this.state = {
             hide_btns: true,
-            tags: []
+            tags: [] 
         }
     }
 
@@ -54,6 +64,12 @@ class TaskComponent extends Component{
                 checked: true
             }});
 
+        /**
+         * se concatenan ambos arrays.
+         * vamos creando un objeto con propiedades cuyo identificador será el id. (como si fuera un array).
+         * en cada id vamos combinando/extendiendo(con Object.assign) todos los objetos que existan con ese mismo id,
+         * pero si con ese id no tenemos nada entonces comenzamos un nuevo objeto.
+         */
         let merged_tags = all_tags.concat(selected_tags).reduce((prev, curr) => {
             prev[curr.id] = Object.assign(prev[curr.id] || {}, curr);
             return prev;
@@ -98,78 +114,85 @@ class TaskComponent extends Component{
         );
     }
 
+    /** manejador del evento de click sobre la opción borrar del menu adicional */
     handleOnDelete(e){
-        this.props.taskActions.deleteTask(this.props.token, this.props.task.id);
+        this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
         let task_id = e.target.id.match(/btn-delete-(\d{0,4})/)[1];
-        this.props.onDeleteFromList(task_id);
+        this.props.onDeleteFromList(task_id); //eliminar visualmente, para lo cual llama al padre
     }
 
+    /**
+     * manejador para el evento onClick del componente ProjectSelectorComponent del TaskComponent
+     */
     handleOnChangeProject(e){
         let project = {};        
-        if(e.target.id=="project0")
+        if(e.target.id=="project0") //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
             project.id = e.target.id.match(/project(\d{0,4})/)[1];
-            project.color = window.getComputedStyle(e.target.childNodes[0]).color;
-            project.name = e.target.innerText;
+            project.color = window.getComputedStyle(e.target.childNodes[0]).color; //obtenemos el color del elemento seleccionado actualmente en el DOM
+            project.name = e.target.innerText; //el nombre del proyecto lo sacamos del elemento con esa id
         }
-        // persistimos el cambio en la bd
-        //this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null);
         
-        //lanzamos la función del padre para que borre el elemento de la lita visualmente
-        //this.props.onUpdate(this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project, null);
-    
-        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, this.props.task.desc, this.props.task.date_start, this.props.task.date_end, project!=null? project.id:null, null)
+        /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
+        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
+        */
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null)
+       
+       //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
+       this.props.onUpdate(this.props.task.id, null, null, null, project, null);
     }
 
-    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
+    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
+     * Se recorre el array buscando el id que coincide con el tag marcado para hacer un toggle a la prop. checked.
+     * Apuntamos el índice del array del tag que hemos chequeado para saber si estamos añadiendo o quitando el tag y para
+     * poder obtener su relation_id en caso de estar borrando.
+     * 
+    */
     handleOnClickTagSelector(e){
-        
-        console.log("handleOnClickTagSelector");
         let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
         let array_tags = this.state.tags.slice();
         let index;
-        for(let i=0; i<array_tags.length;i++){
-            if(array_tags[i].id == tag_id){
-                array_tags[i].checked = array_tags[i].checked ? false: true;
-                index = i;
-            }
-               
-        }
 
-        array_tags = array_tags.map(e => Object.assign({}, e));
+        array_tags.map((e,indx)=>{
+            if(e.id == tag_id){
+                e.checked = e.checked?false:true;
+                index = indx;
+            }
+        });
 
         this.setState({
             tags: array_tags
         });
 
-        //preparamos el array de tags que necesita el api
+        /*preparamos el array de tags que necesita el api.
+
+        Dicho array debe el objetos con un contenido u otro según si añadimos o borramos un tag a un task (m:m):
+        - añadimos: el objeto debe contener la propiedad tags_id que es un objeto con {id: tag_id}
+        - borramos: el objeto debe contener la propiedad id que debe ser el relation_id o id de la entrada en la tabla tasks_tags (m:m)
+                    y además particularmente el api directus usa una propiedad "$delete":true para indicar que queremos borrarla.
+        */
         let array_tags_api = [];
         if(array_tags[index].checked == false) { //estamos borrando
-
-                    console.log("borrando el tag de la posicion");
                     array_tags_api.push({
                         id: array_tags[index].relation_id,
                         "$delete": true
                     });
 
         }else{ //estampos añadiendo un tag
-            console.log("añadiendo el tag con id: "+tag_id);
             array_tags_api.push({
                 tags_id: { id: tag_id }
-            });
-            
+            });            
         }
         
         
-        //aquí vamos persistiendo los cambios en la base de datos, solo aquellos que sean necesarios
-        //this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, array_tags_api);
-        //this.props.taskActions.fetchTasks(this.props.token);  //necesitamos conocer el id de relacion que ha dado al nuevo tag.
+        /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
+        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
+        */
         this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, -1, array_tags_api)
         
     }
-
-//<TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} selected_tags={this.state.tags} tags={this.props.tags}/>
+    
     render(){
         return(
             <li className={"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
@@ -201,8 +224,8 @@ class TaskComponent extends Component{
                 <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className="dropdown-menu">
-                        <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>Borrar</a>
-                        <a className="dropdown-item">Duplicar</a>
+                        <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
+                        <a className="dropdown-item">{lang[config.lang].aditional_menu_opt_duply}</a>
                     </div>
                 </div>
                     
