@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import styles from './LoggedInfoComponent.scss';
 import avatar from '../../images/avatar_sample.jpg'
@@ -58,10 +59,6 @@ class LoggedInfoComponent extends Component{
                 { this.props.user.token == null ?
                     (<div></div>):
 
-                    this.props.expanded ?
-
-                    <img className={styles.avatar} src={this.props.user.avatar} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>   
-                   :
                     <img className={styles.avatar} src={this.props.user.avatar} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />                    
                  
                 }
@@ -72,6 +69,11 @@ class LoggedInfoComponent extends Component{
             </div>
         )
     }
+}
+
+LoggedInfoComponent.propTypes = {
+    user: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
 }
 
 export default LoggedInfoComponent;

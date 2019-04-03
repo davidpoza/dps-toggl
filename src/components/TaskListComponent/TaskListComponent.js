@@ -1,8 +1,7 @@
-import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 
-import styles from './TaskListComponent.scss';
 import TaskComponent from '../TaskComponent/TaskComponent';
 
 
@@ -24,7 +23,7 @@ class TaskListComponent extends Component{
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
-        if (!prevProps.task.need_refreshing && this.props.task.need_refreshing)
+        if (!prevProps.need_refreshing && this.props.need_refreshing)
             this.props.taskActions.fetchTasks(this.props.token);
 
     }
@@ -45,7 +44,7 @@ class TaskListComponent extends Component{
      * sin esperar a peticiones ajax.
     */
     handleUpdateTaskVisually(task_id, desc, date_start, date_end, project, tags){        
-        let new_task_array = this.props.task.tasks.map((e)=>{
+        let new_task_array = this.props.tasks.map((e)=>{
             if(e.id == task_id){
                 if(desc==null) desc = e.desc;
                 if(date_start==null) date_start = e.date_start;
@@ -74,8 +73,8 @@ class TaskListComponent extends Component{
             <div>
                <ul className="p-0 container-flex">
                {
-                   this.props.task.tasks.map((e,index) => {
-                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.project.projects} tags={this.props.tag.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
+                   this.props.tasks.map((e,index) => {
+                        return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.projects} tags={this.props.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
                    })
                }
                </ul>
@@ -84,6 +83,17 @@ class TaskListComponent extends Component{
 
         )
     }
+}
+
+
+TaskListComponent.propTypes = {
+    token: PropTypes.string.isRequired,
+    tasks: PropTypes.array.isRequired,
+    tags: PropTypes.array.isRequired,
+    projects: PropTypes.array.isRequired,
+    need_refreshing: PropTypes.bool.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
 }
 
 export default TaskListComponent;

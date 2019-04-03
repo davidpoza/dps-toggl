@@ -19,7 +19,7 @@ class TaskListContainer extends Component{
 
     render(){
         return(
-            <TaskListComponent token={this.props.user.token} tag={this.props.tag} project={this.props.project} task={this.props.task} taskActions={this.props.taskActions} tagActions={this.props.tagActions}/>
+            <TaskListComponent token={this.props.user.token} tags={this.props.tag.tags} projects={this.props.project.projects} tasks={this.props.task.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.task.need_refreshing}/>
         )
     }
 }

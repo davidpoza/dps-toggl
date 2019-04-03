@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 
 import styles from './TagSelectorComponent.scss';
@@ -118,5 +118,12 @@ class TagSelectorComponent extends Component{
         )
     }
 }
+
+
+TagSelectorComponent.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    tags: PropTypes.array.isRequired,
+}
+
 
 export default TagSelectorComponent;

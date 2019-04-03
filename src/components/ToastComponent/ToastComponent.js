@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import styles from './ToastComponent.scss';
 
@@ -34,6 +34,11 @@ class ToastComponent extends Component{
         else
             return null;        
     }
+}
+
+ToastComponent.propTypes = {
+    id: PropTypes.string.isRequired,
+    message: PropTypes.string,
 }
 
 export default ToastComponent;

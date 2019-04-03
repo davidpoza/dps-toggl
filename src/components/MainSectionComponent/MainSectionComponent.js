@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {Route} from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 
 import styles from './MainSectionComponent.scss';
 import LoginContainer from '../LoginComponent/LoginContainer';
@@ -46,5 +48,12 @@ class MainSectionComponent extends Component{
         )
     }
 }
+
+MainSectionComponent.propTypes = {
+    user: PropTypes.object.isRequired,
+    task: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired
+}
+
 
 export default MainSectionComponent;

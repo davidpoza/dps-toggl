@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 
 import styles from './ChronometerComponent.scss';
@@ -17,6 +17,10 @@ class ChronometerComponent extends Component{
             <div id="counter" className={styles.counter}>{utils.secondsToFormatedString(this.props.time)}</div>
         )
     }
+}
+
+ChronometerComponent.propTypes = {
+    time: PropTypes.number.isRequired
 }
 
 export default ChronometerComponent;

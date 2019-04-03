@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 
 import styles from './LoginComponent.scss';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
@@ -78,5 +78,12 @@ class LoginComponent extends Component{
             )
     }
 }
+
+LoginComponent.propTypes = {
+    history: PropTypes.object.isRequired, //lo vamos a pasar al thunk de redux loginAction para redirigir después del login
+    user: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+}
+
 
 export default LoginComponent;

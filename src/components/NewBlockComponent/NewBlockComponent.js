@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import utils from '../../utils';
 import config from '../../config/config';
 import lang from '../../config/lang';
@@ -310,6 +312,15 @@ class NewBlockComponent extends Component{
             </div>
         )
     }
+}
+
+NewBlockComponent.propTypes = {
+    user: PropTypes.object.isRequired,
+    tag: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired,
 }
 
 export default NewBlockComponent;

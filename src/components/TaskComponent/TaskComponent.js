@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import utils from '../../utils';
 import config from '../../config/config';
@@ -234,5 +235,17 @@ class TaskComponent extends Component{
         )
     }
 }
+
+TaskComponent.propTypes = {
+    token: PropTypes.string.isRequired,
+    task: PropTypes.object.isRequired,
+    projects: PropTypes.array.isRequired,
+    tags: PropTypes.array.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
+    onDeleteFromList: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+}
+
 
 export default TaskComponent;
