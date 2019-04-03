@@ -21,9 +21,11 @@ class LoggedInfoComponent extends Component{
     }
 
     componentDidMount(){
+        //antes de nada, hay que hacer un refreshtoken, por si podemos continuar la sesión anterior
+        this.refreshToken();
         if(this.state.setInterval == null)
             this.setState({
-                setInterval: setInterval(this.refreshToken, 4*60*1000) //ponemos el refresco del token jwt a 4 minutos
+                setInterval: setInterval(this.refreshToken, 3*60*1000) //ponemos el refresco del token jwt a 3 minutos
             });       
     }
 

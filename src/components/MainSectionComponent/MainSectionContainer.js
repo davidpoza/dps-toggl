@@ -20,14 +20,16 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent user={this.props.user}/>
+            <MainSectionComponent user={this.props.user} task={this.props.task} project={this.props.project} />
         )
     }
 }
 
 function mapStateToProps (state) {
     return {
-      user: state.userReducer
+      user: state.userReducer,
+      task: state.taskReducer,
+      project: state.projectReducer
     }
   }
   

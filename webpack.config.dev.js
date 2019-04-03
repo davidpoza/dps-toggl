@@ -65,6 +65,19 @@ module.exports = {
             ]
            },
            {
+            test: /react-datepicker\.css$/,
+            include: path.join(__dirname, "node_modules", "react-datepicker", "dist"),
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: false
+                    }
+                }                  
+            ]
+           },
+           {
             test: /imports\.scss$/,
             include: entryPath,
             use: [
@@ -96,7 +109,8 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: outPath
+        contentBase: outPath,
+        host: '0.0.0.0',
     },
     plugins: [
         new MiniCssExtractPlugin({

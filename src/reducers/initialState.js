@@ -9,8 +9,20 @@ const initialState = {
         error: {}
     },
     taskReducer: {
-        
-    
+        tasks: [],
+        need_refreshing: false,
+        loading: false,
+        error: {}
+    },
+    projectReducer: {
+        projects: [],
+        loading: false,
+        error: {}
+    },
+    tagReducer: {
+        tags: [],
+        loading: false,
+        error: {}
     }
 };
 

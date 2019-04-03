@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-
+import utils from '../../utils'
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
+import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
+import TagSelectorComponent from '../TagSelectorComponent/TagSelectorComponent';
+import ManualComponent from '../ManualComponent/ManualComponent';
 
 
 
@@ -18,6 +20,10 @@ class NewBlockComponent extends Component{
         this.handleOnClickReset = this.handleOnClickReset.bind(this);
         this.incCounter = this.incCounter.bind(this);
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
+        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);        
+        this.handleHourChange = this.handleHourChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
 
         this.state = {
             placeholder: "¿En qué vas a trabajar?",
@@ -25,14 +31,48 @@ class NewBlockComponent extends Component{
             mode: "chrono",
             time: 0, //seconds,
             chrono_status: "paused", //paused, running
-            set_interval: null
+            set_interval: null,
+            project_selected_name: null,
+            project_selected_color: null,
+            project_selected_id: null,
+            tags: [], // listado los id de los tag que hemos seleccionado
+            start_date: new Date(),            
+            start_hour: null, // solo modo manual. hora de inicio en HH:MM
+            end_hour: null // solo modo manual. hora de fin en HH:MM
         };        
     }
 
     componentDidMount(){
-        $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
-        $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
-        $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+        this.start = new Date(Date.now());
+        this.end = new Date();
+        this.end.setHours(this.start.getHours()+1);
+        this.setState({
+            start_hour: utils.getHourFromDate(this.start),
+            end_hour: utils.getHourFromDate(this.end)
+        });
+        if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
+            $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
+            $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
+            $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+        }        
+        
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.tag.tags != this.props.tag.tags){
+            //le añadimos la propiedad checked al objeto tag que viene de la api
+            this.setState({
+                tags: this.props.tag.tags/*.map((e)=>{
+                    e.checked = false;
+                    return e;
+                })*/
+            })
+        }
+    }
+
+    componentWillMount(){
+        this.props.projectActions.fetchProjects(this.props.user.token);
+        this.props.tagActions.fetchTags(this.props.user.token);
     }
 
     componentWillUnmount(){
@@ -40,7 +80,58 @@ class NewBlockComponent extends Component{
             clearInterval(this.state.set_interval)
     }
 
+    /** Al producirse un click en un proyecto del dropdown del ProjectSelectorComponent */
+    handleOnClickProjectSelector(e){
+        if(e.target.id=="project0")
+        {
+            this.setState({
+                project_selected_name: null,
+                project_selected_color:null,
+                project_selected_id:null
+            });
+        }
+        else if(e.target.id){
+            let project_id = e.target.id.match(/project(\d{0,4})/)[1];
+            this.setState({
+                project_selected_name: e.target.innerText,
+                project_selected_color: window.getComputedStyle(e.target.childNodes[0]).color,
+                project_selected_id: project_id
+            });
+        }
+    }
 
+    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
+    handleOnClickTagSelector(e){        
+        let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
+        let array_tags = this.state.tags.slice();
+        for(let i=0; i<array_tags.length;i++){
+            if(array_tags[i].id == tag_id)
+                array_tags[i].checked = array_tags[i].checked ? false: true;
+        }
+        this.setState({
+            tags: array_tags
+        });
+    }
+
+    /** Al producirse un cambio en el input de la hora inicio o fin del componente ManualComponent */
+    handleHourChange(e) {
+        let regex = /^\d{0,2}:\d{0,2}$/;
+        if(e.target.id == "start_hour"){
+            if(e.target.value.match(regex))
+                this.setState({
+                    start_hour: e.target.value          
+                });
+        }
+        else if(e.target.id == "end_hour"){
+            if(e.target.value.match(regex))
+                this.setState({
+                    end_hour: e.target.value          
+                });
+        }
+        
+    }
+
+    /** Al hacer click en botón de modo cronómetro */
     handleOnClickCronoMode(){
         this.setState({
             mode: "chrono",
@@ -48,6 +139,7 @@ class NewBlockComponent extends Component{
         });
     }
 
+    /** Al hacer click en botón de modo manual */
     handleOnClickManualMode(){
         this.setState({
             mode: "manual",
@@ -55,19 +147,65 @@ class NewBlockComponent extends Component{
         });
     }
     
-    handleOnClickCreate(){
-
+    /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
+    handleDateChange(date) {
+        this.setState({
+          start_date: date          
+        });
     }
 
+    /** Al hacer click en el botón crear tarea del modo manual.
+     * LLama a un action creator asíncrono para crear la tarea
+    */
+    handleOnClickCreate(){
+        let start_date = new Date(this.state.start_date);
+        let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
+        let formated_date_end = utils.standarizeDate(start_date).slice(0,-9); 
+
+        if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
+            if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
+                formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
+                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";      
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
+                this.setState({
+                    description: "",
+                    project_selected_name: null,
+                    project_selected_color: null,
+                    project_selected_id: null,
+                    tags: this.props.tag.tags.map((e)=>{
+                        e.checked = false;
+                        return e;
+                    })
+                });
+            }
+            else{
+                this.props.taskActions.createTaskError({message:"Ending hour must occur after starting hour."});
+            }           
+        }
+        else{
+            this.props.taskActions.createTaskError({message:"Invalid hour format. Must be 24h and HH:MM"});
+        }
+        
+    }
+
+    /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
     handleOnClickReset(){
         this.setState({
             placeholder: "¿En qué vas a trabajar?",
             time: 0,
             description: "",
-            chrono_status: "paused"
+            chrono_status: "paused",
+            project_selected_name: null,
+            project_selected_color: null,
+            project_selected_id: null,
+            tags: this.props.tag.tags.map((e)=>{
+                e.checked = false;
+                return e;
+            })
         });
     }
 
+    /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
     incCounter(){
         if(this.state.chrono_status == "running")
             this.setState({
@@ -75,11 +213,10 @@ class NewBlockComponent extends Component{
             })
     }
 
+    /** Al hacer click en el botón empezar cuenta cuando estamos en el modo cronómetro.
+     * LLama a un action creator asíncrono para crear la tarea
+    */
     handleOnClickStart(){
-        function pad (str, max) {
-            str = str.toString();
-            return str.length < max ? pad("0" + str, max) : str;
-        }
         if(this.state.chrono_status == "paused"){
             this.setState({
                 chrono_status: "running"
@@ -88,15 +225,19 @@ class NewBlockComponent extends Component{
         else if(this.state.chrono_status == "running"){            
             let date_end = new Date();
             let date_start = new Date(date_end - this.state.time*1000);
-            let formated_date_start = `${date_start.getFullYear()}-${pad(date_start.getMonth(),2)}-${pad(date_start.getDay(),2)} ${pad(date_start.getHours(),2)}:${pad(date_start.getMinutes(),2)}:${pad(date_start.getSeconds(),2)}`;
-            let formated_date_end = `${date_end.getFullYear()}-${pad(date_end.getMonth(),2)}-${pad(date_end.getDay(),2)} ${pad(date_end.getHours(),2)}:${pad(date_end.getMinutes(),2)}:${pad(date_end.getSeconds(),2)}`;
-            console.log(formated_date_start);
-            console.log(formated_date_end);
-            this.props.actions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, 1, [2,3]);
+            let formated_date_start = utils.standarizeDate(date_start);
+            let formated_date_end = utils.standarizeDate(date_end);
+            this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
+
+            
             this.setState({
                 chrono_status: "paused",
                 time: 0,
-                description: ""
+                description: "",
+                tags: this.props.tag.tags.map((e)=>{
+                    e.checked = false;
+                    return e;
+                })
             });
         }
         if(this.state.set_interval == null){
@@ -106,6 +247,7 @@ class NewBlockComponent extends Component{
         }
     }
 
+    /** Se ejecuta cada vez que modificamos el input de descripción de nueva tarea */
     handleOnChangeInput(e){
         this.setState({
             description: e.target.value
@@ -114,37 +256,46 @@ class NewBlockComponent extends Component{
 
     render(){
         return(
+            <div className="container-flex" >
+                <div className={"row align-items-center justify-content-between " + styles.box} >
 
-            <div className={"d-flex w-100 " + styles.box}>
-                <div className={"flex-grow-1"}>
-                    <input className={styles.description} id="task-description" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
-                </div>
-                <div className="d-flex align-items-center">
-                { this.state.mode == "chrono" ?
-                    <ChronometerComponent time={this.state.time} />:
-                    <div></div>
-                }
-                </div>
-                <div className="d-flex align-items-center">
-                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
-                        this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
-                    }>
+                        <div className="col-8 col-sm-9 col-md-10 col-lg order-1 order-lg-1 p-0">
+                            <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
+                        </div>
+                        <div className="col-1 col-lg-auto order-4 order-lg-2 p-1">
+                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
+                        </div>
+                        <div className="col-1 col-lg-auto order-5 order-lg-3 p-1">
+                        <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
+                        </div>
+                        <div className="col col-lg-auto order-6 order-lg-4">
                         { this.state.mode == "chrono" ?
-                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
-                            (<i className="fas fa-check-circle"></i>)
-                        }                        
-                    </button>
-                </div>
-                <div className="d-flex align-items-center">
-                    <div className="d-flex flex-column">
-                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
-                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
-                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
-                    </div>
+                            <ChronometerComponent time={this.state.time} />:
+                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} start_date={this.state.start_date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
+                        }
+                        </div>
+                        
+                        <div className="col-auto col-lg-auto order-3 order-lg-5 p-0 d-flex">
 
+                                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
+                                        this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
+                                    }>
+                                        { this.state.mode == "chrono" ?
+                                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
+                                            (<i className="fas fa-check-circle"></i>)
+                                        }                        
+                                    </button>
+                                    <div className="d-flex flex-column">
+                                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
+                                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
+                                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                                    </div>
+
+                        </div>
+                         
+                        
                 </div>
             </div>
-
         )
     }
 }
