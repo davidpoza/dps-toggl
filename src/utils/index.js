@@ -61,7 +61,9 @@ const utils = {
         let min2 = hour_end.match(regexMin)[1];
         let sec1 = hour_start.match(regexSec)[1];
         let sec2 = hour_end.match(regexSec)[1];
-        return(this.pad(parseInt(hour2-hour1),2)+":"+this.pad(parseInt(min2-min1),2)+":"+this.pad(parseInt(sec2-sec1),2));
+        let start_in_secs = parseInt(sec1) + parseInt(min1*60) + parseInt(hour1*60*60);
+        let end_in_secs = parseInt(sec2) + parseInt(min2*60) + parseInt(hour2*60*60);
+        return(this.secondsToFormatedString(end_in_secs-start_in_secs));
     },
 
     /** Devuelve true si se ejecuta desde un navegador movil.
