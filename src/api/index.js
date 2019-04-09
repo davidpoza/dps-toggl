@@ -75,7 +75,7 @@ const API = {
     },
     task: {
         //en tags_id viene un array de tags_id, hay que componer un objeto
-        createTask(token, description, date_start, date_end, project_id, tags_id){
+        createTask(token, description, date, start_hour, end_hour, project_id, tags_id){
             let array_tags_obj = [];
             tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});
             return fetch(api_url+"/items/tasks", {
@@ -87,8 +87,9 @@ const API = {
                 },
                 body: JSON.stringify({
                     desc: description,
-                    date_start: date_start,
-                    date_end: date_end,
+                    date,
+                    start_hour,
+                    end_hour,
                     project: { id: project_id },
                     tags: array_tags_obj
                 })

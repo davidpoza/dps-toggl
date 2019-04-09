@@ -44,9 +44,11 @@ class NewBlockComponent extends Component{
             project_selected_color: null,
             project_selected_id: null,
             tags: [], // listado los id de los tag que hemos seleccionado
-            start_date: new Date(),            
-            start_hour: null, // solo modo manual. hora de inicio en HH:MM
-            end_hour: null // solo modo manual. hora de fin en HH:MM
+            start_date: new Date(),    //borrar        
+            start_hour: null, 
+            end_hour: null,
+            date: new Date(),
+        
         };        
     }
 
@@ -162,7 +164,7 @@ class NewBlockComponent extends Component{
     /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
     handleDateChange(date) {
         this.setState({
-          start_date: date          
+          date: date          
         });
     }
 
@@ -170,15 +172,9 @@ class NewBlockComponent extends Component{
      * LLama a un action creator asíncrono para crear la tarea
     */
     handleOnClickCreate(){
-        let start_date = new Date(this.state.start_date);
-        let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
-        let formated_date_end = utils.standarizeDate(start_date).slice(0,-9); 
-
-        if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
+       if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
             if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
-                formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
-                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";      
-                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags);
                 this.setState({
                     description: "",
                     project_selected_name: null,
@@ -240,14 +236,10 @@ class NewBlockComponent extends Component{
             })            
         }
         else if(this.state.chrono_status == "running"){  // paramos contador          
-            let date_end = new Date();
-            let date_start = new Date(date_end - this.state.time*1000);
-            let formated_date_start = utils.standarizeDate(date_start);
-            let formated_date_end = utils.standarizeDate(date_end);
-            this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
-
-            
-            this.setState({
+            let end_seconds = utils.getHourInSecFromDate(new Date());
+            let start_seconds = end_seconds-this.state.time;
+            this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags);
+          this.setState({
                 chrono_status: "paused",
                 time: 0,
                 description: "",
