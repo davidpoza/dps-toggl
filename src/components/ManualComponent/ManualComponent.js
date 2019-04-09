@@ -30,7 +30,7 @@ class ManualComponent extends Component{
 
 
 ManualComponent.propTypes = {
-    start_date: PropTypes.string.isRequired,
+    start_date: PropTypes.object.isRequired,
     start_hour: PropTypes.string.isRequired,
     end_hour: PropTypes.string.isRequired,
     handleDateChange: PropTypes.func.isRequired,
