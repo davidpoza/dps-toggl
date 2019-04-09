@@ -282,7 +282,7 @@ class NewBlockComponent extends Component{
                         <div className="col col-lg-auto order-6 order-lg-4">
                         { this.state.mode == "chrono" ?
                             <ChronometerComponent time={this.state.time} />:
-                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} start_date={this.state.start_date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
+                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} date={this.state.date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
                         

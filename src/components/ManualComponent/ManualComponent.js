@@ -19,7 +19,7 @@ class ManualComponent extends Component{
     render(){
         return(
             <div>
-                <DatePicker locale={es} className={styles.date_input} dateFormat="dd/MM/yyyy" selected={this.props.start_date} onChange={this.props.handleDateChange} />
+                <DatePicker locale={es} className={styles.date_input} dateFormat="dd/MM/yyyy" selected={this.props.date} onChange={this.props.handleDateChange} />
                 <input id="start_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.start_hour}/>
                 <i className="fas fa-long-arrow-alt-right"></i>
                 <input id="end_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.end_hour}/>
