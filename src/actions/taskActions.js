@@ -152,13 +152,13 @@ export function deleteTask(token, task_id){
 }
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
-export function updateTask(token, task_id, description, date_start, date_end, project_id, tags){
+export function updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
        
-        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags).then(
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
@@ -180,13 +180,13 @@ export function updateTask(token, task_id, description, date_start, date_end, pr
  * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
-export function updateAndFetchTask(token, task_id, description, date_start, date_end, project_id, tags){
+export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
        
-        api.task.updateTask(token, task_id, description, date_start, date_end, project_id, tags).then(
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

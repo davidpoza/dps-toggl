@@ -138,10 +138,10 @@ class TaskComponent extends Component{
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
         y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null)
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.props.onUpdate(this.props.task.id, null, null, null, project, null);
+       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
@@ -190,7 +190,7 @@ class TaskComponent extends Component{
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
         y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
-        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, -1, array_tags_api)
+        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
         
     }
     

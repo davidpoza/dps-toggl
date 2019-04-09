@@ -43,19 +43,21 @@ class TaskListComponent extends Component{
      * Este tipo de action se lanza en paralelo a las action asíncronas para dar velocidad al manejo de la la interfaz,
      * sin esperar a peticiones ajax.
     */
-    handleUpdateTaskVisually(task_id, desc, date_start, date_end, project, tags){        
+    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
         let new_task_array = this.props.tasks.map((e)=>{
             if(e.id == task_id){
                 if(desc==null) desc = e.desc;
-                if(date_start==null) date_start = e.date_start;
-                if(date_end==null) date_end = e.date_end;
+                if(date==null) date = e.date;
+                if(start_hour==null) start_hour = e.start_hour;
+                if(end_hour==null) end_hour = e.end_hour;
                 if(project==null) project = e.project;
                 if(tags==null) tags = e.tags;
                 return ({
                     id: task_id,
                     desc,
-                    date_start,
-                    date_end,
+                    date,
+                    start_hour,
+                    end_hour,
                     project,
                     tags
                 });

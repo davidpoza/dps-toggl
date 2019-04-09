@@ -121,14 +121,15 @@ const API = {
             );
         },
         //en tags_id viene un array de tags_id, hay que componer un objeto
-        updateTask(token, task_id, description, date_start, date_end, project_id, tags){
+        updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
             /*let array_tags_obj = [];
             if (tags_id != null)
                 tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});*/
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
-            if(date_start!=null) composingBody.date_start = date_start;
-            if(date_end!=null) composingBody.date_end = date_end;
+            if(date!=null) composingBody.date = date;
+            if(start_hour!=null) composingBody.start_hour = start_hour;
+            if(end_hour!=null) composingBody.end_hour = end_hour;
             if(project_id!=-1) composingBody.project = project_id;
             if(tags!=null) composingBody.tags = tags;
 
