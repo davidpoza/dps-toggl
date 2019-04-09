@@ -5,7 +5,8 @@ import {
     LOGOUT_USER,
     REFRESH_TOKEN_ATTEMPT,
     REFRESH_TOKEN_FAIL,
-    REFRESH_TOKEN_SUCCESS
+    REFRESH_TOKEN_SUCCESS,
+    CLEAN_USER_MESSAGE
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -64,6 +65,11 @@ export default function userReducer (state = initialState.userReducer, action){
                 ...state,                
                 token: null,
                 error: action.payload
+            }
+        case CLEAN_USER_MESSAGE:
+            return {
+                ...state,
+                error: {}
             }
         default:
             return state;

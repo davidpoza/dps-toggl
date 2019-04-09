@@ -1,5 +1,9 @@
-import React, {Component} from 'react'
-import utils from '../../utils'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+import utils from '../../utils';
+import config from '../../config/config';
+import lang from '../../config/lang';
 
 import styles from './NewBlockComponent.scss';
 import ChronometerComponent from '../ChronometerComponent/ChronometerComponent';
@@ -12,6 +16,10 @@ import ManualComponent from '../ManualComponent/ManualComponent';
 class NewBlockComponent extends Component{
     constructor(props){
         super(props);
+
+        this.chronoResetBtn = React.createRef();
+        this.chronoModeBtn = React.createRef();
+        this.manualModeBtn = React.createRef();
 
         this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
@@ -26,7 +34,7 @@ class NewBlockComponent extends Component{
         this.handleDateChange = this.handleDateChange.bind(this);
 
         this.state = {
-            placeholder: "¿En qué vas a trabajar?",
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode,
             description: "",
             mode: "chrono",
             time: 0, //seconds,
@@ -42,7 +50,8 @@ class NewBlockComponent extends Component{
         };        
     }
 
-    componentDidMount(){
+
+    updateStartEndHours(){
         this.start = new Date(Date.now());
         this.end = new Date();
         this.end.setHours(this.start.getHours()+1);
@@ -50,10 +59,14 @@ class NewBlockComponent extends Component{
             start_hour: utils.getHourFromDate(this.start),
             end_hour: utils.getHourFromDate(this.end)
         });
+    }
+
+    componentDidMount(){
+        this.updateStartEndHours();
         if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
-            $('#btn-chrono-mode').popover({content: "Modo cronómetro", trigger: "hover"});
-            $('#btn-manual-mode').popover({content: "Modo manual", trigger: "hover"});
-            $('#btn-chrono-reset').popover({content: "Parar cuenta y borrar tarea", trigger: "hover"});
+            $(this.chronoModeBtn.current).popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
+            $(this.manualModeBtn.current).popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
+            $(this.chronoResetBtn.current).popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
         }        
         
     }
@@ -62,10 +75,7 @@ class NewBlockComponent extends Component{
         if(prevProps.tag.tags != this.props.tag.tags){
             //le añadimos la propiedad checked al objeto tag que viene de la api
             this.setState({
-                tags: this.props.tag.tags/*.map((e)=>{
-                    e.checked = false;
-                    return e;
-                })*/
+                tags: this.props.tag.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
             })
         }
     }
@@ -75,6 +85,7 @@ class NewBlockComponent extends Component{
         this.props.tagActions.fetchTags(this.props.user.token);
     }
 
+    /**hay que ir limpiando los setInterval para que no se acumulen según navegamos entre routes */
     componentWillUnmount(){
         if(this.state.set_interval != null)
             clearInterval(this.state.set_interval)
@@ -135,7 +146,7 @@ class NewBlockComponent extends Component{
     handleOnClickCronoMode(){
         this.setState({
             mode: "chrono",
-            placeholder: "¿En qué vas a trabajar?"
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode
         });
     }
 
@@ -143,8 +154,9 @@ class NewBlockComponent extends Component{
     handleOnClickManualMode(){
         this.setState({
             mode: "manual",
-            placeholder: "¿En qué has estado trabajando?"
+            placeholder: lang[config.lang].desc_placeholder_manual_mode
         });
+        this.updateStartEndHours();
     }
     
     /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
@@ -179,11 +191,11 @@ class NewBlockComponent extends Component{
                 });
             }
             else{
-                this.props.taskActions.createTaskError({message:"Ending hour must occur after starting hour."});
+                this.props.taskActions.createTaskError({message:lang[config.lang].err_end_hour_before});
             }           
         }
         else{
-            this.props.taskActions.createTaskError({message:"Invalid hour format. Must be 24h and HH:MM"});
+            this.props.taskActions.createTaskError({message:lang[config.lang].err_hour_format});
         }
         
     }
@@ -191,38 +203,43 @@ class NewBlockComponent extends Component{
     /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
     handleOnClickReset(){
         this.setState({
-            placeholder: "¿En qué vas a trabajar?",
+            placeholder: lang[config.lang].desc_placeholder_chrono_mode,
             time: 0,
             description: "",
             chrono_status: "paused",
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            tags: this.props.tag.tags.map((e)=>{
+            tags: this.props.tag.tags.map((e)=>{ //desmarco todos los tags
                 e.checked = false;
                 return e;
             })
         });
+        document.title = config.app_title;
     }
 
     /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
     incCounter(){
-        if(this.state.chrono_status == "running")
+        if(this.state.chrono_status == "running"){
             this.setState({
                 time: this.state.time + 1
-            })
+            }, ()=>{
+                document.title = utils.secondsToFormatedString(this.state.time);
+            });
+            
+        }
     }
 
-    /** Al hacer click en el botón empezar cuenta cuando estamos en el modo cronómetro.
-     * LLama a un action creator asíncrono para crear la tarea
+    /** Al hacer click en el botón empezar/parar cuenta cuando estamos en el modo cronómetro.
+     * Si se comienza la cuenta llama a un action creator asíncrono para crear la tarea
     */
     handleOnClickStart(){
-        if(this.state.chrono_status == "paused"){
+        if(this.state.chrono_status == "paused"){ //iniciamos contador
             this.setState({
                 chrono_status: "running"
             })            
         }
-        else if(this.state.chrono_status == "running"){            
+        else if(this.state.chrono_status == "running"){  // paramos contador          
             let date_end = new Date();
             let date_start = new Date(date_end - this.state.time*1000);
             let formated_date_start = utils.standarizeDate(date_start);
@@ -238,6 +255,8 @@ class NewBlockComponent extends Component{
                     e.checked = false;
                     return e;
                 })
+            },()=>{
+                document.title = config.app_title;
             });
         }
         if(this.state.set_interval == null){
@@ -283,12 +302,12 @@ class NewBlockComponent extends Component{
                                         { this.state.mode == "chrono" ?
                                             (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
                                             (<i className="fas fa-check-circle"></i>)
-                                        }                        
+                                        }             
                                     </button>
                                     <div className="d-flex flex-column">
-                                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
-                                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
-                                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                                        <button id="btn-chrono-reset" ref={this.chronoResetBtn} style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
+                                        <button id="btn-chrono-mode" ref={this.chronoModeBtn} style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
+                                        <button id="btn-manual-mode" ref={this.manualModeBtn} style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
                                     </div>
 
                         </div>
@@ -298,6 +317,15 @@ class NewBlockComponent extends Component{
             </div>
         )
     }
+}
+
+NewBlockComponent.propTypes = {
+    user: PropTypes.object.isRequired,
+    tag: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired,
 }
 
 export default NewBlockComponent;

@@ -102,7 +102,7 @@ module.exports = {
                     },
                   },
                 ],
-            }
+            },
         ]
     },
     devServer: {
@@ -121,6 +121,7 @@ module.exports = {
         new CopyPlugin([
             { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "./lib" },
             { from: "./node_modules/jquery/dist/jquery.min.js", to: "./lib" },
+            { from: "./src/images/favicon.ico", to: "./" },
         ]),
     ]    
 }

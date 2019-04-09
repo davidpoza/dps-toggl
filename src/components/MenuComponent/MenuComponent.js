@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import config from '../../config/config'
 import styles from './MenuComponent.scss';
 import logo from '../../images/icon.png';
 import {Link} from 'react-router-dom';
@@ -14,7 +15,7 @@ class MenuComponent extends Component{
                 <div>
                     <div className={styles.logo}>
                         <img src={logo} />
-                        <div className={styles.text}>dpsToggl</div>
+                        <div className={styles.text}>{config.app_title}</div>
                     </div>
                     <ul className = {"fa-ul "+styles.ul}>
                         <li className={styles.li}><span className = "fa-li"><i className="fas fa-stopwatch"></i></span><span className={styles.item_text}><Link to="/">Timer</Link></span></li>
@@ -26,7 +27,7 @@ class MenuComponent extends Component{
                     </ul>
                 </div>
                  
-                        <LoggedInfoContainer username="David Poza" expanded="false" />
+                <LoggedInfoContainer />
                 
             </div>
         )

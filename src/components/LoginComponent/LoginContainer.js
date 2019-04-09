@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -36,5 +37,9 @@ function mapStateToProps (state) {
       actions: bindActionCreators(userActions, dispatch)
     }
   }
-  
+
+LoginContainer.propTypes = {
+    history: PropTypes.object.isRequired, //se recibe esta prop por llamarse desde el component Route de react-router
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

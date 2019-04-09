@@ -6,7 +6,8 @@ import {
     LOGOUT_USER,
     REFRESH_TOKEN_ATTEMPT,
     REFRESH_TOKEN_FAIL,
-    REFRESH_TOKEN_SUCCESS
+    REFRESH_TOKEN_SUCCESS,
+    CLEAN_USER_MESSAGE
 } from './types';
 
 
@@ -47,6 +48,12 @@ export function refreshTokenError(error){
     return {
         type: REFRESH_TOKEN_FAIL,
         payload: error
+    }
+}
+
+export function cleanMessage(){
+    return {
+        type: CLEAN_USER_MESSAGE,
     }
 }
 

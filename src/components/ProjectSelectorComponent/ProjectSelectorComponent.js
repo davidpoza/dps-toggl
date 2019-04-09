@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 
 import styles from './ProjectSelectorComponent.scss';
-import utils from '../../utils';
 
 const colors = [
  "#09a9f4", "#c87bf6", "#eb548d", "#fa8e49", "#c67639", "#51c93d", "#33bb9b", "#e19a86", "#3853b5", "#a354a6", "#f1c451", "#1f5615", "º#89211f", "#e23c39", "#000000"
@@ -18,7 +16,7 @@ class ProjectSelectorComponent extends Component{
 
         this.state = {
             projects: [],
-            value: ""
+            value: "" //es el valor del input para filtrar el listado de proyectos
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
@@ -42,13 +40,13 @@ class ProjectSelectorComponent extends Component{
             });
     }
 
-
+    /** se ejecuta onChange del input de filtrado de proyectos */
     handleOnChangeInput(e){   
         this.setState({
             value: e.target.value
         });
         let filtered_projects = this.props.projects.filter((elem)=>{
-            let regex = new RegExp(e.target.value, "i");            
+            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
             return regex.test(elem.name);
         });
         this.setState({
@@ -56,6 +54,10 @@ class ProjectSelectorComponent extends Component{
         });
     }
 
+    /**se ejecuta cuando seleccionamos un proyecto.
+     * Pasamos el evento al padre: NewBlockComponent
+     * Además cuando hacemos esto se resetea el componente a la lista inicial y se borra el input
+     */
     handleOnSelect(e){
         this.props.onClick(e);
         this.setState({
@@ -100,6 +102,13 @@ class ProjectSelectorComponent extends Component{
             </div>
         )
     }
+}
+
+ProjectSelectorComponent.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    project_selected_name: PropTypes.string,
+    project_selected_color: PropTypes.string,
+    projects: PropTypes.array.isRequired,
 }
 
 export default ProjectSelectorComponent;

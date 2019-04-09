@@ -1,7 +1,8 @@
 import {
     FETCH_PROJECTS_ATTEMPT,
     FETCH_PROJECTS_FAIL,
-    FETCH_PROJECTS_SUCCESS
+    FETCH_PROJECTS_SUCCESS,
+    CLEAN_PROJECT_MESSAGE
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -16,7 +17,6 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case FETCH_PROJECTS_SUCCESS:
-        console.log(action.payload);
             return {
                 ...state,
                 loading: false,
@@ -28,6 +28,11 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case CLEAN_PROJECT_MESSAGE:
+            return {
+                ...state,
+                error: {}
             }
         default:
             return state;

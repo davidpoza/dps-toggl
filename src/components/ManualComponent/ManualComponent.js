@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es';
+import PropTypes from 'prop-types';
 
+
+import "react-datepicker/dist/react-datepicker.css";
 import styles from './ManualComponent.scss';
 
 
@@ -14,10 +16,6 @@ class ManualComponent extends Component{
 
     }
 
-
-
-    
-
     render(){
         return(
             <div>
@@ -28,6 +26,15 @@ class ManualComponent extends Component{
             </div>
         )
     }
+}
+
+
+ManualComponent.propTypes = {
+    start_date: PropTypes.object.isRequired,
+    start_hour: PropTypes.string.isRequired,
+    end_hour: PropTypes.string.isRequired,
+    handleDateChange: PropTypes.func.isRequired,
+    handleHourChange: PropTypes.func.isRequired
 }
 
 export default ManualComponent;

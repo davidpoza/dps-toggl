@@ -15,8 +15,10 @@ class LoadingComponent extends Component{
     render(){
         if (this.props.isLoading)
         return(            
-            <div className={styles.loadingImage}>
-                <img src={loadingImage} />
+            <div className={styles.loading}>
+                <div className="spinner-border text-info" role="status">
+                <span className="sr-only">Cargando...</span>
+                </div>
             </div>
         )
         return(<div className={styles.loadingImage}></div>);
