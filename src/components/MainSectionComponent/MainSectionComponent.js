@@ -20,7 +20,7 @@ class MainSectionComponent extends Component{
         return(
             <div className="h-100">
                 
-                <PrivateRoute exact path="/" component={TimerDashboardContainer} />
+                <PrivateRoute exact path="/" component={TimerDashboardContainer} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
 

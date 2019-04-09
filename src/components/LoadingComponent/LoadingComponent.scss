@@ -1,6 +1,7 @@
 @import "../../defaults.scss";
 
-.loadingImage{
-  height: 148px;
-  text-align: center;
+.loading{
+  position: fixed;
+  right: 30px;
+  bottom: 20px;
 }

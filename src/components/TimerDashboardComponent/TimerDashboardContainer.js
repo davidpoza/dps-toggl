@@ -18,7 +18,7 @@ class TimerDashboardContainer extends Component{
 
     render(){
         return(
-            <TimerDashboardComponent user={this.props.user} actions={this.props.actions}/>
+            <TimerDashboardComponent user={this.props.user} user={this.props.user} task={this.props.task} project={this.props.project} tag={this.props.tag}/>
         )
     }
 }
