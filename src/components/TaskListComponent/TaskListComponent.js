@@ -18,7 +18,10 @@ class TaskListComponent extends Component{
 
     //también hacemos un fetchTasks al montar el componente lista.
     componentDidMount(){
-        this.props.taskActions.fetchTasks(this.props.token);       
+        if(this.props.date != undefined)
+            this.props.taskActions.fetchTasksByDate(this.props.token, this.props.date);   
+        else
+            this.props.taskActions.fetchTasks(this.props.token);       
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo

@@ -152,8 +152,43 @@ const API = {
             );
         },
         fetchTasks(token){
-            //?fields=*.*
             return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+        fetchAllDates(token){
+            return fetch(api_url+"/items/tasks?fields=date&groups=date&sort=date", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+        fetchTasksByDate(token, date){
+            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*&filter[date][eq]="+date, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -237,78 +272,6 @@ const API = {
             );
         },
     },
-    task_tag: {
-        /*updateTaskTags(token, task_id, tags){
-            let array_tags_obj = [];
-            if (tags_id != null)
-                tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});
-            let composingBody = {};
-            if(description!=null) composingBody.desc = description;
-            if(date_start!=null) composingBody.date_start = date_start;
-            if(date_end!=null) composingBody.date_end = date_end;
-            if(project_id!=-1) composingBody.project = project_id;
-            if(tags_id!=null) composingBody.tags = array_tags_obj
-
-            return fetch(api_url+"/items/tasks_tags/"+task_id, {
-                method: "PATCH",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                },
-                body: JSON.stringify(composingBody)
-            }).then(
-                function(response){
-                    return response.json();
-                }
-            ).then(
-                function(data){
-                    return data;
-                }
-            );
-        },*/
-        getTagsFromTask(token, task_id){
-            return fetch(api_url+"/items/tasks_tags?filter[tasks_id]="+task_id, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            }).then(
-                function(response){
-                    return response.json();
-                }
-            )
-        },
-        deleteTaskTags(token, task_id){
-            this.getTagsFromTask(token, task_id).then((data)=>{
-                if(data.data.length > 0){
-                    let string_tags_delete = data.data.reduce((prev,curr)=>{
-                        let previo = prev?prev.id:"";
-                        let actual = curr?curr.id:""
-                        return previo+","+actual
-                    }, "");
-                return fetch(api_url+"/items/tasks_tags/"+string_tags_delete, {
-                    method: "DELETE",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer "+ token
-                    }
-                }).then(
-                    function(response){
-                        if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
-                            return {data: {id: task_id}};
-                        else
-                            return {error: {message: "Error on delete tags of task"}};
-                    }
-                );
-                }
-                
-            });                
-        }
-    }
 }
 
 export default API;

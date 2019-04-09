@@ -14,7 +14,10 @@ import {
     UPDATE_TASK_FAIL,
     UPDATE_TASK_SUCCESS,
     UPDATE_TASK_VISUALLY,
-    CLEAN_TASK_MESSAGE
+    CLEAN_TASK_MESSAGE,
+    FETCH_DATES_ATTEMPT,
+    FETCH_DATES_SUCCESS,
+    FETCH_DATES_FAIL
 } from './types';
 
 
@@ -58,7 +61,7 @@ export function deleteTasksVisually(taskData){
     }
 }
 
-export function fetchTasksSuccess(taskData){
+export function fetchTasksSuccess(taskData, date){
     return {
         type: FETCH_TASKS_SUCCESS,
         payload: taskData
@@ -100,6 +103,20 @@ export function cleanMessage(){
     }
 }
 
+
+export function fetchDatesSuccess(dates){
+    return {
+        type: FETCH_DATES_SUCCESS,
+        payload: dates
+    }
+}
+
+export function fetchDatesError(error){
+    return {
+        type: FETCH_DATES_FAIL,
+        payload: error
+    }
+}
 
 /* Action creators asíncronos - thunks */
 
@@ -241,3 +258,47 @@ export function fetchTasks(token){
     }
 }
 
+
+export function fetchAllDates(token){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_DATES_ATTEMPT
+        });
+
+        api.task.fetchAllDates(token).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(fetchDatesSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchDatesError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(fetchDatesError(error));
+        });
+    }
+}
+
+export function fetchTasksByDate(token, date){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_TASKS_ATTEMPT
+        });
+
+        api.task.fetchTasksByDate(token, date).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(fetchTasksSuccess(date, data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchTasksError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(fetchTasksError(error));
+        });
+    }
+}

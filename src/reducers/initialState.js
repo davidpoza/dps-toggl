@@ -10,6 +10,7 @@ const initialState = {
     },
     taskReducer: {
         tasks: [],
+        dates: [], //array de días con tareas
         need_refreshing: false,
         loading: false,
         error: {}

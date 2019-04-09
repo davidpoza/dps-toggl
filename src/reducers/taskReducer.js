@@ -13,7 +13,10 @@ import {
     UPDATE_TASK_FAIL,
     UPDATE_TASK_SUCCESS,
     UPDATE_TASK_VISUALLY,
-    CLEAN_TASK_MESSAGE
+    CLEAN_TASK_MESSAGE,
+    FETCH_DATES_ATTEMPT,
+    FETCH_DATES_FAIL,
+    FETCH_DATES_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -103,6 +106,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
+            
             return {
                 ...state,
                 loading: false,
@@ -110,6 +114,25 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 need_refreshing: false
             }
         case FETCH_TASKS_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case FETCH_DATES_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {}
+            }
+        case FETCH_DATES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                dates: action.payload,
+                need_refreshing: false
+            }
+        case FETCH_DATES_FAIL:
             return {
                 ...state,
                 loading: false,

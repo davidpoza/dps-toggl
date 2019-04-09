@@ -10,6 +10,11 @@ const utils = {
         return `${this.pad(hours,2)}:${this.pad(min,2)}:${this.pad(sec,2)}`;
     },
 
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
+    standarDateToHuman(date){
+
+    },
+
     /** Recibe un número y devuelve una cadena con la longitud indicada como segundo parámetro.
         Rellenando si es necesario con ceros por la izquierda */
     pad(str, max) {
