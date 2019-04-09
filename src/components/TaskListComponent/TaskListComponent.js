@@ -31,7 +31,7 @@ class TaskListComponent extends Component{
     /* hace una copia del array de tasks que llega via redux connect en el container, para modificarlo
     mediante un filter que elimine justo el task con id indicado.*/
     handleDeleteTaskVisually(task_id){
-        let new_task_array = this.props.task.tasks.filter((e)=>{
+        let new_task_array = this.props.tasks.filter((e)=>{
             return e.id != task_id
         });
 
