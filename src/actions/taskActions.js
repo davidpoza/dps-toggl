@@ -13,7 +13,8 @@ import {
     UPDATE_TASK_ATTEMPT,
     UPDATE_TASK_FAIL,
     UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_VISUALLY
+    UPDATE_TASK_VISUALLY,
+    CLEAN_TASK_MESSAGE
 } from './types';
 
 
@@ -90,6 +91,12 @@ export function updateTasksVisually(taskData){
     return {
         type: UPDATE_TASK_VISUALLY,
         payload: taskData
+    }
+}
+
+export function cleanMessage(){
+    return {
+        type: CLEAN_TASK_MESSAGE,
     }
 }
 

@@ -12,7 +12,8 @@ import {
     UPDATE_TASK_ATTEMPT,
     UPDATE_TASK_FAIL,
     UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_VISUALLY
+    UPDATE_TASK_VISUALLY,
+    CLEAN_TASK_MESSAGE
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -113,6 +114,11 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case CLEAN_TASK_MESSAGE:
+            return {
+                ...state,
+                error: {}
             }
         default:
             return state;

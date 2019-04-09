@@ -1,7 +1,8 @@
 import {
     FETCH_TAGS_ATTEMPT,
     FETCH_TAGS_FAIL,
-    FETCH_TAGS_SUCCESS
+    FETCH_TAGS_SUCCESS,
+    CLEAN_TAG_MESSAGE
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -27,6 +28,11 @@ export default function tagReducer (state = initialState.tagReducer, action){
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case CLEAN_TAG_MESSAGE:
+            return {
+                ...state,
+                error: {}
             }
             
         default:

@@ -2,7 +2,8 @@
 import {
 FETCH_PROJECTS_ATTEMPT,
 FETCH_PROJECTS_FAIL,
-FETCH_PROJECTS_SUCCESS
+FETCH_PROJECTS_SUCCESS,
+CLEAN_PROJECT_MESSAGE
 } from './types';
 
 
@@ -25,7 +26,11 @@ export function fetchProjectsError(error){
     }
 }
 
-
+export function cleanMessage(){
+    return {
+        type: CLEAN_PROJECT_MESSAGE,
+    }
+}
 
 /* Action creators asíncronos - thunks */
 

@@ -2,7 +2,8 @@
 import {
 FETCH_TAGS_ATTEMPT,
 FETCH_TAGS_FAIL,
-FETCH_TAGS_SUCCESS
+FETCH_TAGS_SUCCESS,
+CLEAN_TAG_MESSAGE
 } from './types';
 
 
@@ -25,6 +26,11 @@ export function fetchTagsError(error){
     }
 }
 
+export function cleanMessage(){
+    return {
+        type: CLEAN_TAG_MESSAGE,
+    }
+}
 
 /* Action creators asíncronos - thunks */
 
