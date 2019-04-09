@@ -18,8 +18,13 @@ const utils = {
     },
 
     /** Convierte un objeto Date a una cadena estándar: YYYY-MM-DD HH:MM:SS */
-    standarizeDate(date){
+    standarizeDatetime(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)} ${this.pad(date.getHours(),2)}:${this.pad(date.getMinutes(),2)}:${this.pad(date.getSeconds(),2)}`;
+    },
+
+    /** Convierte un objeto Date a una cadena estándar: YYYY-MM-DD */
+    standarizeDate(date){
+        return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
     },
 
     /** Convierte un objeto Date a una cadena YYYY-MM-DD */
@@ -48,6 +53,16 @@ const utils = {
     /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM */
     getHourFromDate(date){
         return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2);
+    },
+
+    /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
+    getHourSecFromDate(date){
+        return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2)+":"+this.pad(date.getSeconds(),2);
+    },
+
+   /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
+    getHourInSecFromDate(date){
+        return (parseInt(date.getHours())*3600+parseInt(date.getMinutes())*60+parseInt(date.getSeconds()));
     },
 
     /** Dadas dos horas como cadena HH:MM:SS, devuelve la diferencia entre ellas con el formato HH:MM:SS */
