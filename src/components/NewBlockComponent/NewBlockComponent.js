@@ -17,6 +17,10 @@ class NewBlockComponent extends Component{
     constructor(props){
         super(props);
 
+        this.chronoResetBtn = React.createRef();
+        this.chronoModeBtn = React.createRef();
+        this.manualModeBtn = React.createRef();
+
         this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
         this.handleOnClickCreate = this.handleOnClickCreate.bind(this);
@@ -60,9 +64,9 @@ class NewBlockComponent extends Component{
     componentDidMount(){
         this.updateStartEndHours();
         if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
-            $('#btn-chrono-mode').popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
-            $('#btn-manual-mode').popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
-            $('#btn-chrono-reset').popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
+            $(this.chronoModeBtn.current).popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
+            $(this.manualModeBtn.current).popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
+            $(this.chronoResetBtn.current).popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
         }        
         
     }
@@ -211,6 +215,7 @@ class NewBlockComponent extends Component{
                 return e;
             })
         });
+        document.title = config.app_title;
     }
 
     /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
@@ -300,9 +305,9 @@ class NewBlockComponent extends Component{
                                         }             
                                     </button>
                                     <div className="d-flex flex-column">
-                                        <button id="btn-chrono-reset" style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
-                                        <button id="btn-chrono-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
-                                        <button id="btn-manual-mode" style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
+                                        <button id="btn-chrono-reset" ref={this.chronoResetBtn} style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
+                                        <button id="btn-chrono-mode" ref={this.chronoModeBtn} style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="chrono"? styles.btn_active:styles.btn} onClick={this.handleOnClickCronoMode}><i className="fas fa-stopwatch"></i></button>
+                                        <button id="btn-manual-mode" ref={this.manualModeBtn} style={this.state.chrono_status == "paused" ? {display:"block"}:{display:"none"}} className={this.state.mode=="manual"? styles.btn_active:styles.btn} onClick={this.handleOnClickManualMode}><i className="fas fa-align-justify"></i></button>
                                     </div>
 
                         </div>

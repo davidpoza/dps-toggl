@@ -12,6 +12,8 @@ class LoginComponent extends Component{
 
         this.handleOnClick = this.handleOnClick.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
+        this.inputEmail = React.createRef();
+        this.inputPassword = React.createRef();
 
         this.state = {
             email: "",
@@ -26,13 +28,6 @@ class LoginComponent extends Component{
     }
 
     
-    componentDidMount(){
-        this.setState({
-            email: document.getElementById("inputEmail"),
-            password: document.getElementById("inputPassword")
-        });
-    }
-
     handleOnChange(e){
         if(e.target.id == "inputEmail")
             this.setState({
@@ -42,14 +37,11 @@ class LoginComponent extends Component{
             this.setState({
                 password: e.target.value
             });
-        if(this.state.email == "" && this.state.password == "")
-            this.setState({
-                btn_enabled: false
-            });
-        else if(this.state.email != "" && this.state.password != "")
-            this.setState({
-                btn_enabled: true
-            });
+
+        this.setState({
+            btn_enabled: this.state.email == "" && this.state.password == "" ? false:true
+        });
+
     }
 
     render(){
@@ -63,13 +55,13 @@ class LoginComponent extends Component{
                     
                     <div className={styles.form_label_group}>
                         <label htmlFor="inputEmail">Email address</label>
-                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onChange={this.handleOnChange}/>
+                        <input type="email" id="inputEmail" ref={this.inputEmail} className="form-control" placeholder="Email address" required autoFocus text={this.state.email} onBlur={this.handleOnChange} onChange={this.handleOnChange}/>
                         
                     </div>
 
                     <div className={styles.form_label_group}>
                         <label htmlFor="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" required text={this.state.password} onChange={this.handleOnChange}/>
+                        <input type="password" id="inputPassword" ref={this.inputPassword} className="form-control" placeholder="Password" required text={this.state.password} onBlur={this.handleOnChange} onChange={this.handleOnChange}/>
                         
                     </div>
                     <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.handleOnClick} disabled={!this.state.btn_enabled}>Login</button>
