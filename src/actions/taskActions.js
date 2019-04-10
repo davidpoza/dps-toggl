@@ -61,7 +61,7 @@ export function deleteTasksVisually(taskData){
     }
 }
 
-export function fetchTasksSuccess(taskData, date){
+export function fetchTasksSuccess(taskData){
     return {
         type: FETCH_TASKS_SUCCESS,
         payload: taskData
@@ -100,14 +100,6 @@ export function updateTasksVisually(taskData){
 export function cleanMessage(){
     return {
         type: CLEAN_TASK_MESSAGE,
-    }
-}
-
-
-export function fetchDatesSuccess(dates){
-    return {
-        type: FETCH_DATES_SUCCESS,
-        payload: dates
     }
 }
 
@@ -236,7 +228,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
     }
 }
 
-export function fetchTasks(token){
+/*export function fetchTasks(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_TASKS_ATTEMPT
@@ -256,32 +248,58 @@ export function fetchTasks(token){
                 dispatch(fetchTasksError(error));
         });
     }
-}
+}*/
 
-
-export function fetchAllDates(token){
+/** Consulta todas las fechas distintas usango gruopby
+ * y luego encadena una consulta de las tasks para cada una de ellas.
+ * Devuelve un array de objetos {date:string, tasks:array de objetos task}
+ */
+export function fetchTasks(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_DATES_ATTEMPT
         });
 
-        api.task.fetchAllDates(token).then(
+        api.task.fetchAllDates(token)
+        .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    dispatch(fetchDatesSuccess(data.data));
+                    return data.data.map((e)=>{
+                        dispatch({
+                            type: FETCH_DATES_SUCCESS
+                        });
+                        dispatch({
+                            type: FETCH_TASKS_ATTEMPT
+                        });
+                        return api.task.fetchTasksByDate(token, e.date)
+                    });
                 }                    
                 else if(data.error)
                     dispatch(fetchDatesError(data.error))
             }                          
-        ).catch(
+        )
+        .then(
+            (data) => {
+                data.map((data)=>{
+                    data.then((data)=>{
+                        if(data){
+                            dispatch(fetchTasksSuccess(data));
+                        }                    
+                        else if(data.tasks.error)
+                            dispatch(fetchTasksError(data.tasks.error))
+                    });                              
+                })
+            }
+        )        
+        .catch(
             (error) => {
-                dispatch(fetchDatesError(error));
+                dispatch(fetchTasksError(error));
         });
     }
 }
 
-export function fetchTasksByDate(token, date){
+/*export function fetchTasksByDate(token, date){
     return (dispatch) => {
         dispatch({
             type: FETCH_TASKS_ATTEMPT
@@ -301,4 +319,4 @@ export function fetchTasksByDate(token, date){
                 dispatch(fetchTasksError(error));
         });
     }
-}
+}*/

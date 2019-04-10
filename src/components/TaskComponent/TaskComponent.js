@@ -210,7 +210,7 @@ class TaskComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className="col-auto col-lg-auto p-0 order-4 order-lg-2">                
+                <div className="col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2">                
                     {this.props.task.project!=null ?
                     <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                     :

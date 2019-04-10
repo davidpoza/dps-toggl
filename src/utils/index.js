@@ -12,7 +12,10 @@ const utils = {
 
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
     standarDateToHuman(date){
-
+        let d = new Date(date);
+        let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        let weekDays = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
     },
 
     /** Recibe un número y devuelve una cadena con la longitud indicada como segundo parámetro.

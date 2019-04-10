@@ -103,14 +103,20 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: true,
+                tasks: [],
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
-            
+            //hay que ordenar los bloques de dates ya que van llegando de forma asíncrona
+            let array_tasks = [...state.tasks, action.payload].sort((a,b)=>{
+                if(a.date < b.date) return 1
+                else if(a.date > b.date) return -1
+                else return 0
+            });
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                tasks: array_tasks,
                 need_refreshing: false
             }
         case FETCH_TASKS_FAIL:
@@ -129,8 +135,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: false,
-                dates: action.payload,
-                need_refreshing: false
             }
         case FETCH_DATES_FAIL:
             return {

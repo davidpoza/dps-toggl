@@ -170,7 +170,7 @@ const API = {
             );
         },
         fetchAllDates(token){
-            return fetch(api_url+"/items/tasks?fields=date&groups=date&sort=date", {
+            return fetch(api_url+"/items/tasks?fields=date&groups=date&sort=-date", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -201,7 +201,7 @@ const API = {
                 }
             ).then(
                 function(data){
-                    return data;
+                    return {date: date, tasks:data.data};
                 }
             );
         },

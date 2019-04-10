@@ -16,21 +16,6 @@ class TaskListComponent extends Component{
         };        
     }
 
-    //también hacemos un fetchTasks al montar el componente lista.
-    componentDidMount(){
-        if(this.props.date != undefined)
-            this.props.taskActions.fetchTasksByDate(this.props.token, this.props.date);   
-        else
-            this.props.taskActions.fetchTasks(this.props.token);       
-    }
-
-    //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
-    componentDidUpdate(prevProps) {
-        if (!prevProps.need_refreshing && this.props.need_refreshing)
-            this.props.taskActions.fetchTasks(this.props.token);
-
-    }
-
     /* hace una copia del array de tasks que llega via redux connect en el container, para modificarlo
     mediante un filter que elimine justo el task con id indicado.*/
     handleDeleteTaskVisually(task_id){

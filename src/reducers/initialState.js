@@ -9,8 +9,7 @@ const initialState = {
         error: {}
     },
     taskReducer: {
-        tasks: [],
-        dates: [], //array de días con tareas
+        tasks: [], // array de objetos  {date:string, tasks:array de objetos}
         need_refreshing: false,
         loading: false,
         error: {}
