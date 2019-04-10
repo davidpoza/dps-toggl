@@ -76,7 +76,7 @@ class TagSelectorComponent extends Component{
                     <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         { 
                             this.state.tags.filter((e)=>(e.checked)).length > 0 ? (
-                                <span className={styles.label}>
+                                <button className={styles.label}>
                                 {
                                     this.state.tags.filter((e)=>(e.checked)).map((e,index, arr)=>{
                                     if(index == arr.length -1)
@@ -85,7 +85,7 @@ class TagSelectorComponent extends Component{
                                         return utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ","
                                     })
                                 }
-                                </span>
+                                </button>
                                 
                             ):
                             <button className={styles.btn} >
