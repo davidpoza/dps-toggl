@@ -17,7 +17,10 @@ import {
     CLEAN_TASK_MESSAGE,
     FETCH_DATES_ATTEMPT,
     FETCH_DATES_SUCCESS,
-    FETCH_DATES_FAIL
+    FETCH_DATES_FAIL,
+    FETCH_TASK_ATTEMPT,
+    FETCH_TASK_SUCCESS,
+    FETCH_TASK_FAIL
 } from './types';
 
 
@@ -58,6 +61,20 @@ export function deleteTasksVisually(taskData){
     return {
         type: DELETE_TASK_VISUALLY,
         payload: taskData
+    }
+}
+
+export function fetchTaskSuccess(taskData){
+    return {
+        type: FETCH_TASK_SUCCESS,
+        payload: taskData
+    }
+}
+
+export function fetchTaskError(error){
+    return {
+        type: FETCH_TASK_FAIL,
+        payload: error
     }
 }
 
@@ -186,7 +203,7 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
 }
 
 /**
- * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
+ * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTask.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
 export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
@@ -201,16 +218,16 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
                     dispatch({
-                        type: FETCH_TASKS_ATTEMPT
+                        type: FETCH_TASK_ATTEMPT
                     });
-                    api.task.fetchTasks(token).then(
+                    api.task.fetchTask(token, task_id).then(
                         (data) => {
                             //directus devuelve los errores en una objeto error y los datos en uno data
                             if(data.data){
-                                dispatch(fetchTasksSuccess(data.data));
+                                dispatch(fetchTaskSuccess(data.data));
                             }                    
                             else if(data.error)
-                                dispatch(fetchTasksError(data.error))
+                                dispatch(fetchTaskError(data.error))
                         }                          
                     ).catch(
                         (error) => {
@@ -228,27 +245,6 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
     }
 }
 
-/*export function fetchTasks(token){
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_TASKS_ATTEMPT
-        });
-
-        api.task.fetchTasks(token).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchTasksSuccess(data.data));
-                }                    
-                else if(data.error)
-                    dispatch(fetchTasksError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(fetchTasksError(error));
-        });
-    }
-}*/
 
 /** Consulta todas las fechas distintas usango gruopby
  * y luego encadena una consulta de las tasks para cada una de ellas.
@@ -299,6 +295,8 @@ export function fetchTasks(token){
     }
 }
 
+
+//esta función la usaremos cuando pidamos que cargue más días aumentando
 /*export function fetchTasksByDate(token, date){
     return (dispatch) => {
         dispatch({

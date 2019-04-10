@@ -16,17 +16,20 @@ import {
     CLEAN_TASK_MESSAGE,
     FETCH_DATES_ATTEMPT,
     FETCH_DATES_FAIL,
-    FETCH_DATES_SUCCESS
+    FETCH_DATES_SUCCESS,
+    FETCH_TASK_ATTEMPT,
+    FETCH_TASK_FAIL,
+    FETCH_TASK_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
-import ProjectSelectorComponent from '../components/ProjectSelectorComponent/ProjectSelectorComponent';
+
 
 
 export default function taskReducer (state = initialState.taskReducer, action){
     switch(action.type){
         case CREATE_TASK_ATTEMPT:        
-            return {//vamos a crear una copia del estado, es como usar Object.assign
+            return {//vamos a extender una objeto vacio con una copia del estado con el spread operator, es como usar Object.assign
                 ...state,
                 loading: true,
                 need_refreshing: false,
@@ -94,6 +97,35 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case UPDATE_TASK_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case FETCH_TASK_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {}
+            }
+        case FETCH_TASK_SUCCESS:
+            //buscamos actualizar solo el task indicado
+            let tasks_updated_task = [...state.tasks].map(e=>{
+                e.tasks = e.tasks.map(task=>{
+                    if(task.id == action.payload.id){
+                        task = action.payload
+                    }
+                    return task;
+                })
+                return e;
+            });
+            return {
+                ...state,
+                loading: false,
+                tasks: tasks_updated_task,
+                need_refreshing: false
+            }
+        case FETCH_TASK_FAIL:
             return {
                 ...state,
                 loading: false,

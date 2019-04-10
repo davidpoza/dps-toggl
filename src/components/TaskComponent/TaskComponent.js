@@ -130,13 +130,13 @@ class TaskComponent extends Component{
         if(e.target.id=="project0") //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
-            project.id = e.target.id.match(/project(\d{0,4})/)[1];
+            project.id = parseInt(e.target.id.match(/project(\d{0,4})/)[1]);
             project.color = window.getComputedStyle(e.target.childNodes[0]).color; //obtenemos el color del elemento seleccionado actualmente en el DOM
             project.name = e.target.innerText; //el nombre del proyecto lo sacamos del elemento con esa id
         }
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
-        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
+        y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
