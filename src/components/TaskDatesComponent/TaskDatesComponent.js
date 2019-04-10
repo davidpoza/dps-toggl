@@ -39,7 +39,9 @@ class TaskDatesComponent extends Component{
                 return e.id != task_id
             });
             return e;
-        });
+        }).filter(e=>{
+            return e.tasks.length > 0
+        }); //si algun grupo se queda sin tareas se borra
         //llamamos a un action síncrono que simplemente copia el nuevo array al store, estado taskReducer.tags
         this.props.taskActions.deleteTasksVisually(new_task_array);
     }
@@ -99,7 +101,7 @@ class TaskDatesComponent extends Component{
 }
 
 
-/*TaskListComponent.propTypes = {
+TaskDatesComponent.propTypes = {
     token: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
@@ -108,5 +110,5 @@ class TaskDatesComponent extends Component{
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
 }
-*/
+
 export default TaskDatesComponent;
