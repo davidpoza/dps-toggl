@@ -37,6 +37,7 @@ class ToastComponent extends Component{
     }
 
     render(){
+        if(this.props.userMessage != undefined)
             return(
 
                 <div className={"toast " + styles.mytoast} ref={element => this.toast = element} role="alert" aria-live="assertive" aria-atomic="true" data-delay="6000">
@@ -56,6 +57,7 @@ class ToastComponent extends Component{
                 </div>
 
             )
+        return null;
     }
 }
 
