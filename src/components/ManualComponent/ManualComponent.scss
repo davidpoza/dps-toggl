@@ -3,13 +3,19 @@
 .date_input{
     border: 1px solid lightgrey;
     border-radius: 5px;
-    padding: 4px;
-
-    
+    padding: 4px;    
     width: 6em;
+    @media screen and (max-width: $large-device) {
+        padding: 0px;
+        width: 5.5em;
+    }
 }
 
 .hour_input{
     @extend .date_input;
     width: 3.2em;
+    @media screen and (max-width: $large-device) {
+        padding: 0px;
+        width: 2.5em;
+    }
 }
