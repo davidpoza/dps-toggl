@@ -10,6 +10,14 @@ const utils = {
         return `${this.pad(hours,2)}:${this.pad(min,2)}:${this.pad(sec,2)}`;
     },
 
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
+    standarDateToHuman(date){
+        let d = new Date(date);
+        let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        let weekDays = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
+    },
+
     /** Recibe un número y devuelve una cadena con la longitud indicada como segundo parámetro.
         Rellenando si es necesario con ceros por la izquierda */
     pad(str, max) {
@@ -18,8 +26,13 @@ const utils = {
     },
 
     /** Convierte un objeto Date a una cadena estándar: YYYY-MM-DD HH:MM:SS */
-    standarizeDate(date){
+    standarizeDatetime(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)} ${this.pad(date.getHours(),2)}:${this.pad(date.getMinutes(),2)}:${this.pad(date.getSeconds(),2)}`;
+    },
+
+    /** Convierte un objeto Date a una cadena estándar: YYYY-MM-DD */
+    standarizeDate(date){
+        return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
     },
 
     /** Convierte un objeto Date a una cadena YYYY-MM-DD */
@@ -50,6 +63,16 @@ const utils = {
         return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2);
     },
 
+    /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
+    getHourSecFromDate(date){
+        return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2)+":"+this.pad(date.getSeconds(),2);
+    },
+
+   /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
+    getHourInSecFromDate(date){
+        return (parseInt(date.getHours())*3600+parseInt(date.getMinutes())*60+parseInt(date.getSeconds()));
+    },
+
     /** Dadas dos horas como cadena HH:MM:SS, devuelve la diferencia entre ellas con el formato HH:MM:SS */
     diffHoursBetDates(hour_start, hour_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
@@ -61,7 +84,9 @@ const utils = {
         let min2 = hour_end.match(regexMin)[1];
         let sec1 = hour_start.match(regexSec)[1];
         let sec2 = hour_end.match(regexSec)[1];
-        return(this.pad(parseInt(hour2-hour1),2)+":"+this.pad(parseInt(min2-min1),2)+":"+this.pad(parseInt(sec2-sec1),2));
+        let start_in_secs = parseInt(sec1) + parseInt(min1*60) + parseInt(hour1*60*60);
+        let end_in_secs = parseInt(sec2) + parseInt(min2*60) + parseInt(hour2*60*60);
+        return(this.secondsToFormatedString(end_in_secs-start_in_secs));
     },
 
     /** Devuelve true si se ejecuta desde un navegador movil.

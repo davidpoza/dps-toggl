@@ -130,18 +130,18 @@ class TaskComponent extends Component{
         if(e.target.id=="project0") //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
-            project.id = e.target.id.match(/project(\d{0,4})/)[1];
+            project.id = parseInt(e.target.id.match(/project(\d{0,4})/)[1]);
             project.color = window.getComputedStyle(e.target.childNodes[0]).color; //obtenemos el color del elemento seleccionado actualmente en el DOM
             project.name = e.target.innerText; //el nombre del proyecto lo sacamos del elemento con esa id
         }
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
-        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
+        y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, project!=null? project.id:null, null)
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.props.onUpdate(this.props.task.id, null, null, null, project, null);
+       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
@@ -190,7 +190,7 @@ class TaskComponent extends Component{
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
         y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
-        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, -1, array_tags_api)
+        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
         
     }
     
@@ -210,7 +210,7 @@ class TaskComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className="col-auto col-lg-auto p-0 order-4 order-lg-2">                
+                <div className="col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2">                
                     {this.props.task.project!=null ?
                     <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                     :
@@ -220,8 +220,8 @@ class TaskComponent extends Component{
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>               
-                {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>{utils.removeSeconds(this.props.task.date_start)} - {utils.removeSeconds(this.props.task.date_end)}</div>}                
-                <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>{utils.diffHoursBetDates(this.props.task.date_start, this.props.task.date_end)}</div>
+                {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>{utils.removeSeconds(this.props.task.start_hour)} - {utils.removeSeconds(this.props.task.end_hour)}</div>}                
+                <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>{utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour)}</div>
                 <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className="dropdown-menu">

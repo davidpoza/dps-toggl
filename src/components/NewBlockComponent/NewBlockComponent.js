@@ -44,9 +44,11 @@ class NewBlockComponent extends Component{
             project_selected_color: null,
             project_selected_id: null,
             tags: [], // listado los id de los tag que hemos seleccionado
-            start_date: new Date(),            
-            start_hour: null, // solo modo manual. hora de inicio en HH:MM
-            end_hour: null // solo modo manual. hora de fin en HH:MM
+            start_date: new Date(),    //borrar        
+            start_hour: null, 
+            end_hour: null,
+            date: new Date(),
+        
         };        
     }
 
@@ -162,7 +164,7 @@ class NewBlockComponent extends Component{
     /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
     handleDateChange(date) {
         this.setState({
-          start_date: date          
+          date: date          
         });
     }
 
@@ -170,15 +172,9 @@ class NewBlockComponent extends Component{
      * LLama a un action creator asíncrono para crear la tarea
     */
     handleOnClickCreate(){
-        let start_date = new Date(this.state.start_date);
-        let formated_date_start = utils.standarizeDate(start_date).slice(0,-9); //quitamos hh:mm:ss
-        let formated_date_end = utils.standarizeDate(start_date).slice(0,-9); 
-
-        if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
+       if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
             if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
-                formated_date_start = formated_date_start + " " + utils.getHour(this.state.start_hour) + ":" + utils.getMinutes(this.state.start_hour) + ":00";
-                formated_date_end = formated_date_end + " " + utils.getHour(this.state.end_hour) + ":" + utils.getMinutes(this.state.end_hour) + ":00";      
-                this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags);
                 this.setState({
                     description: "",
                     project_selected_name: null,
@@ -240,14 +236,10 @@ class NewBlockComponent extends Component{
             })            
         }
         else if(this.state.chrono_status == "running"){  // paramos contador          
-            let date_end = new Date();
-            let date_start = new Date(date_end - this.state.time*1000);
-            let formated_date_start = utils.standarizeDate(date_start);
-            let formated_date_end = utils.standarizeDate(date_end);
-            this.props.taskActions.createTask(this.props.user.token, this.state.description, formated_date_start, formated_date_end, this.state.project_selected_id, this.state.tags);
-
-            
-            this.setState({
+            let end_seconds = utils.getHourInSecFromDate(new Date());
+            let start_seconds = end_seconds-this.state.time;
+            this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags);
+          this.setState({
                 chrono_status: "paused",
                 time: 0,
                 description: "",
@@ -281,16 +273,16 @@ class NewBlockComponent extends Component{
                         <div className="col-8 col-sm-9 col-md-10 col-lg order-1 order-lg-1 p-0">
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                         </div>
-                        <div className="col-1 col-lg-auto order-4 order-lg-2 p-1">
+                        <div className="col-4 col-lg-auto order-5 order-lg-2 p-1">
                         <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
                         </div>
-                        <div className="col-1 col-lg-auto order-5 order-lg-3 p-1">
+                        <div className="col-1 col-lg-auto order-4 order-lg-3 p-1">
                         <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
                         </div>
-                        <div className="col col-lg-auto order-6 order-lg-4">
+                        <div className="col p-0 col-lg-auto order-6 order-lg-4 text-right">
                         { this.state.mode == "chrono" ?
                             <ChronometerComponent time={this.state.time} />:
-                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} start_date={this.state.start_date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
+                            <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} date={this.state.date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
                         

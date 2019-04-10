@@ -9,7 +9,7 @@ const initialState = {
         error: {}
     },
     taskReducer: {
-        tasks: [],
+        tasks: [], // array de objetos  {date:string, tasks:array de objetos}
         need_refreshing: false,
         loading: false,
         error: {}
