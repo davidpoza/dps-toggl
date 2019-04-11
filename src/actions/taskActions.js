@@ -273,18 +273,20 @@ export function fetchTasks(token){
                     dispatch(fetchDatesError(data.error))
             }                          
         )
+        .then((data)=>
+            Promise.all(data)
+        )
         .then(
-            (data) => {
-                data.map((data)=>{
-                    data.then((data)=>{
-                        if(data){
-                            dispatch(fetchTasksSuccess(data));
-                        }                    
-                        else if(data.tasks.error)
-                            dispatch(fetchTasksError(data.tasks.error))
-                    });                              
+            (data)=>{
+                data.forEach(data=>{
+                    if(data.tasks){
+                        dispatch(fetchTasksSuccess(data));
+                    }                    
+                    else if(data.error)
+                        dispatch(fetchTasksError(data.error))
                 })
-            }
+               
+            }                              
         )        
         .catch(
             (error) => {

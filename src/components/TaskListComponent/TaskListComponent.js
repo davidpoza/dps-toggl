@@ -22,7 +22,7 @@ class TaskListComponent extends Component{
             <div>
                <ul className="p-0 container-flex">
                {
-                   this.props.tasks.map((e,index) => {
+                   this.props.tasks && this.props.tasks.map((e,index) => {
                         return <TaskComponent token={this.props.token} key={index} task={e} projects={this.props.projects} tags={this.props.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.props.onDeleteFromList} onUpdate={this.props.onUpdate}/>
                    })
                }
@@ -38,7 +38,7 @@ class TaskListComponent extends Component{
 TaskListComponent.propTypes = {
     token: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    tasks: PropTypes.array.isRequired,
+    tasks: PropTypes.array,
     tags: PropTypes.array.isRequired,
     projects: PropTypes.array.isRequired,
     need_refreshing: PropTypes.bool.isRequired,

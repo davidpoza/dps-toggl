@@ -219,7 +219,10 @@ const API = {
                 }
             ).then(
                 function(data){
-                    return {date: date, tasks:data.data};
+                    if(data.data != undefined)
+                        return {date: date, tasks:data.data};
+                    else
+                        return {date: date, tasks:undefined, error:data.error};
                 }
             );
         },
