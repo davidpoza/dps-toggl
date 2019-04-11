@@ -222,7 +222,7 @@ const API = {
                     if(data.data != undefined)
                         return {date: date, tasks:data.data};
                     else
-                        return {date: date, tasks:undefined, error:data.error};
+                        return {date: date, tasks:[], error:data.error};
                 }
             );
         },
