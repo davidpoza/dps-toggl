@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+
+import config from '../../config/config';
+import lang from '../../config/lang';
 import styles from './LoggedInfoComponent.scss';
 import avatar from '../../images/avatar_sample.jpg'
 
@@ -63,7 +66,7 @@ class LoggedInfoComponent extends Component{
                  
                 }
                 <div className="dropdown-menu">
-                    <a className="dropdown-item" href="#">Perfil</a>
+                    <a className="dropdown-item" href="#">{lang[config.lang].profile}</a>
                     <a className="dropdown-item" onClick={this.props.actions.logoutUser}>Logout</a>
                 </div>
             </div>

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
 
-import styles from './TimerDashboardComponent.scss';
+import styles from './TimerSectionComponent.scss';
 import NewBlockContainer from '../NewBlockComponent/NewBlockContainer';
 import TaskDatesContainer from '../TaskDatesComponent/TaskDatesContainer';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
-class TimerDashboardComponent extends Component{
+class TimerSectionComponent extends Component{
     constructor(props){
         super(props);
 
@@ -31,4 +31,4 @@ class TimerDashboardComponent extends Component{
     }
 }
 
-export default TimerDashboardComponent;
+export default TimerSectionComponent;

@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import styles from './MainSectionComponent.scss';
 import LoginContainer from '../LoginComponent/LoginContainer';
 import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
-import TimerDashboardContainer from '../TimerDashboardComponent/TimerDashboardContainer';
+import TimerSectionContainer from '../TimerSectionComponent/TimerSectionContainer';
+import ProjectSectionContainer from '../ProjectSectionComponent/ProjectSectionContainer';
 import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import ToastComponent from '../ToastComponent/ToastComponent';
 
@@ -20,7 +21,8 @@ class MainSectionComponent extends Component{
         return(
             <div className="h-100">
                 
-                <PrivateRoute exact path="/" component={TimerDashboardContainer} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag}}/>
+                <PrivateRoute exact path="/" component={TimerSectionContainer} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag}}/>
+                <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
 
