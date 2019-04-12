@@ -131,7 +131,7 @@ class TaskComponent extends Component{
             project = null
         else{
             project.id = parseInt(e.target.id.match(/project(\d{0,4})/)[1]);
-            project.color = window.getComputedStyle(e.target.childNodes[0]).color; //obtenemos el color del elemento seleccionado actualmente en el DOM
+            project.color = utils.rgb2hex(window.getComputedStyle(e.target.childNodes[0]).color); //obtenemos el color del elemento seleccionado actualmente en el DOM
             project.name = e.target.innerText; //el nombre del proyecto lo sacamos del elemento con esa id
         }
         
