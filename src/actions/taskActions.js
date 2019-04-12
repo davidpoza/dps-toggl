@@ -259,10 +259,10 @@ export function fetchTasks(token){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    return data.data.map((e)=>{
-                        dispatch({
-                            type: FETCH_DATES_SUCCESS
-                        });
+                    dispatch({
+                        type: FETCH_DATES_SUCCESS
+                    });
+                    return data.data.map((e)=>{                        
                         dispatch({
                             type: FETCH_TASKS_ATTEMPT
                         });

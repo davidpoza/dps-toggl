@@ -18,7 +18,7 @@ class ProjectSectionComponent extends Component{
         this.handleColorPick = this.handleColorPick.bind(this);
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);
        
     }

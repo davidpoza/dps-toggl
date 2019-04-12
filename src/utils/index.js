@@ -89,6 +89,14 @@ const utils = {
         return(this.secondsToFormatedString(end_in_secs-start_in_secs));
     },
 
+    diffHoursBetHours(hour_start, hour_end){
+        let regexHour = /(\d{2}):\d{2}:\d{2}/;
+        let hour1 = hour_start.match(regexHour)[1];
+        let hour2 = hour_end.match(regexHour)[1];
+      
+        return(parseInt(hour2)-parseInt(hour1));
+    },
+
     /** Devuelve true si se ejecuta desde un navegador movil.
      * from detectmobilebrowsers.com)
     */

@@ -14,18 +14,6 @@ class ProjectComponent extends Component{
         super(props);
 
 
-        /** 
-         * tags: almacena un array de tags con las propiedades:
-         * - id
-         * - name
-         * - slug
-         * - checked
-         * - relation_id (si checked: true)
-         */
-        this.state = {
-            hide_btns: true,
-            tags: [] 
-        }
     }
 
    componentWillMount(){
@@ -33,17 +21,25 @@ class ProjectComponent extends Component{
    }
 
    componentDidUpdate(prevProps){
-
+      
    }
 
      
     render(){
         return(
             <li className={"row m-1 justify-content-between " + styles.project } >
-                <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
+                <div className={"col-8 " + styles.desc} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
-                </div>     
-                
+                </div>
+                <div className={"col-2 " + styles.desc} >
+                    {this.props.project.tasks && this.props.project.tasks.reduce((prev, curr)=>{
+                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                        return(prev+curr);
+                    },0)} h.           
+                </div>   
+                <div className={"col-2 " + styles.desc} >
+                    {this.props.project.tasks && this.props.project.tasks.length} tareas           
+                </div>
             </li>
         )
     }

@@ -83,7 +83,7 @@ class NewBlockComponent extends Component{
     }
 
     componentWillMount(){
-        this.props.projectActions.fetchProjects(this.props.user.token);
+        this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);
         this.props.tagActions.fetchTags(this.props.user.token);
     }
 
