@@ -272,6 +272,24 @@ const API = {
                 }
             );
         },
+        fetchProjects(token, owner_id){
+            return fetch(api_url+"/items/projects?filter[owner][eq]="+owner_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
     },
     tag: {
         fetchTags(token){

@@ -56,3 +56,25 @@ export function fetchProjects(token){
     }
 }
 
+export function fetchProjectsByOwner(token, owner_id){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_PROJECTS_ATTEMPT
+        });
+
+        api.project.fetchProjects(token, owner_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(fetchProjectsSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchProjectsError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(fetchProjectsError(error));
+        });
+    }
+}
+

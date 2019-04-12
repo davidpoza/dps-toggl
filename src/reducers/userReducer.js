@@ -25,6 +25,7 @@ export default function userReducer (state = initialState.userReducer, action){
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
+                id: action.payload.id,
                 token: action.payload.token,
                 email: action.payload.email,
                 first_name: action.payload.first_name,

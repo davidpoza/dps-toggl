@@ -13,7 +13,8 @@ const lang = {
         aditional_menu_opt_delete: "Borrar",
         aditional_menu_opt_duply: "Duplicar",
         project_section_title: "Proyectos",
-        profile: "Perfil"
+        profile: "Perfil",
+        btn_new_project: "Nuevo proyecto"
     }
 };
 
