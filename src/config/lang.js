@@ -14,7 +14,9 @@ const lang = {
         aditional_menu_opt_duply: "Duplicar",
         project_section_title: "Proyectos",
         profile: "Perfil",
-        btn_new_project: "Nuevo proyecto"
+        btn_new_project: "Nuevo proyecto",
+        btn_save_changes: "Guardar cambios",
+        project_name_placeholder: "Nombre del proyecto...",
     }
 };
 
