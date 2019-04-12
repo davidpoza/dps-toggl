@@ -111,9 +111,23 @@ const utils = {
         let mm1 = parseInt(this.getMinutes(hour1));
         let mm2 = parseInt(this.getMinutes(hour2));
         return hh1*60+mm1 > hh2*60+mm2;
+    },
+
+    random(a,b){
+        return Math.floor((Math.random() * b) + a);
+    },
+
+    rgb2hex(rgb) {
+        if (  rgb.search("rgb") == -1 ) {
+             return rgb;
+        } else {
+             rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+             function hex(x) {
+                  return ("0" + parseInt(x).toString(16)).slice(-2);
+             }
+             return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]); 
+        }
     }
-
-
 }
 
 
