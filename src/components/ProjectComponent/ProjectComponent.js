@@ -41,7 +41,7 @@ class ProjectComponent extends Component{
         return(
             <li className={"row m-1 justify-content-between " + styles.project } >
                 <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
-                            {this.props.project.name}           
+                    <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
                 </div>     
                 
             </li>
