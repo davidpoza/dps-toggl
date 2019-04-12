@@ -62,7 +62,7 @@ export function fetchProjectsByOwner(token, owner_id){
             type: FETCH_PROJECTS_ATTEMPT
         });
 
-        api.project.fetchProjects(token, owner_id).then(
+        api.project.fetchProjectsByOwner(token, owner_id).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

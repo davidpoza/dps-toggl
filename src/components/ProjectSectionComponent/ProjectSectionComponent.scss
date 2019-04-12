@@ -4,3 +4,28 @@
     overflow-y: scroll;
     background-color: #fafbfc;
 }
+
+.input{
+    width: 100%;
+    font-size: 1.4em;
+    padding: 10px;
+}
+
+.color{
+    font-size: 2em;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.color_dropdown{
+    width: 12em;
+}
+
+.dropdown_btn{
+    background-color: white;
+    margin: 10px;
+}
+
+.modal_body{
+    background-color: #fafbfc;
+}

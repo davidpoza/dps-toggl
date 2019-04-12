@@ -272,7 +272,7 @@ const API = {
                 }
             );
         },
-        fetchProjects(token, owner_id){
+        fetchProjectsByOwner(token, owner_id){
             return fetch(api_url+"/items/projects?filter[owner][eq]="+owner_id, {
                 method: "GET",
                 headers: {
