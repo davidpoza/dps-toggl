@@ -1,0 +1,11 @@
+@import "../../defaults.scss";
+
+.project{
+    border-bottom: 1px solid lightgrey;
+    padding: 20px;
+
+    &:hover{
+        background-color: #fafafa;
+    }
+}
+
