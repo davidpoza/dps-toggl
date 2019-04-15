@@ -11,7 +11,10 @@ import {
     FETCH_PROJECT_SUCCESS,
     DELETE_PROJECT_ATTEMPT,
     DELETE_PROJECT_FAIL,
-    DELETE_PROJECT_SUCCESS
+    DELETE_PROJECT_SUCCESS,
+    UPDATE_PROJECT_ATTEMPT,
+    UPDATE_PROJECT_FAIL,
+    UPDATE_PROJECT_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -101,6 +104,26 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case DELETE_PROJECT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case UPDATE_PROJECT_ATTEMPT:        
+            return {
+                ...state,
+                loading: true,
+                need_refreshing: false,
+                error: {}
+            }
+        case UPDATE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
+                error: {}
+            }
+        case UPDATE_PROJECT_FAIL:
             return {
                 ...state,
                 loading: false,

@@ -12,7 +12,10 @@ FETCH_PROJECT_FAIL,
 FETCH_PROJECT_SUCCESS,
 DELETE_PROJECT_ATTEMPT,
 DELETE_PROJECT_FAIL,
-DELETE_PROJECT_SUCCESS
+DELETE_PROJECT_SUCCESS,
+UPDATE_PROJECT_ATTEMPT,
+UPDATE_PROJECT_FAIL,
+UPDATE_PROJECT_SUCCESS
 } from './types';
 
 
@@ -59,6 +62,20 @@ export function deleteProjectSuccess(projectData){
 export function deleteProjectError(error){
     return {
         type: DELETE_PROJECT_FAIL,
+        payload: error
+    }
+}
+
+export function updateProjectSuccess(taskData){
+    return {
+        type: UPDATE_PROJECT_SUCCESS,
+        payload: taskData
+    }
+}
+
+export function updateProjectError(error){
+    return {
+        type: UPDATE_PROJECT_FAIL,
         payload: error
     }
 }
@@ -174,6 +191,30 @@ export function createProject(token, name, color, owner_id){
             (error) => {
                 dispatch(fetchProjectsError(error));
         });
+    }
+}
+
+export function updateProject(token, project_id, project_name, project_color, project_members){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_PROJECT_ATTEMPT
+        });
+       
+        api.project.updateProject(token, project_id, project_name, project_color, project_members).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateProjectSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(updateProjectError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(updateProjectError(error));
+        });
+        
+        
     }
 }
 

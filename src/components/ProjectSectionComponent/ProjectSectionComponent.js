@@ -66,7 +66,7 @@ class ProjectSectionComponent extends Component{
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
-                <div className={"d-flex justify-content-between m-2"}>
+                <div className={"d-flex justify-content-between m-3"}>
                     <h1>{lang[config.lang].project_section_title}</h1>
                     <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>

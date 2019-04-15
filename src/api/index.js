@@ -274,7 +274,7 @@ const API = {
 
         //en el futuro cuando implemente mi propia api limitaré la consulta de un proyecto si no se es miembro
         fetchProjectById(token, project_id){
-            return fetch(api_url+"/items/projects/"+project_id, {
+            return fetch(api_url+"/items/projects/"+project_id+"?single=1&fields=*.*, members.*.*", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -343,6 +343,32 @@ const API = {
                         return {data: {id: project_id}};
                     else
                         return {error: {message: "Error on delete project"}};
+                }
+            );
+        },
+
+        //members es una array de id de usuarios
+        updateProject(token, project_id, project_name, project_color, project_members){
+            let composingBody = {};
+            if(project_name!=null) composingBody.name = project_name;
+            if(project_color!=null) composingBody.color = project_color;
+            if(project_members!=null) composingBody.members = project_members;
+
+            return fetch(api_url+"/items/projects/"+project_id, {
+                method: "PATCH",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                },
+                body: JSON.stringify(composingBody)
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
                 }
             );
         },

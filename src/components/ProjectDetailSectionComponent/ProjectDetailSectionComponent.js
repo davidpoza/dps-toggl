@@ -19,6 +19,7 @@ class ProjectDetailSectionComponent extends Component{
         this.handleColorPick = this.handleColorPick.bind(this);
         this.handleDeleteProject = this.handleDeleteProject.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleOnSaveProject = this.handleOnSaveProject.bind(this);
     }
 
 
@@ -29,7 +30,7 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.project.project_detail != this.props.project.project_detail){
+        if(prevProps.project.loading == true && this.props.project.loading == false){
             this.setState({
                 colorPicker: this.props.project.project_detail.color,
                 project_name: this.props.project.project_detail.name
@@ -51,6 +52,11 @@ class ProjectDetailSectionComponent extends Component{
         this.props.history.push("/projects");
     }
 
+    handleOnSaveProject(){
+        this.props.projectActions.updateProject(this.props.user.token, this.props.match.params.project_id, this.state.project_name, this.state.colorPicker, null);
+        this.props.history.push("/projects");
+    }
+
     handleOnChange(e){
         this.setState({
             project_name: e.target.value
@@ -60,39 +66,56 @@ class ProjectDetailSectionComponent extends Component{
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
-                <div className={"d-flex justify-content-between m-2"}>
+                <div className={"d-flex justify-content-between m-3"}>
                     <h1>{lang[config.lang].project_detail_section_title}</h1>
                     <div>
-                        <button className="btn btn-danger p-3 m-2" data-toggle="modal" data-target="#deleteModal">{lang[config.lang].btn_delete}</button> 
-                        <button className="btn btn-primary p-3 m-2">{lang[config.lang].btn_save_changes}</button>
+                        <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal">{lang[config.lang].btn_delete}</button> 
+                        <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject}>{lang[config.lang].btn_save_changes}</button>
                     </div>                    
                 </div>
-                <div className={"flex-grow-1 " + styles.tasklist}>
-                    <input className={styles.input} ref={this.projectNameInput} placeholder={lang[config.lang].project_name_placeholder} value={this.state.project_name} onChange={this.handleOnChange}></input>
-                    <div className="dropdown">
-                        <button className={"btn dropdown-toggle "+styles.dropdown_btn} type="button" id="dropdownProjectColorButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className={"fas fa-square "+styles.color} style={{color: this.state.colorPicker}}></i>
-                        </button>
-                        <div className={"dropdown-menu "+styles.color_dropdown} aria-labelledby="dropdownProjectColorButton">
-                            <div className="container">
-                                <div className="row justify-content-center">
-                                {
-                                    config.project_colors.map((e,index)=>(
-                                        <i key={"color"+index} className={"fas fa-square "+styles.color} style={{color: e}} onClick={this.handleColorPick}></i>
-                                    ))
-                                }
-                                 
+                <div className={"flex-grow-1 " + styles.project_detail}>
+                    <div className="d-flex justify-content-between m-5">
+                        <input className={styles.input} type="text" ref={this.projectNameInput} placeholder={lang[config.lang].project_name_placeholder} value={this.state.project_name} onChange={this.handleOnChange} />
+                        <div className="dropdown">
+                            <button className={"btn dropdown-toggle "+styles.dropdown_btn} type="button" id="dropdownProjectColorButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i className={"fas fa-square "+styles.color} style={{color: this.state.colorPicker}}></i>
+                            </button>
+                            <div className={"dropdown-menu "+styles.color_dropdown} aria-labelledby="dropdownProjectColorButton">
+                                <div className="container">
+                                    <div className="row justify-content-center">
+                                    {
+                                        config.project_colors.map((e,index)=>(
+                                            <i key={"color"+index} className={"fas fa-square "+styles.color} style={{color: e}} onClick={this.handleColorPick}></i>
+                                        ))
+                                    }
+                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <div className="m-5 p-3">
+                        <h2>{lang[config.lang].members_title}</h2>
+                        <input type="text" placeholder={lang[config.lang].add_member_placeholder} />
+                        <ul className="p-0">
+                            {this.props.project.project_detail.members && this.props.project.project_detail.members.map((e,index)=>(
+                                <li className={styles.member} key={"member"+index}>
+                                    <div className="d-flex justify-content-between">
+                                        {e.directus_users_id.first_name} {e.directus_users_id.last_name}
+                                        <i className="fas fa-user-minus"></i>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
-                <div className="modal fade" id="deleteModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
+                <div className="modal fade" id="deleteModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="deleteProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
                 <div className="modal-dialog modal-sm" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="createProjectLabel">{lang[config.lang].title_delete_project_modal}</h5>
+                        <h5 className="modal-title" id="deleteProjectLabel">{lang[config.lang].title_delete_project_modal}</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
