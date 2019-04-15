@@ -9,7 +9,10 @@ CREATE_PROJECT_FAIL,
 CREATE_PROJECT_SUCCESS,
 FETCH_PROJECT_ATTEMPT,
 FETCH_PROJECT_FAIL,
-FETCH_PROJECT_SUCCESS
+FETCH_PROJECT_SUCCESS,
+DELETE_PROJECT_ATTEMPT,
+DELETE_PROJECT_FAIL,
+DELETE_PROJECT_SUCCESS
 } from './types';
 
 
@@ -42,6 +45,20 @@ export function fetchProjectSuccess(projectData){
 export function fetchProjectError(error){
     return {
         type: FETCH_PROJECT_FAIL,
+        payload: error
+    }
+}
+
+export function deleteProjectSuccess(projectData){
+    return {
+        type: DELETE_PROJECT_SUCCESS,
+        payload: projectData
+    }
+}
+
+export function deleteProjectError(error){
+    return {
+        type: DELETE_PROJECT_FAIL,
         payload: error
     }
 }
@@ -156,6 +173,28 @@ export function createProject(token, name, color, owner_id){
         .catch(
             (error) => {
                 dispatch(fetchProjectsError(error));
+        });
+    }
+}
+
+export function deleteProject(token, project_id){
+    return (dispatch) => {
+        dispatch({
+            type: DELETE_PROJECT_ATTEMPT
+        });
+
+        api.project.deleteProject(token, project_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(deleteProjectSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(deleteProjectError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(deleteProjectError(error));
         });
     }
 }

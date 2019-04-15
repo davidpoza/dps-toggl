@@ -46,7 +46,10 @@ class ProjectDetailSectionComponent extends Component{
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between m-2"}>
                     <h1>{lang[config.lang].project_detail_section_title}</h1>
-                    <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_save_changes}</button>
+                    <div>
+                        <button className="btn btn-danger p-3 m-2" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_delete}</button> 
+                        <button className="btn btn-primary p-3 m-2" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_save_changes}</button>
+                    </div>                    
                 </div>
                 <div className={"flex-grow-1 " + styles.tasklist}>
                     <input className={styles.input} ref={this.projectNameInput} placeholder={lang[config.lang].project_name_placeholder} value={this.props.project.loading?"":this.props.project.project_detail.name}></input>

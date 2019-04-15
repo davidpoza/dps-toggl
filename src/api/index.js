@@ -327,7 +327,25 @@ const API = {
                     return data;
                 }
             )          
-        }
+        },
+
+        deleteProject(token, project_id){
+            return fetch(api_url+"/items/project/"+project_id, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
+                        return {data: {id: task_id}};
+                    else
+                        return {error: {message: "Error on delete project"}};
+                }
+            );
+        },
 
     },
     tag: {

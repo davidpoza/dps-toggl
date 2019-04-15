@@ -17,6 +17,7 @@ const lang = {
         profile: "Perfil",
         btn_new_project: "Nuevo proyecto",
         btn_save_changes: "Guardar cambios",
+        btn_delete: "¿Borrar?",
         project_name_placeholder: "Nombre del proyecto...",
     }
 };
