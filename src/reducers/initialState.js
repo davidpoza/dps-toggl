@@ -16,6 +16,7 @@ const initialState = {
     },
     projectReducer: {
         projects: [],
+        need_refreshing: false,
         loading: false,
         error: {}
     },

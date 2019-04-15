@@ -3,6 +3,9 @@ import {
     FETCH_PROJECTS_FAIL,
     FETCH_PROJECTS_SUCCESS,
     CLEAN_PROJECT_MESSAGE,
+    CREATE_PROJECT_ATTEMPT,
+    CREATE_PROJECT_FAIL,
+    CREATE_PROJECT_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -34,7 +37,27 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 error: {}
             }
-        
+        case CREATE_PROJECT_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                need_refreshing: false,
+                error: {}
+            }
+        case CREATE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                projects: [...state.projects, action.payload],
+                need_refreshing: true,
+                error: {}
+            }
+        case CREATE_PROJECT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
         default:
             return state;
     }

@@ -248,7 +248,7 @@ const API = {
 
     project: {
         //en tags_id viene un array de tags_id, hay que componer un objeto
-        createProject(token, name, desc, color){
+        createProject(token, name, color, owner_id){
             return fetch(api_url+"/items/projects", {
                 method: "POST",
                 headers: {
@@ -258,8 +258,8 @@ const API = {
                 },
                 body: JSON.stringify({
                     name: name,
-                    desc: desc,
                     color: color,
+                    owner: owner_id
                 })
             }).then(
                 function(response){

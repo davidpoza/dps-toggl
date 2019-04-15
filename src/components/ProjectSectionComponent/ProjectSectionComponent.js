@@ -11,25 +11,28 @@ class ProjectSectionComponent extends Component{
     constructor(props){
         super(props);
         this.projectNameInput = React.createRef();
+        this.modal = React.createRef();
         this.state = {
             colorPicker:  null
         }
-        this.handleOpenColorPicker = this.handleOpenColorPicker.bind(this);
+        this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleColorPick = this.handleColorPick.bind(this);
+        this.handleCreateProject = this.handleCreateProject.bind(this);
+        this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
     }
 
     componentDidMount(){
         this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);
        
     }
-   
-    //cada vez que se abre el modal de creacion de proyecot escoge un color aleatorio del array de colores del config
-    handleOpenColorPicker(){
-        this.setState({
-            colorPicker: config.project_colors[utils.random(0,config.project_colors.length)]
-        });
-    }
 
+    //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
+    componentDidUpdate(prevProps) {
+        if (!prevProps.project.need_refreshing && this.props.project.need_refreshing){
+            this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);           
+        }
+    }
+   
     //cuando marcamos un color, se cambia en el estado el color elegido para el nuevo proyecto
     handleColorPick(e){
         let project_color = utils.rgb2hex(window.getComputedStyle(e.target).color);
@@ -38,18 +41,40 @@ class ProjectSectionComponent extends Component{
         });
     }
 
+    //cada vez que se abre el modal de creacion de proyecot escoge un color aleatorio del array de colores del config
+    handleOpenModal(){
+        this.setState({
+            colorPicker: config.project_colors[utils.random(0,config.project_colors.length)]
+        });
+        setTimeout(function (){
+            this.projectNameInput.current.focus();
+        }.bind(this), 1000);
+       
+    }
+
+    handleCreateProject(){
+        this.props.projectActions.createProject(this.props.user.token, this.projectNameInput.current.value, this.state.colorPicker, this.props.user.id);
+        $(this.modal.current).modal('hide');
+        this.projectNameInput.current.value = "";
+    }
+
+    handleOnKeyPress(e){
+        if(event.keyCode == 13)
+            this.handleCreateProject();
+    }
+
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between m-2"}>
                     <h1>{lang[config.lang].project_section_title}</h1>
-                    <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenColorPicker}>{lang[config.lang].btn_new_project}</button>
+                    <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>
                 <div className={"flex-grow-1 " + styles.tasklist}>
                     <ProjectListComponent user={this.props.user} project={this.props.project} />
                 </div>
 
-                <div className="modal fade" id="projectCreateModal" tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true">
+                <div className="modal fade" id="projectCreateModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
@@ -80,7 +105,7 @@ class ProjectSectionComponent extends Component{
                                             
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary">{lang[config.lang].btn_save_changes}</button>
+                        <button type="button" className="btn btn-primary" onClick={this.handleCreateProject}>{lang[config.lang].btn_save_changes}</button>
                     </div>
                     </div>
                 </div>

@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
 import styles from './ProjectComponent.scss';
 
 
