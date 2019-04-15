@@ -8,6 +8,7 @@ import LoginContainer from '../LoginComponent/LoginContainer';
 import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
 import TimerSectionComponent from '../TimerSectionComponent/TimerSectionComponent';
 import ProjectSectionComponent from '../ProjectSectionComponent/ProjectSectionComponent';
+import ProjectDetailSectionComponent from '../ProjectDetailSectionComponent/ProjectDetailSectionComponent';
 import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import ToastComponent from '../ToastComponent/ToastComponent';
 
@@ -23,6 +24,7 @@ class MainSectionComponent extends Component{
                 
                 <PrivateRoute exact path="/" component={TimerSectionComponent} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag, tagActions:this.props.tagActions, taskActions:this.props.taskActions, projectActions:this.props.projectActions}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions}}/>
+                <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
 

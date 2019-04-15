@@ -12,20 +12,24 @@ class ProjectComponent extends Component{
         super(props);
 
 
+
     }
 
    componentWillMount(){
         
    }
 
-   componentDidUpdate(prevProps){
+   componentDidUpdate(prevProps){ 
       
    }
 
+   handleOnClick(id){
+        this.props.history.push("/projects/"+id);
+   }
      
     render(){
         return(
-            <li className={"row m-1 justify-content-between " + styles.project } >
+            <li className={"row m-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project.id)}>
                 <div className={"col-8 " + styles.desc} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
                 </div>

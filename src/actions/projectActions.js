@@ -6,7 +6,10 @@ FETCH_PROJECTS_SUCCESS,
 CLEAN_PROJECT_MESSAGE,
 CREATE_PROJECT_ATTEMPT,
 CREATE_PROJECT_FAIL,
-CREATE_PROJECT_SUCCESS
+CREATE_PROJECT_SUCCESS,
+FETCH_PROJECT_ATTEMPT,
+FETCH_PROJECT_FAIL,
+FETCH_PROJECT_SUCCESS
 } from './types';
 
 
@@ -25,6 +28,20 @@ export function fetchProjectsSuccess(projectData){
 export function fetchProjectsError(error){
     return {
         type: FETCH_PROJECTS_FAIL,
+        payload: error
+    }
+}
+
+export function fetchProjectSuccess(projectData){
+    return {
+        type: FETCH_PROJECT_SUCCESS,
+        payload: projectData
+    }
+}
+
+export function fetchProjectError(error){
+    return {
+        type: FETCH_PROJECT_FAIL,
         payload: error
     }
 }
@@ -73,6 +90,30 @@ export function fetchProjects(token){
     }
 }
 */
+export function fetchProjectById(token, project_id){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_PROJECT_ATTEMPT
+        });
+
+        api.project.fetchProjectById(token, project_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(fetchProjectSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchProjectError(data.error))
+            }                          
+        )
+        .catch(
+            (error) => {
+                dispatch(fetchProjectsError(error));
+        });
+    }
+}
+
+
 export function fetchProjectsByOwner(token, owner_id){
     return (dispatch) => {
         dispatch({

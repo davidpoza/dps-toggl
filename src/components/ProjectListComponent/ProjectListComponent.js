@@ -41,7 +41,7 @@ class ProjectListComponent extends Component{
                <ul className="p-0 container-flex">
                {
                    this.props.project.projects.map((e,index) => {
-                        return <ProjectComponent token={this.props.user.token} key={index} project={e} />
+                        return <ProjectComponent token={this.props.user.token} key={index} project={e} history={this.props.history} />
                    })
                }
                </ul>

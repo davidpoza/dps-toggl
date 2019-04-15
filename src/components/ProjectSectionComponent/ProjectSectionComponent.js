@@ -70,8 +70,8 @@ class ProjectSectionComponent extends Component{
                     <h1>{lang[config.lang].project_section_title}</h1>
                     <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>
-                <div className={"flex-grow-1 " + styles.tasklist}>
-                    <ProjectListComponent user={this.props.user} project={this.props.project} />
+                <div className={"flex-grow-1 " + styles.projectlist}>
+                    <ProjectListComponent user={this.props.user} project={this.props.project} history={this.props.history}/>
                 </div>
 
                 <div className="modal fade" id="projectCreateModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
