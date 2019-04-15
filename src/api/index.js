@@ -291,7 +291,7 @@ const API = {
             );
         },
         fetchProjectsByOwner(token, owner_id){
-            return fetch(api_url+"/items/projects?filter[owner][eq]="+owner_id, {
+            return fetch(api_url+"/items/projects?fields=*.*&filter[owner][eq]="+owner_id, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -306,8 +306,9 @@ const API = {
                 function(data){
                     return data;
                 }
-            );
-        },
+            )          
+        }
+
     },
     tag: {
         fetchTags(token){

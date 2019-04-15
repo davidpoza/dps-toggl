@@ -85,32 +85,11 @@ export function fetchProjectsByOwner(token, owner_id){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchProjectsSuccess(data.data));
-                    return data.data.map(e=>{
-                        dispatch({
-                            type: FETCH_PROJECT_TASKS_ATTEMPT
-                        });
-                        return api.task.fetchTasksByProject(token, e.id)
-                    });                    
                 }                    
                 else if(data.error)
                     dispatch(fetchProjectsError(data.error))
             }                          
         )
-        .then((data)=>
-            Promise.all(data)
-        )
-        .then(
-            (data)=>{
-                data.forEach(data=>{
-                    if(data.data.length >0 ){
-                        dispatch(fetchProjectTasksSuccess(data.data));
-                    }                    
-                    else if(data.error)
-                        dispatch(fetchProjectTasksError(data.error))
-                })
-               
-            }                              
-        )      
         .catch(
             (error) => {
                 dispatch(fetchProjectsError(error));
