@@ -19,6 +19,9 @@ const lang = {
         btn_save_changes: "Guardar cambios",
         btn_delete: "¿Borrar?",
         project_name_placeholder: "Nombre del proyecto...",
+        btn_cancel: "Cancelar",
+        btn_confirm_delete: "Si, borrar",
+        title_delete_project_modal: "¿Desea borrar el proyecto?"
     }
 };
 

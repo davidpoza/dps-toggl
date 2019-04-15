@@ -8,7 +8,10 @@ import {
     CREATE_PROJECT_SUCCESS,
     FETCH_PROJECT_ATTEMPT,
     FETCH_PROJECT_FAIL,
-    FETCH_PROJECT_SUCCESS
+    FETCH_PROJECT_SUCCESS,
+    DELETE_PROJECT_ATTEMPT,
+    DELETE_PROJECT_FAIL,
+    DELETE_PROJECT_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -77,6 +80,27 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case FETCH_PROJECT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case DELETE_PROJECT_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                need_refreshing: false,
+                project_detail: {},
+                error: {}
+            }
+        case DELETE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                need_refreshing: true,
+                error: {}
+            }
+        case DELETE_PROJECT_FAIL:
             return {
                 ...state,
                 loading: false,
