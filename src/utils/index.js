@@ -91,10 +91,13 @@ const utils = {
 
     diffHoursBetHours(hour_start, hour_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
+        let regexMin = /\d{2}:(\d{2}):\d{2}/;
         let hour1 = hour_start.match(regexHour)[1];
         let hour2 = hour_end.match(regexHour)[1];
-      
-        return(parseInt(hour2)-parseInt(hour1));
+        let min1 = hour_start.match(regexMin)[1];
+        let min2 = hour_end.match(regexMin)[1];
+        let total_min = parseInt(hour2)*60 - parseInt(hour1)*60 + parseInt(min2) - parseInt(min1);
+        return(Math.round(total_min/60));
     },
 
     /** Devuelve true si se ejecuta desde un navegador movil.
