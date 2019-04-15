@@ -4,9 +4,6 @@ FETCH_PROJECTS_ATTEMPT,
 FETCH_PROJECTS_FAIL,
 FETCH_PROJECTS_SUCCESS,
 CLEAN_PROJECT_MESSAGE,
-FETCH_PROJECT_TASKS_ATTEMPT,
-FETCH_PROJECT_TASKS_FAIL,
-FETCH_PROJECT_TASKS_SUCCESS
 } from './types';
 
 
@@ -28,21 +25,6 @@ export function fetchProjectsError(error){
         payload: error
     }
 }
-
-export function fetchProjectTasksSuccess(tasks){
-    return {
-        type: FETCH_PROJECT_TASKS_SUCCESS,
-        payload: tasks
-    }
-}
-
-export function fetchProjectTasksError(error){
-    return {
-        type: FETCH_PROJECT_TASKS_FAIL,
-        payload: error
-    }
-}
-
 
 export function cleanMessage(){
     return {
