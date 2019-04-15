@@ -21,7 +21,16 @@ const lang = {
         project_name_placeholder: "Nombre del proyecto...",
         btn_cancel: "Cancelar",
         btn_confirm_delete: "Si, borrar",
-        title_delete_project_modal: "¿Desea borrar el proyecto?"
+        title_delete_project_modal: "¿Desea borrar el proyecto?",
+        members_title: "Miembros",
+        add_member_placeholder: "Añadir miembros al proyecto...",
+        menu_timer: "Timer",
+        menu_dashboard: "Dashboard",
+        menu_reports: "Reports",
+        menu_tags: "Tags",
+        menu_projects: "Projects",
+        menu_users: "Users",
+        menu_config: "Config"
     }
 };
 
