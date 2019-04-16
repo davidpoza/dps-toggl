@@ -39,6 +39,8 @@ export const FETCH_DATES_ATTEMPT = "FETCH_DATES_ATTEMPT";
 export const FETCH_DATES_SUCCESS = "FETCH_DATES_SUCCESS";
 export const FETCH_DATES_FAIL = "FETCH_DATES_FAIL";
 
+export const COLLAPSE_DATE = "COLLAPSE_DATE";
+
 export const CLEAN_TASK_MESSAGE = "CLEAN_TASK_MESSAGE";
 ///////////////////////////////////////////////////
 export const CREATE_PROJECT_ATTEMPT = "CREATE_PROJECT_ATTEMPT";

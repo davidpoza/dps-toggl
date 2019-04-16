@@ -12,9 +12,6 @@ class TaskDatesComponent extends Component{
         super(props);
         this.handleDeleteTaskVisually = this.handleDeleteTaskVisually.bind(this);
         this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
-        this.state = {
-
-        };        
     }
 
     //también hacemos un fetchTasks al montar el componente lista.
@@ -29,6 +26,7 @@ class TaskDatesComponent extends Component{
             this.props.taskActions.fetchTasks(this.props.token); 
             
         }
+        
     }
 
     /* hace una copia del array de tasks que llega via redux connect en el container, para modificarlo
@@ -80,16 +78,24 @@ class TaskDatesComponent extends Component{
     }
 
    
+    handleOnClick(index){
+        this.props.taskActions.collapseDate(index);
+    }
+
     render(){
         return(
             <div>
                <ul className="p-0 container-flex">
                {
                    this.props.tasks && this.props.tasks.map((e,index) => {
-                        return (<li className={styles.date} key={index}>
-                            <h2>{utils.standarDateToHuman(e.date)}</h2>
-                            <TaskListComponent token={this.props.token} date={e.date} tags={this.props.tags} projects={this.props.projects} tasks={e.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.need_refreshing} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
-                        </li>)
+                        return (
+                                <li className={styles.date} key={"date_group_"+index}>
+                                <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,index)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,index)}></i> } {utils.standarDateToHuman(e.date)}</h2>                                
+                                { !e.collapsed &&
+                                    <TaskListComponent token={this.props.token} date={e.date} tags={this.props.tags} projects={this.props.projects} tasks={e.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.need_refreshing} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
+                                }                                
+                                </li>
+                        )
                    }, this)
                }
                </ul>

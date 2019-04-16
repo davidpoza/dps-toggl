@@ -237,9 +237,9 @@ const API = {
             ).then(
                 function(data){
                     if(data.data != undefined)
-                        return {date: date, tasks:data.data};
+                        return {date: date, collapsed: false, tasks:data.data};
                     else
-                        return {date: date, tasks:[], error:data.error};
+                        return {date: date, collapsed: false, tasks:[], error:data.error};
                 }
             );
         },

@@ -19,7 +19,8 @@ import {
     FETCH_DATES_SUCCESS,
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_FAIL,
-    FETCH_TASK_SUCCESS
+    FETCH_TASK_SUCCESS,
+    COLLAPSE_DATE
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -178,6 +179,11 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 error: {}
+            }
+        case COLLAPSE_DATE:
+            return {
+                ...state,
+                tasks: state.tasks.map((e,index)=>{if(index==action.payload) e.collapsed=e.collapsed?false:true; return e;})
             }
         default:
             return state;

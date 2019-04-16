@@ -20,7 +20,8 @@ import {
     FETCH_DATES_FAIL,
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_SUCCESS,
-    FETCH_TASK_FAIL
+    FETCH_TASK_FAIL,
+    COLLAPSE_DATE
 } from './types';
 
 
@@ -40,6 +41,13 @@ export function createTaskError(error){
     return {
         type: CREATE_TASK_FAIL,
         payload: error
+    }
+}
+
+export function collapseDate(index){
+    return {
+        type: COLLAPSE_DATE,
+        payload: index
     }
 }
 
