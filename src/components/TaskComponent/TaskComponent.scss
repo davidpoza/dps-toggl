@@ -19,7 +19,17 @@
 }
 
 .desc_dropdown{
-  min-width: 60vw;
+  width: 50vw;
+  transform: translate3d(0px, 30px, 0px) !important;
+}
+
+.input_desc{
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn{

@@ -17,6 +17,8 @@ class TaskComponent extends Component{
         this.handleOnMouseOut = this.handleOnMouseOut.bind(this);
         this.handleOnClick = this.handleOnClick.bind(this);
         this.handleOnDelete = this.handleOnDelete.bind(this);
+        this.handleOnChangeDesc = this.handleOnChangeDesc.bind(this);
+        this.handleOnBlurDesc = this.handleOnBlurDesc.bind(this);
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
@@ -31,11 +33,15 @@ class TaskComponent extends Component{
          */
         this.state = {
             hide_btns: true,
+            desc: "",
             tags: [] 
         }
     }
 
    componentWillMount(){
+        this.setState({
+            desc: this.props.task.desc
+        });
         this.composeTagsListState();
    }
 
@@ -113,6 +119,17 @@ class TaskComponent extends Component{
                 hide_btns: true
             }
         );
+    }
+
+    handleOnChangeDesc(e){
+        this.setState({
+            desc: e.target.value
+        })
+    }
+
+    handleOnBlurDesc(e){
+        /*actualizamos la tarea actual cambiando su descripción pero manteniendo fechas, tags e id del proyecto*/
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, null, null);     
     }
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
@@ -197,15 +214,13 @@ class TaskComponent extends Component{
         return(
             <li className={"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
                 <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
-                    <div className={"btn-group dropleft "}>
-                        <div id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                            {!utils.isMobile()?this.props.task.desc.substring(0,100):this.props.task.desc.substring(0,10)}
-                            {utils.isMobile() && this.props.task.desc.length>10 && "..."}
-                            {!utils.isMobile() && this.props.task.desc.length>100 && "..."}
+                    <div className={"btn-group dropleft w-100 "}>
+                        <div id="dropdownMenuButton" className="w-100" data-toggle={(utils.isMobile() || this.state.desc.length > 30) ?"dropdown":""} aria-haspopup="true" aria-expanded="false" >
+                            <input className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
                         </div>
 
                         <div className={"dropdown-menu p-2 " + styles.desc_dropdown } aria-labelledby="dropdownMenuButton" >
-                            {this.props.task.desc}
+                            {this.state.desc}
                         </div>
                     </div>
                 </div>
