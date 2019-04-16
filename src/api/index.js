@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import utils from '../utils';
 const api_url = "https://dpstogglapi1.davidinformatico.com/_";
 
 const API = {
@@ -237,7 +238,10 @@ const API = {
             ).then(
                 function(data){
                     if(data.data != undefined)
-                        return {date: date, collapsed: false, tasks:data.data};
+                        return {date: date, time: data.data.reduce((prev,curr)=>{
+                            curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                            return(prev+curr);
+                        },0), collapsed: false, tasks:data.data};
                     else
                         return {date: date, collapsed: false, tasks:[], error:data.error};
                 }

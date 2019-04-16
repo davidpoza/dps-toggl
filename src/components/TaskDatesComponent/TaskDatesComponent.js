@@ -36,6 +36,10 @@ class TaskDatesComponent extends Component{
             e.tasks = e.tasks.filter((e)=>{
                 return e.id != task_id
             });
+            e.time = e.tasks.reduce((prev,curr)=>{
+                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                return(prev+curr);
+            },0);
             return e;
         }).filter(e=>{
             return e.tasks.length > 0
@@ -90,7 +94,11 @@ class TaskDatesComponent extends Component{
                    this.props.tasks && this.props.tasks.map((e,index) => {
                         return (
                                 <li className={styles.date} key={"date_group_"+index}>
-                                <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,index)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,index)}></i> } {utils.standarDateToHuman(e.date)}</h2>                                
+                                <div className={"d-flex justify-content-between"}>
+                                    <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,index)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,index)}></i> } {utils.standarDateToHuman(e.date)}</h2>
+                                    <div className="p-2">{e.time}h.</div>  
+                                </div>
+                           
                                 { !e.collapsed &&
                                     <TaskListComponent token={this.props.token} date={e.date} tags={this.props.tags} projects={this.props.projects} tasks={e.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.need_refreshing} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually}/>
                                 }                                
