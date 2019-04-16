@@ -23,6 +23,8 @@
 .autocomplete_list{  
   border: 1px solid #eeeeee;
   position: absolute;
+  max-height: 40vh;
+  overflow-y: scroll;
 
   /*position the autocomplete items to be the same width as the container:*/
   top: 100%;
