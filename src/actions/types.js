@@ -67,6 +67,7 @@ export const CLEAN_PROJECT_MESSAGE = "CLEAN_PROJECT_MESSAGE";
 export const FETCH_TAGS_ATTEMPT = "FETCH_TAGS_ATTEMPT";
 export const FETCH_TAGS_SUCCESS = "FETCH_TAGS_SUCCESS";
 export const FETCH_TAGS_FAIL = "FETCH_TAGS_FAIL";
+
 export const CLEAN_TAG_MESSAGE = "CLEAN_TAG_MESSAGE";
 //////////////////////////////////////////////////
 

@@ -12,32 +12,35 @@ class ToastComponent extends Component{
         super(props);
   
         this.thereAreMessages = this.thereAreMessages.bind(this);
-          
+        this.emptyMessages = this.emptyMessages.bind(this);
     }
 
-    thereAreMessages(){
-        return this.props.userMessage != undefined || this.props.taskMessage != undefined || this.props.tagMessage != undefined || this.props.projectMessage != undefined;
-    }
 
     componentDidMount() {
-        if(this.props.userMessage != undefined) this.props.userActions.cleanMessage();
-        if(this.props.taskMessage != undefined) this.props.taskActions.cleanMessage();
-        if(this.props.tagMessage != undefined) this.props.tagActions.cleanMessage();
-        if(this.props.projectMessage != undefined) this.props.projectActions.cleanMessage();
-
-
-
+        this.emptyMessages();
     }
     
     componentDidUpdate(){
         if (this.thereAreMessages()){
             $(this.toast).toast("show");
+            setTimeout(()=>this.emptyMessages(), 1000);
         }
         else{
             $(this.toast).toast("hide");
             
         }
            
+    }
+
+    emptyMessages(){
+        if(this.props.userMessage != undefined) this.props.userActions.cleanMessage();
+        if(this.props.taskMessage != undefined) this.props.taskActions.cleanMessage();
+        if(this.props.tagMessage != undefined) this.props.tagActions.cleanMessage();
+        if(this.props.projectMessage != undefined) this.props.projectActions.cleanMessage();
+    }
+
+    thereAreMessages(){
+        return this.props.userMessage != undefined || this.props.taskMessage != undefined || this.props.tagMessage != undefined || this.props.projectMessage != undefined;
     }
 
     render(){
