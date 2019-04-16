@@ -120,7 +120,7 @@ export default function projectReducer (state = initialState.projectReducer, act
             return {
                 ...state,
                 loading: false,
-                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
+                need_refreshing: true,
                 error: {}
             }
         case UPDATE_PROJECT_FAIL:

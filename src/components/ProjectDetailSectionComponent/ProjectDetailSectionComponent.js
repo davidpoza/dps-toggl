@@ -33,6 +33,10 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     componentDidUpdate(prevProps) {
+        if (!prevProps.project.need_refreshing && this.props.project.need_refreshing){
+            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.match.params.project_id);
+        }
+
         if(prevProps.project.loading == true && this.props.project.loading == false){
             this.setState({
                 colorPicker: this.props.project.project_detail.color,
@@ -68,12 +72,22 @@ class ProjectDetailSectionComponent extends Component{
 
     handleOnAddMember(new_member_id){
         let array_members_api = this.props.project.project_detail.members.slice(); //copiamos los miembros actuales
-        array_members_api.push({
-            directus_users_id: { id: new_member_id }
-        }); 
+        if(array_members_api.filter(e=>e.directus_users_id.id == new_member_id).length == 0)
+            array_members_api.push({
+                directus_users_id: { id: new_member_id }
+            }); 
         this.props.projectActions.updateProject(this.props.user.token, parseInt(this.props.match.params.project_id), null, null,  array_members_api);
     }
    
+    handleOnDeleteMember(relation_id){
+        let array_members_api = [];
+        if(this.props.project.project_detail.members.filter(e=>e.id == relation_id).length == 1)
+            array_members_api.push(
+                { id: relation_id, "$delete": true }
+            ); 
+        this.props.projectActions.updateProject(this.props.user.token, parseInt(this.props.match.params.project_id), null, null,  array_members_api);
+    }
+
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
@@ -114,7 +128,7 @@ class ProjectDetailSectionComponent extends Component{
                                 <li className={styles.member} key={"member"+index}>
                                     <div className="d-flex justify-content-between">
                                         {e.directus_users_id.first_name} {e.directus_users_id.last_name}
-                                        <i className="fas fa-user-minus"></i>
+                                        <i className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.id)}></i>
                                     </div>
                                 </li>
                             ))}
