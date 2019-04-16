@@ -1,0 +1,43 @@
+@import "../../defaults.scss";
+
+.input{
+  width: 100%;
+  font-size: 1.4em;
+  border-top: 1px solid #eeeeee;
+  border-left: 0;
+  border-right: 0;
+  box-shadow: 0px 5px 5px lightgrey;
+  padding: 10px;
+  margin-bottom: 0px;
+  &:focus {
+      outline: none;
+    }
+  }
+
+.autocomplete{
+  width: 50%;
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete_list{  
+  border: 1px solid #eeeeee;
+  position: absolute;
+
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete_item{
+  background-color: white;
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px;
+
+  &:hover{
+    background-color: #fafafa;
+    cursor: pointer;
+  }
+  
+}

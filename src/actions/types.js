@@ -5,6 +5,11 @@ export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
 export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_FAIL = "LOGIN_USER_FAIL";
 export const LOGIN_USER_ATTEMPT = "LOGIN_USER_ATTEMPT";
+
+export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
+export const FETCH_USERS_FAIL = "FETCH_USERS_FAIL";
+export const FETCH_USERS_ATTEMPT = "FETCH_USERS_ATTEMPT";
+
 export const LOGOUT_USER = "LOGOUT_USER";
 export const CLEAN_USER_MESSAGE = "CLEAN_USER_MESSAGE";
 ///////////////////////////////////////////////////

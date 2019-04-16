@@ -71,6 +71,26 @@ const API = {
                     return data;
                 }
             );
+        },
+
+        //devuelve todos los usuarios menos a sí mismo
+        fetchUsers(token, user_id){
+            return fetch(api_url+"/users?filter[id][neq]="+user_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
         }
     },
     task: {
@@ -122,9 +142,6 @@ const API = {
         },
         //en tags_id viene un array de tags_id, hay que componer un objeto
         updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
-            /*let array_tags_obj = [];
-            if (tags_id != null)
-                tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});*/
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
             if(date!=null) composingBody.date = date;
@@ -372,6 +389,8 @@ const API = {
                 }
             );
         },
+
+
 
     },
     tag: {

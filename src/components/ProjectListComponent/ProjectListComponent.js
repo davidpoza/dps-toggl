@@ -54,8 +54,9 @@ class ProjectListComponent extends Component{
 
 
 ProjectListComponent.propTypes = {
-
-
+    user: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 }
 
 export default ProjectListComponent;

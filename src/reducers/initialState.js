@@ -6,6 +6,7 @@ const initialState = {
         email: null,
         token: null,
         loading: false,
+        users: [],
         error: {}
     },
     taskReducer: {

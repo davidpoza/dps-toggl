@@ -7,7 +7,10 @@ import {
     REFRESH_TOKEN_ATTEMPT,
     REFRESH_TOKEN_FAIL,
     REFRESH_TOKEN_SUCCESS,
-    CLEAN_USER_MESSAGE
+    CLEAN_USER_MESSAGE,
+    FETCH_USERS_ATTEMPT,
+    FETCH_USERS_FAIL,
+    FETCH_USERS_SUCCESS
 } from './types';
 
 
@@ -26,6 +29,20 @@ export function loginUserSuccess(userData){
 export function loginUserError(error){
     return {
         type: LOGIN_USER_FAIL,
+        payload: error
+    }
+}
+
+export function fetchUsersSuccess(userData){
+    return {
+        type: FETCH_USERS_SUCCESS,
+        payload: userData
+    }
+}
+
+export function fetchUsersError(error){
+    return {
+        type: FETCH_USERS_FAIL,
         payload: error
     }
 }
@@ -96,6 +113,28 @@ export function refreshToken(token){
                 }                    
                 else if(data.error) //error en la peticion
                     dispatch(refreshTokenError(data.error))
+            }                          
+        ).catch(
+            (error) => { //error en fetch, entonces error en la conexion
+                dispatch(refreshTokenError(error));
+        });
+    }
+}
+
+export function fetchUsers(token, user_id){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_USERS_ATTEMPT
+        });
+
+        api.user.fetchUsers(token, user_id).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(fetchUsersSuccess(data.data));
+                }                    
+                else if(data.error) //error en la peticion
+                    dispatch(fetchUsersError(data.error))
             }                          
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion

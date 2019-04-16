@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import config from '../../config/config';
 import lang from '../../config/lang';
@@ -115,5 +116,12 @@ class ProjectSectionComponent extends Component{
         )
     }
 }
+
+ProjectSectionComponent.propTypes = {
+    user:PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired
+}
+
 
 export default ProjectSectionComponent;

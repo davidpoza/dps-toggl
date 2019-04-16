@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import config from '../../config/config';
 import lang from '../../config/lang';
 import styles from './ProjectDetailSectionComponent.scss';
 import utils from '../../utils';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
+import MemberSelectorComponent from '../MemberSelectorComponent/MemberSelectorComponent';
 
 
 class ProjectDetailSectionComponent extends Component{
@@ -20,6 +22,7 @@ class ProjectDetailSectionComponent extends Component{
         this.handleDeleteProject = this.handleDeleteProject.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnSaveProject = this.handleOnSaveProject.bind(this);
+        this.handleOnAddMember = this.handleOnAddMember.bind(this);
     }
 
 
@@ -62,6 +65,14 @@ class ProjectDetailSectionComponent extends Component{
             project_name: e.target.value
         });
     }
+
+    handleOnAddMember(new_member_id){
+        let array_members_api = this.props.project.project_detail.members.slice(); //copiamos los miembros actuales
+        array_members_api.push({
+            directus_users_id: { id: new_member_id }
+        }); 
+        this.props.projectActions.updateProject(this.props.user.token, parseInt(this.props.match.params.project_id), null, null,  array_members_api);
+    }
    
     render(){
         return(
@@ -97,7 +108,7 @@ class ProjectDetailSectionComponent extends Component{
                     
                     <div className="m-5 p-3">
                         <h2>{lang[config.lang].members_title}</h2>
-                        <input type="text" placeholder={lang[config.lang].add_member_placeholder} />
+                        <MemberSelectorComponent user={this.props.user} project_id={parseInt(this.props.match.params.project_id)} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
                             {this.props.project.project_detail.members && this.props.project.project_detail.members.map((e,index)=>(
                                 <li className={styles.member} key={"member"+index}>
@@ -112,13 +123,11 @@ class ProjectDetailSectionComponent extends Component{
                 </div>
 
                 <div className="modal fade" id="deleteModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="deleteProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
-                <div className="modal-dialog modal-sm" role="document">
+                <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-body">
                         <h5 className="modal-title" id="deleteProjectLabel">{lang[config.lang].title_delete_project_modal}</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+                        
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
@@ -133,6 +142,13 @@ class ProjectDetailSectionComponent extends Component{
             </div>
         )
     }
+}
+
+ProjectDetailSectionComponent.propTypes = {
+    user:PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired,
+    userActions: PropTypes.object.isRequired
 }
 
 export default ProjectDetailSectionComponent;

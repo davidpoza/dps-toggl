@@ -24,7 +24,7 @@ class MainSectionComponent extends Component{
                 
                 <PrivateRoute exact path="/" component={TimerSectionComponent} component_props ={{user:this.props.user, task:this.props.task, project:this.props.project, tag:this.props.tag, tagActions:this.props.tagActions, taskActions:this.props.taskActions, projectActions:this.props.projectActions}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions}}/>
-                <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions}}/>
+                <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions, userActions: this.props.userActions}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
 
