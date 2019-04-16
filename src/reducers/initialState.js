@@ -6,6 +6,7 @@ const initialState = {
         email: null,
         token: null,
         loading: false,
+        users: [],
         error: {}
     },
     taskReducer: {
@@ -16,6 +17,8 @@ const initialState = {
     },
     projectReducer: {
         projects: [],
+        project_detail: {},
+        need_refreshing: false,
         loading: false,
         error: {}
     },

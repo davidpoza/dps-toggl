@@ -11,8 +11,12 @@ class ToastComponent extends Component{
     constructor(props){
         super(props);
   
-        
+        this.thereAreMessages = this.thereAreMessages.bind(this);
           
+    }
+
+    thereAreMessages(){
+        return this.props.userMessage != undefined || this.props.taskMessage != undefined || this.props.tagMessage != undefined || this.props.projectMessage != undefined;
     }
 
     componentDidMount() {
@@ -26,7 +30,7 @@ class ToastComponent extends Component{
     }
     
     componentDidUpdate(){
-        if (this.props.userMessage != undefined || this.props.taskMessage != undefined || this.props.tagMessage != undefined || this.props.projectMessage != undefined){
+        if (this.thereAreMessages()){
             $(this.toast).toast("show");
         }
         else{
@@ -37,7 +41,7 @@ class ToastComponent extends Component{
     }
 
     render(){
-        if(this.props.userMessage != undefined)
+        if(this.thereAreMessages())
             return(
 
                 <div className={"toast " + styles.mytoast} ref={element => this.toast = element} role="alert" aria-live="assertive" aria-atomic="true" data-delay="6000">

@@ -6,7 +6,10 @@ import {
     REFRESH_TOKEN_ATTEMPT,
     REFRESH_TOKEN_FAIL,
     REFRESH_TOKEN_SUCCESS,
-    CLEAN_USER_MESSAGE
+    CLEAN_USER_MESSAGE,
+    FETCH_USERS_ATTEMPT,
+    FETCH_USERS_FAIL,
+    FETCH_USERS_SUCCESS
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -25,6 +28,7 @@ export default function userReducer (state = initialState.userReducer, action){
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
+                id: action.payload.id,
                 token: action.payload.token,
                 email: action.payload.email,
                 first_name: action.payload.first_name,
@@ -64,6 +68,25 @@ export default function userReducer (state = initialState.userReducer, action){
             return {
                 ...state,                
                 token: null,
+                error: action.payload
+            }
+        case FETCH_USERS_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {}
+            }
+        case FETCH_USERS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                users: action.payload,
+                error: {}
+            }
+        case FETCH_USERS_FAIL:
+            return {
+                ...state,
+                loading: false,                
                 error: action.payload
             }
         case CLEAN_USER_MESSAGE:

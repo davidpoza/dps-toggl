@@ -1,0 +1,53 @@
+@import "../../defaults.scss";
+
+.input{
+    width: 100%;
+    font-size: 1.4em;
+    border-top: 1px solid #eeeeee;
+    border-left: 0;
+    border-right: 0;
+    box-shadow: 0px 5px 5px lightgrey;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    &:focus {
+        outline: none;
+      }
+}
+
+.project_detail{
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.color{
+    font-size: 2em;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.color_dropdown{
+    width: 12em;
+}
+
+.dropdown_btn{
+    background-color: white;
+    margin: 10px;
+}
+
+.member{
+    border-bottom: 1px solid lightgrey;
+    padding: 20px;
+    list-style-type: none;
+
+    &:hover{
+        background-color: #fafafa;
+    }
+
+    i{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}

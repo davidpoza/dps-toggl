@@ -71,6 +71,26 @@ const API = {
                     return data;
                 }
             );
+        },
+
+        //devuelve todos los usuarios menos a sí mismo
+        fetchUsers(token, user_id){
+            return fetch(api_url+"/users?filter[id][neq]="+user_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
         }
     },
     task: {
@@ -122,9 +142,6 @@ const API = {
         },
         //en tags_id viene un array de tags_id, hay que componer un objeto
         updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
-            /*let array_tags_obj = [];
-            if (tags_id != null)
-                tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});*/
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
             if(date!=null) composingBody.date = date;
@@ -219,7 +236,28 @@ const API = {
                 }
             ).then(
                 function(data){
-                    return {date: date, tasks:data.data};
+                    if(data.data != undefined)
+                        return {date: date, tasks:data.data};
+                    else
+                        return {date: date, tasks:[], error:data.error};
+                }
+            );
+        },
+        fetchTasksByProject(token, project_id){
+            return fetch(api_url+"/items/tasks?fields=*,project.*&filter[project.id][eq]="+project_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
                 }
             );
         },
@@ -227,7 +265,7 @@ const API = {
 
     project: {
         //en tags_id viene un array de tags_id, hay que componer un objeto
-        createProject(token, name, desc, color){
+        createProject(token, name, color, owner_id){
             return fetch(api_url+"/items/projects", {
                 method: "POST",
                 headers: {
@@ -237,9 +275,29 @@ const API = {
                 },
                 body: JSON.stringify({
                     name: name,
-                    desc: desc,
                     color: color,
+                    owner: owner_id
                 })
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+        //en el futuro cuando implemente mi propia api limitaré la consulta de un proyecto si no se es miembro
+        fetchProjectById(token, project_id){
+            return fetch(api_url+"/items/projects/"+project_id+"?single=1&fields=*.*, members.*.*", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
             }).then(
                 function(response){
                     return response.json();
@@ -269,6 +327,71 @@ const API = {
                 }
             );
         },
+        fetchProjectsByOwner(token, owner_id){
+            return fetch(api_url+"/items/projects?fields=*.*&filter[owner][eq]="+owner_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            )          
+        },
+
+        deleteProject(token, project_id){
+            return fetch(api_url+"/items/projects/"+project_id, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
+                        return {data: {id: project_id}};
+                    else
+                        return {error: {message: "Error on delete project"}};
+                }
+            );
+        },
+
+        //members es una array de id de usuarios
+        updateProject(token, project_id, project_name, project_color, project_members){
+            let composingBody = {};
+            if(project_name!=null) composingBody.name = project_name;
+            if(project_color!=null) composingBody.color = project_color;
+            if(project_members!=null) composingBody.members = project_members;
+
+            return fetch(api_url+"/items/projects/"+project_id, {
+                method: "PATCH",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                },
+                body: JSON.stringify(composingBody)
+            }).then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+
+
     },
     tag: {
         fetchTags(token){

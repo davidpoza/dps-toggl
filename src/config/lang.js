@@ -12,6 +12,25 @@ const lang = {
         err_hour_format: "Formato de hora no válido. Debe ser del tipo HH:MM.",
         aditional_menu_opt_delete: "Borrar",
         aditional_menu_opt_duply: "Duplicar",
+        project_section_title: "Proyectos",
+        project_detail_section_title: "Proyecto",
+        profile: "Perfil",
+        btn_new_project: "Nuevo proyecto",
+        btn_save_changes: "Guardar cambios",
+        btn_delete: "¿Borrar?",
+        project_name_placeholder: "Nombre del proyecto...",
+        btn_cancel: "Cancelar",
+        btn_confirm_delete: "Si, borrar",
+        title_delete_project_modal: "¿Desea borrar el proyecto?",
+        members_title: "Miembros",
+        add_member_placeholder: "Añadir miembros al proyecto...",
+        menu_timer: "Timer",
+        menu_dashboard: "Dashboard",
+        menu_reports: "Reports",
+        menu_tags: "Tags",
+        menu_projects: "Projects",
+        menu_users: "Users",
+        menu_config: "Config"
     }
 };
 

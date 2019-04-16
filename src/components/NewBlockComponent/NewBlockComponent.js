@@ -83,7 +83,7 @@ class NewBlockComponent extends Component{
     }
 
     componentWillMount(){
-        this.props.projectActions.fetchProjects(this.props.user.token);
+        this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);
         this.props.tagActions.fetchTags(this.props.user.token);
     }
 
@@ -107,7 +107,7 @@ class NewBlockComponent extends Component{
             let project_id = e.target.id.match(/project(\d{0,4})/)[1];
             this.setState({
                 project_selected_name: e.target.innerText,
-                project_selected_color: window.getComputedStyle(e.target.childNodes[0]).color,
+                project_selected_color: utils.rgb2hex(window.getComputedStyle(e.target.childNodes[0]).color),
                 project_selected_id: project_id
             });
         }

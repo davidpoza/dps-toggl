@@ -89,6 +89,17 @@ const utils = {
         return(this.secondsToFormatedString(end_in_secs-start_in_secs));
     },
 
+    diffHoursBetHours(hour_start, hour_end){
+        let regexHour = /(\d{2}):\d{2}:\d{2}/;
+        let regexMin = /\d{2}:(\d{2}):\d{2}/;
+        let hour1 = hour_start.match(regexHour)[1];
+        let hour2 = hour_end.match(regexHour)[1];
+        let min1 = hour_start.match(regexMin)[1];
+        let min2 = hour_end.match(regexMin)[1];
+        let total_min = parseInt(hour2)*60 - parseInt(hour1)*60 + parseInt(min2) - parseInt(min1);
+        return(Math.round(total_min/60));
+    },
+
     /** Devuelve true si se ejecuta desde un navegador movil.
      * from detectmobilebrowsers.com)
     */
@@ -111,9 +122,23 @@ const utils = {
         let mm1 = parseInt(this.getMinutes(hour1));
         let mm2 = parseInt(this.getMinutes(hour2));
         return hh1*60+mm1 > hh2*60+mm2;
+    },
+
+    random(a,b){
+        return Math.floor((Math.random() * b) + a);
+    },
+
+    rgb2hex(rgb) {
+        if (  rgb.search("rgb") == -1 ) {
+             return rgb;
+        } else {
+             rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+             function hex(x) {
+                  return ("0" + parseInt(x).toString(16)).slice(-2);
+             }
+             return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]); 
+        }
     }
-
-
 }
 
 
