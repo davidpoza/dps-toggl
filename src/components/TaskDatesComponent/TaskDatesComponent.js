@@ -16,7 +16,6 @@ class TaskDatesComponent extends Component{
 
     //también hacemos un fetchTasks al montar el componente lista.
     componentDidMount(){
-        if(this.props.tasks.length == 0)
             this.props.taskActions.fetchTasks(this.props.token);       
     }
 

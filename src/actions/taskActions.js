@@ -286,14 +286,10 @@ export function fetchTasks(token){
         )
         .then(
             (data)=>{
-                data.forEach(data=>{
-                    if(data.tasks){
-                        dispatch(fetchTasksSuccess(data));
-                    }                    
-                    else if(data.error)
-                        dispatch(fetchTasksError(data.error))
-                })
-               
+                //aqui no controlo errores porque van dentro de cada fecha
+                //tendria que buscar la propiedad error en cada una de ellas...
+                dispatch(fetchTasksSuccess(data));
+
             }                              
         )        
         .catch(
