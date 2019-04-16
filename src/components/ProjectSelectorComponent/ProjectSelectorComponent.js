@@ -18,7 +18,6 @@ class ProjectSelectorComponent extends Component{
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
-        this.handleOnSelect = this.handleOnSelect.bind(this);
     }
 
     componentDidMount(){
@@ -56,8 +55,8 @@ class ProjectSelectorComponent extends Component{
      * Pasamos el evento al padre: NewBlockComponent
      * Además cuando hacemos esto se resetea el componente a la lista inicial y se borra el input
      */
-    handleOnSelect(e){
-        this.props.onClick(e);
+    handleOnSelect(project_id, project_name, project_color){
+        this.props.onClick(project_id, project_name, project_color);
         this.setState({
             value: "",
             projects: this.props.projects.slice()
@@ -89,9 +88,9 @@ class ProjectSelectorComponent extends Component{
                         <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder="Buscar proyecto..." value={this.state.value}/>
                     </div>
                     <ul className={styles.projectlist}>
-                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnSelect} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
+                    <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnSelect.bind(this, -1, null, null)} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
                     { this.state.projects.map((e, index)=>{
-                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.handleOnSelect} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e.id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
                     <div className="dropdown-divider"></div>

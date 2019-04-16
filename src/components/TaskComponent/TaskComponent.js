@@ -125,14 +125,14 @@ class TaskComponent extends Component{
     /**
      * manejador para el evento onClick del componente ProjectSelectorComponent del TaskComponent
      */
-    handleOnChangeProject(e){
+    handleOnChangeProject(project_id, project_name, project_color){
         let project = {};        
-        if(e.target.id=="project0") //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
+        if(project_id == -1) //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
-            project.id = parseInt(e.target.id.match(/project(\d{0,4})/)[1]);
-            project.color = utils.rgb2hex(window.getComputedStyle(e.target.childNodes[0]).color); //obtenemos el color del elemento seleccionado actualmente en el DOM
-            project.name = e.target.innerText; //el nombre del proyecto lo sacamos del elemento con esa id
+            project.id = project_id;
+            project.color = project_color; //obtenemos el color del elemento seleccionado actualmente en el DOM
+            project.name = project_name; //el nombre del proyecto lo sacamos del elemento con esa id
         }
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
@@ -150,8 +150,7 @@ class TaskComponent extends Component{
      * poder obtener su relation_id en caso de estar borrando.
      * 
     */
-    handleOnClickTagSelector(e){
-        let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
+    handleOnClickTagSelector(tag_id){
         let array_tags = this.state.tags.slice();
         let index;
 

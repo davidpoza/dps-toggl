@@ -19,7 +19,6 @@ class TagSelectorComponent extends Component{
         }
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
-        this.handleOnClick = this.handleOnClick.bind(this);
     }
 
     componentWillMount(){
@@ -58,8 +57,8 @@ class TagSelectorComponent extends Component{
     /**al chequear un tag para añadirlo, borramos el input de filtrado si lo hubiera
      * y pasamos el evento al padre: NewBlockComponent
      */
-    handleOnClick(e){
-        this.props.onClick(e);
+    handleOnClick(tag_id){
+        this.props.onClick(tag_id);
         this.setState({
             value: ""
         });
@@ -106,7 +105,7 @@ class TagSelectorComponent extends Component{
                     <ul className={styles.taglist}>
                     { this.state.filtered_tags && this.state.filtered_tags.map((e, index)=>{
                         return(
-                        <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnClick} className={"dropdown-item " + styles.item}>
+                        <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnClick.bind(this, e.id)} className={"dropdown-item " + styles.item}>
                          {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
                          {e.name}
                          </li>
