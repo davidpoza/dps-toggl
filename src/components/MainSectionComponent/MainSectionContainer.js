@@ -33,6 +33,36 @@ class MainSectionContainer extends Component{
 }
 
 function mapStateToProps (state) {
+  //aqui compongo los objetos normalizados con normalizr
+
+  state.userReducer.users = state.userReducer.users.map(e=>{
+    return state.userReducer.users_entities[e];
+  });
+
+
+  if(state.taskReducer.dates != undefined){
+    state.taskReducer.tasks = state.taskReducer.dates.map(e=>{
+      if(e.tasks != undefined)
+        e.tasks = e.tasks.map(t=>{
+          return state.taskReducer.tasks_entities[t];
+        });
+      return e;
+    });
+  }
+
+  state.projectReducer.projects = state.projectReducer.projects.map(e=>{
+    return state.projectReducer.projects_entities[e];
+  });
+
+
+
+  state.tagReducer.tags = state.tagReducer.tags.map(e=>{
+    return state.tagReducer.tags_entities[e];
+  });
+
+
+
+
     return {
       user: state.userReducer,
       task: state.taskReducer,

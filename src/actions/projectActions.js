@@ -20,6 +20,8 @@ UPDATE_PROJECT_SUCCESS
 
 
 import api from '../api';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 /* Action creators síncronos */
 
@@ -101,29 +103,7 @@ export function cleanMessage(){
 }
 
 /* Action creators asíncronos - thunks */
-/*
-export function fetchProjects(token){
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_PROJECTS_ATTEMPT
-        });
 
-        api.project.fetchProjects(token).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchProjectsSuccess(data.data));
-                }                    
-                else if(data.error)
-                    dispatch(fetchProjectsError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(fetchProjectsError(error));
-        });
-    }
-}
-*/
 export function fetchProjectById(token, project_id){
     return (dispatch) => {
         dispatch({
@@ -158,6 +138,7 @@ export function fetchProjectsByOwner(token, owner_id){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
+                    data.data = normalize(data.data, schemas.projectsSchema);
                     dispatch(fetchProjectsSuccess(data.data));
                 }                    
                 else if(data.error)

@@ -20,7 +20,8 @@ export default function tagReducer (state = initialState.tagReducer, action){
             return {
                 ...state,
                 loading: false,
-                tags: action.payload,
+                tags: action.payload.result,
+                tags_entities: action.payload.entities.tags,
                 need_refreshing: false
             }
         case FETCH_TAGS_FAIL:

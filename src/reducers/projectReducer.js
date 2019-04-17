@@ -32,7 +32,8 @@ export default function projectReducer (state = initialState.projectReducer, act
             return {
                 ...state,
                 loading: false,
-                projects: action.payload,
+                projects_entities: action.payload.entities.projects,
+                projects: action.payload.result,
                 need_refreshing: false
             }
         case FETCH_PROJECTS_FAIL:

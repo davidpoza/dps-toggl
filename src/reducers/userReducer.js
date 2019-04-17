@@ -80,7 +80,8 @@ export default function userReducer (state = initialState.userReducer, action){
             return {
                 ...state,
                 loading: false,
-                users: action.payload,
+                users: action.payload.result,
+                users_entities: action.payload.entities.users,
                 error: {}
             }
         case FETCH_USERS_FAIL:
