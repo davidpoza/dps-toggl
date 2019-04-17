@@ -80,7 +80,7 @@ export default function userReducer (state = initialState.userReducer, action){
             return {
                 ...state,
                 loading: false,
-                users: action.payload.result,
+                users_id: action.payload.result,
                 users_entities: action.payload.entities.users,
                 error: {}
             }

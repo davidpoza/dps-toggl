@@ -5,6 +5,7 @@ import styles from './TimerSectionComponent.scss';
 import NewBlockComponent from '../NewBlockComponent/NewBlockComponent';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 import TaskDatesComponent from '../TaskDatesComponent/TaskDatesComponent';
+import TaskDatesContainer from '../TaskDatesComponent/TaskDatesContainer';
 
 class TimerSectionComponent extends Component{
     constructor(props){
@@ -26,7 +27,7 @@ class TimerSectionComponent extends Component{
                     <NewBlockComponent ref={this.NewBlockComponent} user={this.props.user} project={this.props.project} tag={this.props.tag} tagActions={this.props.tagActions} taskActions={this.props.taskActions} projectActions={this.props.projectActions}/>
                 </div>
                 <div className={"flex-grow-1 " + styles.tasklist}>
-                    <TaskDatesComponent token={this.props.user.token} tags={this.props.tag.tags} projects={this.props.project.projects} tasks={this.props.task.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.task.need_refreshing} onResume={this.handleOnClickResume}/>
+                    <TaskDatesContainer onResume={this.handleOnClickResume}/>
                 </div>
                 <LoadingComponent isLoading={this.props.user.loading|this.props.task.loading|this.props.project.loading|this.props.tag.loading} />
             </div>

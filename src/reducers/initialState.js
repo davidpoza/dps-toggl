@@ -7,11 +7,13 @@ const initialState = {
         token: null,
         loading: false,
         users: [],
+        users_id: [],
         users_entities: [],
         error: {}
     },
     taskReducer: {
         tasks: [], // array de objetos  {date:string, tasks:array de objetos}
+        tasks_id: [],
         tasks_entities: [],
         need_refreshing: false,
         loading: false,
@@ -19,6 +21,7 @@ const initialState = {
     },
     projectReducer: {
         projects: [],
+        projects_id: [],
         projects_entities: [],
         project_detail: {},
         need_refreshing: false,
@@ -27,6 +30,7 @@ const initialState = {
     },
     tagReducer: {
         tags: [],
+        tags_id: [],
         tags_entities: [],
         loading: false,
         error: {}
