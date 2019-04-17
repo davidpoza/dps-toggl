@@ -136,7 +136,7 @@ class TaskComponent extends Component{
     handleOnDelete(e){
         this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
         let task_id = e.target.id.match(/btn-delete-(\d{0,4})/)[1];
-        this.props.onDeleteFromList(task_id); //eliminar visualmente, para lo cual llama al padre
+        this.props.onDelete(task_id); //eliminar visualmente, para lo cual llama al padre
     }
 
     /**
@@ -257,7 +257,7 @@ TaskComponent.propTypes = {
     tags: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
-    onDeleteFromList: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
 }
 

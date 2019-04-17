@@ -24,7 +24,7 @@ class TaskDatesContainer extends Component{
 
     render(){
         return(
-            <TaskDatesComponent token={this.props.token} tasks={this.props.tasks} projects={this.props.projects} tags={this.props.tags} need_refreshing={this.props.need_refreshing}
+            <TaskDatesComponent token={this.props.token} dates={this.props.dates} projects={this.props.projects} tags={this.props.tags} need_refreshing={this.props.need_refreshing}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -36,9 +36,11 @@ class TaskDatesContainer extends Component{
 }
 
 function mapStateToProps (state) {
+
     return {
       token: state.userReducer.token,
-      tasks: state.taskReducer.tasks,
+      //denormalizacion
+      dates: state.taskReducer.dates_id.map(e=>state.taskReducer.dates_entities[e]),
       tags: state.tagReducer.tags,
       projects: state.projectReducer.projects,
       need_refreshing: state.taskReducer.need_refreshing,  

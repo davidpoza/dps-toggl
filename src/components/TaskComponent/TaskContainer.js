@@ -7,13 +7,13 @@ import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
 
-import TaskListComponent from './TaskListComponent';
+import TaskComponent from './TaskComponent';
 
 
 
 
 
-class TaskListContainer extends Component{
+class TaskContainer extends Component{
     constructor(props){
         super(props);
     }
@@ -23,11 +23,8 @@ class TaskListContainer extends Component{
     }
 
     render(){
-        let tasks = this.props.dates[this.props.date].tasks.map(e=>{
-          return this.props.tasks_entities[e];
-        });
         return(
-            <TaskListComponent token={this.props.token} tasks={tasks} projects={this.props.projects} tags={this.props.tags}
+            <TaskComponent token={this.props.token} task={this.props.task} projects={this.props.projects} tags={this.props.tags}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -43,14 +40,8 @@ class TaskListContainer extends Component{
 function mapStateToProps (state) {
     return {
       token: state.userReducer.token,
-      //denormalizacion
-      dates: state.taskReducer.dates_entities,
-      tasks_entities:  state.taskReducer.tasks_entities,
-      tags: state.tagReducer.tags_id.map(e=>{
-        return  state.tagReducer.tags_entities[e];
-      }),
+      tags: state.tagReducer.tags_ids.map(e=>state.tagReducer.tags_entities[e]),
       projects: state.projectReducer.projects,
-      need_refreshing: state.taskReducer.need_refreshing,  
     }
   }
   
@@ -63,4 +54,4 @@ function mapStateToProps (state) {
     }
   }
   
-export default connect(mapStateToProps, mapDispatchToProps)(TaskListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskContainer);

@@ -90,7 +90,7 @@ class TaskDatesComponent extends Component{
             <div>
                <ul className="p-0 container-flex">
                {
-                   this.props.tasks && this.props.tasks.map((e,index) => {
+                   this.props.dates && this.props.dates.map((e,index) => {
                         return (
                                 <li className={styles.date} key={"date_group_"+index}>
                                 <div className={"d-flex justify-content-between"}>
@@ -99,7 +99,7 @@ class TaskDatesComponent extends Component{
                                 </div>
                            
                                 { !e.collapsed &&
-                                    <TaskListContainer onDelete={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually} onResume={this.props.onResume}/>
+                                    <TaskListContainer date={e.date} onDelete={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually} onResume={this.props.onResume}/>
                                 }                                
                                 </li>
                         )
@@ -116,7 +116,7 @@ class TaskDatesComponent extends Component{
 
 TaskDatesComponent.propTypes = {
     token: PropTypes.string.isRequired,
-    tasks: PropTypes.array.isRequired,
+    dates: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
     projects: PropTypes.array.isRequired,
     need_refreshing: PropTypes.bool.isRequired,

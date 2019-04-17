@@ -15,6 +15,9 @@ const initialState = {
         tasks: [], // array de objetos  {date:string, tasks:array de objetos}
         tasks_id: [],
         tasks_entities: [],
+        dates: [],
+        dates_id: [],
+        dates_entities: [],
         need_refreshing: false,
         loading: false,
         error: {}

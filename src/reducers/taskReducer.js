@@ -149,9 +149,8 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: false,
-                dates: action.payload.result.map(e=>{
-                    return action.payload.entities.dates[e];
-                }),
+                dates_entities: action.payload.entities.dates,
+                dates_id: action.payload.result,
                 tasks_entities: action.payload.entities.tasks,
                 need_refreshing: false
             }
