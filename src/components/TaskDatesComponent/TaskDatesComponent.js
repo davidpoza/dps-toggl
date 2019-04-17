@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 
-import TaskListComponent from '../TaskListComponent/TaskListComponent';
+import TaskListContainer from '../TaskListComponent/TaskListContainer';
 import styles from './TaskDatesComponent.scss';
 import utils from '../../utils';
 
@@ -99,7 +99,7 @@ class TaskDatesComponent extends Component{
                                 </div>
                            
                                 { !e.collapsed &&
-                                    <TaskListComponent token={this.props.token} date={e.date} tags={this.props.tags} projects={this.props.projects} tasks={e.tasks} taskActions={this.props.taskActions} tagActions={this.props.tagActions} need_refreshing={this.props.need_refreshing} onDeleteFromList={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually} onResume={this.props.onResume}/>
+                                    <TaskListContainer onDelete={this.handleDeleteTaskVisually} onUpdate={this.handleUpdateTaskVisually} onResume={this.props.onResume}/>
                                 }                                
                                 </li>
                         )

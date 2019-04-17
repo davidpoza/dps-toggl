@@ -36,7 +36,7 @@ TaskListComponent.propTypes = {
     need_refreshing: PropTypes.bool.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
-    onDeleteFromList: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
 }
 
