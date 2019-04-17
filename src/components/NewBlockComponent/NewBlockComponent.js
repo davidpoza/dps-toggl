@@ -32,6 +32,7 @@ class NewBlockComponent extends Component{
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);        
         this.handleHourChange = this.handleHourChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.resumeTask = this.resumeTask.bind(this);
 
         this.state = {
             placeholder: lang[config.lang].desc_placeholder_chrono_mode,
@@ -94,8 +95,8 @@ class NewBlockComponent extends Component{
     }
 
     /** Al producirse un click en un proyecto del dropdown del ProjectSelectorComponent */
-    handleOnClickProjectSelector(e){
-        if(e.target.id=="project0")
+    handleOnClickProjectSelector(project_id, project_name, project_color){
+        if(project_id==-1)
         {
             this.setState({
                 project_selected_name: null,
@@ -103,19 +104,17 @@ class NewBlockComponent extends Component{
                 project_selected_id:null
             });
         }
-        else if(e.target.id){
-            let project_id = e.target.id.match(/project(\d{0,4})/)[1];
+        else{
             this.setState({
-                project_selected_name: e.target.innerText,
-                project_selected_color: utils.rgb2hex(window.getComputedStyle(e.target.childNodes[0]).color),
+                project_selected_name: project_name,
+                project_selected_color: project_color,
                 project_selected_id: project_id
             });
         }
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
-    handleOnClickTagSelector(e){        
-        let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
+    handleOnClickTagSelector(tag_id){        
         let array_tags = this.state.tags.slice();
         for(let i=0; i<array_tags.length;i++){
             if(array_tags[i].id == tag_id)
@@ -243,6 +242,9 @@ class NewBlockComponent extends Component{
                 chrono_status: "paused",
                 time: 0,
                 description: "",
+                project_selected_name: null,
+                project_selected_color: null,
+                project_selected_id: null,
                 tags: this.props.tag.tags.map((e)=>{
                     e.checked = false;
                     return e;
@@ -263,6 +265,19 @@ class NewBlockComponent extends Component{
         this.setState({
             description: e.target.value
         });
+    }
+
+    resumeTask(description, project_id, project_name, project_color, tags){
+        if(this.state.chrono_status == "paused"){
+            this.setState({
+                description: description,
+                project_selected_name: project_name,
+                project_selected_color: project_color,
+                project_selected_id: project_id,
+                tags: tags
+            });
+            this.handleOnClickStart();
+        }        
     }
 
     render(){

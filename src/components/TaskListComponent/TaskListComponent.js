@@ -15,7 +15,7 @@ class TaskListComponent extends Component{
                <ul className="p-0 container-flex">
                {
                    this.props.tasks.map((e,index) => {
-                        return (<TaskComponent token={this.props.token} key={index} task={e} projects={this.props.projects} tags={this.props.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.props.onDeleteFromList} onUpdate={this.props.onUpdate}/>)
+                        return (<TaskComponent token={this.props.token} key={index} task={e} projects={this.props.projects} tags={this.props.tags} taskActions={this.props.taskActions} tagActions={this.props.tagActions} onDeleteFromList={this.props.onDeleteFromList} onUpdate={this.props.onUpdate} onResume={this.props.onResume}/>)
                    })
                }
                </ul>
