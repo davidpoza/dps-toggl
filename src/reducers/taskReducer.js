@@ -190,9 +190,11 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case COLLAPSE_DATE:
+            let new_dates_entities = Object.assign({},state.dates_entities);
+            new_dates_entities[action.payload].collapsed=new_dates_entities[action.payload].collapsed?false:true
             return {
                 ...state,
-                tasks: state.tasks.map((e,index)=>{if(index==action.payload) e.collapsed=e.collapsed?false:true; return e;})
+                dates_entities: new_dates_entities
             }
         default:
             return state;

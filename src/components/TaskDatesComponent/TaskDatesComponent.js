@@ -81,8 +81,8 @@ class TaskDatesComponent extends Component{
     }
 
    
-    handleOnClick(index){
-        this.props.taskActions.collapseDate(index);
+    handleOnClick(date){
+        this.props.taskActions.collapseDate(date);
     }
 
     render(){
@@ -94,7 +94,7 @@ class TaskDatesComponent extends Component{
                         return (
                                 <li className={styles.date} key={"date_group_"+index}>
                                 <div className={"d-flex justify-content-between"}>
-                                    <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,index)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,index)}></i> } {utils.standarDateToHuman(e.date)}</h2>
+                                    <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,e.date)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,e.date)}></i> } {utils.standarDateToHuman(e.date)}</h2>
                                     <div className="p-3">{e.time}h.</div>  
                                 </div>
                            

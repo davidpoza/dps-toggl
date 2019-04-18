@@ -44,10 +44,10 @@ export function createTaskError(error){
     }
 }
 
-export function collapseDate(index){
+export function collapseDate(date){
     return {
         type: COLLAPSE_DATE,
-        payload: index
+        payload: date
     }
 }
 
