@@ -176,8 +176,8 @@ class TaskComponent extends Component{
             new_task_array[task_id].start_hour = start_hour;
         if(end_hour!=null)
             new_task_array[task_id].end_hour = end_hour;
-        if(project!=null)
-            new_task_array[task_id].project = project.id;
+        if(project!=-1)
+            new_task_array[task_id].project = project?project.id:null;
         if(tags!=null)
             new_task_array[task_id].tags = tags;
         this.props.taskActions.updateTasksVisually(new_task_array);
