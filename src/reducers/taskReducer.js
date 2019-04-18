@@ -84,8 +84,11 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case UPDATE_TASK_SUCCESS:
+            //let new_tasks_entities = Object.assign({}, state.tasks_entities);
+            //new_tasks_entities[action.payload.id] = Object.assign(new_tasks_entities[action.payload.id],action.payload);
             return {
                 ...state,
+                //task_entitites: new_tasks_entities,
                 loading: false,
                 //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
                 error: {}
@@ -94,7 +97,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                tasks_entities: action.payload,
                 error: {}
             }
         case UPDATE_TASK_FAIL:
