@@ -80,7 +80,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: true,
-                need_refreshing: false,
                 error: {}
             }
         case UPDATE_TASK_SUCCESS:
@@ -113,20 +112,24 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASK_SUCCESS:
-            //buscamos actualizar solo el task indicado
-            let tasks_updated_task = [...state.tasks].map(e=>{
-                e.tasks = e.tasks.map(task=>{
-                    if(task.id == action.payload.id){
-                        task = action.payload
-                    }
-                    return task;
-                })
-                return e;
-            });
+            let new_tasks_entities = Object.assign({}, state.tasks_entities);
+            new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
+            let new_tasks_tags_entities = Object.assign({}, state.tasks_tags_entities);
+            if(action.payload.entities.tasks[action.payload.result].tags.length > state.tasks_entities[action.payload.result].tags.length){ //se añade un tag
+                //hay que añadir la relacion nueva al array de tasks_tags
+                new_tasks_tags_entities = Object.assign(new_tasks_tags_entities, action.payload.entities.tags);
+            }
+            else{ //se borra el tag ¿cómo saber cual hay que borrar?
+                new_tasks_entities[action.payload.result].tags.map(e=>{
+                    if(!action.payload.entities.tasks[action.payload.result].tags.includes(e))
+                        delete new_tasks_tags_entities[e];
+                });                
+            }
             return {
                 ...state,
                 loading: false,
-                tasks: tasks_updated_task,
+                tasks_entities: new_tasks_entities,
+                tasks_tags_entities: new_tasks_tags_entities,
                 need_refreshing: false
             }
         case FETCH_TASK_FAIL:

@@ -154,9 +154,8 @@ class TaskComponent extends Component{
         }
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
-        y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
+       this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
        this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project, null);
@@ -228,11 +227,10 @@ class TaskComponent extends Component{
         
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
-        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
+        y acto seguido se realiza un fetch de la tarea
         */
         this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
-        
-    }
+   }
     
     render(){
         return(
