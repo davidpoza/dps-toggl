@@ -23,13 +23,7 @@ class TaskListContainer extends Component{
     }
 
     render(){
-        let tasks = this.props.dates[this.props.date].tasks.map(e=>{
-          let task = this.props.tasks_entities[e];
-          /*task.tags = task.tags.map(t=>{
-            return this.props.tasks_tags_entities[t];
-          },this)*/
-          return task;
-        }, this);
+        let tasks = this.props.dates[this.props.date].tasks;
        
         return(
             <TaskListComponent token={this.props.token} tasks={tasks}
@@ -48,12 +42,7 @@ class TaskListContainer extends Component{
 function mapStateToProps (state) {
     return {
       token: state.userReducer.token,
-      //denormalizacion
       dates: state.taskReducer.dates_entities,
-      tasks_entities:  state.taskReducer.tasks_entities,
-      
-
-      
       need_refreshing: state.taskReducer.need_refreshing,  
     }
   }
