@@ -24,10 +24,10 @@ class TaskContainer extends Component{
 
     render(){
       //denormalizacion
-      let task = this.props.tasks_entities[this.props.task_id];
+      let task = Object.assign({}, this.props.tasks_entities[this.props.task_id]);
       task.tags = task.tags.map(t=>{
         return this.props.tasks_tags_entities[t];
-      });
+      },this);
       task.project = this.props.projects_entities[task.project];
       
         return(

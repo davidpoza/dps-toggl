@@ -158,7 +158,7 @@ class TaskComponent extends Component{
        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
+       //this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
