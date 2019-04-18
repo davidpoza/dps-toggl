@@ -18,6 +18,7 @@ const initialState = {
         dates: [],
         dates_id: [],
         dates_entities: [],
+        tasks_tags_entities: [],
         need_refreshing: false,
         loading: false,
         error: {}

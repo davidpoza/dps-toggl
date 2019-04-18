@@ -23,8 +23,15 @@ class TaskContainer extends Component{
     }
 
     render(){
+      //denormalizacion
+      let task = this.props.task;
+      task.tags = this.props.task.tags.map(t=>{
+        return this.props.tasks_tags_entities[t];
+      });
+      task.project = this.props.projects_entities[task.project];
+      
         return(
-            <TaskComponent token={this.props.token} task={this.props.task} projects={this.props.projects} tags={this.props.tags}
+            <TaskComponent token={this.props.token} task={task} projects={this.props.projects} tags={this.props.tags}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -40,8 +47,13 @@ class TaskContainer extends Component{
 function mapStateToProps (state) {
     return {
       token: state.userReducer.token,
-      tags: state.tagReducer.tags_ids.map(e=>state.tagReducer.tags_entities[e]),
-      projects: state.projectReducer.projects,
+      tags_entities: state.tagReducer.tags_entities,
+      tags: state.tagReducer.tags_id.map(e=>{
+        return state.tagReducer.tags_entities[e];
+      }),
+      tasks_tags_entities: state.taskReducer.tasks_tags_entities,
+      projects: state.projectReducer.projects_id.map(e=>state.projectReducer.projects_entities[e]),
+      projects_entities: state.projectReducer.projects_entities
     }
   }
   

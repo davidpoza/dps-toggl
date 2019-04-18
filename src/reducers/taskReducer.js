@@ -152,6 +152,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 dates_entities: action.payload.entities.dates,
                 dates_id: action.payload.result,
                 tasks_entities: action.payload.entities.tasks,
+                tasks_tags_entities: action.payload.entities.tags,
                 need_refreshing: false
             }
         case FETCH_TASKS_FAIL:

@@ -24,10 +24,15 @@ class TaskListContainer extends Component{
 
     render(){
         let tasks = this.props.dates[this.props.date].tasks.map(e=>{
-          return this.props.tasks_entities[e];
-        });
+          let task = this.props.tasks_entities[e];
+          /*task.tags = task.tags.map(t=>{
+            return this.props.tasks_tags_entities[t];
+          },this)*/
+          return task;
+        }, this);
+       
         return(
-            <TaskListComponent token={this.props.token} tasks={tasks} projects={this.props.projects} tags={this.props.tags}
+            <TaskListComponent token={this.props.token} tasks={tasks}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -46,10 +51,9 @@ function mapStateToProps (state) {
       //denormalizacion
       dates: state.taskReducer.dates_entities,
       tasks_entities:  state.taskReducer.tasks_entities,
-      tags: state.tagReducer.tags_id.map(e=>{
-        return  state.tagReducer.tags_entities[e];
-      }),
-      projects: state.projectReducer.projects,
+      
+
+      
       need_refreshing: state.taskReducer.need_refreshing,  
     }
   }

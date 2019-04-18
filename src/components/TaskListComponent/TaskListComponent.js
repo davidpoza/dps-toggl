@@ -28,8 +28,6 @@ class TaskListComponent extends Component{
 
 TaskListComponent.propTypes = {
     tasks: PropTypes.array.isRequired,
-    tags: PropTypes.array.isRequired,
-    projects: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
     onDelete: PropTypes.func.isRequired,
