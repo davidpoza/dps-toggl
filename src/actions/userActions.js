@@ -15,8 +15,7 @@ import {
 
 
 import api from '../api';
-import {normalize} from 'normalizr';
-import * as schemas from './normalizr';
+
 
 /* Action creators síncronos */
 
@@ -132,8 +131,7 @@ export function fetchUsers(token, user_id){
         api.user.fetchUsers(token, user_id).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    data.data = normalize(data.data, schemas.usersSchema);
+                if(data.data){                    
                     dispatch(fetchUsersSuccess(data.data));
                 }                    
                 else if(data.error) //error en la peticion

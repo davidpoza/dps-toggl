@@ -22,6 +22,8 @@ import {
     FETCH_TASK_SUCCESS,
     COLLAPSE_DATE
 } from '../actions/types';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 import initialState from './initialState';
 
@@ -112,6 +114,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASK_SUCCESS:
+            action.payload = normalize(action.payload, schemas.taskEntity);
             let new_tasks_entities = Object.assign({}, state.tasks_entities);
             new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
             let new_tasks_tags_entities = Object.assign({}, state.tasks_tags_entities);
@@ -152,6 +155,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 else if(a.date > b.date) return -1
                 else return 0
             });*/
+            action.payload = normalize(action.payload, schemas.dateSchema);
             return {
                 ...state,
                 loading: false,

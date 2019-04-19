@@ -8,8 +8,7 @@ CLEAN_TAG_MESSAGE
 
 
 import api from '../api';
-import {normalize} from 'normalizr';
-import * as schemas from './normalizr';
+
 
 
 /* Action creators síncronos */
@@ -46,8 +45,7 @@ export function fetchTags(token){
         api.tag.fetchTags(token).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    data.data = normalize(data.data, schemas.tagsSchema);
+                if(data.data){                    
                     dispatch(fetchTagsSuccess(data.data));
                 }                    
                 else if(data.error)

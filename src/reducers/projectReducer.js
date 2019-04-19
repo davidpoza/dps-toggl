@@ -18,6 +18,8 @@ import {
 } from '../actions/types';
 
 import initialState from './initialState';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 
 export default function projectReducer (state = initialState.projectReducer, action){
@@ -29,6 +31,7 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case FETCH_PROJECTS_SUCCESS:
+            action.payload = normalize(action.payload, schemas.projectsSchema);
             return {
                 ...state,
                 loading: false,

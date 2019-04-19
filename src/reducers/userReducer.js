@@ -13,6 +13,8 @@ import {
 } from '../actions/types';
 
 import initialState from './initialState';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 const thumbnail_path = "https://dpstogglapi1.davidinformatico.com/uploads/_/thumbnails/200/200/crop/good/";
 
@@ -77,6 +79,7 @@ export default function userReducer (state = initialState.userReducer, action){
                 error: {}
             }
         case FETCH_USERS_SUCCESS:
+            action.payload = normalize(action.payload, schemas.usersSchema);
             return {
                 ...state,
                 loading: false,

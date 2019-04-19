@@ -20,8 +20,7 @@ UPDATE_PROJECT_SUCCESS
 
 
 import api from '../api';
-import {normalize} from 'normalizr';
-import * as schemas from './normalizr';
+
 
 /* Action creators síncronos */
 
@@ -138,7 +137,6 @@ export function fetchProjectsByOwner(token, owner_id){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    data.data = normalize(data.data, schemas.projectsSchema);
                     dispatch(fetchProjectsSuccess(data.data));
                 }                    
                 else if(data.error)

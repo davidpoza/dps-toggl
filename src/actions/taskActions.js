@@ -24,8 +24,7 @@ import {
 } from './types';
 
 import api from '../api';
-import {normalize} from 'normalizr';
-import * as schemas from './normalizr';
+
 
 /* Action creators síncronos */
 
@@ -239,8 +238,6 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    //normalizr
-                    data.data = normalize(data.data, schemas.taskEntity);
                     dispatch(fetchTaskSuccess(data.data));
                 }                    
                 else if(data.error)
@@ -288,7 +285,6 @@ export function fetchTasks(token){
         )
         .then(
             (data)=>{
-                data = normalize(data, schemas.dateSchema);
                 //aqui no controlo errores porque van dentro de cada fecha
                 //tendria que buscar la propiedad error en cada una de ellas...
                 dispatch(fetchTasksSuccess(data));
