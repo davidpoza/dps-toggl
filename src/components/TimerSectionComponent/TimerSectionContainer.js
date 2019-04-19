@@ -23,7 +23,11 @@ class TimerSectionContainer extends Component{
 
     render(){
         return(
-            <TimerSectionComponent user={this.props.user} task={this.props.task} project={this.props.project} tag={this.props.tag} 
+            <TimerSectionComponent 
+            user_loading={this.props.user_loading}
+            task_loading={this.props.task_loading}
+            project_loading={this.props.project_loading}
+            tag_loading={this.props.tag_loading} 
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -34,10 +38,10 @@ class TimerSectionContainer extends Component{
 
 function mapStateToProps (state) {
     return {
-      user: state.userReducer,
-      task: state.taskReducer,
-      project: state.projectReducer,
-      tag: state.tagReducer
+      user_loading: state.userReducer.loading,
+      task_loading: state.taskReducer.loading,
+      project_loading: state.projectReducer.loading,
+      tag_loading: state.tagReducer.loading
     }
   }
   

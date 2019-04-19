@@ -33,7 +33,7 @@ class TimerSectionComponent extends Component{
                 <div className={"flex-grow-1 " + styles.tasklist}>
                     <TaskDatesContainer onResume={this.handleOnClickResume}/>
                 </div>
-                <LoadingComponent isLoading={this.props.user.loading|this.props.task.loading|this.props.project.loading|this.props.tag.loading} />
+                <LoadingComponent isLoading={this.props.user_loading|this.props.task_loading|this.props.project_loading|this.props.tag_loading} />
             </div>
         )
     }
