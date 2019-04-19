@@ -66,10 +66,16 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case DELETE_TASK_VISUALLY:
+            let new_dates_entities_deleted = Object.assign({}, state.dates_entities);
+            let new_tasks_entities_deleted = Object.assign({}, state.tasks_entities);
+            new_dates_entities_deleted[action.payload.task_date].tasks = new_dates_entities_deleted[action.payload.task_date].tasks.filter(t=>(t!=action.payload.task_id));
+            delete new_tasks_entities_deleted[action.payload.task_id];
+
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                dates_entities: new_dates_entities_deleted,
+                tasks_entities: new_tasks_entities_deleted,
                 error: {}
             }
         case DELETE_TASK_FAIL:

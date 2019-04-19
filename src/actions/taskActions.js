@@ -64,10 +64,10 @@ export function deleteTaskError(error){
     }
 }
 
-export function deleteTasksVisually(taskData){
+export function deleteTasksVisually(task_id, task_date){
     return {
         type: DELETE_TASK_VISUALLY,
-        payload: taskData
+        payload: {task_id, task_date}
     }
 }
 

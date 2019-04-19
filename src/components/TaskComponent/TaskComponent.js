@@ -22,7 +22,6 @@ class TaskComponent extends Component{
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
-        this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
 
         /** 
          * tags: almacena un array de tags con las propiedades:
@@ -136,8 +135,8 @@ class TaskComponent extends Component{
     /** manejador del evento de click sobre la opción borrar del menu adicional */
     handleOnDelete(e){
         this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
-        let task_id = e.target.id.match(/btn-delete-(\d{0,4})/)[1];
-        this.props.onDelete(task_id); //eliminar visualmente, para lo cual llama al padre
+        this.props.taskActions.deleteTasksVisually(this.props.task.id, this.props.task.date);
+        //this.props.onDelete(this.props.task.id, this.props.task.date); //eliminar visualmente, para lo cual llama al padre
     }
 
     /**
@@ -154,35 +153,13 @@ class TaskComponent extends Component{
         }
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
+        y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
-       this.props.taskActions.updateTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project, null);
+       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
     }
-
-
-    /** hace un update de un task operando únicamente en el store de redux de forma síncrona.
-     * Este tipo de action se lanza en paralelo a las action asíncronas para dar velocidad al manejo de la la interfaz,
-     * sin esperar a peticiones ajax.
-    */
-    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
-        let new_task_array = Object.assign({},this.props.tasks_entities);
-        if(desc!=null)
-            new_task_array[task_id].desc = desc;
-        if(date!=null)
-            new_task_array[task_id].date = date;       
-        if(start_hour!=null)
-            new_task_array[task_id].start_hour = start_hour;
-        if(end_hour!=null)
-            new_task_array[task_id].end_hour = end_hour;
-        if(project!=-1)
-            new_task_array[task_id].project = project?project.id:null;
-        if(tags!=null)
-            new_task_array[task_id].tags = tags;
-        this.props.taskActions.updateTasksVisually(new_task_array);
-}
-
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
      * Se recorre el array buscando el id que coincide con el tag marcado para hacer un toggle a la prop. checked.
@@ -227,10 +204,11 @@ class TaskComponent extends Component{
         
         
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
-        y acto seguido se realiza un fetch de la tarea
+        y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
         this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
-   }
+        
+    }
     
     render(){
         return(
