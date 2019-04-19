@@ -6,13 +6,14 @@ import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
-import MainSectionComponent from './MainSectionComponent';
+
+import ProjectSectionComponent from './ProjectSectionComponent';
 
 
 
 
 
-class MainSectionContainer extends Component{
+class ProjectSectionContainer extends Component{
     constructor(props){
         super(props);
     }
@@ -23,7 +24,13 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent user={this.props.user} task={this.props.task} project={this.props.project} tag={this.props.tag} 
+            <ProjectSectionComponent 
+            user={this.props.user}
+            user_loading={this.props.user_loading}
+            project_loading={this.props.project_loading}
+            need_refreshing={this.props.need_refreshing}
+            projects={this.props.projects}
+            history={this.props.history}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -35,9 +42,10 @@ class MainSectionContainer extends Component{
 function mapStateToProps (state) {
     return {
       user: state.userReducer,
-      task: state.taskReducer,
-      project: state.projectReducer,
-      tag: state.tagReducer
+      need_refreshing: state.projectReducer.need_refreshing,
+      user_loading: state.userReducer.loading,
+      project_loading: state.projectReducer.loading,
+      projects: state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p]),
     }
   }
   
@@ -50,4 +58,4 @@ function mapStateToProps (state) {
     }
   }
   
-export default connect(mapStateToProps, mapDispatchToProps)(MainSectionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectSectionContainer);
