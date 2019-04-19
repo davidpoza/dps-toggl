@@ -22,6 +22,7 @@ class TaskComponent extends Component{
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
+        this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
 
         /** 
          * tags: almacena un array de tags con las propiedades:
@@ -158,7 +159,20 @@ class TaskComponent extends Component{
        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
+       this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
+    }
+
+
+    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
+        let new_task_entities = Object.assign({}, this.props.tasks_entities);
+        if(desc!=null) new_task_entities[task_id].desc = desc;
+        if(date!=null) new_task_entities[task_id].date = date;
+        if(start_hour!=null) new_task_entities[task_id].start_hour = start_hour;
+        if(end_hour!=null) new_task_entities[task_id].end_hour = end_hour;
+        if(project!=-null) new_task_entities[task_id].project = project;
+        if(tags!=null) new_task_entities[task_id].tags = tags;
+
+        this.props.taskActions.updateTasksVisually(new_task_entities);
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
@@ -257,8 +271,6 @@ TaskComponent.propTypes = {
     tags: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
 }
 
 

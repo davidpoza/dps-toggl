@@ -14,7 +14,7 @@ class TaskListComponent extends Component{
                <ul className="p-0 container-flex">
                {
                    this.props.tasks.map((e,index) => {
-                        return (<TaskContainer key={index} task_id={e} onDelete={this.props.onDelete} onUpdate={this.props.onUpdate} onResume={this.props.onResume}/>)
+                        return (<TaskContainer key={index} task_id={e} onResume={this.props.onResume}/>)
                    })
                }
                </ul>
@@ -30,8 +30,6 @@ TaskListComponent.propTypes = {
     tasks: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
 }
 
 export default TaskListComponent;

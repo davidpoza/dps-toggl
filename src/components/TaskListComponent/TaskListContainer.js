@@ -32,7 +32,6 @@ class TaskListContainer extends Component{
             projectActions={this.props.projectActions}
             tagActions={this.props.tagActions}
             onResume={this.props.onResume}
-            onDelete={this.props.onDelete}
             onUpdate={this.props.onUpdate}
             />
         )
