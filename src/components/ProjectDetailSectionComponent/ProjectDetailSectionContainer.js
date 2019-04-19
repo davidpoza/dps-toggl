@@ -23,18 +23,14 @@ class ProjectDetailSectionContainer extends Component{
         return(
             <ProjectDetailSectionComponent 
             user={this.props.user}
-            users_entities={this.props.users_entities}
-            users={this.props.users}
             user_loading={this.props.user_loading}
             project_loading={this.props.project_loading}
             need_refreshing={this.props.need_refreshing}
-            projects={this.props.projects}
             project_detail={this.props.project_detail}
             history={this.props.history}
             userActions={this.props.userActions}
-            taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}/>
+            />
         )
     }
 }

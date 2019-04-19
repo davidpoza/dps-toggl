@@ -273,7 +273,8 @@ TaskComponent.propTypes = {
     projects: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
-    tagActions: PropTypes.object.isRequired,
+    onResume: PropTypes.func.isRequired,
+    tasks_entities: PropTypes.object.isRequired
 }
 
 

@@ -25,12 +25,7 @@ class TaskListContainer extends Component{
             <TaskListComponent
             token={this.props.token}
             tasks={this.props.tasks}
-            userActions={this.props.userActions}
-            taskActions={this.props.taskActions}
-            projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}
             onResume={this.props.onResume}
-            onUpdate={this.props.onUpdate}
             />
         )
     }
@@ -40,7 +35,6 @@ function mapStateToProps (state, props) {
     return {
       token: state.userReducer.token,
       tasks: state.taskReducer.dates_entities[props.date].tasks,
-      need_refreshing: state.taskReducer.need_refreshing,  
     }
   }
   

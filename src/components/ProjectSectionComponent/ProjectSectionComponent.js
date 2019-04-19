@@ -119,8 +119,12 @@ class ProjectSectionComponent extends Component{
 
 ProjectSectionComponent.propTypes = {
     user:PropTypes.object.isRequired,
+    user_loading: PropTypes.bool.isRequired,
+    project_loading: PropTypes.bool.isRequired,
+    need_refreshing: PropTypes.bool.isRequired,
     projects: PropTypes.array.isRequired,
-    projectActions: PropTypes.object.isRequired
+    projectActions: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
 }
 
 

@@ -27,9 +27,8 @@ class TaskListComponent extends Component{
 
 
 TaskListComponent.propTypes = {
+    token: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
-    taskActions: PropTypes.object.isRequired,
-    tagActions: PropTypes.object.isRequired,
 }
 
 export default TaskListComponent;

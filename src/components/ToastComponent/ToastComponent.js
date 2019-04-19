@@ -70,6 +70,10 @@ class ToastComponent extends Component{
 
 ToastComponent.propTypes = {
     message: PropTypes.string,
+    projectActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    userActions: PropTypes.object.isRequired,
 }
 
 export default ToastComponent;

@@ -21,7 +21,7 @@ class LoginContainer extends Component{
 
     render(){
         return(
-            <LoginComponent history={this.props.history} user={this.props.user} actions={this.props.actions}/>
+            <LoginComponent history={this.props.history} user={this.props.user} userActions={this.props.userActions}/>
         )
     }
 }
@@ -34,7 +34,7 @@ function mapStateToProps (state) {
   
   function mapDispatchToProps (dispatch) {
     return {
-      actions: bindActionCreators(userActions, dispatch)
+      userActions: bindActionCreators(userActions, dispatch)
     }
   }
 

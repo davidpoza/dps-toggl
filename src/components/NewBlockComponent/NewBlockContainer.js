@@ -32,8 +32,7 @@ class NewBlockContainer extends Component{
             user={this.props.user}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}
-            
+            tagActions={this.props.tagActions}            
             />
         )
     }

@@ -25,13 +25,11 @@ class TaskContainer extends Component{
         return(
             <TaskComponent
             token={this.props.token}
-            task={this.props.task} projects={this.props.projects}
+            task={this.props.task}
+            projects={this.props.projects}
             tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
-            userActions={this.props.userActions}
-            taskActions={this.props.taskActions}
-            projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}
+            taskActions={this.props.taskActions}           
             onResume={this.props.onResume}
             />
         )

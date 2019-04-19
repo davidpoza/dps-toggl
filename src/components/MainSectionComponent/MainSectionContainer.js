@@ -23,7 +23,11 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent user={this.props.user} task={this.props.task} project={this.props.project} tag={this.props.tag} 
+            <MainSectionComponent 
+            user_error_message={this.props.user_error_message}
+            task_error_message={this.props.task_error_message}
+            project_error_message={this.props.project_error_message}
+            tag_error_message={this.props.tag_error_message} 
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -34,10 +38,10 @@ class MainSectionContainer extends Component{
 
 function mapStateToProps (state) {
     return {
-      user: state.userReducer,
-      task: state.taskReducer,
-      project: state.projectReducer,
-      tag: state.tagReducer
+      user_error_message: state.userReducer.error.message,
+      task_error_message: state.taskReducer.error.message,
+      project_error_message: state.projectReducer.error.message,
+      tag_error_message: state.tagReducer.error.message
     }
   }
   

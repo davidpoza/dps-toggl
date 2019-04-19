@@ -30,9 +30,11 @@ class MainSectionComponent extends Component{
                 <Route path="/login" component={LoginContainer} />
 
                     <div className={styles.toasts}>
-                        <ToastComponent taskMessage={this.props.task.error.message}
-                        userMessage={this.props.user.error.message} projectMessage={this.props.project.error.message}
-                        tagMessage={this.props.tag.error.message} 
+                        <ToastComponent 
+                        taskMessage={this.props.task_error_message}
+                        userMessage={this.props.user_error_message}
+                        projectMessage={this.props.project_error_message}
+                        tagMessage={this.props.tag_error_message} 
                         userActions={this.props.userActions}
                         taskActions={this.props.taskActions}
                         projectActions={this.props.projectActions}
@@ -45,10 +47,10 @@ class MainSectionComponent extends Component{
 }
 
 MainSectionComponent.propTypes = {
-    user: PropTypes.object.isRequired,
-    task: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    tag: PropTypes.object.isRequired,
+    user_error_message: PropTypes.string,
+    task_error_message: PropTypes.string,
+    project_error_message: PropTypes.string,
+    tag_error_message: PropTypes.string,
     userActions: PropTypes.object.isRequired,
     taskActions: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,

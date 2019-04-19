@@ -62,8 +62,6 @@ class TaskDatesComponent extends Component{
 TaskDatesComponent.propTypes = {
     token: PropTypes.string.isRequired,
     dates: PropTypes.array.isRequired,
-    tags: PropTypes.array.isRequired,
-    projects: PropTypes.array.isRequired,
     need_refreshing: PropTypes.bool.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,

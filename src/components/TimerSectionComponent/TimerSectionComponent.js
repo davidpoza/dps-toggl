@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import PropTypes from 'prop-types';
 
 import styles from './TimerSectionComponent.scss';
 
@@ -37,6 +37,17 @@ class TimerSectionComponent extends Component{
             </div>
         )
     }
+}
+
+TimerSectionComponent.propTypes = {
+    user_loading: PropTypes.bool.isRequired,
+    task_loading: PropTypes.bool.isRequired,
+    project_loading: PropTypes.bool.isRequired,
+    tag_loading: PropTypes.bool.isRequired,
+    userActions: PropTypes.object.isRequired,
+    taskActions: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired,
+    tagActions: PropTypes.object.isRequired,
 }
 
 export default TimerSectionComponent;

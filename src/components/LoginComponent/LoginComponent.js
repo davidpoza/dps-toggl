@@ -23,7 +23,7 @@ class LoginComponent extends Component{
     }
 
     handleOnClick(){
-        this.props.actions.loginUser(this.state.email, this.state.password, this.props.history);
+        this.props.userActions.loginUser(this.state.email, this.state.password, this.props.history);
         
     }
 
@@ -74,7 +74,7 @@ class LoginComponent extends Component{
 LoginComponent.propTypes = {
     history: PropTypes.object.isRequired, //lo vamos a pasar al thunk de redux loginAction para redirigir después del login
     user: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    userActions: PropTypes.object.isRequired
 }
 
 

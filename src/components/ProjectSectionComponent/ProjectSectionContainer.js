@@ -31,10 +31,8 @@ class ProjectSectionContainer extends Component{
             need_refreshing={this.props.need_refreshing}
             projects={this.props.projects}
             history={this.props.history}
-            userActions={this.props.userActions}
-            taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}/>
+            />
         )
     }
 }
