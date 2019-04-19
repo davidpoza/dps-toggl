@@ -137,7 +137,6 @@ class TaskComponent extends Component{
     handleOnDelete(e){
         this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
         this.props.taskActions.deleteTasksVisually(this.props.task.id, this.props.task.date);
-        //this.props.onDelete(this.props.task.id, this.props.task.date); //eliminar visualmente, para lo cual llama al padre
     }
 
     /**
@@ -163,6 +162,10 @@ class TaskComponent extends Component{
     }
 
 
+    /**actualiza la entidad de la tarea con task_id y dispara una acción para 
+     * actualizar tasks_entities en el redux store con los cambios.
+     * Únicamente cambia los valores que pasemos como parametro.
+     */
     handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
         let new_task_entities = Object.assign({}, this.props.tasks_entities);
         if(desc!=null) new_task_entities[task_id].desc = desc;

@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import styles from './TimerSectionComponent.scss';
 import NewBlockComponent from '../NewBlockComponent/NewBlockComponent';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import TaskDatesComponent from '../TaskDatesComponent/TaskDatesComponent';
 import TaskDatesContainer from '../TaskDatesComponent/TaskDatesContainer';
 
 class TimerSectionComponent extends Component{

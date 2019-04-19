@@ -22,6 +22,8 @@ import {
     FETCH_TASK_SUCCESS,
     COLLAPSE_DATE
 } from '../actions/types';
+
+import utils from '../utils';
 import {normalize} from 'normalizr';
 import * as schemas from './normalizr';
 
@@ -62,7 +64,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: false,
-                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
                 error: {}
             }
         case DELETE_TASK_VISUALLY:
@@ -70,6 +71,12 @@ export default function taskReducer (state = initialState.taskReducer, action){
             let new_tasks_entities_deleted = Object.assign({}, state.tasks_entities);
             new_dates_entities_deleted[action.payload.task_date].tasks = new_dates_entities_deleted[action.payload.task_date].tasks.filter(t=>(t!=action.payload.task_id));
             delete new_tasks_entities_deleted[action.payload.task_id];
+
+            //recalculamos el total de horas de la fecha afectada por el borrado de la tarea
+            new_dates_entities_deleted[action.payload.task_date].time = new_dates_entities_deleted[action.payload.task_date].tasks.reduce((prev,curr)=>{
+                curr = utils.diffHoursBetHours(state.tasks_entities[curr].start_hour, state.tasks_entities[curr].end_hour)
+                return (prev+curr);
+            },0);
 
             return {
                 ...state,
@@ -91,13 +98,9 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case UPDATE_TASK_SUCCESS:
-            //let new_tasks_entities = Object.assign({}, state.tasks_entities);
-            //new_tasks_entities[action.payload.id] = Object.assign(new_tasks_entities[action.payload.id],action.payload);
             return {
                 ...state,
-                //task_entitites: new_tasks_entities,
                 loading: false,
-                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
                 error: {}
             }
         case UPDATE_TASK_VISUALLY:
@@ -155,12 +158,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
-            //hay que ordenar los bloques de dates ya que van llegando de forma asíncrona
-            /*let array_tasks = action.payload.result.sort((a,b)=>{
-                if(a.date < b.date) return 1
-                else if(a.date > b.date) return -1
-                else return 0
-            });*/
             action.payload = normalize(action.payload, schemas.dateSchema);
 
             //el flag collapsed debe mantenerse en el valor que tuviera en el estado

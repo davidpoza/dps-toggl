@@ -298,26 +298,3 @@ export function fetchTasks(token){
     }
 }
 
-
-//esta función la usaremos cuando pidamos que cargue más días aumentando
-/*export function fetchTasksByDate(token, date){
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_TASKS_ATTEMPT
-        });
-
-        api.task.fetchTasksByDate(token, date).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchTasksSuccess(date, data.data));
-                }                    
-                else if(data.error)
-                    dispatch(fetchTasksError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(fetchTasksError(error));
-        });
-    }
-}*/
