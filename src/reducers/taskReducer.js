@@ -156,6 +156,12 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 else return 0
             });*/
             action.payload = normalize(action.payload, schemas.dateSchema);
+
+            //el flag collapsed debe mantenerse en el valor que tuviera en el estado
+            Object.keys(state.dates_entities).forEach(key=>{
+                if(state.dates_entities[key].collapsed)
+                    action.payload.entities.dates[key].collapsed = true;
+            });            
             return {
                 ...state,
                 loading: false,
