@@ -15,8 +15,8 @@ class ProjectDetailSectionComponent extends Component{
         this.projectNameInput = React.createRef();
         this.modal = React.createRef();
         this.state = {
-            colorPicker:  null,
-            project_name: "",
+            colorPicker:  this.props.project_detail.color,
+            project_name: this.props.project_detail.name,
         }
         this.handleColorPick = this.handleColorPick.bind(this);
         this.handleDeleteProject = this.handleDeleteProject.bind(this);
@@ -25,24 +25,18 @@ class ProjectDetailSectionComponent extends Component{
         this.handleOnAddMember = this.handleOnAddMember.bind(this);
     }
 
-
-    componentDidMount(){
-        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.match.params.project_id);
-        
-       
+    componentWillMount(){
+        this.props.userActions.fetchUsers(this.props.user.token, this.props.user.id);
+        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id);
     }
 
+
     componentDidUpdate(prevProps) {
-        if (!prevProps.project.need_refreshing && this.props.project.need_refreshing){
-            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.match.params.project_id);
+        if (!prevProps.need_refreshing && this.props.need_refreshing){
+            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id);
         }
 
-        if(prevProps.project.loading == true && this.props.project.loading == false){
-            this.setState({
-                colorPicker: this.props.project.project_detail.color,
-                project_name: this.props.project.project_detail.name
-            });
-        }
+            
     }
    
     //cuando marcamos un color, se cambia en el estado el color elegido para el nuevo proyecto
@@ -54,13 +48,13 @@ class ProjectDetailSectionComponent extends Component{
     }
     
     handleDeleteProject(){
-        this.props.projectActions.deleteProject(this.props.user.token, this.props.match.params.project_id);
+        this.props.projectActions.deleteProject(this.props.user.token, this.props.project_detail.id);
         $(this.modal.current).modal('hide');
         this.props.history.push("/projects");
     }
 
     handleOnSaveProject(){
-        this.props.projectActions.updateProject(this.props.user.token, this.props.match.params.project_id, this.state.project_name, this.state.colorPicker, null);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, this.state.project_name, this.state.colorPicker, null);
         this.props.history.push("/projects");
     }
 
@@ -71,24 +65,24 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     handleOnAddMember(new_member_id){
-        let array_members_api = this.props.project.project_detail.members.slice(); //copiamos los miembros actuales
+        let array_members_api = this.props.project_detail.members.slice(); //copiamos los miembros actuales
         if(array_members_api.filter(e=>e.directus_users_id.id == new_member_id).length == 0)
             array_members_api.push({
                 directus_users_id: { id: new_member_id }
             }); 
-        this.props.projectActions.updateProject(this.props.user.token, parseInt(this.props.match.params.project_id), null, null,  array_members_api);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
     }
    
     handleOnDeleteMember(relation_id){
         let array_members_api = [];
-        if(this.props.project.project_detail.members.filter(e=>e.id == relation_id).length == 1)
+        if(this.props.project_detail.members.filter(e=>e.id == relation_id).length == 1)
             array_members_api.push(
                 { id: relation_id, "$delete": true }
             ); 
-        this.props.projectActions.updateProject(this.props.user.token, parseInt(this.props.match.params.project_id), null, null,  array_members_api);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
     }
 
-    render(){
+    render(){        
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between m-3"}>
@@ -122,16 +116,16 @@ class ProjectDetailSectionComponent extends Component{
                     
                     <div className="m-5 p-3">
                         <h2>{lang[config.lang].members_title}</h2>
-                        <MemberSelectorComponent user={this.props.user} project_id={parseInt(this.props.match.params.project_id)} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
+                        <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
-                            {this.props.project.project_detail.members && this.props.project.project_detail.members.map((e,index)=>(
+                        {/*this.props.project.project_detail.members && this.props.project.project_detail.members.map((e,index)=>(
                                 <li className={styles.member} key={"member"+index}>
                                     <div className="d-flex justify-content-between">
                                         {e.directus_users_id.first_name} {e.directus_users_id.last_name}
                                         <i className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.id)}></i>
                                     </div>
                                 </li>
-                            ))}
+                        ))*/}
                         </ul>
                     </div>
                 </div>
@@ -152,15 +146,18 @@ class ProjectDetailSectionComponent extends Component{
                 </div>
 
 
-                <LoadingComponent isLoading={this.props.user.loading||this.props.project.loading} />
+                <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
             </div>
         )
     }
 }
 
 ProjectDetailSectionComponent.propTypes = {
+    user_loading: PropTypes.bool.isRequired,
+    project_loading: PropTypes.bool.isRequired,
+    need_refreshing: PropTypes.bool.isRequired,    
     user:PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    project_detail: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired
 }

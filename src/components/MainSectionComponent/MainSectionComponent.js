@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 
 import styles from './MainSectionComponent.scss';
 import LoginContainer from '../LoginComponent/LoginContainer';
+
 import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
-import ProjectDetailSectionComponent from '../ProjectDetailSectionComponent/ProjectDetailSectionComponent';
 import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import ToastComponent from '../ToastComponent/ToastComponent';
 import TimerSectionContainer from '../TimerSectionComponent/TimerSectionContainer';
 import ProjectSectionContainer from '../ProjectSectionComponent/ProjectSectionContainer';
+import ProjectDetailSectionContainer from '../ProjectDetailSectionComponent/ProjectDetailSectionContainer';
 
 
 class MainSectionComponent extends Component{
@@ -24,7 +25,7 @@ class MainSectionComponent extends Component{
                 
                 <PrivateRoute exact path="/" component={TimerSectionContainer} component_props = {{}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{}}/>
-                <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionComponent} component_props ={{user:this.props.user, project:this.props.project, projectActions:this.props.projectActions, userActions: this.props.userActions}}/>
+                <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <Route path="/login" component={LoginContainer} />
 

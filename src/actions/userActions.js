@@ -122,6 +122,7 @@ export function refreshToken(token){
     }
 }
 
+//devuelve todos los usuarios menos a sí mismo
 export function fetchUsers(token, user_id){
     return (dispatch) => {
         dispatch({

@@ -40,8 +40,8 @@ class TaskDatesContainer extends Component{
 function mapStateToProps (state) {
 
     return {
-      token: state.userReducer.token,
       //denormalizacion
+      token: state.userReducer.token,      
       dates: state.taskReducer.dates_id.map(e=>state.taskReducer.dates_entities[e]),
       dates_entities: state.taskReducer.dates_entities,
       tags: state.tagReducer.tags,
