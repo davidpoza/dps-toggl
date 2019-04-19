@@ -15,19 +15,12 @@ import NewBlockComponent from './NewBlockComponent';
 
 class NewBlockContainer extends Component{
     constructor(props){
-        super(props);
-        this.resumeTask = this.resumeTask.bind(this);
-        
+        super(props);        
     }
 
     componentWillMount(){
 
-    }
-
-    resumeTask(description, project_id, project_name, project_color, tags){
-      this.NewBlockComponent.current.resumeTask(description, project_id, project_name, project_color, tags);
-    }
-    
+    }    
     render(){
     
       

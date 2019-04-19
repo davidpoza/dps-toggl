@@ -10,9 +10,6 @@ import * as tagActions from '../../actions/tagActions'
 import TaskListComponent from './TaskListComponent';
 
 
-
-
-
 class TaskListContainer extends Component{
     constructor(props){
         super(props);
@@ -26,7 +23,9 @@ class TaskListContainer extends Component{
         let tasks = this.props.dates[this.props.date].tasks;
        
         return(
-            <TaskListComponent token={this.props.token} tasks={tasks}
+            <TaskListComponent
+            token={this.props.token}
+            tasks={tasks}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}

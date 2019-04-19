@@ -10,9 +10,6 @@ import * as tagActions from '../../actions/tagActions'
 import TaskComponent from './TaskComponent';
 
 
-
-
-
 class TaskContainer extends Component{
     constructor(props){
         super(props);
@@ -31,7 +28,10 @@ class TaskContainer extends Component{
       task.project = this.props.projects_entities[task.project];
       
         return(
-            <TaskComponent token={this.props.token} task={task} projects={this.props.projects} tags={this.props.tags}
+            <TaskComponent
+            token={this.props.token}
+            task={task} projects={this.props.projects}
+            tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}

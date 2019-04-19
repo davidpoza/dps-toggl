@@ -9,10 +9,6 @@ import * as tagActions from '../../actions/tagActions'
 
 import TaskDatesComponent from './TaskDatesComponent';
 
-
-
-
-
 class TaskDatesContainer extends Component{
     constructor(props){
         super(props);
@@ -24,7 +20,11 @@ class TaskDatesContainer extends Component{
 
     render(){
         return(
-            <TaskDatesComponent token={this.props.token} dates={this.props.dates} projects={this.props.projects} tags={this.props.tags} 
+            <TaskDatesComponent
+            token={this.props.token}
+            dates={this.props.dates}
+            projects={this.props.projects}
+            tags={this.props.tags} 
             need_refreshing={this.props.need_refreshing}
             dates_entities = {this.props.dates_entities}
             userActions={this.props.userActions}
