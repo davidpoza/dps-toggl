@@ -20,6 +20,7 @@ class NewBlockComponent extends Component{
         this.chronoResetBtn = React.createRef();
         this.chronoModeBtn = React.createRef();
         this.manualModeBtn = React.createRef();
+        this.NewBlockComponent = React.createRef();
 
         this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
@@ -75,10 +76,10 @@ class NewBlockComponent extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.tag.tags != this.props.tag.tags){
+        if(prevProps.tags != this.props.tags){
             //le añadimos la propiedad checked al objeto tag que viene de la api
             this.setState({
-                tags: this.props.tag.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
+                tags: this.props.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
             })
         }
     }
@@ -179,7 +180,7 @@ class NewBlockComponent extends Component{
                     project_selected_name: null,
                     project_selected_color: null,
                     project_selected_id: null,
-                    tags: this.props.tag.tags.map((e)=>{
+                    tags: this.props.tags.map((e)=>{
                         e.checked = false;
                         return e;
                     })
@@ -205,7 +206,7 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            tags: this.props.tag.tags.map((e)=>{ //desmarco todos los tags
+            tags: this.props.tags.map((e)=>{ //desmarco todos los tags
                 e.checked = false;
                 return e;
             })
@@ -245,7 +246,7 @@ class NewBlockComponent extends Component{
                 project_selected_name: null,
                 project_selected_color: null,
                 project_selected_id: null,
-                tags: this.props.tag.tags.map((e)=>{
+                tags: this.props.tags.map((e)=>{
                     e.checked = false;
                     return e;
                 })
@@ -280,6 +281,8 @@ class NewBlockComponent extends Component{
         }        
     }
 
+    
+    
     render(){
         return(
             <div className="container-flex" >
@@ -289,7 +292,7 @@ class NewBlockComponent extends Component{
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                         </div>
                         <div className="col-4 col-lg-auto order-5 order-lg-2 p-1">
-                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
+                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects}/>
                         </div>
                         <div className="col-1 col-lg-auto order-4 order-lg-3 p-1">
                         <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
@@ -328,8 +331,8 @@ class NewBlockComponent extends Component{
 
 NewBlockComponent.propTypes = {
     user: PropTypes.object.isRequired,
-    tag: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    tags: PropTypes.array.isRequired,
+    projects: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,

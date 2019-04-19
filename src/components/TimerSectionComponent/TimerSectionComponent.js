@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 
 
 import styles from './TimerSectionComponent.scss';
-import NewBlockComponent from '../NewBlockComponent/NewBlockComponent';
+
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
+import NewBlockContainer from '../NewBlockComponent/NewBlockContainer';
 import TaskDatesContainer from '../TaskDatesComponent/TaskDatesContainer';
 
 class TimerSectionComponent extends Component{
@@ -11,11 +12,15 @@ class TimerSectionComponent extends Component{
         super(props);
         this.NewBlockComponent = React.createRef();
         this.handleOnClickResume = this.handleOnClickResume.bind(this);
-       
+        this.setRef = this.setRef.bind(this);
     }
 
     handleOnClickResume(description, project_id, project_name, project_color, tags){
-        this.NewBlockComponent.current.resumeTask(description, project_id, project_name, project_color, tags);
+        this.NewBlockComponent.resumeTask(description, project_id, project_name, project_color, tags);
+    }
+
+    setRef(NewBlockComponent){
+        this.NewBlockComponent = NewBlockComponent;
     }
 
     render(){
@@ -23,7 +28,7 @@ class TimerSectionComponent extends Component{
 
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div>
-                    <NewBlockComponent ref={this.NewBlockComponent} user={this.props.user} project={this.props.project} tag={this.props.tag} tagActions={this.props.tagActions} taskActions={this.props.taskActions} projectActions={this.props.projectActions}/>
+                    <NewBlockContainer setRef={this.setRef}/>
                 </div>
                 <div className={"flex-grow-1 " + styles.tasklist}>
                     <TaskDatesContainer onResume={this.handleOnClickResume}/>
