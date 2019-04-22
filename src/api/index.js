@@ -265,8 +265,104 @@ const API = {
                 }
             );
         },
+
+        /*
+        Elimina todas las referencias a un proyecto concreto que pudiera haber en cualquier task.
+        Para ello primero necesito obtener la lista task id que tengan dicho proyecto asignado. (puede resultar una lista vacia).
+        Posteriormente hago una llamada a la api con un patch, indicando todos los task id separados por comas. En dicho patch
+        simplemente pongo a null la referencia a proyecto.
+        */
+        deleteProjectRefsFromTask(token, project_id){
+            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            })
+            .then(
+                (response)=>response.json()
+            )
+            .then(
+                (data)=>{
+                    if(data.data){
+                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
+                        return fetch(api_url+"/items/tasks/"+tasks_id, {
+                            method: "PATCH",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer "+ token
+                            },
+                            body: JSON.stringify({project:null})
+                        })
+                    }
+                    else if(data.error){
+                        throw data.error;
+                    }
+                }
+                
+            )
+            .then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
+
+        /*
+        Elimina todas las relaciones user-project que existan
+        */
+        deleteUserProjectRelations(token, user_id, project_id){
+            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            })
+            .then(
+                (response)=>response.json()
+            )
+            .then(
+                (data)=>{
+                    if(data.data){
+                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
+                        return fetch(api_url+"/items/tasks/"+tasks_id, {
+                            method: "PATCH",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer "+ token
+                            },
+                            body: JSON.stringify({project:null})
+                        })
+                    }
+                    else if(data.error){
+                        throw data.error;
+                    }
+                }
+                
+            )
+            .then(
+                function(response){
+                    return response.json();
+                }
+            ).then(
+                function(data){
+                    return data;
+                }
+            );
+        },
     },
 
+    
     project: {
         //en tags_id viene un array de tags_id, hay que componer un objeto
         createProject(token, name, color, owner_id){
