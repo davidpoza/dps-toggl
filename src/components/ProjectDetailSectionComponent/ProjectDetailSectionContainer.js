@@ -23,6 +23,7 @@ class ProjectDetailSectionContainer extends Component{
         return(
             <ProjectDetailSectionComponent 
             user={this.props.user}
+            users={this.props.users}
             user_loading={this.props.user_loading}
             project_loading={this.props.project_loading}
             need_refreshing={this.props.need_refreshing}
@@ -37,8 +38,8 @@ class ProjectDetailSectionContainer extends Component{
 
 function mapStateToProps (state, ownProps) {
     //denormalización
-      let project_detail= state.projectReducer.projects_entities[ownProps.match.params.project_id];
-      project_detail.members_entities = project_detail.members.map(e=>(state.userReducer.users_entities[e]));
+       let project_detail= state.projectReducer.projects_entities[ownProps.match.params.project_id];
+       project_detail.members_entities = project_detail.members.map(e=>(state.userReducer.users_entities[e.directus_users_id]));
     return {
       project_detail: project_detail,
       user: state.userReducer,

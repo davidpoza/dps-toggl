@@ -20,6 +20,7 @@ UPDATE_PROJECT_SUCCESS
 
 
 import api from '../api';
+import * as userActions from './userActions';
 
 
 /* Action creators síncronos */
@@ -103,7 +104,7 @@ export function cleanMessage(){
 
 /* Action creators asíncronos - thunks */
 
-export function fetchProjectById(token, project_id){
+export function fetchProjectById(token, project_id, user_id){
     return (dispatch) => {
         dispatch({
             type: FETCH_PROJECT_ATTEMPT
@@ -113,11 +114,21 @@ export function fetchProjectById(token, project_id){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    dispatch(fetchProjectSuccess(data.data));
+                    dispatch(fetchProjectSuccess(data.data));                    
+                    return api.user.fetchUsers(token, user_id);
                 }                    
                 else if(data.error)
                     dispatch(fetchProjectError(data.error))
             }                          
+        )
+        .then(
+            (data) =>{
+                if(data.data){
+                    dispatch(userActions.fetchUsersSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchProjectError(data.error))
+            }
         )
         .catch(
             (error) => {

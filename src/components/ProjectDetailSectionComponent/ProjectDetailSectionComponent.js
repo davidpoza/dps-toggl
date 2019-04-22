@@ -26,14 +26,15 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     componentWillMount(){
-        this.props.userActions.fetchUsers(this.props.user.token, this.props.user.id);
-        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id);
+
+        //this.props.userActions.fetchUsers(this.props.user.token, this.props.user.id);
+        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id, this.props.user.id);
     }
 
 
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id);
+            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id, this.props.user.id);
         }
 
             
@@ -66,7 +67,7 @@ class ProjectDetailSectionComponent extends Component{
 
     handleOnAddMember(new_member_id){
         let array_members_api = this.props.project_detail.members.slice(); //copiamos los miembros actuales
-        if(array_members_api.filter(e=>e.directus_users_id.id == new_member_id).length == 0)
+        if(array_members_api.filter(e=>e.directus_users_id == new_member_id).length == 0) //comprobamos que no sea ya miembro
             array_members_api.push({
                 directus_users_id: { id: new_member_id }
             }); 
@@ -118,14 +119,14 @@ class ProjectDetailSectionComponent extends Component{
                         <h2>{lang[config.lang].members_title}</h2>
                         <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
-                        {/*this.props.project.project_detail.members && this.props.project.project_detail.members.map((e,index)=>(
+                        {this.props.project_detail.members_entities && this.props.project_detail.members_entities.map((e,index)=>(
                                 <li className={styles.member} key={"member"+index}>
                                     <div className="d-flex justify-content-between">
-                                        {e.directus_users_id.first_name} {e.directus_users_id.last_name}
+                                        {e.first_name} {e.last_name}
                                         <i className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.id)}></i>
                                     </div>
                                 </li>
-                        ))*/}
+                        ))}
                         </ul>
                     </div>
                 </div>
