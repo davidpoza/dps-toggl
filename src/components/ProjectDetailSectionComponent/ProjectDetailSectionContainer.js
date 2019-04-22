@@ -39,7 +39,7 @@ class ProjectDetailSectionContainer extends Component{
 function mapStateToProps (state, ownProps) {
     //denormalización
        let project_detail= state.projectReducer.projects_entities[ownProps.match.params.project_id];
-       project_detail.members_entities = project_detail.members.map(e=>(state.userReducer.users_entities[e.directus_users_id]));
+       project_detail.member_relations = project_detail.members.map(e=>({member:state.userReducer.users_entities[e.directus_users_id], relation_id:e.id}));
     return {
       project_detail: project_detail,
       user: state.userReducer,
