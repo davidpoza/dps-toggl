@@ -40,7 +40,7 @@ class TagSectionContainer extends Component{
 function mapStateToProps (state) {
     return {
       user: state.userReducer,
-      need_refreshing: state.projectReducer.need_refreshing,
+      need_refreshing: state.tagReducer.need_refreshing,
       user_loading: state.userReducer.loading,
       tag_loading: state.tagReducer.loading,
       tags: state.tagReducer.tags_id.map(t=>state.tagReducer.tags_entities[t]),

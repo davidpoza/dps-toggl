@@ -12,7 +12,9 @@ DELETE_TAG_FAIL,
 DELETE_TAG_SUCCESS,
 UPDATE_TAG_ATTEMPT,
 UPDATE_TAG_FAIL,
-UPDATE_TAG_SUCCESS
+UPDATE_TAG_SUCCESS,
+UPDATE_TAG_VISUALLY,
+DELETE_TAG_VISUALLY
 } from './types';
 
 
@@ -115,6 +117,10 @@ export function deleteTag(token, tag_id){
         dispatch({
             type: DELETE_TAG_ATTEMPT
         });
+        dispatch({
+            type: DELETE_TAG_VISUALLY,
+            payload: {id:tag_id}
+        });
         api.tag.deleteTag(token, tag_id).then(
             (data) => {
                 if(data.data)
@@ -135,7 +141,10 @@ export function updateTag(token, tag_id, tag_name){
         dispatch({
             type: UPDATE_TAG_ATTEMPT
         });
-       
+        dispatch({
+            type: UPDATE_TAG_VISUALLY,
+            payload: {id:tag_id, name: tag_name}
+        });
         api.tag.updateTag(token, tag_id, tag_name).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data

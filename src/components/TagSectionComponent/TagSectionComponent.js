@@ -21,7 +21,8 @@ class TagSectionComponent extends Component{
         this.handleCreateTag = this.handleCreateTag.bind(this);
         this.handleUpdateTag = this.handleUpdateTag.bind(this);
         this.handleDeleteTag = this.handleDeleteTag.bind(this);
-        this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+        this.handleOnKeyPressForCreateModal = this.handleOnKeyPressForCreateModal.bind(this);
+        this.handleOnKeyPressForUpdateModal = this.handleOnKeyPressForUpdateModal.bind(this);
 
         this.state = {
             tag_id: null
@@ -54,9 +55,14 @@ class TagSectionComponent extends Component{
         this.tagNameInputCreate.current.value = "";
     }
 
-    handleOnKeyPress(e){
-        if(event.keyCode == 13)
+    handleOnKeyPressForCreateModal(e){
+        if(e.which == 13)
             this.handleCreateTag();
+    }
+
+    handleOnKeyPressForUpdateModal(e){
+        if(e.which == 13)
+            this.handleUpdateTag();
     }
 
     handleDeleteTag(){
@@ -67,7 +73,6 @@ class TagSectionComponent extends Component{
     handleUpdateTag(){
         this.props.tagActions.updateTag(this.props.user.token, this.state.tag_id, this.tagNameInputUpdate.current.value);
         $(this.modalUpdateTag.current).modal('hide');
-        this.tagNameInputUpdate.current.value = "";
     }
 
     handleOpenDeleteModal(tag_id){
@@ -80,6 +85,9 @@ class TagSectionComponent extends Component{
         this.setState({
             tag_id
         });
+        setTimeout(function (){
+            this.tagNameInputUpdate.current.focus();
+        }.bind(this), 500);
         this.tagNameInputUpdate.current.value = tag_name;
     }
 
@@ -95,7 +103,7 @@ class TagSectionComponent extends Component{
                 </div>
 
                 {/**Modal para crear tag */}
-                <div className="modal fade" id="tagCreateModal" ref={this.modalCreateTag} tabIndex="-1" role="dialog" aria-labelledby="createTagLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
+                <div className="modal fade" id="tagCreateModal" ref={this.modalCreateTag} tabIndex="-1" role="dialog" aria-labelledby="createTagLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
@@ -105,7 +113,7 @@ class TagSectionComponent extends Component{
                         </button>
                     </div>
                     <div className={"modal-body "+styles.modal_body}>
-                        <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder}></input>                                            
+                        <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder} onKeyPress={this.handleOnKeyPressForCreateModal}></input>                                            
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary" onClick={this.handleCreateTag}>{lang[config.lang].btn_save_changes}</button>
@@ -115,7 +123,7 @@ class TagSectionComponent extends Component{
                 </div>
 
                 {/**Modal para modificar tag */}
-                <div className="modal fade" id="tagUpdateModal" ref={this.modalUpdateTag} tabIndex="-1" role="dialog" aria-labelledby="updateTagLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
+                <div className="modal fade" id="tagUpdateModal" ref={this.modalUpdateTag} tabIndex="-1" role="dialog" aria-labelledby="updateTagLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPressForUpdateModal}>
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
@@ -135,7 +143,7 @@ class TagSectionComponent extends Component{
                 </div>
 
                 {/**Modal para borrar tag */}
-                <div className="modal fade" id="tagDeleteModal" ref={this.modalDeleteTag} tabIndex="-1" role="dialog" aria-labelledby="deleteTagLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
+                <div className="modal fade" id="tagDeleteModal" ref={this.modalDeleteTag} tabIndex="-1" role="dialog" aria-labelledby="deleteTagLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                     <div className="modal-body">
