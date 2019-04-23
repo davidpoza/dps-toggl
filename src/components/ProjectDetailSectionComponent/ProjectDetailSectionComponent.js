@@ -119,14 +119,20 @@ class ProjectDetailSectionComponent extends Component{
                         <h2>{lang[config.lang].members_title}</h2>
                         <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
-                        {this.props.project_detail.member_relations && this.props.project_detail.member_relations.map((e,index)=>(
+                        {this.props.project_detail.member_relations &&  this.props.project_detail.member_relations.map((e,index)=>
+                            {
+                                if (e.member != undefined) 
+                                return(
                                 <li className={styles.member} key={"member"+index}>
-                                    <div className="d-flex justify-content-between">
-                                        {e.member.first_name} {e.member.last_name}
-                                        <i title={lang[config.lang].delete_project_member} className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.relation_id)}></i>
-                                    </div>
+                                <div className="d-flex justify-content-between">
+                                    {e.member.first_name} {e.member.last_name}
+                                    <i title={lang[config.lang].delete_project_member} className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.relation_id)}></i>
+                                </div>
                                 </li>
-                        ))}
+                                )
+                            }
+                                
+                        )}
                         </ul>
                     </div>
                 </div>
