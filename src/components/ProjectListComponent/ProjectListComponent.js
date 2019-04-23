@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import utils from '../../utils';
 import ProjectComponent from '../ProjectComponent/ProjectComponent';
-
+import styles from './ProjectListComponent.scss';
 
 class ProjectListComponent extends Component{
     constructor(props){
@@ -20,21 +20,23 @@ class ProjectListComponent extends Component{
 
     }
 
-    
+    handleChangeSort(field){
+        this.props.projectActions.changeSort(field);
+    }
 
     render(){
         return(
             <div>
-               <div className="p-0 container-flex">
+               <div className={"container-flex " + styles.header}>
                 <div className={"row m-1 justify-content-between " } >
                     <div className={"col-8"} >
-                        Nombre           
+                        Nombre <i className="fas fa-sort" onClick={this.handleChangeSort.bind(this,"name")}></i>          
                     </div>
                     <div className={"col-2"} >
-                        Horas           
+                        Horas <i className="fas fa-sort" onClick={this.handleChangeSort.bind(this,"hours")}></i>          
                     </div>  
                     <div className={"col-2"} >
-                        Tareas           
+                        Tareas <i className="fas fa-sort" onClick={this.handleChangeSort.bind(this,"tasks")}></i>          
                     </div>  
                 </div>
                </div> 
@@ -56,7 +58,8 @@ class ProjectListComponent extends Component{
 ProjectListComponent.propTypes = {
     user: PropTypes.object.isRequired,
     projects: PropTypes.array.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    projectActions: PropTypes.object.isRequired
 }
 
 export default ProjectListComponent;

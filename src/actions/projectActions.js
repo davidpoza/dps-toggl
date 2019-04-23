@@ -15,7 +15,8 @@ DELETE_PROJECT_FAIL,
 DELETE_PROJECT_SUCCESS,
 UPDATE_PROJECT_ATTEMPT,
 UPDATE_PROJECT_FAIL,
-UPDATE_PROJECT_SUCCESS
+UPDATE_PROJECT_SUCCESS,
+CHANGE_PROJECT_SORT
 } from './types';
 
 
@@ -99,6 +100,13 @@ export function createProjectError(error){
 export function cleanMessage(){
     return {
         type: CLEAN_PROJECT_MESSAGE,
+    }
+}
+
+export function changeSort(field){
+    return {
+        type: CHANGE_PROJECT_SORT,
+        payload: {field}
     }
 }
 

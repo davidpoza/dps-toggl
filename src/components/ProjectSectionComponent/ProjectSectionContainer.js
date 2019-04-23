@@ -37,13 +37,41 @@ class ProjectSectionContainer extends Component{
     }
 }
 
+function sortBy(field="id", order="asc"){
+  if (field=="id")
+    return(
+    (a,b)=>{
+      if(a.id > b.id) return order=="asc"?1:-1;
+      else if (a.id < b.id) return order=="asc"?-1:1;
+      else return 0;
+    })
+  else if (field=="name")
+    return(
+    (a,b)=>{
+      if(order == "asc")
+        return(a.name.localeCompare(b.name));
+      else if(order == "desc")
+        return(b.name.localeCompare(a.name));
+    })
+  else if (field=="tasks")
+    return(
+    (a,b)=>{
+      if(a.tasks.length > b.tasks.length) return order=="asc"?1:-1;
+      else if (a.tasks.length < b.tasks.length) return order=="asc"?-1:1;
+      else{ //si tienen mismo numero de tareas ordenamos alfabéticamente
+        return(a.name.localeCompare(b.name))
+      };
+    })
+}
+
 function mapStateToProps (state) {
     return {
       user: state.userReducer,
       need_refreshing: state.projectReducer.need_refreshing,
       user_loading: state.userReducer.loading,
       project_loading: state.projectReducer.loading,
-      projects: state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p]),
+      projects: state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p])
+        .sort(sortBy(state.projectReducer.sortBy, state.projectReducer.order)),
     }
   }
   

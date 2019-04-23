@@ -22,12 +22,13 @@ const initialState = {
         error: {}
     },
     projectReducer: {
-
         projects_id: [],
         projects_entities: [],
         project_detail: {},
         need_refreshing: false,
         loading: false,
+        sortBy: 'id',
+        order: 'asc',
         error: {}
     },
     tagReducer: {

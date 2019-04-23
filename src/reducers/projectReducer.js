@@ -14,7 +14,8 @@ import {
     DELETE_PROJECT_SUCCESS,
     UPDATE_PROJECT_ATTEMPT,
     UPDATE_PROJECT_FAIL,
-    UPDATE_PROJECT_SUCCESS
+    UPDATE_PROJECT_SUCCESS,
+    CHANGE_PROJECT_SORT
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -134,6 +135,12 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case CHANGE_PROJECT_SORT:
+            return {
+                ...state,
+                sortBy: action.payload.field,
+                order: state.order=="asc"?"desc":"asc"
             }
         default:
             return state;
