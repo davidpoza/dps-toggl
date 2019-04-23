@@ -16,19 +16,16 @@ const API = {
                     password: password
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data) => {
                     if(data.data)
                         return(API.user.getUserInfo(data.data.token))
-                    return data;
+                    else if(data.error)
+                        throw data.error;
                 }
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -43,13 +40,9 @@ const API = {
                     token: token
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -62,11 +55,9 @@ const API = {
                     "Authorization": "Bearer " + token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data)=>{
                     //quiero tener el token en el estado para renovarlo
                     data.data.token = token;
                     return data;
@@ -84,13 +75,9 @@ const API = {
                     "Authorization": "Bearer " + token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         }
     },
@@ -115,13 +102,9 @@ const API = {
                     tags: array_tags_obj
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         deleteTask(token, task_id){
@@ -160,13 +143,9 @@ const API = {
                 },
                 body: JSON.stringify(composingBody)
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTasks(token){
@@ -178,13 +157,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTask(token,task_id){
@@ -196,13 +171,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchAllDates(token){
@@ -214,13 +185,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTasksByDate(token, date){
@@ -232,11 +199,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data)=>{
                     if(data.data != undefined)
                         return {date: date, time: data.data.reduce((prev,curr)=>{
                             curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
@@ -256,13 +221,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -280,11 +241,9 @@ const API = {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer "+ token
                 }
-            })
-            .then(
-                (response)=>response.json()
-            )
-            .then(
+            }).then(
+                (response)=>response.json()                
+            ).then(
                 (data)=>{
                     if(data.data){
                         let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
@@ -305,13 +264,9 @@ const API = {
                 
             )
             .then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -328,9 +283,8 @@ const API = {
                 }
             })
             .then(
-                (response)=>response.json()
-            )
-            .then(
+                (response)=>response.json()                
+            ).then(
                 (data)=>{
                     if(data.data){
                         let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
@@ -351,13 +305,9 @@ const API = {
                 
             )
             .then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
     },
@@ -379,13 +329,9 @@ const API = {
                     owner: owner_id
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -399,13 +345,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -418,13 +360,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchProjectsByOwner(token, owner_id){
@@ -436,13 +374,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             )          
         },
 
@@ -455,7 +389,7 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
+                (response)=>{
                     if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
                         return {data: {id: project_id}};
                     else
@@ -480,13 +414,9 @@ const API = {
                 },
                 body: JSON.stringify(composingBody)
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -503,13 +433,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
     },
