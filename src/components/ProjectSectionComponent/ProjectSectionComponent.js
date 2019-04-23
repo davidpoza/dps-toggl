@@ -49,7 +49,7 @@ class ProjectSectionComponent extends Component{
         });
         setTimeout(function (){
             this.projectNameInput.current.focus();
-        }.bind(this), 1000);
+        }.bind(this), 500);
        
     }
 

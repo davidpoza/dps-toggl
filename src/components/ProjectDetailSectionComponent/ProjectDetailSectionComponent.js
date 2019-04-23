@@ -123,7 +123,7 @@ class ProjectDetailSectionComponent extends Component{
                                 <li className={styles.member} key={"member"+index}>
                                     <div className="d-flex justify-content-between">
                                         {e.member.first_name} {e.member.last_name}
-                                        <i className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.relation_id)}></i>
+                                        <i title={lang[config.lang].delete_project_member} className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e.relation_id)}></i>
                                     </div>
                                 </li>
                         ))}

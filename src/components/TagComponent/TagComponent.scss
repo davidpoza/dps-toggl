@@ -1,0 +1,22 @@
+@import "../../defaults.scss";
+
+
+
+  .label{
+    display: inline-block;
+    font-size: 1.2em;
+    margin: 8px;
+    padding: 4px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f8f8f8;
+    white-space: nowrap;
+
+    i{
+      color: grey;
+      font-size: 1em;
+      vertical-align: middle;
+      padding-bottom: 6px;
+    }
+
+  }
