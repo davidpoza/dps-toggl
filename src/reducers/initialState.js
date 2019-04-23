@@ -6,24 +6,33 @@ const initialState = {
         email: null,
         token: null,
         loading: false,
-        users: [],
+        users_id: [],
+        users_entities: [],
         error: {}
     },
     taskReducer: {
-        tasks: [], // array de objetos  {date:string, tasks:array de objetos}
+        tasks_id: [],
+        tasks_entities: [],
+        dates: [],
+        dates_id: [],
+        dates_entities: [],
+        tasks_tags_entities: [],
         need_refreshing: false,
         loading: false,
         error: {}
     },
     projectReducer: {
-        projects: [],
+
+        projects_id: [],
+        projects_entities: [],
         project_detail: {},
         need_refreshing: false,
         loading: false,
         error: {}
     },
     tagReducer: {
-        tags: [],
+        tags_id: [],
+        tags_entities: [],
         loading: false,
         error: {}
     }

@@ -20,6 +20,8 @@ UPDATE_PROJECT_SUCCESS
 
 
 import api from '../api';
+import * as userActions from './userActions';
+
 
 /* Action creators síncronos */
 
@@ -101,30 +103,17 @@ export function cleanMessage(){
 }
 
 /* Action creators asíncronos - thunks */
-/*
-export function fetchProjects(token){
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_PROJECTS_ATTEMPT
-        });
 
-        api.project.fetchProjects(token).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchProjectsSuccess(data.data));
-                }                    
-                else if(data.error)
-                    dispatch(fetchProjectsError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(fetchProjectsError(error));
-        });
-    }
-}
-*/
-export function fetchProjectById(token, project_id){
+
+/**
+ * 
+ En este action creator necesitamos hacer dos llamadas a la api, aunque no sea del mismo reducer.
+ Estamos operando con el reducer project y tengo que llamar a un action de user que opera con userReducer.
+ Pero necesito garantizarme tener la lista de usuarios para el dropdown. No puedo asumir que vendrá cargado de la
+ navegación anterior que hizo el usuario ni tampoco quiero meterlo en el action login.
+ Lo llamo aquí porque lo necesito aquí.
+ */
+export function fetchProjectById(token, project_id, user_id){
     return (dispatch) => {
         dispatch({
             type: FETCH_PROJECT_ATTEMPT
@@ -134,11 +123,21 @@ export function fetchProjectById(token, project_id){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    dispatch(fetchProjectSuccess(data.data));
+                    dispatch(fetchProjectSuccess(data.data));                    
+                    return api.user.fetchUsers(token, user_id);
                 }                    
                 else if(data.error)
                     dispatch(fetchProjectError(data.error))
             }                          
+        )
+        .then(
+            (data) =>{
+                if(data.data){
+                    dispatch(userActions.fetchUsersSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(fetchProjectError(data.error))
+            }
         )
         .catch(
             (error) => {
@@ -218,13 +217,24 @@ export function updateProject(token, project_id, project_name, project_color, pr
     }
 }
 
+/**
+En este action creator necesito garantizarme que *antes* de borrar el proyecto he eliminado
+todas las referencias a él que podrían existir en las tareas y también las relaciones user-project
+ */
 export function deleteProject(token, project_id){
     return (dispatch) => {
         dispatch({
             type: DELETE_PROJECT_ATTEMPT
         });
-
-        api.project.deleteProject(token, project_id).then(
+        api.task.deleteProjectRefsFromTask(token, project_id).then(
+            (data) => {
+                if(data.data)
+                    return api.project.deleteProject(token, project_id);
+                if(data.error)
+                    dispatch(deleteProjectError(data.error))
+            }
+        )
+        .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

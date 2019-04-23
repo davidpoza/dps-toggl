@@ -1,4 +1,3 @@
-
 import {
     CREATE_TASK_ATTEMPT,
     CREATE_TASK_FAIL,
@@ -24,8 +23,8 @@ import {
     COLLAPSE_DATE
 } from './types';
 
-
 import api from '../api';
+
 
 /* Action creators síncronos */
 
@@ -44,10 +43,10 @@ export function createTaskError(error){
     }
 }
 
-export function collapseDate(index){
+export function collapseDate(date){
     return {
         type: COLLAPSE_DATE,
-        payload: index
+        payload: date
     }
 }
 
@@ -65,10 +64,10 @@ export function deleteTaskError(error){
     }
 }
 
-export function deleteTasksVisually(taskData){
+export function deleteTasksVisually(task_id, task_date){
     return {
         type: DELETE_TASK_VISUALLY,
-        payload: taskData
+        payload: {task_id, task_date}
     }
 }
 
@@ -286,14 +285,10 @@ export function fetchTasks(token){
         )
         .then(
             (data)=>{
-                data.forEach(data=>{
-                    if(data.tasks){
-                        dispatch(fetchTasksSuccess(data));
-                    }                    
-                    else if(data.error)
-                        dispatch(fetchTasksError(data.error))
-                })
-               
+                //aqui no controlo errores porque van dentro de cada fecha
+                //tendria que buscar la propiedad error en cada una de ellas...
+                dispatch(fetchTasksSuccess(data));
+
             }                              
         )        
         .catch(
@@ -303,26 +298,3 @@ export function fetchTasks(token){
     }
 }
 
-
-//esta función la usaremos cuando pidamos que cargue más días aumentando
-/*export function fetchTasksByDate(token, date){
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_TASKS_ATTEMPT
-        });
-
-        api.task.fetchTasksByDate(token, date).then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchTasksSuccess(date, data.data));
-                }                    
-                else if(data.error)
-                    dispatch(fetchTasksError(data.error))
-            }                          
-        ).catch(
-            (error) => {
-                dispatch(fetchTasksError(error));
-        });
-    }
-}*/

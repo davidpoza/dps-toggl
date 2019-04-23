@@ -6,13 +6,13 @@ import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
-import MainSectionComponent from './MainSectionComponent';
+import TimerSectionComponent from './TimerSectionComponent';
 
 
 
 
 
-class MainSectionContainer extends Component{
+class TimerSectionContainer extends Component{
     constructor(props){
         super(props);
     }
@@ -23,11 +23,11 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent 
-            user_error_message={this.props.user_error_message}
-            task_error_message={this.props.task_error_message}
-            project_error_message={this.props.project_error_message}
-            tag_error_message={this.props.tag_error_message} 
+            <TimerSectionComponent 
+            user_loading={this.props.user_loading}
+            task_loading={this.props.task_loading}
+            project_loading={this.props.project_loading}
+            tag_loading={this.props.tag_loading} 
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
@@ -38,10 +38,10 @@ class MainSectionContainer extends Component{
 
 function mapStateToProps (state) {
     return {
-      user_error_message: state.userReducer.error.message,
-      task_error_message: state.taskReducer.error.message,
-      project_error_message: state.projectReducer.error.message,
-      tag_error_message: state.tagReducer.error.message
+      user_loading: state.userReducer.loading,
+      task_loading: state.taskReducer.loading,
+      project_loading: state.projectReducer.loading,
+      tag_loading: state.tagReducer.loading
     }
   }
   
@@ -54,4 +54,4 @@ function mapStateToProps (state) {
     }
   }
   
-export default connect(mapStateToProps, mapDispatchToProps)(MainSectionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TimerSectionContainer);

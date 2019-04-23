@@ -29,26 +29,13 @@ class MemberSelectorComponent extends Component{
 
     }
 
-    componentDidMount(){
-        this.props.userActions.fetchUsers(this.props.user.token, this.props.user.id);
-        this.setState({
-
-        });
-    }
-
-
-    componentDidUpdate(prevProps){
-
-    }
-    
-
     /** se ejecuta onChange del input de filtrado de proyectos */
     handleOnChangeInput(e){   
         this.setState({
             value: e.target.value
         });
         if(e.target.value.length > 0){
-            let filtered_users = this.props.user.users.filter((u)=>{
+            let filtered_users = this.props.users.filter((u)=>{
                 let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
                 return regex.test(u.first_name+" "+u.last_name+" "+u.email);
             });
@@ -114,7 +101,7 @@ class MemberSelectorComponent extends Component{
 }
 
 MemberSelectorComponent.propTypes = {
- user: PropTypes.object.isRequired,
+ users: PropTypes.array.isRequired,
  userActions: PropTypes.object.isRequired,
  project_id: PropTypes.number.isRequired,
  onSelect: PropTypes.func.isRequired

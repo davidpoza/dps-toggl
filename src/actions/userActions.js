@@ -16,6 +16,7 @@ import {
 
 import api from '../api';
 
+
 /* Action creators síncronos */
 
 
@@ -121,6 +122,7 @@ export function refreshToken(token){
     }
 }
 
+//devuelve todos los usuarios menos a sí mismo
 export function fetchUsers(token, user_id){
     return (dispatch) => {
         dispatch({
@@ -130,7 +132,7 @@ export function fetchUsers(token, user_id){
         api.user.fetchUsers(token, user_id).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
+                if(data.data){                    
                     dispatch(fetchUsersSuccess(data.data));
                 }                    
                 else if(data.error) //error en la peticion

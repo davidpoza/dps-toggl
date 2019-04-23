@@ -21,7 +21,7 @@ class LoggedInfoComponent extends Component{
     /**llama al thunk de redux que hace una petición al api para refrescar el token jwt */
     refreshToken(){
         if(this.props.user.token != null){
-            this.props.actions.refreshToken(this.props.user.token);
+            this.props.userActions.refreshToken(this.props.user.token);
         }
     }
 
@@ -48,7 +48,7 @@ class LoggedInfoComponent extends Component{
                         (   
                             <div className={styles.username}>
                                 <p className="m-0">{this.props.user.first_name} {this.props.user.last_name}</p>
-                                <p className="m-0"><span className={styles.link} onClick={this.props.actions.logoutUser}>Logout</span></p>
+                                <p className="m-0"><span className={styles.link} onClick={this.props.userActions.logoutUser}>Logout</span></p>
                             </div>
                         ):
                         (
@@ -67,7 +67,7 @@ class LoggedInfoComponent extends Component{
                 }
                 <div className="dropdown-menu">
                     <a className="dropdown-item" href="#">{lang[config.lang].profile}</a>
-                    <a className="dropdown-item" onClick={this.props.actions.logoutUser}>Logout</a>
+                    <a className="dropdown-item" onClick={this.props.userActions.logoutUser}>Logout</a>
                 </div>
             </div>
         )
@@ -76,7 +76,7 @@ class LoggedInfoComponent extends Component{
 
 LoggedInfoComponent.propTypes = {
     user: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    userActions: PropTypes.object.isRequired
 }
 
 export default LoggedInfoComponent;

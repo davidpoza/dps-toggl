@@ -22,6 +22,7 @@ class TaskComponent extends Component{
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
+        this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
 
         /** 
          * tags: almacena un array de tags con las propiedades:
@@ -129,14 +130,13 @@ class TaskComponent extends Component{
 
     handleOnBlurDesc(e){
         /*actualizamos la tarea actual cambiando su descripción pero manteniendo fechas, tags e id del proyecto*/
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, null, null);     
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, -1, null);     
     }
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
     handleOnDelete(e){
         this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
-        let task_id = e.target.id.match(/btn-delete-(\d{0,4})/)[1];
-        this.props.onDeleteFromList(task_id); //eliminar visualmente, para lo cual llama al padre
+        this.props.taskActions.deleteTasksVisually(this.props.task.id, this.props.task.date);
     }
 
     /**
@@ -158,7 +158,24 @@ class TaskComponent extends Component{
        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
        
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.props.onUpdate(this.props.task.id, null, null, null, null, project, null);
+       this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
+    }
+
+
+    /**actualiza la entidad de la tarea con task_id y dispara una acción para 
+     * actualizar tasks_entities en el redux store con los cambios.
+     * Únicamente cambia los valores que pasemos como parametro.
+     */
+    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
+        let new_task_entities = Object.assign({}, this.props.tasks_entities);
+        if(desc!=null) new_task_entities[task_id].desc = desc;
+        if(date!=null) new_task_entities[task_id].date = date;
+        if(start_hour!=null) new_task_entities[task_id].start_hour = start_hour;
+        if(end_hour!=null) new_task_entities[task_id].end_hour = end_hour;
+        if(project!=-null) new_task_entities[task_id].project = project;
+        if(tags!=null) new_task_entities[task_id].tags = tags;
+
+        this.props.taskActions.updateTasksVisually(new_task_entities);
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
@@ -224,7 +241,7 @@ class TaskComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className="col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2">                
+                <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 text-right "}>                
                     {this.props.task.project!=null ?
                     <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                     :
@@ -236,7 +253,7 @@ class TaskComponent extends Component{
                 </div>               
                 {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>{utils.removeSeconds(this.props.task.start_hour)} - {utils.removeSeconds(this.props.task.end_hour)}</div>}                
                 <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>{utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour)}</div>
-                <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn}><i className="fas fa-play"></i></button>
+                <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} onClick={this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null)}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className="dropdown-menu">
                         <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
@@ -256,9 +273,8 @@ TaskComponent.propTypes = {
     projects: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
-    tagActions: PropTypes.object.isRequired,
-    onDeleteFromList: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    onResume: PropTypes.func.isRequired,
+    tasks_entities: PropTypes.object.isRequired
 }
 
 

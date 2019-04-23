@@ -6,7 +6,8 @@ import {
 } from '../actions/types';
 
 import initialState from './initialState';
-
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 export default function tagReducer (state = initialState.tagReducer, action){
     switch(action.type){
@@ -17,10 +18,12 @@ export default function tagReducer (state = initialState.tagReducer, action){
                 error: {}
             }
         case FETCH_TAGS_SUCCESS:
+            action.payload = normalize(action.payload, schemas.tagsSchema);
             return {
                 ...state,
                 loading: false,
-                tags: action.payload,
+                tags_id: action.payload.result,
+                tags_entities: action.payload.entities.tags,
                 need_refreshing: false
             }
         case FETCH_TAGS_FAIL:

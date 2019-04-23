@@ -9,6 +9,8 @@ CLEAN_TAG_MESSAGE
 
 import api from '../api';
 
+
+
 /* Action creators síncronos */
 
 
@@ -43,7 +45,7 @@ export function fetchTags(token){
         api.tag.fetchTags(token).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
+                if(data.data){                    
                     dispatch(fetchTagsSuccess(data.data));
                 }                    
                 else if(data.error)

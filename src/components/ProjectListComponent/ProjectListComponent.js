@@ -40,7 +40,7 @@ class ProjectListComponent extends Component{
                </div> 
                <ul className="p-0 container-flex">
                {
-                   this.props.project.projects.map((e,index) => {
+                   this.props.projects.map((e,index) => {
                         return <ProjectComponent token={this.props.user.token} key={index} project={e} history={this.props.history} />
                    })
                }
@@ -55,7 +55,7 @@ class ProjectListComponent extends Component{
 
 ProjectListComponent.propTypes = {
     user: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    projects: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired
 }
 

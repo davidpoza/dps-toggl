@@ -18,6 +18,8 @@ import {
 } from '../actions/types';
 
 import initialState from './initialState';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
 
 
 export default function projectReducer (state = initialState.projectReducer, action){
@@ -29,10 +31,12 @@ export default function projectReducer (state = initialState.projectReducer, act
                 error: {}
             }
         case FETCH_PROJECTS_SUCCESS:
+            action.payload = normalize(action.payload, schemas.projectsSchema);
             return {
                 ...state,
                 loading: false,
-                projects: action.payload,
+                projects_entities: action.payload.entities.projects,
+                projects_id: action.payload.result,
                 need_refreshing: false
             }
         case FETCH_PROJECTS_FAIL:
@@ -72,14 +76,16 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 loading: true,
                 need_refreshing: false,
-                project_detail: {},
                 error: {}
             }
         case FETCH_PROJECT_SUCCESS:
+        action.payload = normalize(action.payload, schemas.projectEntity);
+        let new_projects_entities = Object.assign({},state.projects_entities);
+        new_projects_entities[action.payload.result] = action.payload.entities.projects[action.payload.result];
             return {
                 ...state,
                 loading: false,
-                project_detail: action.payload,
+                projects_entities: new_projects_entities,
                 error: {}
             }
         case FETCH_PROJECT_FAIL:

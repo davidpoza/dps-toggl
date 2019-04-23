@@ -20,6 +20,7 @@ class NewBlockComponent extends Component{
         this.chronoResetBtn = React.createRef();
         this.chronoModeBtn = React.createRef();
         this.manualModeBtn = React.createRef();
+        this.NewBlockComponent = React.createRef();
 
         this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
         this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
@@ -32,6 +33,7 @@ class NewBlockComponent extends Component{
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);        
         this.handleHourChange = this.handleHourChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.resumeTask = this.resumeTask.bind(this);
 
         this.state = {
             placeholder: lang[config.lang].desc_placeholder_chrono_mode,
@@ -74,10 +76,10 @@ class NewBlockComponent extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.tag.tags != this.props.tag.tags){
+        if(prevProps.tags != this.props.tags){
             //le añadimos la propiedad checked al objeto tag que viene de la api
             this.setState({
-                tags: this.props.tag.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
+                tags: this.props.tags //hacemos una copia del array con todos los tags que viene de un thunk de redux
             })
         }
     }
@@ -94,8 +96,8 @@ class NewBlockComponent extends Component{
     }
 
     /** Al producirse un click en un proyecto del dropdown del ProjectSelectorComponent */
-    handleOnClickProjectSelector(e){
-        if(e.target.id=="project0")
+    handleOnClickProjectSelector(project_id, project_name, project_color){
+        if(project_id==-1)
         {
             this.setState({
                 project_selected_name: null,
@@ -103,19 +105,17 @@ class NewBlockComponent extends Component{
                 project_selected_id:null
             });
         }
-        else if(e.target.id){
-            let project_id = e.target.id.match(/project(\d{0,4})/)[1];
+        else{
             this.setState({
-                project_selected_name: e.target.innerText,
-                project_selected_color: utils.rgb2hex(window.getComputedStyle(e.target.childNodes[0]).color),
+                project_selected_name: project_name,
+                project_selected_color: project_color,
                 project_selected_id: project_id
             });
         }
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
-    handleOnClickTagSelector(e){        
-        let tag_id = parseInt(e.target.id.match(/tag(\d{0,4})/)[1]);
+    handleOnClickTagSelector(tag_id){        
         let array_tags = this.state.tags.slice();
         for(let i=0; i<array_tags.length;i++){
             if(array_tags[i].id == tag_id)
@@ -180,7 +180,7 @@ class NewBlockComponent extends Component{
                     project_selected_name: null,
                     project_selected_color: null,
                     project_selected_id: null,
-                    tags: this.props.tag.tags.map((e)=>{
+                    tags: this.props.tags.map((e)=>{
                         e.checked = false;
                         return e;
                     })
@@ -206,7 +206,7 @@ class NewBlockComponent extends Component{
             project_selected_name: null,
             project_selected_color: null,
             project_selected_id: null,
-            tags: this.props.tag.tags.map((e)=>{ //desmarco todos los tags
+            tags: this.props.tags.map((e)=>{ //desmarco todos los tags
                 e.checked = false;
                 return e;
             })
@@ -243,7 +243,10 @@ class NewBlockComponent extends Component{
                 chrono_status: "paused",
                 time: 0,
                 description: "",
-                tags: this.props.tag.tags.map((e)=>{
+                project_selected_name: null,
+                project_selected_color: null,
+                project_selected_id: null,
+                tags: this.props.tags.map((e)=>{
                     e.checked = false;
                     return e;
                 })
@@ -265,6 +268,21 @@ class NewBlockComponent extends Component{
         });
     }
 
+    resumeTask(description, project_id, project_name, project_color, tags){
+        if(this.state.chrono_status == "paused"){
+            this.setState({
+                description: description,
+                project_selected_name: project_name,
+                project_selected_color: project_color,
+                project_selected_id: project_id,
+                tags: tags
+            });
+            this.handleOnClickStart();
+        }        
+    }
+
+    
+    
     render(){
         return(
             <div className="container-flex" >
@@ -274,7 +292,7 @@ class NewBlockComponent extends Component{
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description}></input>
                         </div>
                         <div className="col-4 col-lg-auto order-5 order-lg-2 p-1">
-                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.project.projects}/>
+                        <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects}/>
                         </div>
                         <div className="col-1 col-lg-auto order-4 order-lg-3 p-1">
                         <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
@@ -313,8 +331,8 @@ class NewBlockComponent extends Component{
 
 NewBlockComponent.propTypes = {
     user: PropTypes.object.isRequired,
-    tag: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    tags: PropTypes.array.isRequired,
+    projects: PropTypes.array.isRequired,
     taskActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,

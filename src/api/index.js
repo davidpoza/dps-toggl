@@ -16,19 +16,16 @@ const API = {
                     password: password
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data) => {
                     if(data.data)
                         return(API.user.getUserInfo(data.data.token))
-                    return data;
+                    else if(data.error)
+                        throw data.error;
                 }
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -43,13 +40,9 @@ const API = {
                     token: token
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -62,11 +55,9 @@ const API = {
                     "Authorization": "Bearer " + token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data)=>{
                     //quiero tener el token en el estado para renovarlo
                     data.data.token = token;
                     return data;
@@ -84,13 +75,9 @@ const API = {
                     "Authorization": "Bearer " + token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         }
     },
@@ -115,13 +102,9 @@ const API = {
                     tags: array_tags_obj
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         deleteTask(token, task_id){
@@ -160,13 +143,9 @@ const API = {
                 },
                 body: JSON.stringify(composingBody)
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTasks(token){
@@ -178,13 +157,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTask(token,task_id){
@@ -196,13 +171,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchAllDates(token){
@@ -214,13 +185,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchTasksByDate(token, date){
@@ -232,11 +199,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
+                (data)=>{
                     if(data.data != undefined)
                         return {date: date, time: data.data.reduce((prev,curr)=>{
                             curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
@@ -256,17 +221,98 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
+                (data) => data
+            );
+        },
+
+        /*
+        Elimina todas las referencias a un proyecto concreto que pudiera haber en cualquier task.
+        Para ello primero necesito obtener la lista task id que tengan dicho proyecto asignado. (puede resultar una lista vacia).
+        Posteriormente hago una llamada a la api con un patch, indicando todos los task id separados por comas. En dicho patch
+        simplemente pongo a null la referencia a proyecto.
+        */
+        deleteProjectRefsFromTask(token, project_id){
+            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
                 }
+            }).then(
+                (response)=>response.json()                
+            ).then(
+                (data)=>{
+                    if(data.data){
+                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
+                        return fetch(api_url+"/items/tasks/"+tasks_id, {
+                            method: "PATCH",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer "+ token
+                            },
+                            body: JSON.stringify({project:null})
+                        })
+                    }
+                    else if(data.error){
+                        throw data.error;
+                    }
+                }
+                
+            )
+            .then(
+                (response)=>response.json()                
+            ).then(
+                (data) => data
+            );
+        },
+
+        /*
+        Elimina todas las relaciones user-project que existan
+        */
+        deleteUserProjectRelations(token, user_id, project_id){
+            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            })
+            .then(
+                (response)=>response.json()                
+            ).then(
+                (data)=>{
+                    if(data.data){
+                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
+                        return fetch(api_url+"/items/tasks/"+tasks_id, {
+                            method: "PATCH",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer "+ token
+                            },
+                            body: JSON.stringify({project:null})
+                        })
+                    }
+                    else if(data.error){
+                        throw data.error;
+                    }
+                }
+                
+            )
+            .then(
+                (response)=>response.json()                
+            ).then(
+                (data) => data
             );
         },
     },
 
+    
     project: {
         //en tags_id viene un array de tags_id, hay que componer un objeto
         createProject(token, name, color, owner_id){
@@ -283,19 +329,15 @@ const API = {
                     owner: owner_id
                 })
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
         //en el futuro cuando implemente mi propia api limitaré la consulta de un proyecto si no se es miembro
         fetchProjectById(token, project_id){
-            return fetch(api_url+"/items/projects/"+project_id+"?single=1&fields=*.*, members.*.*", {
+            return fetch(api_url+"/items/projects/"+project_id+"?single=1&fields=*.*, members.*", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -303,13 +345,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -322,13 +360,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
         fetchProjectsByOwner(token, owner_id){
@@ -340,13 +374,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             )          
         },
 
@@ -359,7 +389,7 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
+                (response)=>{
                     if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
                         return {data: {id: project_id}};
                     else
@@ -384,13 +414,9 @@ const API = {
                 },
                 body: JSON.stringify(composingBody)
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
 
@@ -407,13 +433,9 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                function(response){
-                    return response.json();
-                }
+                (response)=>response.json()                
             ).then(
-                function(data){
-                    return data;
-                }
+                (data) => data
             );
         },
     },

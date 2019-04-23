@@ -6,13 +6,10 @@ import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
-import MainSectionComponent from './MainSectionComponent';
 
+import TaskDatesComponent from './TaskDatesComponent';
 
-
-
-
-class MainSectionContainer extends Component{
+class TaskDatesContainer extends Component{
     constructor(props){
         super(props);
     }
@@ -23,25 +20,29 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent 
-            user_error_message={this.props.user_error_message}
-            task_error_message={this.props.task_error_message}
-            project_error_message={this.props.project_error_message}
-            tag_error_message={this.props.tag_error_message} 
+            <TaskDatesComponent
+            token={this.props.token}
+            dates={this.props.dates}
+            need_refreshing={this.props.need_refreshing}
+            dates_entities = {this.props.dates_entities}
             userActions={this.props.userActions}
             taskActions={this.props.taskActions}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}/>
+            tagActions={this.props.tagActions}
+            onResume={this.props.onResume}
+            />
         )
     }
 }
 
 function mapStateToProps (state) {
+
     return {
-      user_error_message: state.userReducer.error.message,
-      task_error_message: state.taskReducer.error.message,
-      project_error_message: state.projectReducer.error.message,
-      tag_error_message: state.tagReducer.error.message
+      //denormalizacion
+      token: state.userReducer.token,      
+      dates: state.taskReducer.dates_id.map(e=>state.taskReducer.dates_entities[e]),
+      dates_entities: state.taskReducer.dates_entities,
+      need_refreshing: state.taskReducer.need_refreshing,  
     }
   }
   
@@ -54,4 +55,4 @@ function mapStateToProps (state) {
     }
   }
   
-export default connect(mapStateToProps, mapDispatchToProps)(MainSectionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDatesContainer);

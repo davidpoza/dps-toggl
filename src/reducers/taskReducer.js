@@ -23,6 +23,10 @@ import {
     COLLAPSE_DATE
 } from '../actions/types';
 
+import utils from '../utils';
+import {normalize} from 'normalizr';
+import * as schemas from './normalizr';
+
 import initialState from './initialState';
 
 
@@ -60,14 +64,25 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: false,
-                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
                 error: {}
             }
         case DELETE_TASK_VISUALLY:
+            let new_dates_entities_deleted = Object.assign({}, state.dates_entities);
+            let new_tasks_entities_deleted = Object.assign({}, state.tasks_entities);
+            new_dates_entities_deleted[action.payload.task_date].tasks = new_dates_entities_deleted[action.payload.task_date].tasks.filter(t=>(t!=action.payload.task_id));
+            delete new_tasks_entities_deleted[action.payload.task_id];
+
+            //recalculamos el total de horas de la fecha afectada por el borrado de la tarea
+            new_dates_entities_deleted[action.payload.task_date].time = new_dates_entities_deleted[action.payload.task_date].tasks.reduce((prev,curr)=>{
+                curr = utils.diffHoursBetHours(state.tasks_entities[curr].start_hour, state.tasks_entities[curr].end_hour)
+                return (prev+curr);
+            },0);
+
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                dates_entities: new_dates_entities_deleted,
+                tasks_entities: new_tasks_entities_deleted,
                 error: {}
             }
         case DELETE_TASK_FAIL:
@@ -80,21 +95,19 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: true,
-                need_refreshing: false,
                 error: {}
             }
         case UPDATE_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                //need_refreshing: true, no vamos a volver a pedir la lista de tareas sino que vamos a borrar visualmente el elemento
                 error: {}
             }
         case UPDATE_TASK_VISUALLY:
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                tasks_entities: action.payload,
                 error: {}
             }
         case UPDATE_TASK_FAIL:
@@ -110,20 +123,25 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASK_SUCCESS:
-            //buscamos actualizar solo el task indicado
-            let tasks_updated_task = [...state.tasks].map(e=>{
-                e.tasks = e.tasks.map(task=>{
-                    if(task.id == action.payload.id){
-                        task = action.payload
-                    }
-                    return task;
-                })
-                return e;
-            });
+            action.payload = normalize(action.payload, schemas.taskEntity);
+            let new_tasks_entities = Object.assign({}, state.tasks_entities);
+            new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
+            let new_tasks_tags_entities = Object.assign({}, state.tasks_tags_entities);
+            if(action.payload.entities.tasks[action.payload.result].tags.length > state.tasks_entities[action.payload.result].tags.length){ //se añade un tag
+                //hay que añadir la relacion nueva al array de tasks_tags
+                new_tasks_tags_entities = Object.assign(new_tasks_tags_entities, action.payload.entities.tags);
+            }
+            else{ //se borra el tag ¿cómo saber cual hay que borrar?
+                new_tasks_entities[action.payload.result].tags.map(e=>{
+                    if(!action.payload.entities.tasks[action.payload.result].tags.includes(e))
+                        delete new_tasks_tags_entities[e];
+                });                
+            }
             return {
                 ...state,
                 loading: false,
-                tasks: tasks_updated_task,
+                tasks_entities: new_tasks_entities,
+                tasks_tags_entities: new_tasks_tags_entities,
                 need_refreshing: false
             }
         case FETCH_TASK_FAIL:
@@ -136,20 +154,24 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 loading: true,
-                tasks: [],
+                //tasks: [],
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
-            //hay que ordenar los bloques de dates ya que van llegando de forma asíncrona
-            let array_tasks = [...state.tasks, action.payload].sort((a,b)=>{
-                if(a.date < b.date) return 1
-                else if(a.date > b.date) return -1
-                else return 0
-            });
+            action.payload = normalize(action.payload, schemas.dateSchema);
+
+            //el flag collapsed debe mantenerse en el valor que tuviera en el estado
+            Object.keys(state.dates_entities).forEach(key=>{
+                if(state.dates_entities[key].collapsed)
+                    action.payload.entities.dates[key].collapsed = true;
+            });            
             return {
                 ...state,
                 loading: false,
-                tasks: array_tasks,
+                dates_entities: action.payload.entities.dates,
+                dates_id: action.payload.result,
+                tasks_entities: action.payload.entities.tasks,
+                tasks_tags_entities: action.payload.entities.tags,
                 need_refreshing: false
             }
         case FETCH_TASKS_FAIL:
@@ -181,9 +203,11 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case COLLAPSE_DATE:
+            let new_dates_entities = Object.assign({},state.dates_entities);
+            new_dates_entities[action.payload].collapsed=new_dates_entities[action.payload].collapsed?false:true
             return {
                 ...state,
-                tasks: state.tasks.map((e,index)=>{if(index==action.payload) e.collapsed=e.collapsed?false:true; return e;})
+                dates_entities: new_dates_entities
             }
         default:
             return state;

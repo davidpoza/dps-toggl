@@ -29,7 +29,7 @@ class ProjectSectionComponent extends Component{
 
     //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
-        if (!prevProps.project.need_refreshing && this.props.project.need_refreshing){
+        if (!prevProps.need_refreshing && this.props.need_refreshing){
             this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);           
         }
     }
@@ -72,7 +72,7 @@ class ProjectSectionComponent extends Component{
                     <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>
                 <div className={"flex-grow-1 " + styles.projectlist}>
-                    <ProjectListComponent user={this.props.user} project={this.props.project} history={this.props.history}/>
+                    <ProjectListComponent user={this.props.user} projects={this.props.projects} history={this.props.history}/>
                 </div>
 
                 <div className="modal fade" id="projectCreateModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
@@ -111,7 +111,7 @@ class ProjectSectionComponent extends Component{
                     </div>
                 </div>
                 </div>
-                <LoadingComponent isLoading={this.props.user.loading||this.props.project.loading} />
+                <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
             </div>
         )
     }
@@ -119,8 +119,12 @@ class ProjectSectionComponent extends Component{
 
 ProjectSectionComponent.propTypes = {
     user:PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    projectActions: PropTypes.object.isRequired
+    user_loading: PropTypes.bool.isRequired,
+    project_loading: PropTypes.bool.isRequired,
+    need_refreshing: PropTypes.bool.isRequired,
+    projects: PropTypes.array.isRequired,
+    projectActions: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
 }
 
 

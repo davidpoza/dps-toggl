@@ -6,13 +6,14 @@ import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
-import MainSectionComponent from './MainSectionComponent';
+
+import ProjectSectionComponent from './ProjectSectionComponent';
 
 
 
 
 
-class MainSectionContainer extends Component{
+class ProjectSectionContainer extends Component{
     constructor(props){
         super(props);
     }
@@ -23,25 +24,26 @@ class MainSectionContainer extends Component{
 
     render(){
         return(
-            <MainSectionComponent 
-            user_error_message={this.props.user_error_message}
-            task_error_message={this.props.task_error_message}
-            project_error_message={this.props.project_error_message}
-            tag_error_message={this.props.tag_error_message} 
-            userActions={this.props.userActions}
-            taskActions={this.props.taskActions}
+            <ProjectSectionComponent 
+            user={this.props.user}
+            user_loading={this.props.user_loading}
+            project_loading={this.props.project_loading}
+            need_refreshing={this.props.need_refreshing}
+            projects={this.props.projects}
+            history={this.props.history}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}/>
+            />
         )
     }
 }
 
 function mapStateToProps (state) {
     return {
-      user_error_message: state.userReducer.error.message,
-      task_error_message: state.taskReducer.error.message,
-      project_error_message: state.projectReducer.error.message,
-      tag_error_message: state.tagReducer.error.message
+      user: state.userReducer,
+      need_refreshing: state.projectReducer.need_refreshing,
+      user_loading: state.userReducer.loading,
+      project_loading: state.projectReducer.loading,
+      projects: state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p]),
     }
   }
   
@@ -54,4 +56,4 @@ function mapStateToProps (state) {
     }
   }
   
-export default connect(mapStateToProps, mapDispatchToProps)(MainSectionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectSectionContainer);

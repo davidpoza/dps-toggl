@@ -20,7 +20,7 @@ class LoggedInfoContainer extends Component{
 
     render(){
         return(
-            <LoggedInfoComponent user={this.props.user} actions={this.props.actions}/>
+            <LoggedInfoComponent user={this.props.user} userActions={this.props.userActions}/>
         )
     }
 }
@@ -33,7 +33,7 @@ function mapStateToProps (state) {
   
   function mapDispatchToProps (dispatch) {
     return {
-      actions: bindActionCreators(userActions, dispatch)
+      userActions: bindActionCreators(userActions, dispatch)
     }
   }
   
