@@ -7,7 +7,7 @@ import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
 import * as tagActions from '../../actions/tagActions'
 
-import TaskComponent from './TaskComponent';
+import TagComponent from './TagComponent';
 
 
 class TaskContainer extends Component{
@@ -23,14 +23,12 @@ class TaskContainer extends Component{
       
       
         return(
-            <TaskComponent
+            <TagComponent
             token={this.props.token}
-            task={this.props.task}
-            projects={this.props.projects}
+            tag={this.props.tag}
             tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
-            taskActions={this.props.taskActions}           
-            onResume={this.props.onResume}
+            tagActions={this.props.tagActions}           
             />
         )
     }

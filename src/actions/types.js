@@ -70,6 +70,10 @@ export const FETCH_TAGS_ATTEMPT = "FETCH_TAGS_ATTEMPT";
 export const FETCH_TAGS_SUCCESS = "FETCH_TAGS_SUCCESS";
 export const FETCH_TAGS_FAIL = "FETCH_TAGS_FAIL";
 
+export const CREATE_TAG_ATTEMPT = "CREATE_TAG_ATTEMPT";
+export const CREATE_TAG_SUCCESS = "CREATE_TAG_SUCCESS";
+export const CREATE_TAG_FAIL = "CREATE_TAG_FAIL";
+
 export const CLEAN_TAG_MESSAGE = "CLEAN_TAG_MESSAGE";
 //////////////////////////////////////////////////
 
