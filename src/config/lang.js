@@ -34,6 +34,8 @@ const lang = {
         menu_config: "Configuración",
         tag_section_title: "Etiquetas",
         btn_new_tag: "Nueva etiqueta",
+        btn_update_tag: "Modificar etiqueta",
+        btn_delete_tag: "Eliminar etiqueta",
         tag_name_placeholder: "Nombre de la etiqueta...",
         btn_title_delete_tag: "Borrar etiqueta",
         btn_title_update_tag: "Modificar etiqueta",

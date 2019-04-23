@@ -74,6 +74,15 @@ export const CREATE_TAG_ATTEMPT = "CREATE_TAG_ATTEMPT";
 export const CREATE_TAG_SUCCESS = "CREATE_TAG_SUCCESS";
 export const CREATE_TAG_FAIL = "CREATE_TAG_FAIL";
 
+export const DELETE_TAG_ATTEMPT = "DELETE_TAG_ATTEMPT";
+export const DELETE_TAG_SUCCESS = "DELETE_TAG_SUCCESS";
+export const DELETE_TAG_FAIL = "DELETE_TAG_FAIL";
+
+export const UPDATE_TAG_VISUALLY = "UPDATE_TAG_VISUALLY";
+export const UPDATE_TAG_ATTEMPT = "UPDATE_TAG_ATTEMPT";
+export const UPDATE_TAG_SUCCESS = "UPDATE_TAG_SUCCESS";
+export const UPDATE_TAG_FAIL = "UPDATE_TAG_FAIL";
+
 export const CLEAN_TAG_MESSAGE = "CLEAN_TAG_MESSAGE";
 //////////////////////////////////////////////////
 

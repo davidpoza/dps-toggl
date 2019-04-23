@@ -6,8 +6,13 @@ FETCH_TAGS_SUCCESS,
 CLEAN_TAG_MESSAGE,
 CREATE_TAG_ATTEMPT,
 CREATE_TAG_FAIL,
-CREATE_TASK_SUCCESS,
-CREATE_TAG_SUCCESS
+CREATE_TAG_SUCCESS,
+DELETE_TAG_ATTEMPT,
+DELETE_TAG_FAIL,
+DELETE_TAG_SUCCESS,
+UPDATE_TAG_ATTEMPT,
+UPDATE_TAG_FAIL,
+UPDATE_TAG_SUCCESS
 } from './types';
 
 
@@ -46,6 +51,34 @@ export function createTagError(error){
     }
 }
 
+export function deleteTagSuccess(tagData){
+    return {
+        type: DELETE_TAG_SUCCESS,
+        payload: tagData
+    }
+}
+
+export function deleteTagError(error){
+    return {
+        type: DELETE_TAG_FAIL,
+        payload: error
+    }
+}
+
+export function updateTagSuccess(tagData){
+    return {
+        type: UPDATE_TAG_SUCCESS,
+        payload: tagData
+    }
+}
+
+export function updateTagError(error){
+    return {
+        type: UPDATE_TAG_FAIL,
+        payload: error
+    }
+}
+
 export function cleanMessage(){
     return {
         type: CLEAN_TAG_MESSAGE,
@@ -74,6 +107,50 @@ export function createTag(token, name, user_id){
             (error) => {
                 dispatch(createTagError(error));
         });
+    }
+}
+
+export function deleteTag(token, tag_id){
+    return (dispatch) => {
+        dispatch({
+            type: DELETE_TAG_ATTEMPT
+        });
+        api.tag.deleteTag(token, tag_id).then(
+            (data) => {
+                if(data.data)
+                    dispatch(deleteTagSuccess(data.data));
+                if(data.error)
+                    dispatch(deleteTagError(data.error))
+            }
+        )
+        .catch(
+            (error) => {
+                dispatch(deleteTagError(error));
+        });
+    }
+}
+
+export function updateTag(token, tag_id, tag_name){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TAG_ATTEMPT
+        });
+       
+        api.tag.updateTag(token, tag_id, tag_name).then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTagSuccess(data.data));
+                }                    
+                else if(data.error)
+                    dispatch(updateTagError(data.error))
+            }                          
+        ).catch(
+            (error) => {
+                dispatch(updateTagError(error));
+        });
+        
+        
     }
 }
 

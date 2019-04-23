@@ -26,7 +26,7 @@ class TagListComponent extends Component{
         return(
                <ul className="p-0 container-flex">
                {
-                   this.props.tags.map((t,index)=><TagComponent key={"tag"+index} tag={t} onDelete={this.props.onDelete} onUpdate={this.props.onUpdate}/>)
+                   this.props.tags.map((t,index)=><TagComponent ctx={this.props.ctx} key={"tag"+index} tag={t} onOpenDeleteModal={this.props.onOpenDeleteModal} onOpenUpdateModal={this.props.onOpenUpdateModal}/>)
                }
                </ul>        
 
@@ -36,9 +36,10 @@ class TagListComponent extends Component{
 
 
 TagListComponent.propTypes = {
+    ctx: PropTypes.object.isRequired,
     tags: PropTypes.array.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    onOpenDeleteModal: PropTypes.func.isRequired,
+    onOpenUpdateModal: PropTypes.func.isRequired,
 }
 
 export default TagListComponent;

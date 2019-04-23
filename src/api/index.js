@@ -455,6 +455,39 @@ const API = {
                 (data) => data
             );
         },
+        deleteTag(token, tag_id){
+            return fetch(api_url+"/items/tags/"+tag_id, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                (response)=>{
+                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
+                        return {data: {id: tag_id}};
+                    else
+                        return {error: {message: "Error on delete tag"}};
+                }
+            );
+        },
+
+        updateTag(token, tag_id, tag_name){
+            return fetch(api_url+"/items/tags/"+tag_id, {
+                method: "PATCH",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                },
+                body: JSON.stringify({name: tag_name})
+            }).then(
+                (response)=>response.json()                
+            ).then(
+                (data) => data
+            );
+        },
     },
 }
 
