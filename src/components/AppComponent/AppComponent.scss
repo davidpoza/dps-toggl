@@ -1,5 +1,11 @@
 @import "../../defaults.scss";
 
+/*default styles*******************************************************/
+body{
+    overflow-y: hidden;
+}
+/*********************************************************************/
+
 .app, .containerflex, .row{
     height: 100%;
     margin: 0 !important;
