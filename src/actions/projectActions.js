@@ -154,14 +154,16 @@ export function fetchProjectById(token, project_id, user_id){
     }
 }
 
-
-export function fetchProjectsByOwner(token, owner_id){
+/**
+ * Devuelve los proyectos de los que somos propietarios y aquellos en los que somos miembros
+ */
+export function fetchProjectsByMember(token, owner_id){
     return (dispatch) => {
         dispatch({
             type: FETCH_PROJECTS_ATTEMPT
         });
 
-        api.project.fetchProjectsByOwner(token, owner_id).then(
+        api.project.fetchProjectsByMember(token, owner_id).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

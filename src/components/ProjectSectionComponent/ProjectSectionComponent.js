@@ -23,14 +23,14 @@ class ProjectSectionComponent extends Component{
     }
 
     componentDidMount(){
-        this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);
+        this.props.projectActions.fetchProjectsByMember(this.props.user.token, this.props.user.id);
        
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.projectActions.fetchProjectsByOwner(this.props.user.token, this.props.user.id);           
+            this.props.projectActions.fetchProjectsByMember(this.props.user.token, this.props.user.id);           
         }
     }
    
@@ -66,12 +66,12 @@ class ProjectSectionComponent extends Component{
 
     render(){
         return(
-            <div className={"d-flex flex-column justify-content-start h-100"}>
+            <div className={"d-flex flex-column justify-content-start mh-100"}>
                 <div className={"d-flex justify-content-between m-3"}>
                     <h1>{lang[config.lang].project_section_title}</h1>
                     <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>
-                <div className={"flex-grow-1 " + styles.projectlist}>
+                <div className={"flex-shrink-1 " + styles.projectlist}>
                     <ProjectListComponent 
                     user={this.props.user}
                     projects={this.props.projects}
