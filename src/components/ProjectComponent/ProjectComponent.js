@@ -6,7 +6,6 @@ import styles from './ProjectComponent.scss';
 
 
 
-
 class ProjectComponent extends Component{
     constructor(props){
         super(props);
@@ -30,14 +29,14 @@ class ProjectComponent extends Component{
     render(){
         return(
             <li className={"row m-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project.id)}>
-                <div className={"col-8 "} >
+                <div className={"col-6 "} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
                 </div>
                 <div className={"col-2 "} >
-                    {this.props.project.tasks && this.props.project.tasks.reduce((prev, curr)=>{
-                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                        return(prev+curr);
-                    },0)} h.           
+                    {utils.standarDateToSpanish(this.props.project.created)}            
+                </div>
+                <div className={"col-2 "} >
+                    {this.props.project.hours} h.           
                 </div>   
                 <div className={"col-2 "} >
                     {this.props.project.tasks && this.props.project.tasks.length} tareas           

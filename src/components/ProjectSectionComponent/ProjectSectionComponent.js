@@ -72,7 +72,14 @@ class ProjectSectionComponent extends Component{
                     <button className="btn btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}>{lang[config.lang].btn_new_project}</button>
                 </div>
                 <div className={"flex-grow-1 " + styles.projectlist}>
-                    <ProjectListComponent user={this.props.user} projects={this.props.projects} history={this.props.history} projectActions={this.props.projectActions}/>
+                    <ProjectListComponent 
+                    user={this.props.user}
+                    projects={this.props.projects}
+                    history={this.props.history}
+                    projectActions={this.props.projectActions}
+                    order={this.props.order}
+                    sortBy={this.props.sortBy}
+                    />
                 </div>
 
                 <div className="modal fade" id="projectCreateModal" ref={this.modal} tabIndex="-1" role="dialog" aria-labelledby="createProjectLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPress}>
@@ -125,6 +132,8 @@ ProjectSectionComponent.propTypes = {
     projects: PropTypes.array.isRequired,
     projectActions: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    order: PropTypes.string.isRequired,
+    sortBy: PropTypes.string.isRequired
 }
 
 

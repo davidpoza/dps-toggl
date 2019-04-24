@@ -18,6 +18,12 @@ const utils = {
         return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
     },
 
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena DD-MM-YYYY */
+    standarDateToSpanish(date){
+        let d = new Date(date);
+        return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
+    },
+
     /** Recibe un número y devuelve una cadena con la longitud indicada como segundo parámetro.
         Rellenando si es necesario con ceros por la izquierda */
     pad(str, max) {
