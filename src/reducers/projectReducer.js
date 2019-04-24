@@ -15,7 +15,8 @@ import {
     UPDATE_PROJECT_ATTEMPT,
     UPDATE_PROJECT_FAIL,
     UPDATE_PROJECT_SUCCESS,
-    CHANGE_PROJECT_SORT
+    CHANGE_PROJECT_SORT,
+    LOGOUT_USER
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -141,6 +142,10 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 sortBy: action.payload.field,
                 order: state.order=="asc"?"desc":"asc"
+            }
+        case LOGOUT_USER:
+            return {
+                ...initialState.projectReducer
             }
         default:
             return state;

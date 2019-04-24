@@ -13,7 +13,8 @@ import {
     CREATE_TAG_SUCCESS,
     CREATE_TAG_FAIL,
     UPDATE_TAG_VISUALLY,
-    DELETE_TAG_VISUALLY
+    DELETE_TAG_VISUALLY,
+    LOGOUT_USER
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -117,6 +118,10 @@ export default function tagReducer (state = initialState.tagReducer, action){
             return {
                 ...state,
                 error: {}
+            }
+        case LOGOUT_USER:
+            return {
+                ...initialState.tagReducer
             }
             
         default:

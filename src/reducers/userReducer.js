@@ -35,7 +35,7 @@ export default function userReducer (state = initialState.userReducer, action){
                 email: action.payload.email,
                 first_name: action.payload.first_name,
                 last_name: action.payload.last_name,
-                avatar: thumbnail_path+action.payload.avatar.filename,
+                avatar: action.payload.avatar?thumbnail_path+action.payload.avatar.filename:null,
                 loading: false,
                 error: {}
             }
@@ -47,13 +47,7 @@ export default function userReducer (state = initialState.userReducer, action){
             }
         case LOGOUT_USER:
             return {
-                ...state,
-                loading: false,
-                token: null,
-                email: null,
-                first_name: null,
-                last_name: null,
-                avatar: null
+                ...initialState.userReducer
             }
         case REFRESH_TOKEN_ATTEMPT:
             return {

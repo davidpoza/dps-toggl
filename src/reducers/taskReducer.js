@@ -20,7 +20,8 @@ import {
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_FAIL,
     FETCH_TASK_SUCCESS,
-    COLLAPSE_DATE
+    COLLAPSE_DATE,
+    LOGOUT_USER
 } from '../actions/types';
 
 import utils from '../utils';
@@ -208,6 +209,10 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 dates_entities: new_dates_entities
+            }
+        case LOGOUT_USER:
+            return {
+                ...initialState.taskReducer
             }
         default:
             return state;
