@@ -85,7 +85,8 @@ class MemberSelectorComponent extends Component{
     render(){
         return(<div className={styles.autocomplete}>
                  <input type="text" className={styles.input} placeholder={lang[config.lang].add_member_placeholder} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onChange={this.handleOnChangeInput} value={this.state.value} />
-                 <div className={styles.autocomplete_list}>
+                 {
+                    this.state.users.length >0 && <div className={styles.autocomplete_list}>
                     {this.state.users.map((e,index)=>{
                         return(
                             <div id={"user_"+index} key={"user_"+index} className={styles.autocomplete_item} onClick={this.handleOnSelect.bind(this,e.id)} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
@@ -94,7 +95,8 @@ class MemberSelectorComponent extends Component{
                             </div>
                         );
                     })}
-                 </div>
+                    </div>
+                }
             </div>
         )
     }
