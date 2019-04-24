@@ -63,7 +63,7 @@ export default function projectReducer (state = initialState.projectReducer, act
             return {
                 ...state,
                 loading: false,
-                projects: [...state.projects, action.payload],
+                projects: state.projects ? [...state.projects, action.payload]:[action.payload],
                 need_refreshing: true,
                 error: {}
             }
