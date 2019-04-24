@@ -28,7 +28,7 @@ class ProjectListComponent extends Component{
 
     render(){
         return(
-            <div>
+            <div className="d-flex flex-column">
                <div className={"container-flex " + styles.header}>
                 <div className={"row m-1 justify-content-between " } >
                     <div className={"col-6"} >

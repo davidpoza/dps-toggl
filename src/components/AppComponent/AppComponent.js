@@ -15,7 +15,7 @@ class AppComponent extends Component{
                     <div className={"col-auto  " + styles.menu}>
                         <MenuComponent />
                     </div>
-                    <div className={"col d-flex flex-column justify-content-center p-0 " + styles.content}>
+                    <div className={"col d-flex flex-column p-0 " + styles.content}>
                         <MainSectionContainer />
                     </div>
                 </div>

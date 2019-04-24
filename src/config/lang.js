@@ -39,8 +39,8 @@ const lang = {
         tag_name_placeholder: "Nombre de la etiqueta...",
         btn_title_delete_tag: "Borrar etiqueta",
         btn_title_update_tag: "Modificar etiqueta",
-        th_project_name: "Nombre de proyecto",
-        th_project_created: "Creado en",
+        th_project_name: "Nombre",
+        th_project_created: "Fecha",
         th_project_hours: "Horas",
         th_project_tasks: "Tareas"
     }

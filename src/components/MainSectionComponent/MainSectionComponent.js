@@ -22,7 +22,7 @@ class MainSectionComponent extends Component{
 
     render(){
         return(
-            <div className="h-100">
+            <div>
                 
                 <PrivateRoute exact path="/" component={TimerSectionContainer} component_props = {{}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{}}/>
