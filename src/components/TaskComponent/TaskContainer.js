@@ -42,7 +42,7 @@ function mapStateToProps (state, props) {
     task.tags = task.tags.map(t=>{
       return state.taskReducer.tasks_tags_entities[t]; //tasks_tags_entities está cargado porque lo pide un componente hermano
     },this);
-    task.project = state.projectReducer.projects_entities[task.project]; //projects_entities está cargado porque lo pide un componente hermano
+    task.project = state.projectReducer.projects_entities?state.projectReducer.projects_entities[task.project]:null; //projects_entities está cargado porque lo pide un componente hermano
 
     return {
       token: state.userReducer.token,

@@ -255,13 +255,13 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
  * y luego encadena una consulta de las tasks para cada una de ellas.
  * Devuelve un array de objetos {date:string, tasks:array de objetos task}
  */
-export function fetchTasks(token){
+export function fetchTasks(token, user_id){
     return (dispatch) => {
         dispatch({
             type: FETCH_DATES_ATTEMPT
         });
 
-        api.task.fetchAllDates(token)
+        api.task.fetchAllDates(token, user_id)
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
@@ -273,7 +273,7 @@ export function fetchTasks(token){
                         dispatch({
                             type: FETCH_TASKS_ATTEMPT
                         });
-                        return api.task.fetchTasksByDate(token, e.date)
+                        return api.task.fetchTasksByDate(token, e.date, user_id)
                     });
                 }                    
                 else if(data.error)

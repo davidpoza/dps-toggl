@@ -176,8 +176,8 @@ const API = {
                 (data) => data
             );
         },
-        fetchAllDates(token){
-            return fetch(api_url+"/items/tasks?fields=date&groups=date&sort=-date", {
+        fetchAllDates(token, user_id){
+            return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&groups=date&sort=-date", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -190,8 +190,8 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasksByDate(token, date){
-            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*&filter[date][eq]="+date, {
+        fetchTasksByDate(token, date, user_id){
+            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*,user.id&filter[user][eq]="+user_id+"&filter[date][eq]="+date, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -247,15 +247,18 @@ const API = {
                 (data)=>{
                     if(data.data){
                         let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
-                        return fetch(api_url+"/items/tasks/"+tasks_id, {
-                            method: "PATCH",
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json",
-                                "Authorization": "Bearer "+ token
-                            },
-                            body: JSON.stringify({project:null})
-                        })
+                        if (tasks_id != "")
+                            return fetch(api_url+"/items/tasks/"+tasks_id, {
+                                method: "PATCH",
+                                headers: {
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json",
+                                    "Authorization": "Bearer "+ token
+                                },
+                                body: JSON.stringify({project:null})
+                            })
+                        else //no hay ninguna task en este proyecto, devolvemos una promesa resuelta vacia para continuar el chain
+                            return new Promise((resolve, reject)=>(resolve({data:{}})));
                     }
                     else if(data.error){
                         throw data.error;
@@ -263,11 +266,6 @@ const API = {
                 }
                 
             )
-            .then(
-                (response)=>response.json()                
-            ).then(
-                (data) => data
-            );
         },
 
         /*

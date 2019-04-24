@@ -14,13 +14,13 @@ class TaskDatesComponent extends Component{
 
     //también hacemos un fetchTasks al montar el componente lista.
     componentDidMount(){
-            this.props.taskActions.fetchTasks(this.props.token);       
+            this.props.taskActions.fetchTasks(this.props.token, this.props.user_id);       
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.taskActions.fetchTasks(this.props.token); 
+            this.props.taskActions.fetchTasks(this.props.token, this.props.user_id); 
             
         }
         
@@ -61,6 +61,7 @@ class TaskDatesComponent extends Component{
 
 TaskDatesComponent.propTypes = {
     token: PropTypes.string.isRequired,
+    user_id: PropTypes.number.isRequired,
     dates: PropTypes.array.isRequired,
     need_refreshing: PropTypes.bool.isRequired,
     taskActions: PropTypes.object.isRequired,
