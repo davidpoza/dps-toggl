@@ -424,7 +424,7 @@ const API = {
     },
     tag: {
         fetchTagsByUser(token,user_id){
-            return fetch(api_url+"/items/tags?filter[user][eq]="+user_id, {
+            return fetch(api_url+"/items/tags?sort=name&filter[user][eq]="+user_id, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
