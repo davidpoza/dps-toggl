@@ -137,7 +137,7 @@ export function fetchDatesError(error){
 /* Action creators asíncronos - thunks */
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
-export function createTask(token, desc, date, start_hour, end_hour, project_id, tags){
+export function createTask(token, desc, date, start_hour, end_hour, project_id, tags, user_id){
     let tags_id;
     if(tags!=null )
         tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});
@@ -146,7 +146,7 @@ export function createTask(token, desc, date, start_hour, end_hour, project_id, 
             type: CREATE_TASK_ATTEMPT
         });
 
-        api.task.createTask(token, desc, date, start_hour, end_hour, project_id, tags_id).then(
+        api.task.createTask(token, desc, date, start_hour, end_hour, project_id, tags_id, user_id).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){

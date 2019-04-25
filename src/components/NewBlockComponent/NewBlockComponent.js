@@ -174,7 +174,7 @@ class NewBlockComponent extends Component{
     handleOnClickCreate(){
        if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
             if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
-                this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags);
+                this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags, this.props.user.id);
                 this.setState({
                     description: "",
                     project_selected_name: null,
@@ -236,9 +236,9 @@ class NewBlockComponent extends Component{
             })            
         }
         else if(this.state.chrono_status == "running"){  // paramos contador          
-            let end_seconds = utils.getHourInSecFromDate(new Date());
-            let start_seconds = end_seconds-this.state.time;
-            this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags);
+          let end_seconds = utils.getHourInSecFromDate(new Date());
+          let start_seconds = end_seconds-this.state.time;
+          this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags, this.props.user.id);
           this.setState({
                 chrono_status: "paused",
                 time: 0,
