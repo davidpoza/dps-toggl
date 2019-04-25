@@ -114,7 +114,15 @@ class ProjectDetailSectionComponent extends Component{
                             </div>
                         </div>
                     </div>
-                    
+                    <div className="m-5 p-3">
+                    <h2>{lang[config.lang].project_data_title}</h2>
+                    <ul className="p-0">
+                    <li className={styles.li}>{lang[config.lang].project_creation}: {utils.standarDateToHuman(this.props.project_detail.created)}</li>
+                    <li className={styles.li}>{lang[config.lang].project_owner}: {this.props.project_detail.owner.first_name} {this.props.project_detail.owner.last_name}</li>
+                    <li className={styles.li}>{lang[config.lang].project_hours}: {this.props.project_detail.hours}h.</li>
+                    </ul>
+                    </div>
+
                     <div className="m-5 p-3">
                         <h2>{lang[config.lang].members_title}</h2>
                         <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
@@ -134,6 +142,25 @@ class ProjectDetailSectionComponent extends Component{
                                 
                         )}
                         </ul>
+                    </div>
+
+                    <div className="m-5 p-3">
+                    <h2>{lang[config.lang].project_tasks_title}</h2>
+                    <ul className="p-0">
+                    {this.props.project_detail.tasks.map((t,index)=>
+                        {
+                            return(
+                            <li className={styles.li} key={"task"+index}>
+                            <div className="d-flex justify-content-between">
+                                <div>{t.desc} ({t.user_entity? t.user_entity.email : "propia"})</div>
+                                <div>{utils.standarDateToSpanish(t.date)} ({utils.diffHoursBetDates(t.start_hour,t.end_hour)})</div>
+                            </div>                                 
+                            </li>
+                            )
+                        }
+                                
+                    )}
+                    </ul>
                     </div>
                 </div>
 

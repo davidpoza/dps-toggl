@@ -42,7 +42,12 @@ const lang = {
         th_project_name: "Nombre",
         th_project_created: "Fecha",
         th_project_hours: "Horas",
-        th_project_tasks: "Tareas"
+        th_project_tasks: "Tareas",
+        project_data_title: "Datos de proyecto",
+        project_tasks_title: "Tareas de proyecto",
+        project_owner: "Propietario",
+        project_hours: "Horas",
+        project_creation: "Creación",
     }
 };
 

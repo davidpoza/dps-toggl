@@ -19,6 +19,13 @@
 .project_detail{
     overflow-y: scroll;
     background-color: white;
+    @media screen and (min-height: 460px) and (min-resolution: 200dpi) {
+        height: calc(100vh - 180px);
+    }  
+
+    @media screen and (min-height: 800px) {
+        height: calc(100vh - 100px);
+    }
 }
 
 .color{
@@ -49,5 +56,15 @@
         &:hover{
             cursor: pointer;
         }
+    }
+}
+
+.li{
+    border-bottom: 1px solid lightgrey;
+    padding: 20px;
+    list-style-type: none;
+
+    &:hover{
+        background-color: #fafafa;
     }
 }
