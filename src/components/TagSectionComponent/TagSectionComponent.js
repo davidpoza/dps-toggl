@@ -94,11 +94,11 @@ class TagSectionComponent extends Component{
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
-                <div className={"d-flex justify-content-between m-3"}>
+                <div className={"d-flex justify-content-between "+ styles.header}>
                     <h1>{lang[config.lang].tag_section_title}</h1>
-                    <button className="btn btn-primary" data-toggle="modal" data-target="#tagCreateModal" onClick={this.handleOpenModalCreateTag}>{lang[config.lang].btn_new_tag}</button>
+                    <button className="btn-lg btn-primary" data-toggle="modal" data-target="#tagCreateModal" onClick={this.handleOpenModalCreateTag}><i className="fas fa-plus-circle"></i></button>
                 </div>
-                <div className={"flex-grow-1 p-5 " + styles.taglist}>
+                <div className={"flex-grow-1 py-5 px-2 px-lg-5 " + styles.taglist}>
                     <TagListComponent ctx={this} tags={this.props.tags} onOpenDeleteModal={this.handleOpenDeleteModal} onOpenUpdateModal={this.handleOpenUpdateModal} />
                 </div>
 

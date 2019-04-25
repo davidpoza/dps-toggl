@@ -12,7 +12,7 @@ class MenuComponent extends Component{
     }
     render(){
         return(
-            <div className="d-flex flex-column justify-content-between h-100">
+            <div className={"d-flex flex-column justify-content-between " + styles.menu}>
                 <div>
                     <div className={styles.logo}>
                         <img src={logo} />

@@ -8,6 +8,15 @@
   margin-bottom: 10px;
   margin-left: 0;
   margin-right: 0;
+
+  @media screen and (max-resolution: 199dpi) { //desktop
+    min-height: 80px;
+    height: 8vh;
+  } 
+  @media screen and (min-resolution: 200dpi) { //mobile
+    height: 16vh;
+    min-height: 120px;
+  } 
 }
 
 

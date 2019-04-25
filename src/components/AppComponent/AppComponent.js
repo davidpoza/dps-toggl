@@ -7,6 +7,7 @@ import MainSectionContainer from '../MainSectionComponent/MainSectionContainer';
 class AppComponent extends Component{
     constructor(props){
         super(props);
+        document.documentElement.setAttribute("data-browser", navigator.userAgent);
     }
     render(){
         return(

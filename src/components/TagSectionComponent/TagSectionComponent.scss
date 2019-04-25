@@ -1,5 +1,15 @@
 @import "../../defaults.scss";
 
+.header{
+    padding: 20px;
+    height: 12vh;
+    min-height: 80px;
+    @media screen and (min-height: 460px) and (min-resolution: 200dpi) {
+        height: 13vh;
+        min-height: 100px;
+    } 
+}
+
 .taglist{
     text-align: center;
     overflow-y: hidden;

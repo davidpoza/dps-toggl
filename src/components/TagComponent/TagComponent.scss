@@ -11,9 +11,14 @@
     border: none;
     background-color: #f8f8f8;
     white-space: nowrap;
+    @media screen and (min-resolution: 200dpi) {
+      font-size: 0.8em;
+      margin: 8px;
+      padding: 0px;
+    }
 
     i{
-      color: grey;
+      color: rgb(170, 170, 170);
       font-size: 1em;
       vertical-align: middle;
       padding-bottom: 6px;
