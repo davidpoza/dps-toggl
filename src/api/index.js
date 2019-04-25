@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'; //para compatibilidad de fetch con navegadores antiguos
 import utils from '../utils';
 const api_url = "https://dpstogglapi1.davidinformatico.com/_";
 
