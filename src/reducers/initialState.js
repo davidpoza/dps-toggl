@@ -24,7 +24,6 @@ const initialState = {
     projectReducer: {
         projects_id: [],
         projects_entities: [],
-        project_detail: {},
         need_refreshing: false,
         loading: false,
         sortBy: 'id',

@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-
-const PrivateRoute = ({ component: Component, auth: auth, component_props, ...rest }) => (
+//destructuring con cambio de nombre de las props, porque los nombres de componentes tienen que comenzar por mayuscula
+//y los parametros se pasan en minusculas por convención
+const PrivateRoute = ({ component: Component, redux_auth: auth, component_props, ...rest }) => ( 
   <Route
     {...rest}
     render={props =>
@@ -19,7 +20,7 @@ const PrivateRoute = ({ component: Component, auth: auth, component_props, ...re
 
 function mapStateToProps (state) {
     return {
-      auth: state.userReducer.token != null
+      redux_auth: state.userReducer.token != null
     }
   }
   

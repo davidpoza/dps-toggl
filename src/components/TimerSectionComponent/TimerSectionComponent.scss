@@ -5,13 +5,13 @@
     overflow-y: scroll;
     //background-color: blue;
 
-    @media screen and (min-height: 460px) and (min-resolution: 200dpi) {
-        height: calc(100vh - 180px);
+    @media screen and (min-resolution: 200dpi) {
+        height: 84vh;
     }
     
    
 
     @media screen and (min-height: 800px) {
-        height: calc(100vh - 100px);
+        height: 92vh;
     }
 }

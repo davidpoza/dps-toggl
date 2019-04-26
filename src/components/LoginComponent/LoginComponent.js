@@ -22,7 +22,8 @@ class LoginComponent extends Component{
         };        
     }
 
-    handleOnClick(){
+    handleOnClick(e){
+        e.preventDefault();
         this.props.userActions.loginUser(this.state.email, this.state.password, this.props.history);
         
     }

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import utils from '../../utils';
 import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
@@ -40,6 +41,18 @@ function mapStateToProps (state, ownProps) {
     //denormalización
        let project_detail= state.projectReducer.projects_entities[ownProps.match.params.project_id];
        project_detail.member_relations = project_detail.members.map(e=>({member:state.userReducer.users_entities[e.directus_users_id], relation_id:e.id}));
+       if(project_detail.tasks){
+          project_detail.hours = project_detail.tasks.reduce((prev, curr)=>{
+            curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+            return(prev+curr);
+          },0);
+          project_detail.tasks = project_detail.tasks.map(t=>{
+            t.user_entity = state.userReducer.users_entities[t.user];
+            return t;
+          });
+       }
+      else
+        p.hours = 0;
     return {
       project_detail: project_detail,
       user: state.userReducer,

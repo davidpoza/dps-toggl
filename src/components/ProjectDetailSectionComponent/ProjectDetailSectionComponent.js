@@ -86,15 +86,15 @@ class ProjectDetailSectionComponent extends Component{
     render(){        
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
-                <div className={"d-flex justify-content-between m-3"}>
+                <div className={"d-flex justify-content-between "+styles.header}>
                     <h1>{lang[config.lang].project_detail_section_title}</h1>
                     <div>
-                        <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal">{lang[config.lang].btn_delete}</button> 
-                        <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject}>{lang[config.lang].btn_save_changes}</button>
+                        <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal"><i className="fas fa-trash"></i></button> 
+                        <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject}><i className="fas fa-save"></i></button>
                     </div>                    
                 </div>
                 <div className={"flex-grow-1 " + styles.project_detail}>
-                    <div className="d-flex justify-content-between m-5">
+                    <div className="d-flex justify-content-between my-2 my-lg-5 mx-2 mx-lg-5">
                         <input className={styles.input} type="text" ref={this.projectNameInput} placeholder={lang[config.lang].project_name_placeholder} value={this.state.project_name} onChange={this.handleOnChange} />
                         <div className="dropdown">
                             <button className={"btn dropdown-toggle "+styles.dropdown_btn} type="button" id="dropdownProjectColorButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -114,8 +114,16 @@ class ProjectDetailSectionComponent extends Component{
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="m-5 p-3">
+                    <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                    <h2>{lang[config.lang].project_data_title}</h2>
+                    <ul className="p-0">
+                    <li className={styles.li}>{lang[config.lang].project_creation}: {utils.standarDateToHuman(this.props.project_detail.created)}</li>
+                    <li className={styles.li}>{lang[config.lang].project_owner}: {this.props.project_detail.owner.first_name} {this.props.project_detail.owner.last_name}</li>
+                    <li className={styles.li}>{lang[config.lang].project_hours}: {this.props.project_detail.hours}h.</li>
+                    </ul>
+                    </div>
+
+                    <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
                         <h2>{lang[config.lang].members_title}</h2>
                         <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
@@ -134,6 +142,25 @@ class ProjectDetailSectionComponent extends Component{
                                 
                         )}
                         </ul>
+                    </div>
+
+                    <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                    <h2>{lang[config.lang].project_tasks_title}</h2>
+                    <ul className="p-0">
+                    {this.props.project_detail.tasks.map((t,index)=>
+                        {
+                            return(
+                            <li className={styles.li} key={"task"+index}>
+                            <div className="d-flex justify-content-between">
+                                <div>{t.desc} ({t.user_entity? t.user_entity.email : "propia"})</div>
+                                <div>{utils.standarDateToSpanish(t.date)} ({utils.diffHoursBetDates(t.start_hour,t.end_hour)})</div>
+                            </div>                                 
+                            </li>
+                            )
+                        }
+                                
+                    )}
+                    </ul>
                     </div>
                 </div>
 

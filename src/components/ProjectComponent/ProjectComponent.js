@@ -28,19 +28,30 @@ class ProjectComponent extends Component{
      
     render(){
         return(
-            <li className={"row m-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project.id)}>
+            <li className={"row m-0 m-lg-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project.id)}>
+                { utils.isMobile() ?  
+                <div className={"col-12 "} >
+                    <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
+                </div>:
                 <div className={"col-6 "} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}           
                 </div>
+                }
+                { !utils.isMobile() &&  
                 <div className={"col-2 "} >
                     {utils.standarDateToSpanish(this.props.project.created)}            
                 </div>
+                }
+                { !utils.isMobile() &&  
                 <div className={"col-2 "} >
                     {this.props.project.hours} h.           
-                </div>   
+                </div>
+                }
+                { !utils.isMobile() &&  
                 <div className={"col-2 "} >
                     {this.props.project.tasks && this.props.project.tasks.length} tareas           
                 </div>
+                }
             </li>
         )
     }

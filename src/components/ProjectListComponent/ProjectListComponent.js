@@ -29,22 +29,30 @@ class ProjectListComponent extends Component{
     render(){
         return(
             <div className="d-flex flex-column">
-               <div className={"container-flex " + styles.header}>
-                <div className={"row m-1 justify-content-between " } >
-                    <div className={"col-6"} >
-                        {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"name")}></i>          
+            <div className={styles.header}>
+                <div className={"container-flex "}>
+                    <div className={"row justify-content-between " } >
+                        <div className={"col-6"} >
+                            {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"name")}></i>          
+                        </div>
+                        { !utils.isMobile() &&
+                            <div className={"col-2"} >
+                                {lang[config.lang].th_project_created} <i className={this.props.sortBy!="date" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"date")}></i>          
+                            </div>
+                        }
+                        { !utils.isMobile() &&
+                            <div className={"col-2"} >
+                                {lang[config.lang].th_project_hours} <i className={this.props.sortBy!="hours" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"hours")}></i>          
+                            </div>
+                        }
+                        { !utils.isMobile() &&  
+                            <div className={"col-2"} >
+                                {lang[config.lang].th_project_tasks} <i className={this.props.sortBy!="tasks" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"tasks")}></i>          
+                            </div> 
+                        }                    
                     </div>
-                    <div className={"col-2"} >
-                        {lang[config.lang].th_project_created} <i className={this.props.sortBy!="date" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"date")}></i>          
-                    </div>  
-                    <div className={"col-2"} >
-                        {lang[config.lang].th_project_hours} <i className={this.props.sortBy!="hours" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"hours")}></i>          
-                    </div>  
-                    <div className={"col-2"} >
-                        {lang[config.lang].th_project_tasks} <i className={this.props.sortBy!="tasks" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"tasks")}></i>          
-                    </div>  
-                </div>
-               </div> 
+                </div> 
+               </div>
                <ul className={"p-0 container-flex "+styles.list }>
                {
                    this.props.projects.map((e,index) => {
