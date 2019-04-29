@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import DatePicker from "react-datepicker";
+import es from 'date-fns/locale/es';
+import "react-datepicker/dist/react-datepicker.css";
 
 import utils from '../../utils';
 import config from '../../config/config';
@@ -8,6 +11,21 @@ import styles from './TaskComponent.scss';
 import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
 import TagSelectorComponent from '../TagSelectorComponent/TagSelectorComponent';
 
+
+class ExampleCustomInput extends React.Component {
+    constructor(props){
+        super(props);
+    }
+    render () {
+      return (
+        <a
+          className="dropdown-item custom-input-datepicker"
+          onClick={this.props.onClick}>
+          {lang[config.lang].aditional_menu_opt_change_date}
+        </a>
+      )
+    }
+  }
 
 
 class TaskComponent extends Component{
@@ -23,6 +41,7 @@ class TaskComponent extends Component{
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
         this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
+        this.handleOnChangeDate = this.handleOnChangeDate.bind(this);
 
         /** 
          * tags: almacena un array de tags con las propiedades:
@@ -44,6 +63,14 @@ class TaskComponent extends Component{
             desc: this.props.task.desc
         });
         this.composeTagsListState();
+   }
+
+   componentDidMount(){
+    /*con esto queremos evitar que el dropdown se cierre antes de que salte el evento 
+    que abre el datepicker para el cambio de fecha de un task*/
+      $(document).on('click', '.custom-input-datepicker', function (e) {
+        e.stopPropagation();
+      });
    }
 
    componentDidUpdate(prevProps){
@@ -226,6 +253,12 @@ class TaskComponent extends Component{
         this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
         
     }
+
+    handleOnChangeDate(date){
+        
+        this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task.id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
+        console.log(date)
+    }
     
     render(){
         return(
@@ -257,7 +290,13 @@ class TaskComponent extends Component{
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className="dropdown-menu">
                         <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
-                        <a className="dropdown-item">{lang[config.lang].aditional_menu_opt_duply}</a>
+                        <DatePicker
+                        locale={es} 
+                        popperPlacement="left"
+                        dateFormat="dd/MM/yyyy"
+                        customInput={<ExampleCustomInput/>}
+                        selected={new Date(this.props.task.date)}
+                        onSelect={this.handleOnChangeDate} />
                     </div>
                 </div>
                     

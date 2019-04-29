@@ -250,6 +250,35 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
     }
 }
 
+/**
+ * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
+   Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
+ */
+export function updateAndFetchTasks(token, task_id, user_id, description, date, start_hour, end_hour, project_id, tags){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TASK_ATTEMPT
+        });
+       
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
+        .then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTaskSuccess(data.data));
+                    this.fetchTasks(token,user_id);                   
+                }                    
+                else if(data.error)
+                    dispatch(updateTaskError(data.error))
+            }                          
+        )
+        .catch(
+            (error) => {
+                dispatch(updateTaskError(error));
+        });
+    }
+}
+
 
 /** Consulta todas las fechas distintas usango gruopby
  * y luego encadena una consulta de las tasks para cada una de ellas.

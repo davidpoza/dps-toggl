@@ -25,6 +25,7 @@ class TaskContainer extends Component{
         return(
             <TaskComponent
             token={this.props.token}
+            user_id={this.props.user_id}
             task={this.props.task}
             projects={this.props.projects}
             tags={this.props.tags}
@@ -47,6 +48,7 @@ function mapStateToProps (state, props) {
     return {
       token: state.userReducer.token,
       task: task,
+      user_id: state.userReducer.id,
       tasks_entities:  state.taskReducer.tasks_entities,
       tags_entities: state.tagReducer.tags_entities,
       tags: state.tagReducer.tags_id.map(e=>{
