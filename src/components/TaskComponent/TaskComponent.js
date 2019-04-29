@@ -42,7 +42,11 @@ class TaskComponent extends Component{
         this.composeTagsListState = this.composeTagsListState.bind(this);
         this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
         this.handleOnChangeDate = this.handleOnChangeDate.bind(this);
-
+        this.handleOnChangeStartHour = this.handleOnChangeStartHour.bind(this);
+        this.handleOnChangeEndHour = this.handleOnChangeEndHour.bind(this);
+        this.handleOnBlurStartHour = this.handleOnBlurStartHour.bind(this);
+        this.handleOnBlurEndHour = this.handleOnBlurEndHour.bind(this);
+        
         /** 
          * tags: almacena un array de tags con las propiedades:
          * - id
@@ -54,7 +58,9 @@ class TaskComponent extends Component{
         this.state = {
             hide_btns: true,
             desc: "",
-            tags: [] 
+            tags: [],
+            start_hour: utils.removeSeconds(this.props.task.start_hour),
+            end_hour: utils.removeSeconds(this.props.task.end_hour),
         }
     }
 
@@ -199,7 +205,7 @@ class TaskComponent extends Component{
         if(date!=null) new_task_entities[task_id].date = date;
         if(start_hour!=null) new_task_entities[task_id].start_hour = start_hour;
         if(end_hour!=null) new_task_entities[task_id].end_hour = end_hour;
-        if(project!=-null) new_task_entities[task_id].project = project;
+        if(project!=-1) new_task_entities[task_id].project = project;
         if(tags!=null) new_task_entities[task_id].tags = tags;
 
         this.props.taskActions.updateTasksVisually(new_task_entities);
@@ -259,6 +265,51 @@ class TaskComponent extends Component{
         this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task.id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
         console.log(date)
     }
+
+    handleOnChangeStartHour(e){
+        let regex = /^\d{0,2}:\d{0,2}$/;
+        if(e.target.value.match(regex))
+            this.setState({
+                start_hour: e.target.value
+            });
+    }
+
+    handleOnChangeEndHour(e){
+        let regex = /^\d{0,2}:\d{0,2}$/;
+        if(e.target.value.match(regex))
+            this.setState({
+                end_hour: e.target.value
+            });
+    }
+
+    handleOnBlurStartHour(e){
+        if(utils.validateHour(e.target.value) && utils.hourIsGreater(this.state.end_hour, e.target.value)){
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, e.target.value+":00", null, -1, null)
+       
+            //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
+            this.handleUpdateTaskVisually(this.props.task.id, null, null, e.target.value+":00", null, -1, null);
+        }
+        else{ //si la hora es formato incorrecto volvemos el input al valor anterior
+            this.setState({
+                start_hour: utils.removeSeconds(this.props.task.start_hour)
+            });
+        }
+        
+    }
+
+    handleOnBlurEndHour(e){
+        if(utils.validateHour(e.target.value) && utils.hourIsGreater(e.target.value, this.state.start_hour)){
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, e.target.value+":00", -1, null)
+       
+            //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
+            this.handleUpdateTaskVisually(this.props.task.id, null, null, null, e.target.value+":00", -1, null);
+        }
+        else{ //si la hora es formato incorrecto volvemos el input al valor anterior
+            this.setState({
+                end_hour: utils.removeSeconds(this.props.task.end_hour)
+            });
+        }
+    }
     
     render(){
         return(
@@ -284,7 +335,7 @@ class TaskComponent extends Component{
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>               
-                {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>{utils.removeSeconds(this.props.task.start_hour)} - {utils.removeSeconds(this.props.task.end_hour)}</div>}                
+                {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}><input className={styles.input_hour} value={this.state.start_hour} onChange={this.handleOnChangeStartHour} onBlur={this.handleOnBlurStartHour} size="5" maxLength="5" /> - <input className={styles.input_hour} value={this.state.end_hour} onChange={this.handleOnChangeEndHour} onBlur={this.handleOnBlurEndHour} size="5" maxLength="5" /></div>}                
                 <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>{utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour)}</div>
                 <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} onClick={this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null)}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
