@@ -313,17 +313,19 @@ class TaskComponent extends Component{
         }
     }
 
-    handleOnToggle(toggle_id){
+    handleOnToggle(toggle_id, toggle_span_id){
         $( "#"+ toggle_id).toggle();
+        $( "#"+ toggle_span_id).toggleClass( styles.toggled );
     }
     
     render(){
         return(
             <li className={this.props.child? "row m-1 justify-content-between " + styles.child_task:"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
-                <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
-                    <div className={"btn-group dropleft w-100 "}>
-                        <div id="dropdownMenuButton" className="w-100" data-toggle={(utils.isMobile() || this.state.desc.length > 30) ?"dropdown":""} aria-haspopup="true" aria-expanded="false" >
-                            {this.props.toggle_id && <span onClick={this.handleOnToggle.bind(this, this.props.toggle_id)} className={styles.toggle}>{this.props.children.length+1}</span>}<input className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
+                <div className={"col-10 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
+                    <div className={"w-100 "}>
+                        <div className="w-100" >
+                            {this.props.toggle_id && <span id={this.props.toggle_id+"-span"} onClick={this.handleOnToggle.bind(this, this.props.toggle_id, this.props.toggle_id+"-span")} className={styles.toggle}>{this.props.children.length+1}</span>}
+                                <input style={{width:this.props.children?"80%":"100%"}}  className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
                         </div>
 
                         <div className={"dropdown-menu p-2 " + styles.desc_dropdown } aria-labelledby="dropdownMenuButton" >
@@ -331,7 +333,7 @@ class TaskComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 text-right "}>                
+                <div className={this.props.task.project!=null ? "col-3 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 text-right "}>                
                     {this.props.task.project!=null ?
                     <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                     :
@@ -341,8 +343,7 @@ class TaskComponent extends Component{
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>               
-                {!utils.isMobile() && 
-                    !this.props.children ? 
+                {!utils.isMobile() && !this.props.children ? 
                     <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
                         
                             <input 
@@ -360,7 +361,7 @@ class TaskComponent extends Component{
                                 size="5" maxLength="5"
                             />
                     
-                    </div>:
+                    </div> : !utils.isMobile() && this.props.children &&
                     <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
                             <span 
                                 className={styles.input_hour}
@@ -373,18 +374,19 @@ class TaskComponent extends Component{
                 }                
                 <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>
                 {!this.props.children ?
-                utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
-                utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
+                    utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
+                    utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
                 }
                 </div>
                 <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} onClick={this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null)}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
-                    <div className="dropdown-menu">
+                    <div className={"dropdown-menu "+styles.dropdown_menu}>
                         <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
                         <DatePicker
                         locale={es} 
                         popperPlacement="left"
                         dateFormat="dd/MM/yyyy"
+                        calendarClassName={styles.calendar}
                         customInput={<ExampleCustomInput/>}
                         selected={new Date(this.props.task.date)}
                         onSelect={this.handleOnChangeDate} />

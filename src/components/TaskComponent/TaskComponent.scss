@@ -12,10 +12,16 @@
 .child_task{
   @extend .task;
   background-color: #fafbfc;
-  padding-left: 50px;
+  border-left: 3px solid #51c93d;
+  @media screen and (max-width: $large-device) {
+    padding-left: 20px;
+  }
+  @media screen and (min-width: $large-device) {
+    padding-left: 50px;
+  }
   &:hover{
     background-color: #e6e6e6;
-}
+  }
 }
 
 .dates{
@@ -33,7 +39,6 @@
 }
 
 .input_desc{
-  width: 85%;
   border: none;
   background-color: transparent;
   &:focus {
@@ -50,14 +55,29 @@
   user-select: none;
 }
 
+.toggled{
+  @extend .toggle;
+  color: #51c93d !important;
+  background-color: #f0f4ed;
+  border: 1px solid #f0f4ed;
+}
+
 .input_hour{
   width: 5ch;
   border: none;
   text-align: center;
 }
 
+.dropdown_menu{
+  min-width: 0 !important;
+}
+
 .dropdown-item{
   cursor: pointer;
+}
+
+.calendar{
+  z-index: 99999;
 }
 
 .btn{

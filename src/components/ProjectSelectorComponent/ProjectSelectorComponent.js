@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
+import utils from '../../utils';
 import styles from './ProjectSelectorComponent.scss';
 
 
@@ -73,7 +74,7 @@ class ProjectSelectorComponent extends Component{
                     </button>
                     :
                     <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    <i className="fas fa-circle"></i> {this.props.project_selected_name}
+                    {!utils.isMobile() && <i className="fas fa-circle"></i>} {this.props.project_selected_name}
                     </button>    
                 
                 }
