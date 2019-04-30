@@ -19,21 +19,70 @@ class TaskContainer extends Component{
 
     }
 
-    render(){
-      
-      
-        return(
+    render(){      
+        if(this.props.children.length > 0){          
+          return(
+            <div>
             <TaskComponent
+            toggle_id={"toggle-"+this.props.task.id}
             token={this.props.token}
             user_id={this.props.user_id}
             task={this.props.task}
+            child={false}
+            children={this.props.children}
             projects={this.props.projects}
             tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
             taskActions={this.props.taskActions}           
             onResume={this.props.onResume}
             />
-        )
+            <div style={{display: "none"}} id={"toggle-"+this.props.task.id}>
+              <TaskComponent
+              token={this.props.token}
+              user_id={this.props.user_id}
+              task={this.props.task}
+              child={true}
+              projects={this.props.projects}
+              tags={this.props.tags}
+              tasks_entities={this.props.tasks_entities}
+              taskActions={this.props.taskActions}           
+              onResume={this.props.onResume}
+              />
+              {this.props.children.map((c,index)=>(
+                <TaskComponent
+                key={index}
+                token={this.props.token}
+                user_id={this.props.user_id}
+                task={c}
+                child={true}
+                projects={this.props.projects}
+                tags={this.props.tags}
+                tasks_entities={this.props.tasks_entities}
+                taskActions={this.props.taskActions}           
+                onResume={this.props.onResume}
+                />
+              ))}
+              
+            </div>
+            </div>
+          )        
+        }
+        else{        
+          return(
+            <TaskComponent
+            token={this.props.token}
+            user_id={this.props.user_id}
+            task={this.props.task}
+            child={false}
+            children={null}
+            projects={this.props.projects}
+            tags={this.props.tags}
+            tasks_entities={this.props.tasks_entities}
+            taskActions={this.props.taskActions}           
+            onResume={this.props.onResume}
+            />            
+          )
+        }
     }
 }
 
@@ -45,9 +94,19 @@ function mapStateToProps (state, props) {
     },this);
     task.project = state.projectReducer.projects_entities?state.projectReducer.projects_entities[task.project]:null; //projects_entities está cargado porque lo pide un componente hermano
 
+    let children = props.task_children.map(t=>{
+      t=Object.assign({}, state.taskReducer.tasks_entities[t.id]);
+      t.tags = t.tags.map(t=>{
+        return state.taskReducer.tasks_tags_entities[t]; //tasks_tags_entities está cargado porque lo pide un componente hermano
+      },this);
+      t.project = state.projectReducer.projects_entities?state.projectReducer.projects_entities[t.project]:null;
+      return t;
+    });
+
     return {
       token: state.userReducer.token,
       task: task,
+      children: children,
       user_id: state.userReducer.id,
       tasks_entities:  state.taskReducer.tasks_entities,
       tags_entities: state.tagReducer.tags_entities,

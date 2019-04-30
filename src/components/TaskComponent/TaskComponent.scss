@@ -9,6 +9,15 @@
     }
 }
 
+.child_task{
+  @extend .task;
+  background-color: #fafbfc;
+  padding-left: 50px;
+  &:hover{
+    background-color: #e6e6e6;
+}
+}
+
 .dates{
     padding-left: 20px;
     padding-right: 20px;
@@ -24,12 +33,21 @@
 }
 
 .input_desc{
-  width: 100%;
+  width: 85%;
   border: none;
   background-color: transparent;
   &:focus {
     outline: none;
   }
+}
+
+.toggle{
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  padding: 2px 8px 2px 8px;
+  margin-right: 6px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .input_hour{

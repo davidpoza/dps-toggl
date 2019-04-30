@@ -310,14 +310,18 @@ class TaskComponent extends Component{
             });
         }
     }
+
+    handleOnToggle(toggle_id){
+        $( "#"+ toggle_id).toggle();
+    }
     
     render(){
         return(
-            <li className={"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
+            <li className={this.props.child? "row m-1 justify-content-between " + styles.child_task:"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
                 <div className={"col-8 col-lg-4 col-xl-5 order-1 order-lg-1 p-0 " + styles.desc} >
                     <div className={"btn-group dropleft w-100 "}>
                         <div id="dropdownMenuButton" className="w-100" data-toggle={(utils.isMobile() || this.state.desc.length > 30) ?"dropdown":""} aria-haspopup="true" aria-expanded="false" >
-                            <input className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
+                            {this.props.toggle_id && <span onClick={this.handleOnToggle.bind(this, this.props.toggle_id)} className={styles.toggle}>{this.props.children.length+1}</span>}<input className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
                         </div>
 
                         <div className={"dropdown-menu p-2 " + styles.desc_dropdown } aria-labelledby="dropdownMenuButton" >
@@ -335,8 +339,42 @@ class TaskComponent extends Component{
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>               
-                {!utils.isMobile() && <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}><input className={styles.input_hour} value={this.state.start_hour} onChange={this.handleOnChangeStartHour} onBlur={this.handleOnBlurStartHour} size="5" maxLength="5" /> - <input className={styles.input_hour} value={this.state.end_hour} onChange={this.handleOnChangeEndHour} onBlur={this.handleOnBlurEndHour} size="5" maxLength="5" /></div>}                
-                <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>{utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour)}</div>
+                {!utils.isMobile() && 
+                    !this.props.children ? 
+                    <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
+                        
+                            <input 
+                                className={styles.input_hour}
+                                value={this.state.start_hour}
+                                onChange={this.handleOnChangeStartHour}
+                                onBlur={this.handleOnBlurStartHour}
+                                size="5" maxLength="5" 
+                            />&nbsp;-&nbsp;
+                            <input
+                                className={styles.input_hour}
+                                value={this.state.end_hour}
+                                onChange={this.handleOnChangeEndHour}
+                                onBlur={this.handleOnBlurEndHour}
+                                size="5" maxLength="5"
+                            />
+                    
+                    </div>:
+                    <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
+                            <span 
+                                className={styles.input_hour}
+                            >{utils.removeSeconds(this.props.children[this.props.children.length-1].start_hour)}</span>
+                            &nbsp;-&nbsp;
+                            <span
+                                className={styles.input_hour}
+                            >{utils.removeSeconds(utils.maxEndHourTasks([...this.props.children, this.props.task]))}</span>
+                    </div>
+                }                
+                <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>
+                {!this.props.children ?
+                utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
+                utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
+                }
+                </div>
                 <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} onClick={this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null)}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className="dropdown-menu">
@@ -350,8 +388,6 @@ class TaskComponent extends Component{
                         onSelect={this.handleOnChangeDate} />
                     </div>
                 </div>
-                    
-                
             </li>
         )
     }
