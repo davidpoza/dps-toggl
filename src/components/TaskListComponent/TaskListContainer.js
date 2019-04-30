@@ -32,9 +32,16 @@ class TaskListContainer extends Component{
 }
 
 function mapStateToProps (state, props) {
+    let tasks = state.taskReducer.dates_entities[props.date].tasks;
+    tasks = tasks.sort((a,b)=>{
+      let task_a = state.taskReducer.tasks_entities[a];
+      let task_b = state.taskReducer.tasks_entities[b];
+      return task_b.start_hour.localeCompare(task_a.start_hour);    
+    });
     return {
       token: state.userReducer.token,
-      tasks: state.taskReducer.dates_entities[props.date].tasks,
+      //aqui tengo que componer las tareas con igual desc
+      tasks: tasks,
     }
   }
   
