@@ -271,7 +271,7 @@ class TaskComponent extends Component{
         if(e.target.value.match(regex))
             this.setState({
                 start_hour: e.target.value
-            });
+            });        
     }
 
     handleOnChangeEndHour(e){
@@ -288,6 +288,7 @@ class TaskComponent extends Component{
        
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task.id, null, null, e.target.value+":00", null, -1, null);
+            this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
         }
         else{ //si la hora es formato incorrecto volvemos el input al valor anterior
             this.setState({
@@ -303,6 +304,7 @@ class TaskComponent extends Component{
        
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task.id, null, null, null, e.target.value+":00", -1, null);
+            this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
         }
         else{ //si la hora es formato incorrecto volvemos el input al valor anterior
             this.setState({

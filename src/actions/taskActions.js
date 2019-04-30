@@ -20,7 +20,8 @@ import {
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_SUCCESS,
     FETCH_TASK_FAIL,
-    COLLAPSE_DATE
+    COLLAPSE_DATE,
+    UPDATE_DATE_VISUALLY
 } from './types';
 
 import api from '../api';
@@ -131,6 +132,13 @@ export function fetchDatesError(error){
     return {
         type: FETCH_DATES_FAIL,
         payload: error
+    }
+}
+
+export function updateDateVisually(date, tasks_entities){
+    return {
+        type: UPDATE_DATE_VISUALLY,
+        payload: {date, tasks_entities}
     }
 }
 
