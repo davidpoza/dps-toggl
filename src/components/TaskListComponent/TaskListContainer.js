@@ -32,9 +32,33 @@ class TaskListContainer extends Component{
 }
 
 function mapStateToProps (state, props) {
+    let tasks = state.taskReducer.dates_entities[props.date].tasks;
+    tasks = tasks.sort((a,b)=>{
+      let task_a = state.taskReducer.tasks_entities[a];
+      let task_b = state.taskReducer.tasks_entities[b];
+      return task_b.start_hour.localeCompare(task_a.start_hour);    
+    });
+    //aqui tengo que componer las tareas con igual desc e igual proyecto
+    //los que tienen parent:-1 son padres, todos son padres inicialmente
+
+    tasks = tasks.map(t=>({id:t, parent:-1}));
+    
+    for(let i=0; i<tasks.length; i++){
+      for(let j=i+1; j<tasks.length; j++){
+        let task_a = state.taskReducer.tasks_entities[tasks[i].id];
+        let task_b = state.taskReducer.tasks_entities[tasks[j].id];
+        if(tasks[i].parent == -1 && task_a.desc == task_b.desc && 
+          task_a.project == task_b.project ){
+          tasks[j].parent = task_a.id;
+        }
+      }
+    }
+
+    let compound_tasks = tasks.map(t=>({id:t.id, parent:t.parent, children:tasks.filter(task=>task.parent == t.id)}));
+    
     return {
-      token: state.userReducer.token,
-      tasks: state.taskReducer.dates_entities[props.date].tasks,
+      token: state.userReducer.token,      
+      tasks: compound_tasks,
     }
   }
   

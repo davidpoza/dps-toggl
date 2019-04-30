@@ -12,6 +12,7 @@ const lang = {
         err_hour_format: "Formato de hora no válido. Debe ser del tipo HH:MM.",
         aditional_menu_opt_delete: "Borrar",
         aditional_menu_opt_duply: "Duplicar",
+        aditional_menu_opt_change_date: "Fecha",
         project_section_title: "Proyectos",
         project_detail_section_title: "Proyecto",
         profile: "Perfil",

@@ -95,6 +95,27 @@ const utils = {
         return(this.secondsToFormatedString(end_in_secs-start_in_secs));
     },
 
+    /** Dado un array de tasks devuelve la suma total de la diferencia de tiempo de todas las tareas
+     * entre ellas con el formato HH:MM:SS */
+    diffHoursBetDatesArray(tasks){
+        let res = 0;
+        let regexHour = /(\d{2}):\d{2}:\d{2}/;
+        let regexMin = /\d{2}:(\d{2}):\d{2}/;
+        let regexSec = /\d{2}:\d{2}:(\d{2})/;
+        tasks.forEach(task=>{
+            let hour1 = task.start_hour.match(regexHour)[1];
+            let hour2 = task.end_hour.match(regexHour)[1];
+            let min1 = task.start_hour.match(regexMin)[1];
+            let min2 = task.end_hour.match(regexMin)[1];
+            let sec1 = task.start_hour.match(regexSec)[1];
+            let sec2 = task.end_hour.match(regexSec)[1];
+            let start_in_secs = parseInt(sec1) + parseInt(min1*60) + parseInt(hour1*60*60);
+            let end_in_secs = parseInt(sec2) + parseInt(min2*60) + parseInt(hour2*60*60);
+            res += end_in_secs-start_in_secs;
+        });       
+        return(this.secondsToFormatedString(res));
+    },
+
     diffHoursBetHours(hour_start, hour_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
         let regexMin = /\d{2}:(\d{2}):\d{2}/;
@@ -106,7 +127,7 @@ const utils = {
         return(Math.round(total_min/60));
     },
 
-    /** Devuelve true si se ejecuta desde un navegador movil.
+       /** Devuelve true si se ejecuta desde un navegador movil.
      * from detectmobilebrowsers.com)
     */
     isMobile() {
@@ -144,6 +165,16 @@ const utils = {
              }
              return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]); 
         }
+    },
+
+    //devuelve la hora de finalización mayor de un array de tasks
+    maxEndHourTasks(tasks){
+        let max = tasks[0].end_hour;
+        for(let i=1;i<tasks.length;i++){
+            if(tasks[i].end_hour>max)
+                max = tasks[i].end_hour;
+        }
+        return max;
     }
 }
 

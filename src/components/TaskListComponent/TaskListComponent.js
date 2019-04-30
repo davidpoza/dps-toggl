@@ -14,7 +14,8 @@ class TaskListComponent extends Component{
                <ul className="p-0 container-flex">
                {
                    this.props.tasks.map((e,index) => {
-                        return (<TaskContainer key={index} task_id={e} onResume={this.props.onResume}/>)
+                        if(e.parent == -1)
+                        return (<TaskContainer key={index} task_id={e.id} task_children={e.children} onResume={this.props.onResume}/>)
                    })
                }
                </ul>

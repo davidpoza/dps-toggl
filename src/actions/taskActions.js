@@ -20,7 +20,8 @@ import {
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_SUCCESS,
     FETCH_TASK_FAIL,
-    COLLAPSE_DATE
+    COLLAPSE_DATE,
+    UPDATE_DATE_VISUALLY
 } from './types';
 
 import api from '../api';
@@ -134,6 +135,13 @@ export function fetchDatesError(error){
     }
 }
 
+export function updateDateVisually(date, tasks_entities){
+    return {
+        type: UPDATE_DATE_VISUALLY,
+        payload: {date, tasks_entities}
+    }
+}
+
 /* Action creators asíncronos - thunks */
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
@@ -244,6 +252,35 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
                     dispatch(fetchTaskError(data.error))
             }                          
         ).catch(
+            (error) => {
+                dispatch(updateTaskError(error));
+        });
+    }
+}
+
+/**
+ * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
+   Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
+ */
+export function updateAndFetchTasks(token, task_id, user_id, description, date, start_hour, end_hour, project_id, tags){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_TASK_ATTEMPT
+        });
+       
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
+        .then(
+            (data) => {
+                //directus devuelve los errores en una objeto error y los datos en uno data
+                if(data.data){
+                    dispatch(updateTaskSuccess(data.data));
+                    this.fetchTasks(token,user_id);                   
+                }                    
+                else if(data.error)
+                    dispatch(updateTaskError(data.error))
+            }                          
+        )
+        .catch(
             (error) => {
                 dispatch(updateTaskError(error));
         });

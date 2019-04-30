@@ -9,6 +9,21 @@
     }
 }
 
+.child_task{
+  @extend .task;
+  background-color: #fafbfc;
+  border-left: 3px solid #51c93d;
+  @media screen and (max-width: $large-device) {
+    padding-left: 20px;
+  }
+  @media screen and (min-width: $large-device) {
+    padding-left: 50px;
+  }
+  &:hover{
+    background-color: #e6e6e6;
+  }
+}
+
 .dates{
     padding-left: 20px;
     padding-right: 20px;
@@ -24,12 +39,45 @@
 }
 
 .input_desc{
-  width: 100%;
   border: none;
   background-color: transparent;
   &:focus {
     outline: none;
   }
+}
+
+.toggle{
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  padding: 2px 8px 2px 8px;
+  margin-right: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggled{
+  @extend .toggle;
+  color: #51c93d !important;
+  background-color: #f0f4ed;
+  border: 1px solid #f0f4ed;
+}
+
+.input_hour{
+  width: 5ch;
+  border: none;
+  text-align: center;
+}
+
+.dropdown_menu{
+  min-width: 0 !important;
+}
+
+.dropdown-item{
+  cursor: pointer;
+}
+
+.calendar{
+  z-index: 99999;
 }
 
 .btn{

@@ -21,7 +21,8 @@ import {
     FETCH_TASK_FAIL,
     FETCH_TASK_SUCCESS,
     COLLAPSE_DATE,
-    LOGOUT_USER
+    LOGOUT_USER,
+    UPDATE_DATE_VISUALLY
 } from '../actions/types';
 
 import utils from '../utils';
@@ -210,6 +211,17 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 ...state,
                 dates_entities: new_dates_entities
             }
+        case UPDATE_DATE_VISUALLY:
+            let new_dates_entities_updated_time = Object.assign({},state.dates_entities);
+            let tasks = new_dates_entities_updated_time[action.payload.date].tasks.map(t=>action.payload.tasks_entities[t]);
+            new_dates_entities_updated_time[action.payload.date].time = tasks.reduce((prev,curr)=>{
+                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                return(prev+curr);
+            },0);
+            return {
+                ...state,
+                dates_entities: new_dates_entities_updated_time
+            }       
         case LOGOUT_USER:
             return {
                 ...initialState.taskReducer
