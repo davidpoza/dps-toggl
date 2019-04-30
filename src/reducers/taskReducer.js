@@ -213,7 +213,8 @@ export default function taskReducer (state = initialState.taskReducer, action){
             }
         case UPDATE_DATE_VISUALLY:
             let new_dates_entities_updated_time = Object.assign({},state.dates_entities);
-            new_dates_entities_updated_time[action.payload.date].time = action.payload.tasks_entities.reduce((prev,curr)=>{
+            let tasks = new_dates_entities_updated_time[action.payload.date].tasks.map(t=>action.payload.tasks_entities[t]);
+            new_dates_entities_updated_time[action.payload.date].time = tasks.reduce((prev,curr)=>{
                 curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
                 return(prev+curr);
             },0);
