@@ -74,7 +74,7 @@ class ProjectSelectorComponent extends Component{
                     </button>
                     :
                     <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    {!utils.isMobile() && <i className="fas fa-circle"></i>} {this.props.project_selected_name}
+                    {!utils.isMobile() && <i className="fas fa-circle"></i>} {utils.isMobile() && this.props.project_selected_name.length>12? this.props.project_selected_name.substr(0,9)+"...":this.props.project_selected_name}
                     </button>    
                 
                 }
