@@ -14,6 +14,7 @@ const lang = {
         aditional_menu_opt_duply: "Duplicar",
         aditional_menu_opt_change_date: "Fecha",
         project_section_title: "Proyectos",
+        dashboard_section_title: "Tablero",
         project_detail_section_title: "Proyecto",
         profile: "Perfil",
         btn_new_project: "Nuevo proyecto",
@@ -49,6 +50,15 @@ const lang = {
         project_owner: "Propietario",
         project_hours: "Horas",
         project_creation: "Creación",
+        dashboard_date_dropdown_title: "Selecciona intervalo de tiempo",
+        date_today: "Hoy",
+        date_this_week: "Esta semana",
+        date_this_month: "Este mes",
+        date_this_year: "Este año",
+        date_yesterday: "Ayer",
+        date_last_week: "Semana pasada",
+        date_last_month: "Mes pasado",
+        date_last_year: "Año pasado", 
     }
 };
 
