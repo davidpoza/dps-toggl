@@ -35,6 +35,9 @@ const initialState = {
         tags_entities: [],
         loading: false,
         error: {}
+    },
+    dashboardReducer: {
+        data: []
     }
 };
 

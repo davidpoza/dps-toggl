@@ -491,6 +491,12 @@ const API = {
             );
         },
     },
+
+    dashboard: {
+        getData(token, start_date, end_date){
+            
+        }
+    }
 }
 
 export default API;

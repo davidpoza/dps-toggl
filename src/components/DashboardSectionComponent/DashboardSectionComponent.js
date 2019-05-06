@@ -26,13 +26,19 @@ class DashboardSectionComponent extends Component{
             end_date: null,
             preset: ""
         }
-        
-
-    }
+    }   
 
     componentDidMount(){
         // por defecto mostramos el intervalo de la última semana
         this.handleOnChangePresetDate("preset_week");
+        
+    }
+
+    componentDidUpdate(prevProps, newProps){
+       
+        
+
+        
     }
 
     handleOnClickDateBtn(){

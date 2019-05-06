@@ -41,7 +41,8 @@ function mapStateToProps (state) {
       user_loading: state.userReducer.loading,
       task_loading: state.taskReducer.loading,
       project_loading: state.projectReducer.loading,
-      tag_loading: state.tagReducer.loading
+      tag_loading: state.tagReducer.loading,
+      
     }
   }
   
