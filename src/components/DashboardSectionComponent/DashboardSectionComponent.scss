@@ -13,6 +13,18 @@
     }       
 }
 
+.content{
+    overflow-y: scroll;
+    background-color: white;
+    @media screen and (min-resolution: 200dpi) {
+        height: 89vh;
+    }  
+
+    @media screen and (min-height: 800px) {
+        height: 92vh;
+    }
+}
+
 .calendar{
     margin: 4px;
 }

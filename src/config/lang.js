@@ -58,7 +58,8 @@ const lang = {
         date_yesterday: "Ayer",
         date_last_week: "Semana pasada",
         date_last_month: "Mes pasado",
-        date_last_year: "Año pasado", 
+        date_last_year: "Año pasado",
+        date_custom: "Intervalo personalizado" 
     }
 };
 

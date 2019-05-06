@@ -22,23 +22,21 @@ class DashboardSectionComponent extends Component{
         this.handleOnChangeEndDate = this.handleOnChangeEndDate.bind(this);
         this.handleOnChangePresetDate = this.handleOnChangePresetDate.bind(this);
         this.state = {
-            start_date: new Date(Date.now()),
-            end_date: new Date(Date.now()),
+            start_date: null,
+            end_date: null,
+            preset: ""
         }
+        
 
     }
 
     componentDidMount(){
-        let week_ago = new Date(this.state.end_date);
-        week_ago.setDate(this.state.start_date.getDate() -7);
-
-        this.setState({
-            start_date: week_ago
-        });
+        // por defecto mostramos el intervalo de la última semana
+        this.handleOnChangePresetDate("preset_week");
     }
 
     handleOnClickDateBtn(){
-        this.dropdown.current.style.display = "block";
+        (!this.dropdown.current.style.display || this.dropdown.current.style.display=="none")?this.dropdown.current.style.display="block":this.dropdown.current.style.display="none";
     }
 
     closeDateDropdown(){
@@ -47,13 +45,15 @@ class DashboardSectionComponent extends Component{
 
     handleOnChangeStartDate(date){
         this.setState({
-            start_date: date
+            start_date: date,
+            preset: "preset_custom"
         })
     }
 
     handleOnChangeEndDate(date){
         this.setState({
-            end_date: date
+            end_date: date,
+            preset: "preset_custom"
         })
     }
 
@@ -62,11 +62,12 @@ class DashboardSectionComponent extends Component{
     -
      */
     handleOnChangePresetDate(preset){
+        if(typeof preset == "object")preset=preset.target.id;
         let start_date="";
         let end_date="";
         let today = new Date(Date.now());
         let day = today.getDay()==0?7:today.getDay();
-        switch(preset.target.id){
+        switch(preset){
             case "preset_today":
                 start_date = today;
                 end_date = today;
@@ -119,7 +120,8 @@ class DashboardSectionComponent extends Component{
         }
         this.setState({
             start_date: start_date,
-            end_date: end_date
+            end_date: end_date,
+            preset: preset
         });
     }
 
@@ -175,7 +177,12 @@ class DashboardSectionComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <BarChartComponent />
+                <div className={styles.content}>
+                    <div className="h-50 p-0 p-xl-5">
+                    <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date}/>
+                    </div>
+                </div>
+                
                 <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
             </div>
         )
