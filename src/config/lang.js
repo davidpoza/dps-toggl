@@ -50,7 +50,7 @@ const lang = {
         project_owner: "Propietario",
         project_hours: "Horas",
         project_creation: "Creación",
-        dashboard_date_dropdown_title: "Selecciona intervalo de tiempo",
+        dashboard_date_dropdown_title: "Intervalo de tiempo",
         date_today: "Hoy",
         date_this_week: "Esta semana",
         date_this_month: "Este mes",

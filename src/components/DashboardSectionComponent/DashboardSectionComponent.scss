@@ -17,7 +17,7 @@
     
     text-align: center;
     @media screen and (max-resolution: 199dpi) { //desktop
-        width: 500px;
+        width: 550px;
     }
 
     h2{
@@ -27,6 +27,21 @@
     
 }
 
-.container_dates{
+.date_preset_container{
     font-size: 0.8em;
+}
+
+.date_preset{
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    padding: 2px 8px 2px 8px;
+    margin: 3px;
+    cursor: pointer;
+    user-select: none;
+    color: #51c93d !important;
+    background-color: #f0f4ed;
+    border: 1px solid #f0f4ed;
+    &:hover{
+        font-weight: bold;
+    }
 }
