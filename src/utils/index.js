@@ -124,7 +124,7 @@ const utils = {
         let min1 = hour_start.match(regexMin)[1];
         let min2 = hour_end.match(regexMin)[1];
         let total_min = parseInt(hour2)*60 - parseInt(hour1)*60 + parseInt(min2) - parseInt(min1);
-        return(Math.round(total_min/60));
+        return(Math.floor(total_min/60 * 10) / 10); //truncamos a un decimal
     },
 
        /** Devuelve true si se ejecuta desde un navegador movil.

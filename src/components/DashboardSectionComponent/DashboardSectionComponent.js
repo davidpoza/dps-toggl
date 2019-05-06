@@ -34,11 +34,14 @@ class DashboardSectionComponent extends Component{
         
     }
 
-    componentDidUpdate(prevProps, newProps){
-       
+    componentDidUpdate(prevProps, prevState){
+        //hacemos la consulta cada vez que cambian las fechas
+       if(prevState.start_date != this.state.start_date || prevState.end_date != this.state.end_date){
+           this.props.dashboardActions.fetchBarData(this.props.token, this.props.user_id, utils.standarizeDate(this.state.start_date), utils.standarizeDate(this.state.end_date));
+       }
         
 
-        
+
     }
 
     handleOnClickDateBtn(){

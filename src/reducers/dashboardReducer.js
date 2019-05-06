@@ -1,28 +1,8 @@
 import {
-    CREATE_TASK_ATTEMPT,
-    CREATE_TASK_FAIL,
-    CREATE_TASK_SUCCESS,
-    FETCH_TASKS_ATTEMPT,
-    FETCH_TASKS_FAIL,
-    FETCH_TASKS_SUCCESS,
-    DELETE_TASK_ATTEMPT,
-    DELETE_TASK_FAIL,
-    DELETE_TASK_SUCCESS,
-    DELETE_TASK_VISUALLY,
-    UPDATE_TASK_ATTEMPT,
-    UPDATE_TASK_FAIL,
-    UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_VISUALLY,
-    CLEAN_TASK_MESSAGE,
-    FETCH_DATES_ATTEMPT,
-    FETCH_DATES_FAIL,
-    FETCH_DATES_SUCCESS,
-    FETCH_TASK_ATTEMPT,
-    FETCH_TASK_FAIL,
-    FETCH_TASK_SUCCESS,
-    COLLAPSE_DATE,
-    LOGOUT_USER,
-    UPDATE_DATE_VISUALLY
+    FETCH_DASHBOARD_BAR_DATA_ATTEMPT,
+    FETCH_DASHBOARD_BAR_DATA_FAIL,
+    FETCH_DASHBOARD_BAR_DATA_SUCCESS
+
 } from '../actions/types';
 
 import utils from '../utils';
@@ -35,7 +15,25 @@ import initialState from './initialState';
 
 export default function dashboardReducer (state = initialState.dashboardReducer, action){
     switch(action.type){
+        case FETCH_DASHBOARD_BAR_DATA_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {}
+            }
+        break;
 
+        case FETCH_DASHBOARD_BAR_DATA_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        break;
+
+        case FETCH_DASHBOARD_BAR_DATA_SUCCESS:
+
+        break;
         default:
             return state;
     }
