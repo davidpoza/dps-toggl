@@ -80,10 +80,14 @@ class DashboardSectionComponent extends Component{
                 end_date = new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate());
                 break;
             case "preset_month":
-
+                start_date = new Date(today.getFullYear(), today.getMonth(), 1);
+                let last_day = new Date();
+                last_day.setFullYear(today.getFullYear(), today.getMonth()+1, 0);
+                end_date = new Date(today.getFullYear(), today.getMonth(), last_day.getDate());
                 break;
             case "preset_year":
-
+                start_date = new Date(today.getFullYear(), 0, 1);
+                end_date = new Date(today.getFullYear(), 11, 31);
                 break;
             case "preset_yesterday":
                 let yesterday = new Date();
@@ -101,10 +105,14 @@ class DashboardSectionComponent extends Component{
                 end_date = new Date(past_sunday.getFullYear(), past_sunday.getMonth(), past_sunday.getDate());
                 break;
             case "preset_last_month":
-
+                start_date = new Date(today.getFullYear(), today.getMonth()-1, 1);
+                let last_month_last_day = new Date();
+                last_month_last_day.setFullYear(today.getFullYear(), today.getMonth(), 0);
+                end_date = new Date(today.getFullYear(), today.getMonth()-1, last_month_last_day.getDate());
                 break;
             case "preset_last_year":
-
+                start_date = new Date(today.getFullYear()-1, 0, 1);
+                end_date = new Date(today.getFullYear()-1, 11, 31);
                 break;
 
             
