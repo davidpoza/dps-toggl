@@ -80,8 +80,11 @@ class BarChartComponent extends Component{
 
     render(){
         if(this.props.data){
-            let keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
-            keys.push("Sin proyecto");
+            let keys = {};
+            if(this.props.data.entities.projects){
+                keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
+                keys.push("Sin proyecto");
+            }
             console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));
             console.log(keys);        
             return(
