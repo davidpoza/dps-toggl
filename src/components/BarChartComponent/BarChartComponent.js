@@ -15,41 +15,7 @@ class BarChartComponent extends Component{
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
         this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
-        this.formatData = this.formatData.bind(this);
-
-        this.data = [
-            {
-              "country": "AD",
-              "hot dog": 130,
-              "hot dogColor": "hsl(82, 70%, 50%)",
-              "burger": 176,
-              "burgerColor": "hsl(211, 70%, 50%)",
-              "sandwich": 137,
-              "sandwichColor": "hsl(325, 70%, 50%)",
-              "kebab": 194,
-              "kebabColor": "hsl(230, 70%, 50%)",
-              "fries": 151,
-              "friesColor": "hsl(330, 70%, 50%)",
-              "donut": 115,
-              "donutColor": "hsl(41, 70%, 50%)"
-            },
-            {
-              "country": "AE",
-              "hot dog": 72,
-              "hot dogColor": "hsl(162, 70%, 50%)",
-              "burger": 43,
-              "burgerColor": "hsl(316, 70%, 50%)",
-              "sandwich": 74,
-              "sandwichColor": "hsl(139, 70%, 50%)",
-              "kebab": 154,
-              "kebabColor": "hsl(123, 70%, 50%)",
-              "fries": 92,
-              "friesColor": "hsl(78, 70%, 50%)",
-              "donut": 141,
-              "donutColor": "hsl(113, 70%, 50%)"
-            },
-            
-          ];     
+        this.formatData = this.formatData.bind(this);   
     }
 
     presetToTitle(preset){
@@ -86,11 +52,26 @@ class BarChartComponent extends Component{
         let dates = utils.getDatesRange(start_date, end_date);
         return dates.map(d=>{
             if(data.entities.dates[d]){
-                d = data.entities.dates[d];
+                d = Object.assign({},data.entities.dates[d]);
+                d.date = utils.standarDateToHumanShort(d.date);
                 d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
+                d.tasks.forEach(t=>{
+                    if(t.project){
+                        let pname = data.entities.projects[t.project].name;
+                        d[pname] = 33; //aqui hay que realizar el recuento de horas que tiene cada proyecto
+                        d[pname+"Color"] = data.entities.projects[t.project].color;
+                    }
+                    else{
+                        d["Sin proyecto"] = 32;
+                        d["Sin proyectoColor"] = "#fafafa"
+                    }
+                })
+                delete d.tasks;
+                delete d.time;
+                delete d.collapsed;
             }
             else
-                d = {date:d, time:0};
+                d = {date:utils.standarDateToHumanShort(d)};
             return d;
         })
     }
@@ -99,13 +80,16 @@ class BarChartComponent extends Component{
 
     render(){
         if(this.props.data){
-            console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));        
+            let keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
+            keys.push("Sin proyecto");
+            console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));
+            console.log(keys);        
             return(
                 <div>
                     <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
                     <ResponsiveBar
-                        data={this.formatData(this.props.start_date, this.props.end_date, this.props.data.entities.dates)}
-                        keys={Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name)}
+                        data={this.formatData(this.props.start_date, this.props.end_date, this.props.data)}
+                        keys={keys}
                         indexBy="date"
                         margin={{
                             "top": 50,
@@ -114,9 +98,7 @@ class BarChartComponent extends Component{
                             "left": 60
                         }}
                         padding={0.3}
-                        colors={{
-                            "scheme": "nivo"
-                        }}                
+                        colors={(d)=>(d.data[d.id+"Color"])}       
                         borderColor={{
                             "from": "color",
                             "modifiers": [

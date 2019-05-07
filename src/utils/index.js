@@ -18,6 +18,13 @@ const utils = {
         return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
     },
 
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo V 13 */
+    standarDateToHumanShort(date){
+        let d = new Date(date);
+        let weekDays = ["D", "L", "M", "X", "J", "V", "S"];
+        return `${weekDays[d.getDay()]} ${d.getDate()}`;
+    },
+
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena DD-MM-YYYY */
     standarDateToSpanish(date){
         let d = new Date(date);
@@ -186,7 +193,7 @@ const utils = {
     /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato */
     getDatesRange(startDate, stopDate) {
         let dateArray = [];
-        let currentDate = startDate;
+        let currentDate = new Date(startDate); //hacemos una copia para no modificar el parametro
         while (currentDate <= stopDate) {
             dateArray.push(this.standarizeDate(new Date (currentDate)));
             currentDate = this.addDaysToDate(currentDate, 1);
