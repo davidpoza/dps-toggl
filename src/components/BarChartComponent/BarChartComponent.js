@@ -20,29 +20,29 @@ class BarChartComponent extends Component{
 
     presetToTitle(preset){
         switch(preset){
-            case "preset_custom": return lang[config.lang].date_custom; break;
-            case "preset_today": return lang[config.lang].date_today; break;
-            case "preset_week": return lang[config.lang].date_this_week; break;
-            case "preset_month": return lang[config.lang].date_this_month; break;
-            case "preset_year": return lang[config.lang].date_this_year; break;
-            case "preset_yerterday": return lang[config.lang].date_yesterday; break;
-            case "preset_last_week": return lang[config.lang].date_last_week; break;
-            case "preset_last_month": return lang[config.lang].date_last_month; break;
-            case "preset_last_year": return lang[config.lang].date_last_year; break;
+            case "preset_custom": return lang[config.lang].date_custom;
+            case "preset_today": return lang[config.lang].date_today;
+            case "preset_week": return lang[config.lang].date_this_week;
+            case "preset_month": return lang[config.lang].date_this_month;
+            case "preset_year": return lang[config.lang].date_this_year;
+            case "preset_yerterday": return lang[config.lang].date_yesterday;
+            case "preset_last_week": return lang[config.lang].date_last_week;
+            case "preset_last_month": return lang[config.lang].date_last_month;
+            case "preset_last_year": return lang[config.lang].date_last_year;
         }
     }
 
     getTimeUnitsForPreset(preset){
         switch(preset){
-            case "preset_custom": return lang[config.lang].time_unit_days; break;
-            case "preset_today": return lang[config.lang].time_unit_days; break;
-            case "preset_week": return lang[config.lang].time_unit_days; break;
-            case "preset_month": return lang[config.lang].time_unit_days; break;
-            case "preset_year": return lang[config.lang].time_unit_months; break;
-            case "preset_yerterday": return lang[config.lang].time_unit_days; break;
-            case "preset_last_week": return lang[config.lang].time_unit_days; break;
-            case "preset_last_month": return lang[config.lang].time_unit_days; break;
-            case "preset_last_year": return lang[config.lang].time_unit_months; break;
+            case "preset_custom": return lang[config.lang].time_unit_days;
+            case "preset_today": return lang[config.lang].time_unit_days;
+            case "preset_week": return lang[config.lang].time_unit_days;
+            case "preset_month": return lang[config.lang].time_unit_days;
+            case "preset_year": return lang[config.lang].time_unit_months;
+            case "preset_yerterday": return lang[config.lang].time_unit_days;
+            case "preset_last_week": return lang[config.lang].time_unit_days;
+            case "preset_last_month": return lang[config.lang].time_unit_days;
+            case "preset_last_year": return lang[config.lang].time_unit_months;
         }
     }
 
@@ -58,11 +58,24 @@ class BarChartComponent extends Component{
                 d.tasks.forEach(t=>{
                     if(t.project){
                         let pname = data.entities.projects[t.project].name;
-                        d[pname] = 33; //aqui hay que realizar el recuento de horas que tiene cada proyecto
+                        d[pname] = d.tasks.reduce((prev, curr)=>{
+                            if(curr.project == t.project)
+                                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                            else
+                                curr = 0;
+                            return(prev+curr);
+                          },0);
                         d[pname+"Color"] = data.entities.projects[t.project].color;
+                        
                     }
                     else{
-                        d["Sin proyecto"] = 32;
+                        d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
+                            if(curr.project == null)
+                                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                            else
+                                curr = 0;
+                            return(prev+curr);
+                          },0);
                         d["Sin proyectoColor"] = "#fafafa"
                     }
                 })
@@ -118,7 +131,7 @@ class BarChartComponent extends Component{
                             "tickPadding": 5,
                             "tickRotation": 0,
                             "legend": this.getTimeUnitsForPreset(this.props.preset),
-                            "legendPosition": "middle",
+                            "legendPosition": "end",
                             "legendOffset": 32
                         }}
                         axisLeft={{
