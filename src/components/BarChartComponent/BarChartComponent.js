@@ -14,6 +14,10 @@ class BarChartComponent extends Component{
     constructor(props){
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
+        this.getKeys = this.getKeys.bind(this);
+        this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
+        this.formatData = this.formatData.bind(this);
+
         this.data = [
             {
               "country": "AD",
@@ -45,81 +49,7 @@ class BarChartComponent extends Component{
               "donut": 141,
               "donutColor": "hsl(113, 70%, 50%)"
             },
-            {
-              "country": "AF",
-              "hot dog": 159,
-              "hot dogColor": "hsl(323, 70%, 50%)",
-              "burger": 90,
-              "burgerColor": "hsl(32, 70%, 50%)",
-              "sandwich": 10,
-              "sandwichColor": "hsl(304, 70%, 50%)",
-              "kebab": 180,
-              "kebabColor": "hsl(351, 70%, 50%)",
-              "fries": 72,
-              "friesColor": "hsl(208, 70%, 50%)",
-              "donut": 114,
-              "donutColor": "hsl(147, 70%, 50%)"
-            },
-            {
-              "country": "AG",
-              "hot dog": 97,
-              "hot dogColor": "hsl(285, 70%, 50%)",
-              "burger": 177,
-              "burgerColor": "hsl(158, 70%, 50%)",
-              "sandwich": 136,
-              "sandwichColor": "hsl(102, 70%, 50%)",
-              "kebab": 139,
-              "kebabColor": "hsl(185, 70%, 50%)",
-              "fries": 8,
-              "friesColor": "hsl(196, 70%, 50%)",
-              "donut": 64,
-              "donutColor": "hsl(61, 70%, 50%)"
-            },
-            {
-              "country": "AI",
-              "hot dog": 194,
-              "hot dogColor": "hsl(181, 70%, 50%)",
-              "burger": 6,
-              "burgerColor": "hsl(229, 70%, 50%)",
-              "sandwich": 2,
-              "sandwichColor": "hsl(52, 70%, 50%)",
-              "kebab": 158,
-              "kebabColor": "hsl(314, 70%, 50%)",
-              "fries": 173,
-              "friesColor": "hsl(36, 70%, 50%)",
-              "donut": 77,
-              "donutColor": "hsl(265, 70%, 50%)"
-            },
-            {
-              "country": "AL",
-              "hot dog": 48,
-              "hot dogColor": "hsl(69, 70%, 50%)",
-              "burger": 28,
-              "burgerColor": "hsl(100, 70%, 50%)",
-              "sandwich": 101,
-              "sandwichColor": "hsl(31, 70%, 50%)",
-              "kebab": 103,
-              "kebabColor": "hsl(272, 70%, 50%)",
-              "fries": 44,
-              "friesColor": "hsl(201, 70%, 50%)",
-              "donut": 52,
-              "donutColor": "hsl(356, 70%, 50%)"
-            },
-            {
-              "country": "AM",
-              "hot dog": 173,
-              "hot dogColor": "hsl(103, 70%, 50%)",
-              "burger": 104,
-              "burgerColor": "hsl(307, 70%, 50%)",
-              "sandwich": 25,
-              "sandwichColor": "hsl(107, 70%, 50%)",
-              "kebab": 115,
-              "kebabColor": "hsl(21, 70%, 50%)",
-              "fries": 67,
-              "friesColor": "hsl(228, 70%, 50%)",
-              "donut": 129,
-              "donutColor": "hsl(207, 70%, 50%)"
-            }
+            
           ];     
     }
 
@@ -137,21 +67,56 @@ class BarChartComponent extends Component{
         }
     }
 
+    getTimeUnitsForPreset(preset){
+        switch(preset){
+            case "preset_custom": return lang[config.lang].time_unit_days; break;
+            case "preset_today": return lang[config.lang].time_unit_days; break;
+            case "preset_week": return lang[config.lang].time_unit_days; break;
+            case "preset_month": return lang[config.lang].time_unit_days; break;
+            case "preset_year": return lang[config.lang].time_unit_months; break;
+            case "preset_yerterday": return lang[config.lang].time_unit_days; break;
+            case "preset_last_week": return lang[config.lang].time_unit_days; break;
+            case "preset_last_month": return lang[config.lang].time_unit_days; break;
+            case "preset_last_year": return lang[config.lang].time_unit_months; break;
+        }
+    }
+
+    //devuelve el array de keys (únicas) para el chart, en este caso una key por projecto
+    getKeys(data){
+        let projects = [];
+        let aux_map = new Map(); //lo vamos a usar para crear un array distinct de los proyectos resultantes
+        data.forEach(d=>{
+            d.tasks.forEach(t=>{                
+                if(t.project){
+                    if(!aux_map.has(t.project.id)){
+                        aux_map.set(t.project.id, true);
+                        projects.push({id:t.project.id, name: t.project.name, color:t.project.color});
+                    }                    
+                }                    
+            })
+        })
+        return projects;
+    }
+
+    formatData(start_date, end_date, data){
+        return data.map(d=>{
+            d.date = utils.standarDateToHuman(d.date);
+            return d;
+        })
+    }
+
     render(){
+        if(this.props.data){
+            console.log(this.getKeys(this.props.data));
+            console.log(this.formatData(this.props.data, this.props.start_date, this.props.end_date));
+        }
         return(
             <div>
                 <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
                 <ResponsiveBar
                     data={this.data}
-                    keys={[
-                        "hot dog",
-                        "burger",
-                        "sandwich",
-                        "kebab",
-                        "fries",
-                        "donut"
-                    ]}
-                    indexBy="country"
+                    keys={this.getKeys(this.props.data).map(k=>k.name)}
+                    indexBy="timeUnit"
                     margin={{
                         "top": 50,
                         "right": 130,
@@ -177,7 +142,7 @@ class BarChartComponent extends Component{
                         "tickSize": 5,
                         "tickPadding": 5,
                         "tickRotation": 0,
-                        "legend": "country",
+                        "legend": this.getTimeUnitsForPreset(this.props.preset),
                         "legendPosition": "middle",
                         "legendOffset": 32
                     }}

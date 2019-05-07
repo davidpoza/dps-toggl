@@ -35,7 +35,9 @@ class DashboardContainer extends Component{
             tagActions={this.props.tagActions}
             dashboardActions={this.props.dashboardActions}
             token={this.props.token}
-            user_id={this.props.user_id}/>
+            user_id={this.props.user_id}
+            data={this.props.data}
+            />
         )
     }
 }
@@ -48,7 +50,7 @@ function mapStateToProps (state) {
       tag_loading: state.tagReducer.loading,
       token: state.userReducer.token,
       user_id: state.userReducer.id,
-
+      data: state.dashboardReducer.data
     }
   }
   

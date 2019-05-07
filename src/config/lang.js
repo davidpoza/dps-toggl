@@ -59,7 +59,9 @@ const lang = {
         date_last_week: "Semana pasada",
         date_last_month: "Mes pasado",
         date_last_year: "Año pasado",
-        date_custom: "Intervalo personalizado" 
+        date_custom: "Intervalo personalizado",
+        time_units_days: "Dias",
+        time_units_months: "Meses"
     }
 };
 

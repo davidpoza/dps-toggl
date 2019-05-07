@@ -30,7 +30,7 @@ class DashboardSectionComponent extends Component{
 
     componentDidMount(){
         // por defecto mostramos el intervalo de la última semana
-        this.handleOnChangePresetDate("preset_week");
+        this.handleOnChangePresetDate("preset_last_week");
         
     }
 
@@ -188,7 +188,9 @@ class DashboardSectionComponent extends Component{
                 </div>
                 <div className={styles.content}>
                     <div className="h-50 p-0 p-xl-5">
-                    <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date}/>
+                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
+                        <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
+                    }                    
                     </div>
                 </div>
                 

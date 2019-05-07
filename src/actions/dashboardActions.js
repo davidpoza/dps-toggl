@@ -37,11 +37,9 @@ export function fetchBarData(token, user_id, start_date, end_date){
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(fetchBarDataSuccess(data.data));                   
+                if(data){
+                    dispatch(fetchBarDataSuccess(data));                   
                 }                    
-                else if(data.error)
-                    dispatch(fetchBarDataError(data.error))
             }                          
         )
         .catch(

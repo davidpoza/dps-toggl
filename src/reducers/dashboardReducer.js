@@ -32,7 +32,12 @@ export default function dashboardReducer (state = initialState.dashboardReducer,
         break;
 
         case FETCH_DASHBOARD_BAR_DATA_SUCCESS:
-
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: {}
+            }
         break;
         default:
             return state;
