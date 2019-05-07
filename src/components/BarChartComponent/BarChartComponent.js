@@ -14,7 +14,6 @@ class BarChartComponent extends Component{
     constructor(props){
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
-        this.getKeys = this.getKeys.bind(this);
         this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
         this.formatData = this.formatData.bind(this);
 
@@ -81,121 +80,113 @@ class BarChartComponent extends Component{
         }
     }
 
-    //devuelve el array de keys (únicas) para el chart, en este caso una key por projecto
-    getKeys(data){
-        let projects = [];
-        let aux_map = new Map(); //lo vamos a usar para crear un array distinct de los proyectos resultantes
-        data.forEach(d=>{
-            d.tasks.forEach(t=>{                
-                if(t.project){
-                    if(!aux_map.has(t.project.id)){
-                        aux_map.set(t.project.id, true);
-                        projects.push({id:t.project.id, name: t.project.name, color:t.project.color});
-                    }                    
-                }                    
-            })
-        })
-        return projects;
-    }
+
 
     formatData(start_date, end_date, data){
-        return data.map(d=>{
-            d.date = utils.standarDateToHuman(d.date);
+        let dates = utils.getDatesRange(start_date, end_date);
+        return dates.map(d=>{
+            if(data.entities.dates[d]){
+                d = data.entities.dates[d];
+                d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
+            }
+            else
+                d = {date:d, time:0};
             return d;
         })
     }
 
+
+
     render(){
         if(this.props.data){
-            console.log(this.getKeys(this.props.data));
-            console.log(this.formatData(this.props.data, this.props.start_date, this.props.end_date));
-        }
-        return(
-            <div>
-                <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
-                <ResponsiveBar
-                    data={this.data}
-                    keys={this.getKeys(this.props.data).map(k=>k.name)}
-                    indexBy="timeUnit"
-                    margin={{
-                        "top": 50,
-                        "right": 130,
-                        "bottom": 50,
-                        "left": 60
-                    }}
-                    padding={0.3}
-                    colors={{
-                        "scheme": "nivo"
-                    }}                
-                    borderColor={{
-                        "from": "color",
-                        "modifiers": [
-                            [
-                                "darker",
-                                1.6
+            console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));        
+            return(
+                <div>
+                    <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
+                    <ResponsiveBar
+                        data={this.formatData(this.props.start_date, this.props.end_date, this.props.data.entities.dates)}
+                        keys={Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name)}
+                        indexBy="date"
+                        margin={{
+                            "top": 50,
+                            "right": 130,
+                            "bottom": 50,
+                            "left": 60
+                        }}
+                        padding={0.3}
+                        colors={{
+                            "scheme": "nivo"
+                        }}                
+                        borderColor={{
+                            "from": "color",
+                            "modifiers": [
+                                [
+                                    "darker",
+                                    1.6
+                                ]
                             ]
-                        ]
-                    }}
-                    axisTop={null}
-                    axisRight={null}
-                    axisBottom={{
-                        "tickSize": 5,
-                        "tickPadding": 5,
-                        "tickRotation": 0,
-                        "legend": this.getTimeUnitsForPreset(this.props.preset),
-                        "legendPosition": "middle",
-                        "legendOffset": 32
-                    }}
-                    axisLeft={{
-                        "tickSize": 5,
-                        "tickPadding": 5,
-                        "tickRotation": 0,
-                        "legend": "horas",
-                        "legendPosition": "middle",
-                        "legendOffset": -40
-                    }}
-                    labelSkipWidth={12}
-                    labelSkipHeight={12}
-                    labelTextColor={{
-                        "from": "color",
-                        "modifiers": [
-                            [
-                                "darker",
-                                1.6
+                        }}
+                        axisTop={null}
+                        axisRight={null}
+                        axisBottom={{
+                            "tickSize": 5,
+                            "tickPadding": 5,
+                            "tickRotation": 0,
+                            "legend": this.getTimeUnitsForPreset(this.props.preset),
+                            "legendPosition": "middle",
+                            "legendOffset": 32
+                        }}
+                        axisLeft={{
+                            "tickSize": 5,
+                            "tickPadding": 5,
+                            "tickRotation": 0,
+                            "legend": "horas",
+                            "legendPosition": "middle",
+                            "legendOffset": -40
+                        }}
+                        labelSkipWidth={12}
+                        labelSkipHeight={12}
+                        labelTextColor={{
+                            "from": "color",
+                            "modifiers": [
+                                [
+                                    "darker",
+                                    1.6
+                                ]
                             ]
-                        ]
-                    }}
-                    legends={[
-                        {
-                            "dataFrom": "keys",
-                            "anchor": "bottom-right",
-                            "direction": "column",
-                            "justify": false,
-                            "translateX": 120,
-                            "translateY": 0,
-                            "itemsSpacing": 2,
-                            "itemWidth": 100,
-                            "itemHeight": 20,
-                            "itemDirection": "left-to-right",
-                            "itemOpacity": 0.85,
-                            "symbolSize": 20,
-                            "effects": [
-                                {
-                                    "on": "hover",
-                                    "style": {
-                                        "itemOpacity": 1
+                        }}
+                        legends={[
+                            {
+                                "dataFrom": "keys",
+                                "anchor": "bottom-right",
+                                "direction": "column",
+                                "justify": false,
+                                "translateX": 120,
+                                "translateY": 0,
+                                "itemsSpacing": 2,
+                                "itemWidth": 100,
+                                "itemHeight": 20,
+                                "itemDirection": "left-to-right",
+                                "itemOpacity": 0.85,
+                                "symbolSize": 20,
+                                "effects": [
+                                    {
+                                        "on": "hover",
+                                        "style": {
+                                            "itemOpacity": 1
+                                        }
                                     }
-                                }
-                            ]
-                        }
-                    ]}
-                    animate={true}
-                    motionStiffness={90}
-                    motionDamping={15}
-                />
+                                ]
+                            }
+                        ]}
+                        animate={true}
+                        motionStiffness={90}
+                        motionDamping={15}
+                    />
 
-            </div>
-        )
+                </div>
+            )
+        }
     }
 }
 

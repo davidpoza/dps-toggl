@@ -22,8 +22,8 @@ class DashboardSectionComponent extends Component{
         this.handleOnChangeEndDate = this.handleOnChangeEndDate.bind(this);
         this.handleOnChangePresetDate = this.handleOnChangePresetDate.bind(this);
         this.state = {
-            start_date: null,
-            end_date: null,
+            start_date: null, //objeto Date
+            end_date: null, //objeto Date
             preset: ""
         }
     }   

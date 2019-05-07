@@ -175,6 +175,23 @@ const utils = {
                 max = tasks[i].end_hour;
         }
         return max;
+    },
+
+    /**recibe date en formato Date y devuleve la fecha pasados x días*/
+    addDaysToDate(date, days) {        
+        date.setDate(date.getDate() + days);
+        return date;
+    },
+    
+    /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato */
+    getDatesRange(startDate, stopDate) {
+        let dateArray = [];
+        let currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(this.standarizeDate(new Date (currentDate)));
+            currentDate = this.addDaysToDate(currentDate, 1);
+        }
+        return dateArray;
     }
 }
 

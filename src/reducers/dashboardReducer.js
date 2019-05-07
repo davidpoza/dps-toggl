@@ -32,6 +32,7 @@ export default function dashboardReducer (state = initialState.dashboardReducer,
         break;
 
         case FETCH_DASHBOARD_BAR_DATA_SUCCESS:
+            action.payload = normalize(action.payload, schemas.dateSchema);
             return {
                 ...state,
                 loading: false,
