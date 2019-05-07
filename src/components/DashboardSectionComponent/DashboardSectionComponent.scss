@@ -16,12 +16,22 @@
 .content{
     overflow-y: scroll;
     background-color: white;
-    @media screen and (min-resolution: 200dpi) {
+    @media screen and (max-resolution: 199dpi) {//desktop
         height: 89vh;
     }  
 
-    @media screen and (min-height: 800px) {
+    @media screen and (min-resolution: 200dpi) {//mobile
         height: 92vh;
+    }
+}
+
+.chart_height{
+    @media screen and (max-resolution: 199dpi) {//desktop
+        height: 50%;
+    }  
+
+    @media screen and (min-resolution: 200dpi) {//mobile
+        height: 75%;
     }
 }
 

@@ -51,7 +51,7 @@ class BarChartComponent extends Component{
     formatData(start_date, end_date, data){
         let dates = utils.getDatesRange(start_date, end_date);
         return dates.map(d=>{
-            if(data.entities.dates[d]){
+            if(data.entities.dates && data.entities.dates[d]){
                 d = Object.assign({},data.entities.dates[d]);
                 d.date = utils.standarDateToHumanShort(d.date);
                 d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
@@ -95,12 +95,12 @@ class BarChartComponent extends Component{
                         keys={keys}
                         indexBy="date"
                         margin={{
-                            "top": 50,
-                            "right": 130,
-                            "bottom": 50,
-                            "left": 60
+                            "top": 20,
+                            "right": 35,
+                            "bottom": utils.isMobile()?200:100,
+                            "left": 55
                         }}
-                        padding={0.3}
+                        padding={utils.isMobile()?0.0:0.3}
                         colors={(d)=>(d.data[d.id+"Color"])}       
                         borderColor={{
                             "from": "color",
@@ -143,11 +143,11 @@ class BarChartComponent extends Component{
                         legends={[
                             {
                                 "dataFrom": "keys",
-                                "anchor": "bottom-right",
-                                "direction": "column",
+                                "anchor": utils.isMobile()?"bottom-left":"bottom",
+                                "direction": utils.isMobile()?"column":"row",
                                 "justify": false,
-                                "translateX": 120,
-                                "translateY": 0,
+                                "translateX": 0,
+                                "translateY": utils.isMobile()?150:65,
                                 "itemsSpacing": 2,
                                 "itemWidth": 100,
                                 "itemHeight": 20,

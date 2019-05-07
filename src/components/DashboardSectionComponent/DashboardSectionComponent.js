@@ -187,7 +187,7 @@ class DashboardSectionComponent extends Component{
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <div className="h-50 p-0 p-xl-5">
+                    <div className={"p-0 p-xl-5 "+styles.chart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
                     }                    

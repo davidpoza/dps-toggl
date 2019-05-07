@@ -22,7 +22,7 @@ const utils = {
     standarDateToHumanShort(date){
         let d = new Date(date);
         let weekDays = ["D", "L", "M", "X", "J", "V", "S"];
-        return `${weekDays[d.getDay()]} ${d.getDate()}`;
+        return `${weekDays[d.getDay()]}${d.getDate()}`;
     },
 
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena DD-MM-YYYY */
