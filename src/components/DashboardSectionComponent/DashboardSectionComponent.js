@@ -10,6 +10,7 @@ import styles from './DashboardSectionComponent.scss';
 
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 import BarChartComponent from '../BarChartComponent/BarChartComponent';
+import PieChartComponent from '../PieChartComponent/PieChartComponent';
 
 
 class DashboardSectionComponent extends Component{
@@ -190,7 +191,10 @@ class DashboardSectionComponent extends Component{
                     <div className={"p-0 p-xl-5 "+styles.chart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
-                    }                    
+                    }
+                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
+                        <PieChartComponent data={this.props.data}/>
+                    }                     
                     </div>
                 </div>
                 

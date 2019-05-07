@@ -98,8 +98,8 @@ class BarChartComponent extends Component{
                 keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
                 keys.push("Sin proyecto");
             }
-            console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));
-            console.log(keys);        
+            //console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));
+            //console.log(keys);        
             return(
                 <div>
                     <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
