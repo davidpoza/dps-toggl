@@ -48,44 +48,102 @@ class BarChartComponent extends Component{
 
 
 
-    formatData(start_date, end_date, data){
-        let dates = utils.getDatesRange(start_date, end_date);
+    formatData(preset, start_date, end_date, data){
+        let dates = [];
+        let date_entities_as_months = {};
+        let timeUnit = "days";
+        if(preset == "preset_year" || preset == "preset_last_year" || utils.diffHoursBetDatesAsDays(start_date, end_date)>31)
+            timeUnit = "months";
+        dates = utils.getDatesRange(start_date, end_date, timeUnit);
+        if(timeUnit == "months"){
+            if(data.entities.dates)           
+            Object.keys(data.entities.dates).forEach(d=>{
+                if(!date_entities_as_months[utils.standarDateToHumanMonth(d)])
+                    date_entities_as_months[utils.standarDateToHumanMonth(d)] = Object.assign({}, data.entities.dates[d]);
+                else //acumulamos las tareas de un mismo mes
+                    date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks = 
+                        [...date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks, 
+                         ...data.entities.dates[d].tasks
+                        ];
+            });
+        }
         return dates.map(d=>{
-            if(data.entities.dates && data.entities.dates[d]){
-                d = Object.assign({},data.entities.dates[d]);
-                d.date = utils.standarDateToHumanShort(d.date);
-                d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
-                d.tasks.forEach(t=>{
-                    if(t.project){
-                        let pname = data.entities.projects[t.project].name;
-                        d[pname] = d.tasks.reduce((prev, curr)=>{
-                            if(curr.project == t.project)
-                                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                            else
-                                curr = 0;
-                            return(prev+curr);
-                          },0);
-                        d[pname+"Color"] = data.entities.projects[t.project].color;
-                        
-                    }
-                    else{
-                        d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
-                            if(curr.project == null)
-                                curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                            else
-                                curr = 0;
-                            return(prev+curr);
-                          },0);
-                        d["Sin proyectoColor"] = "#fafafa"
-                    }
-                })
-                delete d.tasks;
-                delete d.time;
-                delete d.collapsed;
+            if(timeUnit=="days"){
+                if(data.entities.dates && data.entities.dates[d]){
+                    d = Object.assign({},data.entities.dates[d]);
+                    d.date=utils.standarDateToHumanShort(d.date);
+                    d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
+                    d.tasks.forEach(t=>{
+                        if(t.project){
+                            let pname = data.entities.projects[t.project].name;
+                            d[pname] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == t.project)
+                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                else
+                                    curr = 0;
+                                return(prev+curr);
+                              },0);
+                            d[pname+"Color"] = data.entities.projects[t.project].color;
+                            
+                        }
+                        else{
+                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == null)
+                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                else
+                                    curr = 0;
+                                return(prev+curr);
+                              },0);
+                            d["Sin proyectoColor"] = "#fafafa"
+                        }
+                    })
+                    delete d.tasks;
+                    delete d.time;
+                    delete d.collapsed;
+                }
+                else
+                    d = {date:utils.standarDateToHumanShort(d)};
+                return d;
             }
-            else
-                d = {date:utils.standarDateToHumanShort(d)};
-            return d;
+            else if(timeUnit=="months"){
+                if(date_entities_as_months && date_entities_as_months[d]){
+                    d = Object.assign({},date_entities_as_months[d]);
+                    d.date=utils.standarDateToHumanMonth(d.date);
+                    d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
+                    d.tasks.forEach(t=>{
+                        if(t.project){
+                            let pname = data.entities.projects[t.project].name;
+                            d[pname] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == t.project)
+                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10);
+                              },0);
+                            d[pname+"Color"] = data.entities.projects[t.project].color;
+                            
+                        }
+                        else{
+                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == null)
+                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10);
+                              },0);
+                            d["Sin proyectoColor"] = "#fafafa"
+                        }
+                    })
+                    delete d.tasks;
+                    delete d.time;
+                    delete d.collapsed;
+                }
+                else
+                    d = {date:d};
+                return d;
+            }         
+            
+            
         })
     }
 
@@ -104,7 +162,7 @@ class BarChartComponent extends Component{
                 <div>
                     <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
                     <ResponsiveBar
-                        data={this.formatData(this.props.start_date, this.props.end_date, this.props.data)}
+                        data={this.formatData(this.props.preset, this.props.start_date, this.props.end_date, this.props.data)}
                         keys={keys}
                         indexBy="date"
                         margin={{
@@ -129,10 +187,10 @@ class BarChartComponent extends Component{
                         axisBottom={{
                             "tickSize": 5,
                             "tickPadding": 5,
-                            "tickRotation": 0,
+                            "tickRotation": utils.isMobile()?90:0,
                             "legend": this.getTimeUnitsForPreset(this.props.preset),
                             "legendPosition": "end",
-                            "legendOffset": 32
+                            "legendOffset": utils.isMobile()?50:32
                         }}
                         axisLeft={{
                             "tickSize": 5,

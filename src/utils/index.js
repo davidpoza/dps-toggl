@@ -21,10 +21,11 @@ const utils = {
         return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
     },
 
-    dataToMonth(date){
+    /**Convierte una cadena estandar YYYY-MM-DD a tipo MZ19 o AB18 por ejemplo */
+    standarDateToHumanMonth(date){
         let d = new Date(date);
-        let months = lang[config.lang].months_array;
-        return `${months[d.getMonth()]}`;
+        let months = lang[config.lang].months_short_array;
+        return `${months[d.getMonth()]}${d.getFullYear().toString().substr(-2)}`;
     },
 
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo V 13 */
@@ -132,6 +133,13 @@ const utils = {
         return(this.secondsToFormatedString(res));
     },
 
+    /** Dadas dos fechas como Date, devuelve la diferencia entre ellas en número de días */
+    diffHoursBetDatesAsDays(date_start, date_end){
+        let sec_start = date_start.getTime();
+        let sec_end = date_end.getTime();
+        return((sec_end-sec_start)/(24*60*60*1000));
+    },
+
     diffHoursBetHours(hour_start, hour_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
         let regexMin = /\d{2}:(\d{2}):\d{2}/;
@@ -193,10 +201,21 @@ const utils = {
         return max;
     },
 
+    /**devuelve los días que tiene un mes*/
+    daysInMonth (month, year) {
+        return new Date(year, month, 0).getDate();
+    },
+
     /**recibe date en formato Date y devuleve la fecha pasados x días*/
     addDaysToDate(date, days) {        
         date.setDate(date.getDate() + days);
         return date;
+    },
+
+    /**recibe date en formato Date y devuleve la fecha pasados x meses*/
+    getNextMonth(date) {
+        let next_month = new Date(date.getFullYear(), date.getMonth()+1, 1);
+        return next_month;
     },
     
     /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato
@@ -215,8 +234,8 @@ const utils = {
         }
         else if(type=="months"){
             while (currentDate <= stopDate) {
-                dateArray.push(this.standarizeDate(new Date (currentDate)));
-                currentDate = this.addDaysToDate(currentDate, 1);
+                dateArray.push(this.standarDateToHumanMonth(currentDate));
+                currentDate = this.getNextMonth(currentDate);
             }
         }
                 
