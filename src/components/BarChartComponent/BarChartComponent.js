@@ -168,7 +168,7 @@ class BarChartComponent extends Component{
                         margin={{
                             "top": 20,
                             "right": 35,
-                            "bottom": utils.isMobile()?200:100,
+                            "bottom": utils.isMobile()?30*keys.length:100,
                             "left": 55
                         }}
                         padding={utils.isMobile()?0.0:0.3}

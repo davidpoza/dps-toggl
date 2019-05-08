@@ -114,16 +114,17 @@ class BarChartComponent extends Component{
 
 
     render(){
+        let data = this.formatData(this.props.data);
         //console.log(this.formatData(this.props.data));
-        if(this.formatData(this.props.data).length > 0){
+        if(data.length > 0){
             return(
                 <div>
                     <ResponsivePie
-                        data={this.formatData(this.props.data)}
+                        data={data}
                         margin={{
-                            "top": 40,
+                            "top": utils.isMobile()?0:40,
                             "right": 80,
-                            "bottom": 80,
+                            "bottom": utils.isMobile()?30*data.length:80,
                             "left": 80
                         }}
                         innerRadius={0.5}
@@ -140,6 +141,7 @@ class BarChartComponent extends Component{
                                 ]
                             ]
                         }}
+                        enableRadialLabels={utils.isMobile()?false:true}
                         radialLabel={(p)=>(p.label)}
                         radialLabelsSkipAngle={10}
                         radialLabelsTextXOffset={6}
@@ -160,10 +162,10 @@ class BarChartComponent extends Component{
                         legends={[
                             {
                                 "anchor": "bottom",
-                                "direction": "row",
-                                "translateY": 56,
+                                "direction": utils.isMobile()?"column":"row",
+                                "translateY": utils.isMobile()?30:40,
                                 "itemWidth": 120,
-                                "itemHeight": 18,
+                                "itemHeight": 20,
                                 "itemTextColor": "#999",
                                 "symbolSize": 18,
                                 "symbolShape": "circle",

@@ -192,6 +192,8 @@ class DashboardSectionComponent extends Component{
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
                     }
+                    </div>
+                    <div className={"p-0 p-xl-5 "+styles.chart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <PieChartComponent data={this.props.data}/>
                     }                     
