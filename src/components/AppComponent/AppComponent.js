@@ -8,6 +8,8 @@ class AppComponent extends Component{
     constructor(props){
         super(props);
         document.documentElement.setAttribute("data-browser", navigator.userAgent);
+        let vh = window.innerHeight * 0.01; //fix para calcular cuando vale 1vh en chrome mobile
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
     render(){
         return(

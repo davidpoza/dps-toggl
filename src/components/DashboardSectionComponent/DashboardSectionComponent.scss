@@ -1,0 +1,105 @@
+@import "../../defaults.scss";
+
+.header{
+    padding: 20px;
+
+    @media screen and (max-resolution: 199dpi) { //desktop
+        min-height: 100px;
+        height: 8vh;
+    }
+    @media screen and (min-resolution: 200dpi) { //mobile
+        height: calc(var(--vh, 1vh) * 13); //fix para chrome mobile
+        min-height: 90px;
+    }
+     
+}
+
+.content{
+    overflow-y: scroll;
+    background-color: white;
+    @media screen and (max-resolution: 199dpi) {//desktop
+        height: 92vh;
+    }  
+
+    @media screen and (min-resolution: 200dpi) {//mobile
+        height: calc(var(--vh, 1vh) * 87); //fix para chrome mobile
+    }
+
+}
+
+.barchart_height{
+    @media screen and (max-resolution: 199dpi) {//desktop
+        height: 50%;
+    }  
+
+    @media screen and (min-resolution: 200dpi) {//mobile
+        height: 400px;
+    }
+}
+
+.piechart_height{
+    @media screen and (max-resolution: 199dpi) {//desktop
+        height: 50%;
+    }  
+
+    @media screen and (min-resolution: 200dpi) {//mobile
+        height: 200px;
+    }
+}
+
+.calendar{
+    margin: 4px;
+}
+
+.dropdown{
+    
+    text-align: center;
+    @media screen and (max-resolution: 199dpi) { //desktop
+        width: 550px;
+    }
+
+    h2{
+        font-size: 1.5em;
+    }
+
+    
+}
+
+.date_preset_container{
+    font-size: 0.8em;
+}
+
+.project_list{
+    list-style-type: none;
+    margin-top: 40px;
+    @media screen and (min-resolution: 200dpi) {//mobile
+        margin-top: 60px;
+        margin-bottom: 0px;
+    }
+    li{
+        @media screen and (max-resolution: 199dpi) {//desktop
+            display: inline;
+            margin: 10px;
+        }  
+    
+        @media screen and (min-resolution: 200dpi) {//mobile
+            display: block;
+            
+        }
+    }
+}
+
+.date_preset{
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    padding: 2px 8px 2px 8px;
+    margin: 3px;
+    cursor: pointer;
+    user-select: none;
+    color: #51c93d !important;
+    background-color: #f0f4ed;
+    border: 1px solid #f0f4ed;
+    &:hover{
+        font-weight: bold;
+    }
+}

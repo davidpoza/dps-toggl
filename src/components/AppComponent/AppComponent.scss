@@ -20,11 +20,12 @@ body{
     background-color: $quaternary-color;
     
     @media screen and (min-width: $large-device) {
-        min-width: 200px;
+        min-width: 160px;
     }
     @media screen and (max-width: $large-device) {
         padding-left: 4px;
         padding-right: 4px;
+        min-width: 58px;
     }
 }
 

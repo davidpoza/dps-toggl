@@ -16,7 +16,7 @@
 
     .text{
         color: white;
-        font-size: 2em;
+        font-size: 1.5em;
         @media screen and (max-width: $large-device) {
             display: none
         }
@@ -32,18 +32,23 @@
 
 .ul{
     list-style: none;
-    padding-left: 3px !important;
-    @media screen and (min-width: $large-device) {
-        //padding-left: 15px !important;
+    
+    @media screen and (max-width: $large-device) { //compacto
+        padding-left: 7px !important;
+        margin-left: 2em !important;
+    }
+    @media screen and (min-width: $large-device) { //desplegado
+        padding-left: 0px !important;
+        margin-left: 2em !important;
     }
 }
 
 .li{
-    font-size: 1.2em;
+    font-size: 0.9em;
     height: 1.2em;
     margin-bottom: 25px;
     i {
-        font-size: 1.3em;
+        font-size: 1.1em;
         margin-right: 10px;
         @media screen and (max-width: $large-device) {
             margin: auto;

@@ -1,5 +1,6 @@
 const initialState = {
     userReducer: {
+        id: null,
         first_name: null,
         last_name: null,
         avatar_url: null,
@@ -35,6 +36,9 @@ const initialState = {
         tags_entities: [],
         loading: false,
         error: {}
+    },
+    dashboardReducer: {
+        data: []
     }
 };
 

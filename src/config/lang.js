@@ -14,6 +14,7 @@ const lang = {
         aditional_menu_opt_duply: "Duplicar",
         aditional_menu_opt_change_date: "Fecha",
         project_section_title: "Proyectos",
+        dashboard_section_title: "Tablero",
         project_detail_section_title: "Proyecto",
         profile: "Perfil",
         btn_new_project: "Nuevo proyecto",
@@ -49,6 +50,22 @@ const lang = {
         project_owner: "Propietario",
         project_hours: "Horas",
         project_creation: "Creación",
+        dashboard_date_dropdown_title: "Intervalo de tiempo",
+        date_today: "Hoy",
+        date_this_week: "Semana",
+        date_this_month: "Mes",
+        date_this_year: "Año",
+        date_yesterday: "Ayer",
+        date_last_week: "Semana pasada",
+        date_last_month: "Mes pasado",
+        date_last_year: "Año pasado",
+        date_custom: "Intervalo personalizado",
+        time_unit_days: "Dias",
+        time_unit_months: "Meses",
+        months_array: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        months_short_array: ["EN", "FB", "MZ", "AB", "MY", "JN", "JL", "AG", "SE", "OC", "NV", "DC"],
+        weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+        weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"]
     }
 };
 

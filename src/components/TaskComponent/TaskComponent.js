@@ -80,8 +80,16 @@ class TaskComponent extends Component{
    }
 
    componentDidUpdate(prevProps){
-        if(prevProps.task.tags != this.props.task.tags)
+        //if(prevProps.task.tags != this.props.task.tags)
+            
+        if(prevProps.task != this.props.task){
             this.composeTagsListState();
+            this.setState({
+                desc: this.props.task.desc,
+                start_hour: utils.removeSeconds(this.props.task.start_hour),
+                end_hour: utils.removeSeconds(this.props.task.end_hour),
+            });
+        }
    }
 
    /** Esta función hace un join de dos arrays:
@@ -333,16 +341,30 @@ class TaskComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className={this.props.task.project!=null ? "col-3 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-1 p-0 order-4 order-lg-2 text-right "}>                
-                    {this.props.task.project!=null ?
-                    <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
+                {!this.props.children?
+                    <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 text-right "}>                
+                        {this.props.task.project!=null ?
+                        <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
+                        :
+                        <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
+                        }
+                    </div>
                     :
-                    <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
-                    }
-                </div>
+                    <div className={"col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 "}>
+
+                    </div>
+            
+                }
+                
+                {!this.props.children?
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
-                </div>               
+                </div>
+                :
+                <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
+                
+                </div> 
+                }              
                 {!utils.isMobile() && !this.props.children ? 
                     <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
                         
@@ -378,8 +400,9 @@ class TaskComponent extends Component{
                     utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
                 }
                 </div>
-                <div className="col-auto order-2 order-lg-6 p-0"><button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} onClick={this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null)}><i className="fas fa-play"></i></button>
-                <button style={this.state.hide_btns?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                <div className="col-auto order-2 order-lg-6 p-0">
+                <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project.id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
+                <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle={!this.props.children?"dropdown":""} aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className={"dropdown-menu "+styles.dropdown_menu}>
                         <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
                         <DatePicker
@@ -398,6 +421,8 @@ class TaskComponent extends Component{
 }
 
 TaskComponent.propTypes = {
+    child: PropTypes.bool,
+    children: PropTypes.array,
     token: PropTypes.string.isRequired,
     task: PropTypes.object.isRequired,
     projects: PropTypes.array.isRequired,

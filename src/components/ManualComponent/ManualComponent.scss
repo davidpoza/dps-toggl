@@ -16,6 +16,7 @@
     width: 3.2em;
     @media screen and (max-width: $large-device) {
         padding: 0px;
-        width: 2.5em;
+        min-width: 5ch;
+        width: 5ch;
     }
 }

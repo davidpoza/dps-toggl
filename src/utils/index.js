@@ -1,3 +1,6 @@
+import config from '../config/config.js';
+import lang from '../config/lang.js';
+
 const utils = {
     /** Convierte un cantidad de segundos transcurridos a una cadena hh:mm:ss */
     secondsToFormatedString(time){
@@ -13,9 +16,23 @@ const utils = {
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
     standarDateToHuman(date){
         let d = new Date(date);
-        let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        let weekDays = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        let months = lang[config.lang].months_array;
+        let weekDays = lang[config.lang].weekdays_array;
         return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
+    },
+
+    /**Convierte una cadena estandar YYYY-MM-DD a tipo MZ19 o AB18 por ejemplo */
+    standarDateToHumanMonth(date){
+        let d = new Date(date);
+        let months = lang[config.lang].months_short_array;
+        return `${months[d.getMonth()]}${d.getFullYear().toString().substr(-2)}`;
+    },
+
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo V 13 */
+    standarDateToHumanShort(date){
+        let d = new Date(date);
+        let weekDays = lang[config.lang].weekdays_short_array;
+        return `${weekDays[d.getDay()]}${d.getDate()}`;
     },
 
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena DD-MM-YYYY */
@@ -40,7 +57,7 @@ const utils = {
     standarizeDate(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
     },
-
+    
     /** Convierte un objeto Date a una cadena YYYY-MM-DD */
     removeHour(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
@@ -116,6 +133,13 @@ const utils = {
         return(this.secondsToFormatedString(res));
     },
 
+    /** Dadas dos fechas como Date, devuelve la diferencia entre ellas en número de días */
+    diffHoursBetDatesAsDays(date_start, date_end){
+        let sec_start = date_start.getTime();
+        let sec_end = date_end.getTime();
+        return((sec_end-sec_start)/(24*60*60*1000));
+    },
+
     diffHoursBetHours(hour_start, hour_end){
         let regexHour = /(\d{2}):\d{2}:\d{2}/;
         let regexMin = /\d{2}:(\d{2}):\d{2}/;
@@ -124,7 +148,7 @@ const utils = {
         let min1 = hour_start.match(regexMin)[1];
         let min2 = hour_end.match(regexMin)[1];
         let total_min = parseInt(hour2)*60 - parseInt(hour1)*60 + parseInt(min2) - parseInt(min1);
-        return(Math.round(total_min/60));
+        return(Math.floor(total_min/60 * 10) / 10); //truncamos a un decimal
     },
 
        /** Devuelve true si se ejecuta desde un navegador movil.
@@ -175,6 +199,47 @@ const utils = {
                 max = tasks[i].end_hour;
         }
         return max;
+    },
+
+    /**devuelve los días que tiene un mes*/
+    daysInMonth (month, year) {
+        return new Date(year, month, 0).getDate();
+    },
+
+    /**recibe date en formato Date y devuleve la fecha pasados x días*/
+    addDaysToDate(date, days) {        
+        date.setDate(date.getDate() + days);
+        return date;
+    },
+
+    /**recibe date en formato Date y devuleve la fecha pasados x meses*/
+    getNextMonth(date) {
+        let next_month = new Date(date.getFullYear(), date.getMonth()+1, 1);
+        return next_month;
+    },
+    
+    /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato
+     * puede devolver un array de días por defecto o bien un array de meses.
+     * 
+     * type: "days" o "months"
+     */
+    getDatesRange(startDate, stopDate, type="days") {
+        let dateArray = [];
+        let currentDate = new Date(startDate); //hacemos una copia para no modificar el parametro
+        if(type=="days"){
+            while (currentDate <= stopDate) {
+                dateArray.push(this.standarizeDate(new Date (currentDate)));
+                currentDate = this.addDaysToDate(currentDate, 1);
+            }
+        }
+        else if(type=="months"){
+            while (currentDate <= stopDate) {
+                dateArray.push(this.standarDateToHumanMonth(currentDate));
+                currentDate = this.getNextMonth(currentDate);
+            }
+        }
+                
+        return dateArray;
     }
 }
 
