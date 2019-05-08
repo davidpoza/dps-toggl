@@ -122,9 +122,9 @@ class BarChartComponent extends Component{
                     <ResponsivePie
                         data={data}
                         margin={{
-                            "top": utils.isMobile()?0:40,
+                            "top": 20,
                             "right": 80,
-                            "bottom": utils.isMobile()?30*data.length:80,
+                            "bottom": 20,
                             "left": 80
                         }}
                         innerRadius={0.5}
@@ -159,26 +159,7 @@ class BarChartComponent extends Component{
                         motionStiffness={90}
                         motionDamping={15}
                         
-                        legends={[
-                            {
-                                "anchor": "bottom",
-                                "direction": utils.isMobile()?"column":"row",
-                                "translateY": utils.isMobile()?30:40,
-                                "itemWidth": 120,
-                                "itemHeight": 20,
-                                "itemTextColor": "#999",
-                                "symbolSize": 18,
-                                "symbolShape": "circle",
-                                "effects": [
-                                    {
-                                        "on": "hover",
-                                        "style": {
-                                            "itemTextColor": "#000"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]}
+                    
                     />
 
                 </div>

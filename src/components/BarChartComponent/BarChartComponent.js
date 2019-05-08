@@ -156,8 +156,8 @@ class BarChartComponent extends Component{
                 keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
                 keys.push("Sin proyecto");
             }
-            //console.log(this.formatData(this.props.start_date, this.props.end_date, this.props.data));
-            //console.log(keys);        
+            console.log(this.formatData(this.props.preset, this.props.start_date, this.props.end_date, this.props.data));
+            console.log(keys);        
             return(
                 <div>
                     <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
@@ -168,7 +168,7 @@ class BarChartComponent extends Component{
                         margin={{
                             "top": 20,
                             "right": 35,
-                            "bottom": utils.isMobile()?30*keys.length:100,
+                            "bottom": 40,
                             "left": 55
                         }}
                         padding={utils.isMobile()?0.0:0.3}
@@ -211,30 +211,7 @@ class BarChartComponent extends Component{
                                 ]
                             ]
                         }}
-                        legends={[
-                            {
-                                "dataFrom": "keys",
-                                "anchor": utils.isMobile()?"bottom-left":"bottom",
-                                "direction": utils.isMobile()?"column":"row",
-                                "justify": false,
-                                "translateX": 0,
-                                "translateY": utils.isMobile()?150:65,
-                                "itemsSpacing": 2,
-                                "itemWidth": 100,
-                                "itemHeight": 20,
-                                "itemDirection": "left-to-right",
-                                "itemOpacity": 0.85,
-                                "symbolSize": 20,
-                                "effects": [
-                                    {
-                                        "on": "hover",
-                                        "style": {
-                                            "itemOpacity": 1
-                                        }
-                                    }
-                                ]
-                            }
-                        ]}
+
                         animate={true}
                         motionStiffness={90}
                         motionDamping={15}

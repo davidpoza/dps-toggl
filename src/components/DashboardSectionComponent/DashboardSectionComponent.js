@@ -145,7 +145,7 @@ class DashboardSectionComponent extends Component{
                             <i className="fas fa-calendar-alt"></i>
                         </button>
                         <div className={"dropdown-menu "+styles.dropdown} ref={this.dropdown}>
-                        <h2>{lang[config.lang].dashboard_date_dropdown_title}</h2>
+                        {!utils.isMobile() && <h2>{lang[config.lang].dashboard_date_dropdown_title}</h2>}
                         <DatePicker
                             inline
                             locale={es} 
@@ -188,12 +188,25 @@ class DashboardSectionComponent extends Component{
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <div className={"p-0 p-xl-5 "+styles.chart_height}>
+                    <div className={"p-0 p-xl-5 "+styles.barchart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
                     }
                     </div>
-                    <div className={"p-0 p-xl-5 "+styles.chart_height}>
+                    <div>
+                        <ul className={styles.project_list}>
+                        {this.props.data.entities && 
+                        this.props.data.entities.projects &&
+                        Object.keys(this.props.data.entities.projects).map((p,index)=>{
+                            return (
+                                <li key={"pli"+index}><i className="fas fa-circle" style={{color: this.props.data.entities.projects[p].color}}></i> {this.props.data.entities.projects[p].name}</li>
+                            )
+                        })}
+                        </ul>
+
+                    </div>
+
+                    <div className={"p-0 p-xl-5 "+styles.piechart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <PieChartComponent data={this.props.data}/>
                     }                     
