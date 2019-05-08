@@ -8,7 +8,7 @@
         height: 8vh;
     }
     @media screen and (min-resolution: 200dpi) { //mobile
-        height: 11vh;
+        height: calc(var(--vh, 1vh) * 11); //fix para chrome mobile
         min-height: 90px;
     }       
 }
@@ -18,7 +18,7 @@
     overflow-y: scroll;
     background-color: white;
     @media screen and (min-resolution: 200dpi) {
-        height: 89vh;
+        height: calc(var(--vh, 1vh) * 89); //fix para chrome mobile
     }  
 
     @media screen and (min-height: 800px) {

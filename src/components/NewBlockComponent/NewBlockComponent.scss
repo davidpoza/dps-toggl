@@ -14,8 +14,7 @@
     height: 8vh;
   } 
   @media screen and (min-resolution: 200dpi) { //mobile
-    height: 16vh;
-    min-height: 120px;
+    height: calc(var(--vh, 1vh) * 17); //fix para chrome mobile
   } 
 }
 
