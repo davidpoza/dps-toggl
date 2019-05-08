@@ -61,7 +61,10 @@ const lang = {
         date_last_year: "Año pasado",
         date_custom: "Intervalo personalizado",
         time_unit_days: "Dias",
-        time_unit_months: "Meses"
+        time_unit_months: "Meses",
+        months_array: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+        weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"]
     }
 };
 

@@ -1,3 +1,6 @@
+import config from '../config/config.js';
+import lang from '../config/lang.js';
+
 const utils = {
     /** Convierte un cantidad de segundos transcurridos a una cadena hh:mm:ss */
     secondsToFormatedString(time){
@@ -13,15 +16,21 @@ const utils = {
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
     standarDateToHuman(date){
         let d = new Date(date);
-        let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        let weekDays = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        let months = lang[config.lang].months_array;
+        let weekDays = lang[config.lang].weekdays_array;
         return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
+    },
+
+    dataToMonth(date){
+        let d = new Date(date);
+        let months = lang[config.lang].months_array;
+        return `${months[d.getMonth()]}`;
     },
 
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo V 13 */
     standarDateToHumanShort(date){
         let d = new Date(date);
-        let weekDays = ["D", "L", "M", "X", "J", "V", "S"];
+        let weekDays = lang[config.lang].weekdays_short_array;
         return `${weekDays[d.getDay()]}${d.getDate()}`;
     },
 
@@ -47,7 +56,7 @@ const utils = {
     standarizeDate(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
     },
-
+    
     /** Convierte un objeto Date a una cadena YYYY-MM-DD */
     removeHour(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
@@ -190,14 +199,27 @@ const utils = {
         return date;
     },
     
-    /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato */
-    getDatesRange(startDate, stopDate) {
+    /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato
+     * puede devolver un array de días por defecto o bien un array de meses.
+     * 
+     * type: "days" o "months"
+     */
+    getDatesRange(startDate, stopDate, type="days") {
         let dateArray = [];
         let currentDate = new Date(startDate); //hacemos una copia para no modificar el parametro
-        while (currentDate <= stopDate) {
-            dateArray.push(this.standarizeDate(new Date (currentDate)));
-            currentDate = this.addDaysToDate(currentDate, 1);
+        if(type=="days"){
+            while (currentDate <= stopDate) {
+                dateArray.push(this.standarizeDate(new Date (currentDate)));
+                currentDate = this.addDaysToDate(currentDate, 1);
+            }
         }
+        else if(type=="months"){
+            while (currentDate <= stopDate) {
+                dateArray.push(this.standarizeDate(new Date (currentDate)));
+                currentDate = this.addDaysToDate(currentDate, 1);
+            }
+        }
+                
         return dateArray;
     }
 }
