@@ -494,7 +494,7 @@ const API = {
 
     dashboard: {
         fetchAllDatesBetween(token, user_id, start_date, end_date){
-            return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&filter[date][gte]="+start_date+"&filter[date][lte]="+end_date+"&groups=date&sort=-date", {
+            return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&filter[date][between]="+start_date+","+end_date+"&groups=date&sort=-date", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
