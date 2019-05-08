@@ -96,6 +96,7 @@ class BarChartComponent extends Component{
             });
             
             Object.keys(projects).forEach(p=>{
+                if(projects[p].value>0)
                 array_result.push({
                     id: projects[p].id,
                     label: projects[p].label,
