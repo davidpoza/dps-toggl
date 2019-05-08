@@ -83,26 +83,42 @@ class BarChartComponent extends Component{
 
     formatData(data){
         let projects = {};
-        Object.keys(data.entities.projects).forEach(p=>{
-            projects[p]={id:p, label:data.entities.projects[p].name, value:0, color:data.entities.projects[p].color};
-        });
-        projects["null"]={id:null, label:"Sin proyecto", value:0, color:"#fafafa"};
-        Object.keys(data.entities.tasks).forEach(t=>{
-            projects[data.entities.tasks[t].project]["value"]+=utils.diffHoursBetHours(t.start_hour, t.end_hour);
-        });
-
-        return projects;
+        let array_result = [];
+        let sin_proyecto = {id:"Sin proyecto", label:"Sin proyecto", value:0, color:"#fafafa"};
+        if(data.entities.projects && data.entities.tasks){
+            Object.keys(data.entities.projects).forEach(p=>{
+                projects[p]={id:data.entities.projects[p].name, label:data.entities.projects[p].name, value:0, color:data.entities.projects[p].color};
+            });
+            projects["null"]=sin_proyecto;
+            Object.keys(data.entities.tasks).forEach(t=>{
+                //vamos sumando las horas de cada tarea a su proyecto
+                projects[data.entities.tasks[t].project]["value"]+=utils.diffHoursBetHours(data.entities.tasks[t].start_hour, data.entities.tasks[t].end_hour);
+            });
+            
+            Object.keys(projects).forEach(p=>{
+                array_result.push({
+                    id: projects[p].id,
+                    label: projects[p].label,
+                    value: Math.floor(projects[p].value * 10) / 10,
+                    color: projects[p].color
+                })
+            }); //convertimos el objeto a un array de objetos
+        }
+        if(array_result.length == 0){
+            array_result.push(sin_proyecto);
+        }
+        return array_result;
     }
 
 
 
     render(){
-        console.log(this.formatData(this.props.data));
-        if(this.props.data){
+        //console.log(this.formatData(this.props.data));
+        if(this.formatData(this.props.data).length > 0){
             return(
                 <div>
                     <ResponsivePie
-                        data={this.data}
+                        data={this.formatData(this.props.data)}
                         margin={{
                             "top": 40,
                             "right": 80,
@@ -112,9 +128,7 @@ class BarChartComponent extends Component{
                         innerRadius={0.5}
                         padAngle={0.7}
                         cornerRadius={3}
-                        colors={{
-                            "scheme": "nivo"
-                        }}
+                        colors={(p)=>(p.color)}
                         borderWidth={1}
                         borderColor={{
                             "from": "color",
@@ -125,6 +139,7 @@ class BarChartComponent extends Component{
                                 ]
                             ]
                         }}
+                        radialLabel={(p)=>(p.label)}
                         radialLabelsSkipAngle={10}
                         radialLabelsTextXOffset={6}
                         radialLabelsTextColor="#333333"
@@ -146,7 +161,7 @@ class BarChartComponent extends Component{
                                 "anchor": "bottom",
                                 "direction": "row",
                                 "translateY": 56,
-                                "itemWidth": 100,
+                                "itemWidth": 120,
                                 "itemHeight": 18,
                                 "itemTextColor": "#999",
                                 "symbolSize": 18,
@@ -166,6 +181,7 @@ class BarChartComponent extends Component{
                 </div>
             )
         }
+        return null;
     }
 }
 
