@@ -31,7 +31,7 @@ class LoggedInfoComponent extends Component{
         if(this.state.setInterval == null)
             this.setState({
                 setInterval: setInterval(this.refreshToken, 4*60*1000) //ponemos el refresco del token jwt a 4 minutos
-            });       
+            });
     }
 
     /**Limpiamos los setInterval para que no se acumulen durante la navegación entre routes */
@@ -42,17 +42,17 @@ class LoggedInfoComponent extends Component{
 
     render(){
         return(
-            <div className={"d-flex justify-content-between " + styles.box}> 
+            <div className={"d-flex justify-content-between " + styles.box}>
                  <div>
-                    {this.props.user.token != null ? 
-                        (   
+                    {this.props.user.token != null ?
+                        (
                             <div className={styles.username}>
                                 <p className="m-0">{this.props.user.first_name} {this.props.user.last_name}</p>
                                 <p className="m-0"><span className={styles.link} onClick={this.props.userActions.logoutUser}>Logout</span></p>
                             </div>
                         ):
                         (
-                            <div>                                
+                            <div>
                                 <p className="m-0"><Link to="/login">Login</Link></p>
                             </div>
 
@@ -62,8 +62,8 @@ class LoggedInfoComponent extends Component{
                 { this.props.user.token == null ?
                     (<div></div>):
 
-                    <img className={styles.avatar} src={this.props.user.avatar} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />                    
-                 
+                    <img className={styles.avatar} src={config.api_url+"/users/avatar/"+this.props.user.avatar} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+
                 }
                 <div className="dropdown-menu">
                     <a className="dropdown-item" href="#">{lang[config.lang].profile}</a>

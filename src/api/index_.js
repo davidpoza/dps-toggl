@@ -48,7 +48,7 @@ const API = {
         },
 
         getUserInfo(token){
-            return fetch(api_url+"/users/me", {
+            return fetch(api_url+"/users/me?fields=*,avatar.*", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
