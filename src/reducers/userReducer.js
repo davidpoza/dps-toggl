@@ -16,8 +16,6 @@ import initialState from './initialState';
 import {normalize} from 'normalizr';
 import * as schemas from './normalizr';
 
-const thumbnail_path = "https://dpstogglapi1.davidinformatico.com/uploads/_/thumbnails/200/200/crop/good/";
-
 export default function userReducer (state = initialState.userReducer, action){
     switch(action.type){
         case LOGIN_USER_ATTEMPT:
@@ -35,7 +33,7 @@ export default function userReducer (state = initialState.userReducer, action){
                 email: action.payload.email,
                 first_name: action.payload.first_name,
                 last_name: action.payload.last_name,
-                avatar: action.payload.avatar?thumbnail_path+action.payload.avatar.filename:null,
+                avatar: action.payload.avatar,
                 loading: false,
                 error: {}
             }
@@ -62,7 +60,7 @@ export default function userReducer (state = initialState.userReducer, action){
             }
         case REFRESH_TOKEN_FAIL:
             return {
-                ...state,                
+                ...state,
                 token: null,
                 error: action.payload
             }
@@ -84,7 +82,7 @@ export default function userReducer (state = initialState.userReducer, action){
         case FETCH_USERS_FAIL:
             return {
                 ...state,
-                loading: false,                
+                loading: false,
                 error: action.payload
             }
         case CLEAN_USER_MESSAGE:
