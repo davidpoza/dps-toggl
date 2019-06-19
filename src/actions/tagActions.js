@@ -100,10 +100,10 @@ export function createTag(token, name, user_id){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(createTagSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(createTagError(data.error))
-            }                          
+            }
         )
         .catch(
             (error) => {
@@ -150,34 +150,34 @@ export function updateTag(token, tag_id, tag_name){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTagSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(updateTagError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(updateTagError(error));
         });
-        
-        
+
+
     }
 }
 
-export function fetchTagsByUser(token,user_id){
+export function fetchUserTags(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_TAGS_ATTEMPT
         });
 
-        api.tag.fetchTagsByUser(token,user_id).then(
+        api.tag.fetchUserTags(token).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){                    
+                if(data.data){
                     dispatch(fetchTagsSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(fetchTagsError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(fetchTagsError(error));

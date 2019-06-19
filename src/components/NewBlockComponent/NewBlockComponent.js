@@ -86,8 +86,7 @@ class NewBlockComponent extends Component{
     }
 
     componentWillMount(){
-        this.props.projectActions.fetchProjectsByMember(this.props.user.token, this.props.user.id);
-        this.props.tagActions.fetchTagsByUser(this.props.user.token, this.props.user.id);
+        this.props.tagActions.fetchUserTags(this.props.user.token);
     }
 
     /**hay que ir limpiando los setInterval para que no se acumulen según navegamos entre routes */
