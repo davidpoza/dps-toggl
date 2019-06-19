@@ -13,7 +13,7 @@ export const projectsSchema = [projectEntity];
 export const taskEntity = new schema.Entity("tasks", {project: projectEntity, tags:[tagEntity]}, { idAttribute: '_id' });
 export const tasksSchema = [taskEntity];
 
-export const dateEntity = new schema.Entity("dates", {tasks: [taskEntity]}, {idAttribute:"date"}, { idAttribute: '_id' });
+export const dateEntity = new schema.Entity("dates", {tasks: [taskEntity]}, {idAttribute:"date"});
 export const dateSchema = [dateEntity];
 
 

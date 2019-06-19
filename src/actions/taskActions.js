@@ -159,10 +159,10 @@ export function createTask(token, desc, date, start_hour, end_hour, project_id, 
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(createTaskSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(createTaskError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(createTaskError(error));
@@ -181,10 +181,10 @@ export function deleteTask(token, task_id){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(deleteTaskSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(deleteTaskError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(deleteTaskError(error));
@@ -198,22 +198,22 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
-       
+
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(updateTaskError(error));
         });
-        
-        
+
+
     }
 }
 
@@ -226,7 +226,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
-       
+
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
         .then(
             (data) => {
@@ -236,21 +236,21 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
                     dispatch({
                         type: FETCH_TASK_ATTEMPT
                     });
-                    return api.task.fetchTask(token, task_id);                   
-                }                    
+                    return api.task.fetchTask(token, task_id);
+                }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
-            }                          
+            }
         )
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchTaskSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(fetchTaskError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(updateTaskError(error));
@@ -267,18 +267,18 @@ export function updateAndFetchTasks(token, task_id, user_id, description, date, 
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
-       
+
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token,user_id);                   
-                }                    
+                    this.fetchTasks(token,user_id);
+                }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
-            }                          
+            }
         )
         .catch(
             (error) => {
@@ -292,42 +292,44 @@ export function updateAndFetchTasks(token, task_id, user_id, description, date, 
  * y luego encadena una consulta de las tasks para cada una de ellas.
  * Devuelve un array de objetos {date:string, tasks:array de objetos task}
  */
-export function fetchTasks(token, user_id){
+export function fetchTasks(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_DATES_ATTEMPT
         });
 
-        api.task.fetchAllDates(token, user_id)
-        .then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch({
-                        type: FETCH_DATES_SUCCESS
-                    });
-                    return data.data.map((e)=>{                        
-                        dispatch({
-                            type: FETCH_TASKS_ATTEMPT
-                        });
-                        return api.task.fetchTasksByDate(token, e.date, user_id)
-                    });
-                }                    
-                else if(data.error)
-                    dispatch(fetchDatesError(data.error))
-            }                          
-        )
-        .then((data)=>
-            Promise.all(data)
-        )
+        // api.task.fetchAllDates(token, user_id)
+        // .then(
+        //     (data) => {
+        //         //directus devuelve los errores en una objeto error y los datos en uno data
+        //         if(data.data){
+        //             dispatch({
+        //                 type: FETCH_DATES_SUCCESS
+        //             });
+        //             return data.data.map((e)=>{
+        //                 dispatch({
+        //                     type: FETCH_TASKS_ATTEMPT
+        //                 });
+        //                 return api.task.fetchTasksByDate(token, e.date, user_id)
+        //             });
+        //         }
+        //         else if(data.error)
+        //             dispatch(fetchDatesError(data.error))
+        //     }
+        // )
+        // .then((data)=>
+        //     Promise.all(data)
+        // )
+
+        api.task.fetchTasks(token)
         .then(
             (data)=>{
                 //aqui no controlo errores porque van dentro de cada fecha
                 //tendria que buscar la propiedad error en cada una de ellas...
-                dispatch(fetchTasksSuccess(data));
+                dispatch(fetchTasksSuccess(data.data));
 
-            }                              
-        )        
+            }
+        )
         .catch(
             (error) => {
                 dispatch(fetchTasksError(error));

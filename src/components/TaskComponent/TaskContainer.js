@@ -19,8 +19,8 @@ class TaskContainer extends Component{
 
     }
 
-    render(){      
-        if(this.props.children.length > 0){          
+    render(){
+        if(this.props.children.length > 0){
           return(
             <div>
             <TaskComponent
@@ -33,7 +33,7 @@ class TaskContainer extends Component{
             projects={this.props.projects}
             tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
-            taskActions={this.props.taskActions}           
+            taskActions={this.props.taskActions}
             onResume={this.props.onResume}
             />
             <div style={{display: "none"}} id={"toggle-"+this.props.task.id}>
@@ -45,7 +45,7 @@ class TaskContainer extends Component{
               projects={this.props.projects}
               tags={this.props.tags}
               tasks_entities={this.props.tasks_entities}
-              taskActions={this.props.taskActions}           
+              taskActions={this.props.taskActions}
               onResume={this.props.onResume}
               />
               {this.props.children.map((c,index)=>(
@@ -58,16 +58,16 @@ class TaskContainer extends Component{
                 projects={this.props.projects}
                 tags={this.props.tags}
                 tasks_entities={this.props.tasks_entities}
-                taskActions={this.props.taskActions}           
+                taskActions={this.props.taskActions}
                 onResume={this.props.onResume}
                 />
               ))}
-              
+
             </div>
             </div>
-          )        
+          )
         }
-        else{        
+        else{
           return(
             <TaskComponent
             token={this.props.token}
@@ -78,9 +78,9 @@ class TaskContainer extends Component{
             projects={this.props.projects}
             tags={this.props.tags}
             tasks_entities={this.props.tasks_entities}
-            taskActions={this.props.taskActions}           
+            taskActions={this.props.taskActions}
             onResume={this.props.onResume}
-            />            
+            />
           )
         }
     }
@@ -95,7 +95,7 @@ function mapStateToProps (state, props) {
     task.project = state.projectReducer.projects_entities?state.projectReducer.projects_entities[task.project]:null; //projects_entities está cargado porque lo pide un componente hermano
 
     let children = props.task_children.map(t=>{
-      t=Object.assign({}, state.taskReducer.tasks_entities[t.id]);
+      t=Object.assign({}, state.taskReducer.tasks_entities[t._id]);
       t.tags = t.tags.map(t=>{
         return state.taskReducer.tasks_tags_entities[t]; //tasks_tags_entities está cargado porque lo pide un componente hermano
       },this);
@@ -118,7 +118,7 @@ function mapStateToProps (state, props) {
       projects_entities: state.projectReducer.projects_entities
     }
   }
-  
+
   function mapDispatchToProps (dispatch) {
     return {
       userActions: bindActionCreators(userActions, dispatch),
@@ -127,5 +127,5 @@ function mapStateToProps (state, props) {
       tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(TaskContainer);

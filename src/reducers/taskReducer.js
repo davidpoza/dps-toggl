@@ -35,7 +35,7 @@ import initialState from './initialState';
 
 export default function taskReducer (state = initialState.taskReducer, action){
     switch(action.type){
-        case CREATE_TASK_ATTEMPT:        
+        case CREATE_TASK_ATTEMPT:
             return {//vamos a extender una objeto vacio con una copia del estado con el spread operator, es como usar Object.assign
                 ...state,
                 loading: true,
@@ -55,7 +55,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 error: action.payload
             }
-        case DELETE_TASK_ATTEMPT:        
+        case DELETE_TASK_ATTEMPT:
             return {
                 ...state,
                 loading: true,
@@ -93,7 +93,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 error: action.payload
             }
-        case UPDATE_TASK_ATTEMPT:        
+        case UPDATE_TASK_ATTEMPT:
             return {
                 ...state,
                 loading: true,
@@ -125,7 +125,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASK_SUCCESS:
-            action.payload = normalize(action.payload, schemas.taskEntity);
+            //action.payload = normalize(action.payload, schemas.taskEntity);
             let new_tasks_entities = Object.assign({}, state.tasks_entities);
             new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
             let new_tasks_tags_entities = Object.assign({}, state.tasks_tags_entities);
@@ -137,7 +137,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 new_tasks_entities[action.payload.result].tags.map(e=>{
                     if(!action.payload.entities.tasks[action.payload.result].tags.includes(e))
                         delete new_tasks_tags_entities[e];
-                });                
+                });
             }
             return {
                 ...state,
@@ -167,7 +167,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
             Object.keys(state.dates_entities).forEach(key=>{
                 if(state.dates_entities[key].collapsed)
                     action.payload.entities.dates[key].collapsed = true;
-            });            
+            });
             return {
                 ...state,
                 loading: false,
@@ -183,23 +183,23 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 error: action.payload
             }
-        case FETCH_DATES_ATTEMPT:
-            return {
-                ...state,
-                loading: true,
-                error: {}
-            }
-        case FETCH_DATES_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-            }
-        case FETCH_DATES_FAIL:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
-            }
+        // case FETCH_DATES_ATTEMPT:
+        //     return {
+        //         ...state,
+        //         loading: true,
+        //         error: {}
+        //     }
+        // case FETCH_DATES_SUCCESS:
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //     }
+        // case FETCH_DATES_FAIL:
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         error: action.payload
+        //     }
         case CLEAN_TASK_MESSAGE:
             return {
                 ...state,
@@ -222,7 +222,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
             return {
                 ...state,
                 dates_entities: new_dates_entities_updated_time
-            }       
+            }
         case LOGOUT_USER:
             return {
                 ...initialState.taskReducer

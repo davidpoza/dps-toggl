@@ -119,7 +119,7 @@ class NewBlockComponent extends Component{
     handleOnClickTagSelector(tag_id){
         let array_tags = this.state.tags.slice();
         for(let i=0; i<array_tags.length;i++){
-            if(array_tags[i].id == tag_id)
+            if(array_tags[i]._id == tag_id)
                 array_tags[i].checked = array_tags[i].checked ? false: true;
         }
         this.setState({

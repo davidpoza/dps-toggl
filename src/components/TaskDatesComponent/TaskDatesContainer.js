@@ -40,14 +40,14 @@ function mapStateToProps (state) {
 
     return {
       //denormalizacion
-      token: state.userReducer.token,    
-      user_id: state.userReducer.id,  
+      token: state.userReducer.token,
+      user_id: state.userReducer.id,
       dates: state.taskReducer.dates_id.map(e=>state.taskReducer.dates_entities[e]),
       dates_entities: state.taskReducer.dates_entities,
-      need_refreshing: state.taskReducer.need_refreshing,  
+      need_refreshing: state.taskReducer.need_refreshing,
     }
   }
-  
+
   function mapDispatchToProps (dispatch) {
     return {
       userActions: bindActionCreators(userActions, dispatch),
@@ -56,5 +56,5 @@ function mapStateToProps (state) {
       tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDatesContainer);

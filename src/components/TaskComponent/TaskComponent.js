@@ -46,8 +46,8 @@ class TaskComponent extends Component{
         this.handleOnChangeEndHour = this.handleOnChangeEndHour.bind(this);
         this.handleOnBlurStartHour = this.handleOnBlurStartHour.bind(this);
         this.handleOnBlurEndHour = this.handleOnBlurEndHour.bind(this);
-        
-        /** 
+
+        /**
          * tags: almacena un array de tags con las propiedades:
          * - id
          * - name
@@ -72,7 +72,7 @@ class TaskComponent extends Component{
    }
 
    componentDidMount(){
-    /*con esto queremos evitar que el dropdown se cierre antes de que salte el evento 
+    /*con esto queremos evitar que el dropdown se cierre antes de que salte el evento
     que abre el datepicker para el cambio de fecha de un task*/
       $(document).on('click', '.custom-input-datepicker', function (e) {
         e.stopPropagation();
@@ -81,7 +81,7 @@ class TaskComponent extends Component{
 
    componentDidUpdate(prevProps){
         //if(prevProps.task.tags != this.props.task.tags)
-            
+
         if(prevProps.task != this.props.task){
             this.composeTagsListState();
             this.setState({
@@ -96,7 +96,7 @@ class TaskComponent extends Component{
     * - El array con todos los tags disponibles. (tendrán prop checked=false)
     * - El array con los tags que tiene asignados una tarea (tendrán prop checked=true y un relation_id)
     * El join se realiza con la propiedad id de que tienen los objetos de ambos arrays.
-    * El relation_id es el id de la entrada que relaciona esa tag con ese task en la tabla tasks_tags, ya que 
+    * El relation_id es el id de la entrada que relaciona esa tag con ese task en la tabla tasks_tags, ya que
     * es una relación m:m
     */
    composeTagsListState(){
@@ -108,8 +108,10 @@ class TaskComponent extends Component{
 
         let selected_tags = this.props.task.tags.map((e)=>{
             return {
-                id: e.tags_id.id,
-                relation_id: e.id,
+                // id: e.tags_id.id,
+                // relation_id: e.id,
+                // checked: true
+                _id: e._id,
                 checked: true
             }});
 
@@ -120,7 +122,7 @@ class TaskComponent extends Component{
          * pero si con ese id no tenemos nada entonces comenzamos un nuevo objeto.
          */
         let merged_tags = all_tags.concat(selected_tags).reduce((prev, curr) => {
-            prev[curr.id] = Object.assign(prev[curr.id] || {}, curr);
+            prev[curr._id] = Object.assign(prev[curr._id] || {}, curr);
             return prev;
         }, {});
 
@@ -133,7 +135,7 @@ class TaskComponent extends Component{
         });
    }
 
-   /** Se dispara cuando hacemos click en una tarea y muestra los controles adicionales.    * 
+   /** Se dispara cuando hacemos click en una tarea y muestra los controles adicionales.    *
     * Pensado para móviles donde no tenemos onMouseOver. */
     handleOnClick(){
         this.setState(
@@ -171,7 +173,7 @@ class TaskComponent extends Component{
 
     handleOnBlurDesc(e){
         /*actualizamos la tarea actual cambiando su descripción pero manteniendo fechas, tags e id del proyecto*/
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, -1, null);     
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, -1, null);
     }
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
@@ -184,7 +186,7 @@ class TaskComponent extends Component{
      * manejador para el evento onClick del componente ProjectSelectorComponent del TaskComponent
      */
     handleOnChangeProject(project_id, project_name, project_color){
-        let project = {};        
+        let project = {};
         if(project_id == -1) //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
@@ -192,22 +194,22 @@ class TaskComponent extends Component{
             project.color = project_color; //obtenemos el color del elemento seleccionado actualmente en el DOM
             project.name = project_name; //el nombre del proyecto lo sacamos del elemento con esa id
         }
-        
+
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
         y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
-       
+
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
        this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
     }
 
 
-    /**actualiza la entidad de la tarea con task_id y dispara una acción para 
+    /**actualiza la entidad de la tarea con task_id y dispara una acción para
      * actualizar tasks_entities en el redux store con los cambios.
      * Únicamente cambia los valores que pasemos como parametro.
      */
-    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){        
+    handleUpdateTaskVisually(task_id, desc, date, start_hour, end_hour, project, tags){
         let new_task_entities = Object.assign({}, this.props.tasks_entities);
         if(desc!=null) new_task_entities[task_id].desc = desc;
         if(date!=null) new_task_entities[task_id].date = date;
@@ -219,18 +221,18 @@ class TaskComponent extends Component{
         this.props.taskActions.updateTasksVisually(new_task_entities);
     }
 
-    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent 
+    /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent
      * Se recorre el array buscando el id que coincide con el tag marcado para hacer un toggle a la prop. checked.
      * Apuntamos el índice del array del tag que hemos chequeado para saber si estamos añadiendo o quitando el tag y para
      * poder obtener su relation_id en caso de estar borrando.
-     * 
+     *
     */
     handleOnClickTagSelector(tag_id){
         let array_tags = this.state.tags.slice();
         let index;
 
         array_tags.map((e,indx)=>{
-            if(e.id == tag_id){
+            if(e._id == tag_id){
                 e.checked = e.checked?false:true;
                 index = indx;
             }
@@ -257,19 +259,19 @@ class TaskComponent extends Component{
         }else{ //estampos añadiendo un tag
             array_tags_api.push({
                 tags_id: { id: tag_id }
-            });            
+            });
         }
-        
-        
+
+
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
         y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
         this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
-        
+
     }
 
     handleOnChangeDate(date){
-        
+
         this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task.id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
         console.log(date)
     }
@@ -279,7 +281,7 @@ class TaskComponent extends Component{
         if(e.target.value.match(regex))
             this.setState({
                 start_hour: e.target.value
-            });        
+            });
     }
 
     handleOnChangeEndHour(e){
@@ -293,7 +295,7 @@ class TaskComponent extends Component{
     handleOnBlurStartHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(this.state.end_hour, e.target.value)){
             this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, e.target.value+":00", null, -1, null)
-       
+
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task.id, null, null, e.target.value+":00", null, -1, null);
             this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
@@ -303,13 +305,13 @@ class TaskComponent extends Component{
                 start_hour: utils.removeSeconds(this.props.task.start_hour)
             });
         }
-        
+
     }
 
     handleOnBlurEndHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(e.target.value, this.state.start_hour)){
             this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, e.target.value+":00", -1, null)
-       
+
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task.id, null, null, null, e.target.value+":00", -1, null);
             this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
@@ -325,7 +327,7 @@ class TaskComponent extends Component{
         $( "#"+ toggle_id).toggle();
         $( "#"+ toggle_span_id).toggleClass( styles.toggled );
     }
-    
+
     render(){
         return(
             <li className={this.props.child? "row m-1 justify-content-between " + styles.child_task:"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.handleOnMouseOver} onMouseOut={this.handleOnMouseOut}>
@@ -342,7 +344,7 @@ class TaskComponent extends Component{
                     </div>
                 </div>
                 {!this.props.children?
-                    <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 text-right "}>                
+                    <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 text-right "}>
                         {this.props.task.project!=null ?
                         <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                         :
@@ -353,27 +355,27 @@ class TaskComponent extends Component{
                     <div className={"col-4 col-lg-2 col-xl-2 p-0 order-4 order-lg-2 "}>
 
                     </div>
-            
+
                 }
-                
+
                 {!this.props.children?
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>
                 :
                 <div className="col-5 p-0 col-lg-2 order-3 order-lg-3">
-                
-                </div> 
-                }              
-                {!utils.isMobile() && !this.props.children ? 
+
+                </div>
+                }
+                {!utils.isMobile() && !this.props.children ?
                     <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
-                        
-                            <input 
+
+                            <input
                                 className={styles.input_hour}
                                 value={this.state.start_hour}
                                 onChange={this.handleOnChangeStartHour}
                                 onBlur={this.handleOnBlurStartHour}
-                                size="5" maxLength="5" 
+                                size="5" maxLength="5"
                             />&nbsp;-&nbsp;
                             <input
                                 className={styles.input_hour}
@@ -382,10 +384,10 @@ class TaskComponent extends Component{
                                 onBlur={this.handleOnBlurEndHour}
                                 size="5" maxLength="5"
                             />
-                    
+
                     </div> : !utils.isMobile() && this.props.children &&
                     <div className={"col-auto col-lg-auto order-lg-4 p-0 " + styles.dates}>
-                            <span 
+                            <span
                                 className={styles.input_hour}
                             >{utils.removeSeconds(this.props.children[this.props.children.length-1].start_hour)}</span>
                             &nbsp;-&nbsp;
@@ -393,7 +395,7 @@ class TaskComponent extends Component{
                                 className={styles.input_hour}
                             >{utils.removeSeconds(utils.maxEndHourTasks([...this.props.children, this.props.task]))}</span>
                     </div>
-                }                
+                }
                 <div className={"col-auto order-5 order-lg-5 p-0 px-lg-2 " + styles.dates}>
                 {!this.props.children ?
                     utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
@@ -406,7 +408,7 @@ class TaskComponent extends Component{
                     <div className={"dropdown-menu "+styles.dropdown_menu}>
                         <a className="dropdown-item" id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
                         <DatePicker
-                        locale={es} 
+                        locale={es}
                         popperPlacement="left"
                         dateFormat="dd/MM/yyyy"
                         calendarClassName={styles.calendar}
