@@ -81,11 +81,10 @@ const API = {
         }
     },
     task: {
-        //en tags_id viene un array de tags_id, hay que componer un objeto
+        //en tags_id viene un array de ids
         createTask(token, description, date, start_hour, end_hour, project_id, tags_id, user_id){
             let array_tags_obj = [];
-            tags_id.map((e)=>{array_tags_obj.push({tags_id: e})});
-            return fetch(api_url+"/items/tasks", {
+            return fetch(api_url+"/tasks", {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
@@ -97,8 +96,8 @@ const API = {
                     date,
                     start_hour,
                     end_hour,
-                    project: { id: project_id },
-                    tags: array_tags_obj,
+                    project: project_id,
+                    tags: tags_id,
                     user: user_id
                 })
             }).then(

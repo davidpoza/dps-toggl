@@ -148,7 +148,7 @@ export function updateDateVisually(date, tasks_entities){
 export function createTask(token, desc, date, start_hour, end_hour, project_id, tags, user_id){
     let tags_id;
     if(tags!=null )
-        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e.id});
+        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e._id});
     return (dispatch) => {
         dispatch({
             type: CREATE_TASK_ATTEMPT
