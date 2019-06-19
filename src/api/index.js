@@ -149,7 +149,7 @@ const API = {
             );
         },
         fetchTasks(token){
-            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*", {
+            return fetch(api_url+"/tasks", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -176,20 +176,20 @@ const API = {
                 (data) => data
             );
         },
-        fetchAllDates(token, user_id){
-            return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&groups=date&sort=-date", {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            }).then(
-                (response)=>response.json()
-            ).then(
-                (data) => data
-            );
-        },
+        // fetchAllDates(token, user_id){
+        //     return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&groups=date&sort=-date", {
+        //         method: "GET",
+        //         headers: {
+        //             "Accept": "application/json",
+        //             "Content-Type": "application/json",
+        //             "Authorization": "Bearer "+ token
+        //         }
+        //     }).then(
+        //         (response)=>response.json()
+        //     ).then(
+        //         (data) => data
+        //     );
+        // },
         fetchTasksByDate(token, date, user_id){
             return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*,user.id&filter[user][eq]="+user_id+"&filter[date][eq]="+date, {
                 method: "GET",

@@ -9,7 +9,7 @@ import utils from '../../utils';
 
 class TagSelectorComponent extends Component{
     constructor(props){
-        super(props);        
+        super(props);
 
         this.state = {
             tags: [], //la lista de tags que vamos a usar para mostrarlos como labels
@@ -41,12 +41,12 @@ class TagSelectorComponent extends Component{
     }
 
     /** se ejecuta onChange del input de filtrado de tags */
-    handleOnChangeInput(e){   
+    handleOnChangeInput(e){
         this.setState({
             value: e.target.value
         });
         let filtered_tags = this.props.tags.filter((elem)=>{
-            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
+            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min
             return regex.test(elem.name);
         });
         this.setState({
@@ -73,7 +73,7 @@ class TagSelectorComponent extends Component{
                         <i className="fas fa-tags"></i>
                     </button> :
                     <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        { 
+                        {
                             this.state.tags.filter((e)=>(e.checked)).length > 0 ? (
                                 <button className={styles.label}>
                                 {
@@ -85,15 +85,15 @@ class TagSelectorComponent extends Component{
                                     })
                                 }
                                 </button>
-                                
+
                             ):
                             <button className={styles.btn} >
                                 <i className="fas fa-tags"></i>
                             </button>
-                    
+
                         }
                     </span>
-                }              
+                }
 
                 <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
                     <div className={"input-group "+styles.selector}>
@@ -105,7 +105,7 @@ class TagSelectorComponent extends Component{
                     <ul className={styles.taglist}>
                     { this.state.filtered_tags && this.state.filtered_tags.map((e, index)=>{
                         return(
-                        <li id={"tag"+e.id} key={"taglist-"+index} onClick={this.handleOnClick.bind(this, e.id)} className={"dropdown-item " + styles.item}>
+                        <li id={"tag"+e._id} key={"taglist-"+index} onClick={this.handleOnClick.bind(this, e._id)} className={"dropdown-item " + styles.item}>
                          {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
                          {e.name}
                          </li>
