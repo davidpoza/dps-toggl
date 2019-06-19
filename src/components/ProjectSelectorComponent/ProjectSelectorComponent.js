@@ -11,7 +11,7 @@ import styles from './ProjectSelectorComponent.scss';
 class ProjectSelectorComponent extends Component{
     constructor(props){
         super(props);
-        
+
 
         this.state = {
             projects: [],
@@ -39,12 +39,12 @@ class ProjectSelectorComponent extends Component{
     }
 
     /** se ejecuta onChange del input de filtrado de proyectos */
-    handleOnChangeInput(e){   
+    handleOnChangeInput(e){
         this.setState({
             value: e.target.value
         });
         let filtered_projects = this.props.projects.filter((elem)=>{
-            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min          
+            let regex = new RegExp(e.target.value, "i");  //para el filtrado usamos una regex que ignore mayus/min
             return regex.test(elem.name);
         });
         this.setState({
@@ -75,11 +75,11 @@ class ProjectSelectorComponent extends Component{
                     :
                     <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     {!utils.isMobile() && <i className="fas fa-circle"></i>} {utils.isMobile() && this.props.project_selected_name.length>12? this.props.project_selected_name.substr(0,9)+"...":this.props.project_selected_name}
-                    </button>    
-                
+                    </button>
+
                 }
-                
-                
+
+
 
                 <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
                     <div className={"input-group "+styles.selector}>
@@ -91,7 +91,7 @@ class ProjectSelectorComponent extends Component{
                     <ul className={styles.projectlist}>
                     <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnSelect.bind(this, -1, null, null)} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> Sin proyecto</li>
                     { this.state.projects.map((e, index)=>{
-                        return(<li id={"project"+e.id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e.id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e.id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                        return(<li id={"project"+e._id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e._id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e._id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
                     <div className="dropdown-divider"></div>

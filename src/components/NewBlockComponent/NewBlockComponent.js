@@ -30,7 +30,7 @@ class NewBlockComponent extends Component{
         this.incCounter = this.incCounter.bind(this);
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
         this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
-        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);        
+        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.handleHourChange = this.handleHourChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.resumeTask = this.resumeTask.bind(this);
@@ -47,12 +47,12 @@ class NewBlockComponent extends Component{
             project_selected_color: null,
             project_selected_id: null,
             tags: [], // listado los id de los tag que hemos seleccionado
-            start_date: new Date(),    //borrar        
-            start_hour: null, 
+            start_date: new Date(),    //borrar
+            start_hour: null,
             end_hour: null,
             date: new Date(),
-        
-        };        
+
+        };
     }
 
 
@@ -72,8 +72,8 @@ class NewBlockComponent extends Component{
             $(this.chronoModeBtn.current).popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
             $(this.manualModeBtn.current).popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
             $(this.chronoResetBtn.current).popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
-        }        
-        
+        }
+
     }
 
     componentDidUpdate(prevProps){
@@ -86,6 +86,7 @@ class NewBlockComponent extends Component{
     }
 
     componentWillMount(){
+        this.props.projectActions.fetchUserProjects(this.props.user.token);
         this.props.tagActions.fetchUserTags(this.props.user.token);
     }
 
@@ -115,7 +116,7 @@ class NewBlockComponent extends Component{
     }
 
     /** Al producirse un click en un checkbox de tag del dropdown del TagSelectorComponent */
-    handleOnClickTagSelector(tag_id){        
+    handleOnClickTagSelector(tag_id){
         let array_tags = this.state.tags.slice();
         for(let i=0; i<array_tags.length;i++){
             if(array_tags[i].id == tag_id)
@@ -132,16 +133,16 @@ class NewBlockComponent extends Component{
         if(e.target.id == "start_hour"){
             if(e.target.value.match(regex))
                 this.setState({
-                    start_hour: e.target.value          
+                    start_hour: e.target.value
                 });
         }
         else if(e.target.id == "end_hour"){
             if(e.target.value.match(regex))
                 this.setState({
-                    end_hour: e.target.value          
+                    end_hour: e.target.value
                 });
         }
-        
+
     }
 
     /** Al hacer click en botón de modo cronómetro */
@@ -160,11 +161,11 @@ class NewBlockComponent extends Component{
         });
         this.updateStartEndHours();
     }
-    
+
     /** Al cambiar la fecha en el selector de tipo calendario del componente DatePicker */
     handleDateChange(date) {
         this.setState({
-          date: date          
+          date: date
         });
     }
 
@@ -188,12 +189,12 @@ class NewBlockComponent extends Component{
             }
             else{
                 this.props.taskActions.createTaskError({message:lang[config.lang].err_end_hour_before});
-            }           
+            }
         }
         else{
             this.props.taskActions.createTaskError({message:lang[config.lang].err_hour_format});
         }
-        
+
     }
 
     /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
@@ -222,7 +223,7 @@ class NewBlockComponent extends Component{
             }, ()=>{
                 document.title = utils.secondsToFormatedString(this.state.time);
             });
-            
+
         }
     }
 
@@ -233,9 +234,9 @@ class NewBlockComponent extends Component{
         if(this.state.chrono_status == "paused"){ //iniciamos contador
             this.setState({
                 chrono_status: "running"
-            })            
+            })
         }
-        else if(this.state.chrono_status == "running"){  // paramos contador          
+        else if(this.state.chrono_status == "running"){  // paramos contador
           let end_seconds = utils.getHourInSecFromDate(new Date());
           let start_seconds = end_seconds-this.state.time;
           this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags, this.props.user.id);
@@ -284,11 +285,11 @@ class NewBlockComponent extends Component{
                 tags: tags
             });
             this.handleOnClickStart();
-        }        
+        }
     }
 
-    
-    
+
+
     render(){
         return(
             <div className="container-flex" >
@@ -309,16 +310,16 @@ class NewBlockComponent extends Component{
                             <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} date={this.state.date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
-                        
+
                         <div className="col-auto col-lg-auto order-3 order-lg-5 p-0 d-flex">
 
                                     <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
                                     }>
                                         { this.state.mode == "chrono" ?
-                                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>): 
+                                            (this.state.chrono_status == "paused" ? <i className="fas fa-play-circle"></i>:<i className="fas fa-stop-circle"></i>):
                                             (<i className="fas fa-check-circle"></i>)
-                                        }             
+                                        }
                                     </button>
                                     <div className="d-flex flex-column">
                                         <button id="btn-chrono-reset" ref={this.chronoResetBtn} style={this.state.chrono_status == "running" ? {display:"block"}:{display:"none"}} className={styles.btn} onClick={this.handleOnClickReset}><i className="fas fa-trash"></i></button>
@@ -327,8 +328,8 @@ class NewBlockComponent extends Component{
                                     </div>
 
                         </div>
-                         
-                        
+
+
                 </div>
             </div>
         )
