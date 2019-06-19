@@ -178,7 +178,6 @@ export function deleteTask(token, task_id){
 
         api.task.deleteTask(token, task_id).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(deleteTaskSuccess(data.data));
                 }

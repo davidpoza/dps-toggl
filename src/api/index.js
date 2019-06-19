@@ -107,7 +107,7 @@ const API = {
             );
         },
         deleteTask(token, task_id){
-            return fetch(api_url+"/items/tasks/"+task_id, {
+            return fetch(api_url+"/tasks/"+task_id, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -116,8 +116,8 @@ const API = {
                 }
             }).then(
                 function(response){
-                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
-                        return {data: {id: task_id}};
+                    if(response.status == 200) //204 (no-content) es el codigo de exito en el borrado segun directus
+                        return {data: {_id: task_id}};
                     else
                         return {error: {message: "Error on delete task"}};
                 }

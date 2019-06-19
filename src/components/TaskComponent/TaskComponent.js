@@ -178,8 +178,8 @@ class TaskComponent extends Component{
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
     handleOnDelete(e){
-        this.props.taskActions.deleteTask(this.props.token, this.props.task.id); //llama al api
-        this.props.taskActions.deleteTasksVisually(this.props.task.id, this.props.task.date);
+        this.props.taskActions.deleteTask(this.props.token, this.props.task._id); //llama al api
+        this.props.taskActions.deleteTasksVisually(this.props.task._id, this.props.task.date);
     }
 
     /**
