@@ -365,8 +365,8 @@ const API = {
         /**
          * Devuelve los proyectos de los que somos propietarios y aquellos en los que somos miembros
          */
-        fetchProjectsByMember(token, owner_id){
-            return fetch(api_url+"/items/projects?fields=*.*&filter[owner][eq]="+owner_id, {
+        fetchUserProjects(token){
+            return fetch(api_url+"/projects", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

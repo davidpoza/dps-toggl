@@ -114,7 +114,7 @@ export function changeSort(field){
 
 
 /**
- * 
+ *
  En este action creator necesitamos hacer dos llamadas a la api, aunque no sea del mismo reducer.
  Estamos operando con el reducer project y tengo que llamar a un action de user que opera con userReducer.
  Pero necesito garantizarme tener la lista de usuarios para el dropdown. No puedo asumir que vendrá cargado de la
@@ -131,18 +131,18 @@ export function fetchProjectById(token, project_id, user_id){
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
-                    dispatch(fetchProjectSuccess(data.data));                    
+                    dispatch(fetchProjectSuccess(data.data));
                     return api.user.fetchUsers(token, user_id);
-                }                    
+                }
                 else if(data.error)
                     dispatch(fetchProjectError(data.error))
-            }                          
+            }
         )
         .then(
             (data) =>{
                 if(data.data){
                     dispatch(userActions.fetchUsersSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(fetchProjectError(data.error))
             }
@@ -157,21 +157,21 @@ export function fetchProjectById(token, project_id, user_id){
 /**
  * Devuelve los proyectos de los que somos propietarios y aquellos en los que somos miembros
  */
-export function fetchProjectsByMember(token, owner_id){
+export function fetchUserProjects(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_PROJECTS_ATTEMPT
         });
 
-        api.project.fetchProjectsByMember(token, owner_id).then(
+        api.project.fetchUserProjects(token).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchProjectsSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(fetchProjectsError(data.error))
-            }                          
+            }
         )
         .catch(
             (error) => {
@@ -191,10 +191,10 @@ export function createProject(token, name, color, owner_id){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(createProjectSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(createProjectError(data.error))
-            }                          
+            }
         )
         .catch(
             (error) => {
@@ -208,22 +208,22 @@ export function updateProject(token, project_id, project_name, project_color, pr
         dispatch({
             type: UPDATE_PROJECT_ATTEMPT
         });
-       
+
         api.project.updateProject(token, project_id, project_name, project_color, project_members).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateProjectSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(updateProjectError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(updateProjectError(error));
         });
-        
-        
+
+
     }
 }
 
@@ -249,10 +249,10 @@ export function deleteProject(token, project_id){
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(deleteProjectSuccess(data.data));
-                }                    
+                }
                 else if(data.error)
                     dispatch(deleteProjectError(data.error))
-            }                          
+            }
         ).catch(
             (error) => {
                 dispatch(deleteProjectError(error));
