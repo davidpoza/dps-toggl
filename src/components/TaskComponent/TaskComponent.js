@@ -271,8 +271,7 @@ class TaskComponent extends Component{
     }
 
     handleOnChangeDate(date){
-
-        this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task.id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
+        this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
         console.log(date)
     }
 
