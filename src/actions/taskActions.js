@@ -220,13 +220,13 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
  * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTask.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
-export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
+export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
 
-        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags)
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
