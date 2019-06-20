@@ -294,10 +294,10 @@ class TaskComponent extends Component{
 
     handleOnBlurStartHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(this.state.end_hour, e.target.value)){
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, e.target.value+":00", null, -1, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, -1, null)
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-            this.handleUpdateTaskVisually(this.props.task.id, null, null, e.target.value+":00", null, -1, null);
+            this.handleUpdateTaskVisually(this.props.task._id, null, null, e.target.value+":00", null, -1, null);
             this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
         }
         else{ //si la hora es formato incorrecto volvemos el input al valor anterior
@@ -310,10 +310,10 @@ class TaskComponent extends Component{
 
     handleOnBlurEndHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(e.target.value, this.state.start_hour)){
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, e.target.value+":00", -1, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", -1, null)
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-            this.handleUpdateTaskVisually(this.props.task.id, null, null, null, e.target.value+":00", -1, null);
+            this.handleUpdateTaskVisually(this.props.task._id, null, null, null, e.target.value+":00", -1, null);
             this.props.taskActions.updateDateVisually(this.props.task.date, this.props.tasks_entities);
         }
         else{ //si la hora es formato incorrecto volvemos el input al valor anterior

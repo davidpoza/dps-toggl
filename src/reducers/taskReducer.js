@@ -125,7 +125,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASK_SUCCESS:
-            //action.payload = normalize(action.payload, schemas.taskEntity);
+            action.payload = normalize(action.payload, schemas.taskEntity);
             let new_tasks_entities = Object.assign({}, state.tasks_entities);
             new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
             let new_tasks_tags_entities = Object.assign({}, state.tasks_tags_entities);
