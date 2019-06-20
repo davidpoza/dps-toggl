@@ -25,7 +25,7 @@ class ProjectSectionContainer extends Component{
 
     render(){
         return(
-            <ProjectSectionComponent 
+            <ProjectSectionComponent
             user={this.props.user}
             user_loading={this.props.user_loading}
             project_loading={this.props.project_loading}
@@ -76,9 +76,9 @@ function sortBy(field="id", order="asc"){
       return(
       (a,b)=>{
         if(order == "asc")
-          return(a.created.localeCompare(b.created));
+          return(a.created_on.localeCompare(b.created_on));
         else if(order == "desc")
-          return(b.created.localeCompare(a.created));
+          return(b.created_on.localeCompare(a.created_on));
       })
 }
 
@@ -104,7 +104,7 @@ function mapStateToProps (state) {
       sortBy: state.projectReducer.sortBy
     }
   }
-  
+
   function mapDispatchToProps (dispatch) {
     return {
       userActions: bindActionCreators(userActions, dispatch),
@@ -113,5 +113,5 @@ function mapStateToProps (state) {
       tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSectionContainer);
