@@ -24,7 +24,7 @@ class TaskContainer extends Component{
           return(
             <div>
             <TaskComponent
-            toggle_id={"toggle-"+this.props.task.id}
+            toggle_id={"toggle-"+this.props.task._id}
             token={this.props.token}
             user_id={this.props.user_id}
             task={this.props.task}
@@ -36,7 +36,7 @@ class TaskContainer extends Component{
             taskActions={this.props.taskActions}
             onResume={this.props.onResume}
             />
-            <div style={{display: "none"}} id={"toggle-"+this.props.task.id}>
+            <div style={{display: "none"}} id={"toggle-"+this.props.task._id}>
               <TaskComponent
               token={this.props.token}
               user_id={this.props.user_id}
