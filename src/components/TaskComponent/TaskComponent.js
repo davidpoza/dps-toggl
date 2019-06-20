@@ -85,15 +85,23 @@ class TaskComponent extends Component{
    componentDidUpdate(prevProps){
         //if(prevProps.task.tags != this.props.task.tags)
 
+        // if(prevProps.task != this.props.task){
+        //     this.composeTagsListState();
+        //     this.setState({
+        //         desc: this.props.task.desc,
+        //         start_hour: utils.removeSeconds(this.props.task.start_hour),
+        //         end_hour: utils.removeSeconds(this.props.task.end_hour),
+        //     });
+        // }
    }
 
     handleOnClickDateBtn(){
         (!this.dropdown.current.style.display || this.dropdown.current.style.display=="none")?this.dropdown.current.style.display="block":this.dropdown.current.style.display="none";
-        }
+    }
 
     closeDateDropdown(){
         this.dropdown.current.style.display = "none";
-   }
+    }
 
 
    /** Esta función hace un join de dos arrays:
@@ -177,7 +185,7 @@ class TaskComponent extends Component{
 
     handleOnBlurDesc(e){
         /*actualizamos la tarea actual cambiando su descripción pero manteniendo fechas, tags e id del proyecto*/
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, e.target.value, null, null, null, -1, null);
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, e.target.value, null, null, null, -1, null);
     }
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
