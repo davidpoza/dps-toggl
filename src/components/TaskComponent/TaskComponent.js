@@ -242,31 +242,30 @@ class TaskComponent extends Component{
             tags: array_tags
         });
 
-        /*preparamos el array de tags que necesita el api.
-
-        Dicho array debe el objetos con un contenido u otro según si añadimos o borramos un tag a un task (m:m):
-        - añadimos: el objeto debe contener la propiedad tags_id que es un objeto con {id: tag_id}
-        - borramos: el objeto debe contener la propiedad id que debe ser el relation_id o id de la entrada en la tabla tasks_tags (m:m)
-                    y además particularmente el api directus usa una propiedad "$delete":true para indicar que queremos borrarla.
+        /*
+        Si estamos borrando preparamos un array delete_tags con los ObjectId borrados,
+        si estamos añadiendo preparamos un array add_tags con los ObjectId añadidos.
+        No podemos enviar al mismo tiempo un array add_tags y otro delete_tags, uno siempre debe ser null.
         */
-        let array_tags_api = [];
+        let add_tags = [];
+        let delete_tags = [];
         if(array_tags[index].checked == false) { //estamos borrando
-                    array_tags_api.push({
-                        id: array_tags[index].relation_id,
-                        "$delete": true
-                    });
-
+            delete_tags.push(
+                array_tags[index]._id
+            );
+            add_tags = null;
         }else{ //estampos añadiendo un tag
-            array_tags_api.push({
-                tags_id: { id: tag_id }
-            });
+            add_tags.push(
+                array_tags[index]._id
+            );
+            delete_tags = null;
         }
 
 
         /*actualizamos la tarea actual manteniendo su descripción, fechas y proyecto. cambiando solo el array de tags
         y acto seguido se realiza un fetch de todas las tareas. (esto lo voy a cambiar mas adelante para que solo haga el fetch de la tarea modificada)
         */
-        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, -1, array_tags_api)
+        this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, -1, add_tags, delete_tags)
 
     }
 
