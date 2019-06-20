@@ -23,17 +23,17 @@ class ProjectSectionComponent extends Component{
     }
 
     componentDidMount(){
-        this.props.projectActions.fetchProjectsByMember(this.props.user.token, this.props.user.id);
-       
+        this.props.projectActions.fetchUserProjects(this.props.user.token);
+
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.projectActions.fetchProjectsByMember(this.props.user.token, this.props.user.id);           
+            this.props.projectActions.fetchUserProjects(this.props.user.token);
         }
     }
-   
+
     //cuando marcamos un color, se cambia en el estado el color elegido para el nuevo proyecto
     handleColorPick(e){
         let project_color = utils.rgb2hex(window.getComputedStyle(e.target).color);
@@ -50,7 +50,7 @@ class ProjectSectionComponent extends Component{
         setTimeout(function (){
             this.projectNameInput.current.focus();
         }.bind(this), 500);
-       
+
     }
 
     handleCreateProject(){
@@ -72,7 +72,7 @@ class ProjectSectionComponent extends Component{
                     <button className="btn-lg btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}><i className="fas fa-plus-circle"></i></button>
                 </div>
                 <div className={"flex-grow-1 " + styles.projectlist}>
-                    <ProjectListComponent 
+                    <ProjectListComponent
                     user={this.props.user}
                     projects={this.props.projects}
                     history={this.props.history}
@@ -105,12 +105,12 @@ class ProjectSectionComponent extends Component{
                                             <i key={"color"+index} className={"fas fa-square "+styles.color} style={{color: e}} onClick={this.handleColorPick}></i>
                                         ))
                                     }
-                                     
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                                            
+
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary" onClick={this.handleCreateProject}>{lang[config.lang].btn_save_changes}</button>
