@@ -46,6 +46,9 @@ class TaskComponent extends Component{
         this.handleOnChangeEndHour = this.handleOnChangeEndHour.bind(this);
         this.handleOnBlurStartHour = this.handleOnBlurStartHour.bind(this);
         this.handleOnBlurEndHour = this.handleOnBlurEndHour.bind(this);
+        this.dropdown = React.createRef();
+        this.handleOnClickDateBtn = this.handleOnClickDateBtn.bind(this);
+        this.closeDateDropdown = this.closeDateDropdown.bind(this);
 
         /**
          * tags: almacena un array de tags con las propiedades:
@@ -82,15 +85,16 @@ class TaskComponent extends Component{
    componentDidUpdate(prevProps){
         //if(prevProps.task.tags != this.props.task.tags)
 
-        if(prevProps.task != this.props.task){
-            this.composeTagsListState();
-            this.setState({
-                desc: this.props.task.desc,
-                start_hour: utils.removeSeconds(this.props.task.start_hour),
-                end_hour: utils.removeSeconds(this.props.task.end_hour),
-            });
-        }
    }
+
+    handleOnClickDateBtn(){
+        (!this.dropdown.current.style.display || this.dropdown.current.style.display=="none")?this.dropdown.current.style.display="block":this.dropdown.current.style.display="none";
+        }
+
+    closeDateDropdown(){
+        this.dropdown.current.style.display = "none";
+   }
+
 
    /** Esta función hace un join de dos arrays:
     * - El array con todos los tags disponibles. (tendrán prop checked=false)
@@ -180,6 +184,7 @@ class TaskComponent extends Component{
     handleOnDelete(e){
         this.props.taskActions.deleteTask(this.props.token, this.props.task._id); //llama al api
         this.props.taskActions.deleteTasksVisually(this.props.task._id, this.props.task.date);
+        this.closeDateDropdown();
     }
 
     /**
@@ -271,7 +276,7 @@ class TaskComponent extends Component{
 
     handleOnChangeDate(date){
         this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
-        console.log(date)
+        this.closeDateDropdown();
     }
 
     handleOnChangeStartHour(e){
@@ -402,8 +407,8 @@ class TaskComponent extends Component{
                 </div>
                 <div className="col-auto order-2 order-lg-6 p-0">
                 <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project._id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
-                <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} data-toggle={!this.props.children?"dropdown":""} aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
-                    <div className={"dropdown-menu "+styles.dropdown_menu}>
+                <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.handleOnClickDateBtn:null} aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                    <div className={"dropdown-menu "+styles.dropdown_menu} ref={this.dropdown}>
                         <a className={"dropdown-item "+styles.menu_item} id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
                         <DatePicker
                         locale={es}
