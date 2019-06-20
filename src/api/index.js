@@ -123,7 +123,7 @@ const API = {
                 }
             );
         },
-        //en tags_id viene un array de tags_id, hay que componer un objeto
+        //en tags_id viene un array de tag ids
         updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
@@ -133,8 +133,8 @@ const API = {
             if(project_id!=-1) composingBody.project = project_id;
             if(tags!=null) composingBody.tags = tags;
 
-            return fetch(api_url+"/items/tasks/"+task_id, {
-                method: "PATCH",
+            return fetch(api_url+"/tasks/"+task_id, {
+                method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
@@ -162,7 +162,7 @@ const API = {
             );
         },
         fetchTask(token,task_id){
-            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*&single=1&filter[id][eq]="+task_id, {
+            return fetch(api_url+"/tasks/"+task_id, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
