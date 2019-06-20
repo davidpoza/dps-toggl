@@ -190,7 +190,7 @@ class TaskComponent extends Component{
         if(project_id == -1) //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
             project = null
         else{
-            project.id = project_id;
+            project._id = project_id;
             project.color = project_color; //obtenemos el color del elemento seleccionado actualmente en el DOM
             project.name = project_name; //el nombre del proyecto lo sacamos del elemento con esa id
         }
@@ -198,10 +198,10 @@ class TaskComponent extends Component{
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
         y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task.id, null, null, null, null, project!=null? project.id:null, null)
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, project!=null? project._id:null, null)
 
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.handleUpdateTaskVisually(this.props.task.id, null, null, null, null, project!=null? project.id:null, null);
+       this.handleUpdateTaskVisually(this.props.task._id, null, null, null, null, project!=null? project._id:null, null);
     }
 
 
