@@ -75,11 +75,7 @@ class TaskComponent extends Component{
    }
 
    componentDidMount(){
-    /*con esto queremos evitar que el dropdown se cierre antes de que salte el evento
-    que abre el datepicker para el cambio de fecha de un task*/
-      $(document).on('click', '.custom-input-datepicker', function (e) {
-        e.stopPropagation();
-      });
+
    }
 
    componentDidUpdate(prevProps){
