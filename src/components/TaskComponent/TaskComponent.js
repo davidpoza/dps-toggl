@@ -85,14 +85,14 @@ class TaskComponent extends Component{
    componentDidUpdate(prevProps){
         //if(prevProps.task.tags != this.props.task.tags)
 
-        // if(prevProps.task != this.props.task){
-        //     this.composeTagsListState();
-        //     this.setState({
-        //         desc: this.props.task.desc,
-        //         start_hour: utils.removeSeconds(this.props.task.start_hour),
-        //         end_hour: utils.removeSeconds(this.props.task.end_hour),
-        //     });
-        // }
+        if(prevProps.task._id != this.props.task._id){
+            this.composeTagsListState();
+            this.setState({
+                desc: this.props.task.desc,
+                start_hour: utils.removeSeconds(this.props.task.start_hour),
+                end_hour: utils.removeSeconds(this.props.task.end_hour),
+            });
+        }
    }
 
     handleOnClickDateBtn(){
