@@ -192,13 +192,13 @@ export function deleteTask(token, task_id){
 }
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
-export function updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags){
+export function updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
 
-        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags).then(
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
@@ -297,42 +297,9 @@ export function fetchTasks(token){
             type: FETCH_DATES_ATTEMPT
         });
 
-        // api.task.fetchAllDates(token, user_id)
-        // .then(
-        //     (data) => {
-        //         //directus devuelve los errores en una objeto error y los datos en uno data
-        //         if(data.data){
-        //             dispatch({
-        //                 type: FETCH_DATES_SUCCESS
-        //             });
-        //             return data.data.map((e)=>{
-        //                 dispatch({
-        //                     type: FETCH_TASKS_ATTEMPT
-        //                 });
-        //                 return api.task.fetchTasksByDate(token, e.date, user_id)
-        //             });
-        //         }
-        //         else if(data.error)
-        //             dispatch(fetchDatesError(data.error))
-        //     }
-        // )
-        // .then((data)=>
-        //     Promise.all(data)
-        // )
-
         api.task.fetchTasks(token)
-        .then(
-            (data)=>{
-                //aqui no controlo errores porque van dentro de cada fecha
-                //tendria que buscar la propiedad error en cada una de ellas...
-                dispatch(fetchTasksSuccess(data.data));
-
-            }
-        )
-        .catch(
-            (error) => {
-                dispatch(fetchTasksError(error));
-        });
+        .then((data) => dispatch(fetchTasksSuccess(data.data)))
+        .catch((error) => dispatch(fetchTasksError(error)));
     }
 }
 
