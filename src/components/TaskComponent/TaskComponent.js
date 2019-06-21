@@ -181,7 +181,7 @@ class TaskComponent extends Component{
 
     handleOnBlurDesc(e){
         /*actualizamos la tarea actual cambiando su descripción pero manteniendo fechas, tags e id del proyecto*/
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, e.target.value, null, null, null, -1, null);
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, e.target.value, null, null, null, -1, null, null);
     }
 
     /** manejador del evento de click sobre la opción borrar del menu adicional */
@@ -207,7 +207,7 @@ class TaskComponent extends Component{
         /*actualizamos la tarea actual manteniendo su descripción, fechas y tags, cambiando solo el id del proyecto
         y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
-       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, project!=null? project._id:null, null)
+       this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, project!=null? project._id:null, null, null)
 
        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
        this.handleUpdateTaskVisually(this.props.task._id, null, null, null, null, project!=null? project._id:null, null);
@@ -279,7 +279,7 @@ class TaskComponent extends Component{
     }
 
     handleOnChangeDate(date){
-        this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null)
+        this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, this.props.user_id, null, utils.standarizeDate(date), null, null, -1, null, null)
         this.closeDateDropdown();
     }
 
@@ -301,7 +301,7 @@ class TaskComponent extends Component{
 
     handleOnBlurStartHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(this.state.end_hour, e.target.value)){
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, -1, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, -1, null, null)
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task._id, null, null, e.target.value+":00", null, -1, null);
@@ -317,7 +317,7 @@ class TaskComponent extends Component{
 
     handleOnBlurEndHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(e.target.value, this.state.start_hour)){
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", -1, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", -1, null, null)
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task._id, null, null, null, e.target.value+":00", -1, null);
