@@ -49,7 +49,7 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     handleDeleteProject(){
-        this.props.projectActions.deleteProject(this.props.user.token, this.props.project_detail.id);
+        this.props.projectActions.deleteProject(this.props.user.token, this.props.project_detail._id);
         $(this.modal.current).modal('hide');
         this.props.history.push("/projects");
     }

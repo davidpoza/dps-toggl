@@ -227,35 +227,23 @@ export function updateProject(token, project_id, project_name, project_color, pr
     }
 }
 
-/**
-En este action creator necesito garantizarme que *antes* de borrar el proyecto he eliminado
-todas las referencias a él que podrían existir en las tareas y también las relaciones user-project
- */
 export function deleteProject(token, project_id){
     return (dispatch) => {
         dispatch({
             type: DELETE_PROJECT_ATTEMPT
         });
-        api.task.deleteProjectRefsFromTask(token, project_id).then(
-            (data) => {
-                if(data.data)
-                    return api.project.deleteProject(token, project_id);
-                if(data.error)
-                    dispatch(deleteProjectError(data.error))
-            }
-        )
-        .then(
-            (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){
-                    dispatch(deleteProjectSuccess(data.data));
+        return api.project.deleteProject(token, project_id)
+            .then(
+                (data) => {
+                    if(data.data){
+                        dispatch(deleteProjectSuccess(data.data));
+                    }
+                    else if(data.error)
+                        dispatch(deleteProjectError(data.error))
                 }
-                else if(data.error)
-                    dispatch(deleteProjectError(data.error))
-            }
-        ).catch(
-            (error) => {
-                dispatch(deleteProjectError(error));
-        });
+            ).catch(
+                (error) => {
+                    dispatch(deleteProjectError(error));
+            });
     }
 }
