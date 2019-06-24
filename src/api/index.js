@@ -228,46 +228,6 @@ const API = {
             );
         },
 
-        /*
-        Elimina todas las referencias a un proyecto concreto que pudiera haber en cualquier task.
-        Para ello primero necesito obtener la lista task id que tengan dicho proyecto asignado. (puede resultar una lista vacia).
-        Posteriormente hago una llamada a la api con un patch, indicando todos los task id separados por comas. En dicho patch
-        simplemente pongo a null la referencia a proyecto.
-        */
-        deleteProjectRefsFromTask(token, project_id){
-            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            }).then(
-                (response)=>response.json()
-            ).then(
-                (data)=>{
-                    if(data.data){
-                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
-                        if (tasks_id != "")
-                            return fetch(api_url+"/items/tasks/"+tasks_id, {
-                                method: "PATCH",
-                                headers: {
-                                    "Accept": "application/json",
-                                    "Content-Type": "application/json",
-                                    "Authorization": "Bearer "+ token
-                                },
-                                body: JSON.stringify({project:null})
-                            })
-                        else //no hay ninguna task en este proyecto, devolvemos una promesa resuelta vacia para continuar el chain
-                            return new Promise((resolve, reject)=>(resolve({data:{}})));
-                    }
-                    else if(data.error){
-                        throw data.error;
-                    }
-                }
-
-            )
-        },
 
         /*
         Elimina todas las relaciones user-project que existan
@@ -381,7 +341,7 @@ const API = {
         },
 
         deleteProject(token, project_id){
-            return fetch(api_url+"/items/projects/"+project_id, {
+            return fetch(api_url+"/projects/"+project_id, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -390,7 +350,7 @@ const API = {
                 }
             }).then(
                 (response)=>{
-                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
+                    if(response.status == 200)
                         return {data: {id: project_id}};
                     else
                         return {error: {message: "Error on delete project"}};
