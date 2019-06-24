@@ -66,7 +66,7 @@ const API = {
 
         //devuelve todos los usuarios menos a sí mismo
         fetchUsers(token, user_id){
-            return fetch(api_url+"/users?filter[id][neq]="+user_id, {
+            return fetch(api_url+"/users", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -359,11 +359,12 @@ const API = {
         },
 
         //members es una array de id de usuarios
-        updateProject(token, project_id, project_name, project_color, project_members){
+        updateProject(token, project_id, project_name, project_color, add_members, delete_members){
             let composingBody = {};
             if(project_name!=null) composingBody.name = project_name;
             if(project_color!=null) composingBody.color = project_color;
-            if(project_members!=null) composingBody.members = project_members;
+            if(add_members!=null) composingBody.add_members = add_members;
+            if(delete_members!=null) composingBody.delete_members = delete_members;
 
             return fetch(api_url+"/projects/"+project_id, {
                 method: "PUT",
