@@ -28,13 +28,13 @@ class ProjectDetailSectionComponent extends Component{
     componentWillMount(){
 
         //this.props.userActions.fetchUsers(this.props.user.token, this.props.user.id);
-        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id, this.props.user.id);
+        this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail._id, this.props.user._id);
     }
 
 
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail.id, this.props.user.id);
+            this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail._id, this.props.user._id);
         }
 
             
@@ -117,7 +117,7 @@ class ProjectDetailSectionComponent extends Component{
                     <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
                     <h2>{lang[config.lang].project_data_title}</h2>
                     <ul className="p-0">
-                    <li className={styles.li}>{lang[config.lang].project_creation}: {utils.standarDateToHuman(this.props.project_detail.created)}</li>
+                    <li className={styles.li}>{lang[config.lang].project_creation}: {utils.standarDateToHuman(this.props.project_detail.created_on)}</li>
                     <li className={styles.li}>{lang[config.lang].project_owner}: {this.props.project_detail.owner.first_name} {this.props.project_detail.owner.last_name}</li>
                     <li className={styles.li}>{lang[config.lang].project_hours}: {this.props.project_detail.hours}h.</li>
                     </ul>
