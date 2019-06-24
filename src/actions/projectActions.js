@@ -203,15 +203,14 @@ export function createProject(token, name, color, owner_id){
     }
 }
 
-export function updateProject(token, project_id, project_name, project_color, project_members){
+export function updateProject(token, project_id, project_name, project_color, add_members, delete_members){
     return (dispatch) => {
         dispatch({
             type: UPDATE_PROJECT_ATTEMPT
         });
 
-        api.project.updateProject(token, project_id, project_name, project_color, project_members).then(
+        api.project.updateProject(token, project_id, project_name, project_color, add_members, delete_members).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateProjectSuccess(data.data));
                 }

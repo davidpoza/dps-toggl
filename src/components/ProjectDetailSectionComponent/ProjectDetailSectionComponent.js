@@ -55,7 +55,7 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     handleOnSaveProject(){
-        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail._id, this.state.project_name, this.state.colorPicker, null);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail._id, this.state.project_name, this.state.colorPicker, null, null);
         this.props.history.push("/projects");
     }
 
@@ -67,11 +67,8 @@ class ProjectDetailSectionComponent extends Component{
 
     handleOnAddMember(new_member_id){
         let array_members_api = this.props.project_detail.members.slice(); //copiamos los miembros actuales
-        if(array_members_api.filter(e=>e.directus_users_id == new_member_id).length == 0) //comprobamos que no sea ya miembro
-            array_members_api.push({
-                directus_users_id: { id: new_member_id }
-            });
-        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
+        array_members_api.push(new_member_id);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail._id, null, null,  array_members_api, null);
     }
 
     handleOnDeleteMember(relation_id){
@@ -80,7 +77,7 @@ class ProjectDetailSectionComponent extends Component{
             array_members_api.push(
                 { id: relation_id, "$delete": true }
             );
-        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail._id, null, null, null, array_members_api);
     }
 
     render(){
@@ -125,7 +122,7 @@ class ProjectDetailSectionComponent extends Component{
 
                     <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
                         <h2>{lang[config.lang].members_title}</h2>
-                        <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail.id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
+                        <MemberSelectorComponent users={this.props.users} project_id={this.props.project_detail._id} userActions={this.props.userActions} onSelect={this.handleOnAddMember} />
                         <ul className="p-0">
                         {this.props.project_detail.member_relations &&  this.props.project_detail.member_relations.map((e,index)=>
                             {
