@@ -37,9 +37,9 @@ class ProjectDetailSectionComponent extends Component{
             this.props.projectActions.fetchProjectById(this.props.user.token, this.props.project_detail._id, this.props.user._id);
         }
 
-            
+
     }
-   
+
     //cuando marcamos un color, se cambia en el estado el color elegido para el nuevo proyecto
     handleColorPick(e){
         let project_color = utils.rgb2hex(window.getComputedStyle(e.target).color);
@@ -47,7 +47,7 @@ class ProjectDetailSectionComponent extends Component{
             colorPicker: project_color
         });
     }
-    
+
     handleDeleteProject(){
         this.props.projectActions.deleteProject(this.props.user.token, this.props.project_detail.id);
         $(this.modal.current).modal('hide');
@@ -55,7 +55,7 @@ class ProjectDetailSectionComponent extends Component{
     }
 
     handleOnSaveProject(){
-        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, this.state.project_name, this.state.colorPicker, null);
+        this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail._id, this.state.project_name, this.state.colorPicker, null);
         this.props.history.push("/projects");
     }
 
@@ -70,28 +70,28 @@ class ProjectDetailSectionComponent extends Component{
         if(array_members_api.filter(e=>e.directus_users_id == new_member_id).length == 0) //comprobamos que no sea ya miembro
             array_members_api.push({
                 directus_users_id: { id: new_member_id }
-            }); 
+            });
         this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
     }
-   
+
     handleOnDeleteMember(relation_id){
         let array_members_api = [];
         if(this.props.project_detail.members.filter(e=>e.id == relation_id).length == 1)
             array_members_api.push(
                 { id: relation_id, "$delete": true }
-            ); 
+            );
         this.props.projectActions.updateProject(this.props.user.token, this.props.project_detail.id, null, null,  array_members_api);
     }
 
-    render(){        
+    render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between "+styles.header}>
                     <h1>{lang[config.lang].project_detail_section_title}</h1>
                     <div>
-                        <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal"><i className="fas fa-trash"></i></button> 
+                        <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal"><i className="fas fa-trash"></i></button>
                         <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject}><i className="fas fa-save"></i></button>
-                    </div>                    
+                    </div>
                 </div>
                 <div className={"flex-grow-1 " + styles.project_detail}>
                     <div className="d-flex justify-content-between my-2 my-lg-5 mx-2 mx-lg-5">
@@ -108,7 +108,7 @@ class ProjectDetailSectionComponent extends Component{
                                             <i key={"color"+index} className={"fas fa-square "+styles.color} style={{color: e}} onClick={this.handleColorPick}></i>
                                         ))
                                     }
-                                    
+
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@ class ProjectDetailSectionComponent extends Component{
                         <ul className="p-0">
                         {this.props.project_detail.member_relations &&  this.props.project_detail.member_relations.map((e,index)=>
                             {
-                                if (e.member != undefined) 
+                                if (e.member != undefined)
                                 return(
                                 <li className={styles.member} key={"member"+index}>
                                 <div className="d-flex justify-content-between">
@@ -139,7 +139,7 @@ class ProjectDetailSectionComponent extends Component{
                                 </li>
                                 )
                             }
-                                
+
                         )}
                         </ul>
                     </div>
@@ -154,11 +154,11 @@ class ProjectDetailSectionComponent extends Component{
                             <div className="d-flex justify-content-between">
                                 <div>{t.desc} ({t.user_entity? t.user_entity.email : "propia"})</div>
                                 <div>{utils.standarDateToSpanish(t.date)} ({utils.diffHoursBetDates(t.start_hour,t.end_hour)})</div>
-                            </div>                                 
+                            </div>
                             </li>
                             )
                         }
-                                
+
                     )}
                     </ul>
                     </div>
@@ -169,7 +169,7 @@ class ProjectDetailSectionComponent extends Component{
                     <div className="modal-content">
                     <div className="modal-body">
                         <h5 className="modal-title" id="deleteProjectLabel">{lang[config.lang].title_delete_project_modal}</h5>
-                        
+
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
@@ -190,7 +190,7 @@ ProjectDetailSectionComponent.propTypes = {
     user:PropTypes.object.isRequired,
     user_loading: PropTypes.bool.isRequired,
     project_loading: PropTypes.bool.isRequired,
-    need_refreshing: PropTypes.bool.isRequired,    
+    need_refreshing: PropTypes.bool.isRequired,
     project_detail: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,
