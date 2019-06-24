@@ -333,7 +333,6 @@ const API = {
             );
         },
 
-        //en el futuro cuando implemente mi propia api limitaré la consulta de un proyecto si no se es miembro
         fetchProjectById(token, project_id){
             return fetch(api_url+"/projects/"+project_id, {
                 method: "GET",
@@ -406,8 +405,8 @@ const API = {
             if(project_color!=null) composingBody.color = project_color;
             if(project_members!=null) composingBody.members = project_members;
 
-            return fetch(api_url+"/items/projects/"+project_id, {
-                method: "PATCH",
+            return fetch(api_url+"/projects/"+project_id, {
+                method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
