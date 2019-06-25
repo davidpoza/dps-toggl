@@ -274,7 +274,7 @@ const API = {
 
     project: {
         createProject(token, name, color, owner_id){
-            return fetch(api_url+"/items/projects", {
+            return fetch(api_url+"/projects", {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
@@ -283,8 +283,7 @@ const API = {
                 },
                 body: JSON.stringify({
                     name: name,
-                    color: color,
-                    owner: owner_id
+                    color: color
                 })
             }).then(
                 (response)=>response.json()
