@@ -433,8 +433,8 @@ const API = {
         },
 
         updateTag(token, tag_id, tag_name){
-            return fetch(api_url+"/items/tags/"+tag_id, {
-                method: "PATCH",
+            return fetch(api_url+"/tags/"+tag_id, {
+                method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
