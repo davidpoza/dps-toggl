@@ -30,14 +30,14 @@ class TagSectionComponent extends Component{
     }
 
     componentDidMount(){
-        this.props.tagActions.fetchTagsByUser(this.props.user.token, this.props.user.id);
-       
+        this.props.tagActions.fetchUserTags(this.props.user.token);
+
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.tagActions.fetchTagsByUser(this.props.user.token, this.props.user.id);         
+            this.props.tagActions.fetchUserTags(this.props.user.token);
         }
     }
 
@@ -46,7 +46,7 @@ class TagSectionComponent extends Component{
         setTimeout(function (){
             this.tagNameInputCreate.current.focus();
         }.bind(this), 500);
-       
+
     }
 
     handleCreateTag(){
@@ -113,7 +113,7 @@ class TagSectionComponent extends Component{
                         </button>
                     </div>
                     <div className={"modal-body "+styles.modal_body}>
-                        <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder} onKeyPress={this.handleOnKeyPressForCreateModal}></input>                                            
+                        <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder} onKeyPress={this.handleOnKeyPressForCreateModal}></input>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary" onClick={this.handleCreateTag}>{lang[config.lang].btn_save_changes}</button>
@@ -133,7 +133,7 @@ class TagSectionComponent extends Component{
                         </button>
                     </div>
                     <div className={"modal-body "+styles.modal_body}>
-                        <input className={styles.input} ref={this.tagNameInputUpdate} placeholder={lang[config.lang].tag_name_placeholder}></input>                                            
+                        <input className={styles.input} ref={this.tagNameInputUpdate} placeholder={lang[config.lang].tag_name_placeholder}></input>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary" onClick={this.handleUpdateTag}>{lang[config.lang].btn_save_changes}</button>
@@ -148,7 +148,7 @@ class TagSectionComponent extends Component{
                     <div className="modal-content">
                     <div className="modal-body">
                         <h5 className="modal-title" id="deleteTagLabel">{lang[config.lang].btn_delete_tag}</h5>
-                        
+
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
