@@ -47,7 +47,7 @@ class LoggedInfoComponent extends Component{
                     {this.props.user.token != null ?
                         (
                             <div className={styles.username}>
-                                <p className="m-0">{this.props.user.first_name} {this.props.user.last_name}</p>
+                                <p className="m-0">{this.props.user.first_name}</p>
                                 <p className="m-0"><span className={styles.link} onClick={this.props.userActions.logoutUser}>Logout</span></p>
                             </div>
                         ):
