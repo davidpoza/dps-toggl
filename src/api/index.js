@@ -415,7 +415,7 @@ const API = {
             );
         },
         deleteTag(token, tag_id){
-            return fetch(api_url+"/items/tags/"+tag_id, {
+            return fetch(api_url+"/tags/"+tag_id, {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -424,7 +424,7 @@ const API = {
                 }
             }).then(
                 (response)=>{
-                    if(response.status == 204) //204 (no-content) es el codigo de exito en el borrado segun directus
+                    if(response.status == 200)
                         return {data: {id: tag_id}};
                     else
                         return {error: {message: "Error on delete tag"}};
