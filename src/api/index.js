@@ -398,8 +398,8 @@ const API = {
                 (data) => data
             );
         },
-        createTag(token, name, user_id){
-            return fetch(api_url+"/items/tags", {
+        createTag(token, name){
+            return fetch(api_url+"/tags", {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
@@ -407,9 +407,7 @@ const API = {
                     "Authorization": "Bearer "+ token
                 },
                 body: JSON.stringify({
-                    name: name,
-                    user: user_id
-                })
+                    name: name                })
             }).then(
                 (response)=>response.json()
             ).then(

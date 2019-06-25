@@ -95,7 +95,7 @@ export function createTag(token, name, user_id){
             type: CREATE_TAG_ATTEMPT
         });
 
-        api.tag.createTag(token, name, user_id).then(
+        api.tag.createTag(token, name).then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
