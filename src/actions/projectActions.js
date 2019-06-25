@@ -165,7 +165,6 @@ export function fetchUserProjects(token){
 
         api.project.fetchUserProjects(token).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchProjectsSuccess(data.data));
                 }
