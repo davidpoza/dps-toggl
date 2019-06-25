@@ -27,20 +27,20 @@ export function fetchBarDataError(error){
 
 /* Action creators asíncronos (thunks) */
 
-export function fetchBarData(token, user_id, start_date, end_date){
+export function fetchBarData(token, start_date, end_date){
     return (dispatch) => {
         dispatch({
             type: FETCH_DASHBOARD_BAR_DATA_ATTEMPT
         });
-       
-        api.dashboard.fetchAllDatesBetween(token, user_id, start_date, end_date)
+
+        api.dashboard.fetchAllDatesBetween(token, start_date, end_date)
         .then(
             (data) => {
                 //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data){
-                    dispatch(fetchBarDataSuccess(data));                   
-                }                    
-            }                          
+                    dispatch(fetchBarDataSuccess(data));
+                }
+            }
         )
         .catch(
             (error) => {

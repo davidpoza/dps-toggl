@@ -177,20 +177,7 @@ const API = {
                 (data) => data
             );
         },
-        // fetchAllDates(token, user_id){
-        //     return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&groups=date&sort=-date", {
-        //         method: "GET",
-        //         headers: {
-        //             "Accept": "application/json",
-        //             "Content-Type": "application/json",
-        //             "Authorization": "Bearer "+ token
-        //         }
-        //     }).then(
-        //         (response)=>response.json()
-        //     ).then(
-        //         (data) => data
-        //     );
-        // },
+
         fetchTasksByDate(token, date, user_id){
             return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*,user.id&filter[user][eq]="+user_id+"&filter[date][eq]="+date, {
                 method: "GET",
@@ -450,37 +437,18 @@ const API = {
     },
 
     dashboard: {
-        fetchAllDatesBetween(token, user_id, start_date, end_date){
-            return fetch(api_url+"/items/tasks?fields=date,user.id&filter[user][eq]="+user_id+"&filter[date][between]="+start_date+","+end_date+"&groups=date&sort=-date", {
+        fetchAllDatesBetween(token, start_date, end_date){
+            return fetch(api_url+"/tasks?date_start="+start_date+"&date_end="+end_date, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
                     "Authorization": "Bearer "+ token
                 }
-            }).then(
-                (response)=>response.json()
-            ).then(
-                (data) => data
-            ).then(
-                (data) =>{
-                    if(data.data){
-                        return data.data.map(d=>{
-                            return API.task.fetchTasksByDate(token, d.date, user_id)
-                        });
-                    }
-                    else if(data.error){
-                        throw new Error(data.error);
-                    }
-                }
-            ).then(
-                (data) =>
-                    Promise.all(data)
-            ).then(
-                (data) => data
-            ).catch(
-                (err) => err
-            )
+            })
+            .then(response => response.json())
+            .then(data => data.data)
+            .catch(err => err)
         },
 
 
