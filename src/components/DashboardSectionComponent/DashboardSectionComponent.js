@@ -30,15 +30,15 @@ class DashboardSectionComponent extends Component{
     }
 
     componentDidMount(){
-        // por defecto mostramos el intervalo de la última semana
-        this.handleOnChangePresetDate("preset_last_week");
+        // por defecto mostramos el último preset que usamos o en caso de no existir last_preset, el intervalo de la última semana
+        this.handleOnChangePresetDate(this.props.preset ? this.props.preset : "preset_last_week");
 
     }
 
     componentDidUpdate(prevProps, prevState){
         //hacemos la consulta cada vez que cambian las fechas
        if(prevState.start_date != this.state.start_date || prevState.end_date != this.state.end_date){
-           this.props.dashboardActions.fetchBarData(this.props.token, utils.standarizeDate(this.state.start_date), utils.standarizeDate(this.state.end_date));
+           this.props.dashboardActions.fetchBarData(this.props.token, this.state.start_date, this.state.end_date, this.state.preset);
        }
 
 
@@ -73,8 +73,8 @@ class DashboardSectionComponent extends Component{
      */
     handleOnChangePresetDate(preset){
         if(typeof preset == "object")preset=preset.target.id;
-        let start_date="";
-        let end_date="";
+        let start_date=this.props.date_start ? this.props.date_start: "";
+        let end_date=this.props.date_end ? this.props.date_end : "";
         let today = new Date(Date.now());
         let day = today.getDay()==0?7:today.getDay();
         switch(preset){
