@@ -27,20 +27,20 @@ class DashboardSectionComponent extends Component{
             end_date: null, //objeto Date
             preset: ""
         }
-    }   
+    }
 
     componentDidMount(){
         // por defecto mostramos el intervalo de la última semana
         this.handleOnChangePresetDate("preset_last_week");
-        
+
     }
 
     componentDidUpdate(prevProps, prevState){
         //hacemos la consulta cada vez que cambian las fechas
        if(prevState.start_date != this.state.start_date || prevState.end_date != this.state.end_date){
-           this.props.dashboardActions.fetchBarData(this.props.token, this.props.user_id, utils.standarizeDate(this.state.start_date), utils.standarizeDate(this.state.end_date));
+           this.props.dashboardActions.fetchBarData(this.props.token, utils.standarizeDate(this.state.start_date), utils.standarizeDate(this.state.end_date));
        }
-        
+
 
 
     }
@@ -82,7 +82,7 @@ class DashboardSectionComponent extends Component{
                 start_date = today;
                 end_date = today;
                 break;
-            case "preset_week":                
+            case "preset_week":
                 let monday = new Date();
                 monday.setDate(today.getDate() - day + 1);
                 let sunday = new Date(monday);
@@ -126,7 +126,7 @@ class DashboardSectionComponent extends Component{
                 end_date = new Date(today.getFullYear()-1, 11, 31);
                 break;
 
-            
+
         }
         this.setState({
             start_date: start_date,
@@ -148,22 +148,22 @@ class DashboardSectionComponent extends Component{
                         {!utils.isMobile() && <h2>{lang[config.lang].dashboard_date_dropdown_title}</h2>}
                         <DatePicker
                             inline
-                            locale={es} 
+                            locale={es}
                             popperPlacement="left"
                             dateFormat="dd/MM/yyyy"
                             calendarClassName={styles.calendar}
                             selected={this.state.start_date}
-                            onSelect={this.handleOnChangeStartDate}                            
+                            onSelect={this.handleOnChangeStartDate}
                         />
 
                         <DatePicker
                             inline
-                            locale={es} 
+                            locale={es}
                             popperPlacement="left"
                             dateFormat="dd/MM/yyyy"
                             calendarClassName={styles.calendar}
                             selected={this.state.end_date}
-                            onSelect={this.handleOnChangeEndDate}                            
+                            onSelect={this.handleOnChangeEndDate}
                         />
 
                         <div className={"container "+styles.date_preset_container}>
@@ -195,7 +195,7 @@ class DashboardSectionComponent extends Component{
                     </div>
                     <div>
                         <ul className={styles.project_list}>
-                        {this.props.data.entities && 
+                        {this.props.data.entities &&
                         this.props.data.entities.projects &&
                         Object.keys(this.props.data.entities.projects).map((p,index)=>{
                             return (
@@ -209,10 +209,10 @@ class DashboardSectionComponent extends Component{
                     <div className={"p-0 p-xl-5 "+styles.piechart_height}>
                     {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
                         <PieChartComponent data={this.props.data}/>
-                    }                     
+                    }
                     </div>
                 </div>
-                
+
                 <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
             </div>
         )
