@@ -2,7 +2,7 @@
  * lang[config.lang].desc_placeholder_chrono_mode
  */
 const lang = {
-    ES: { 
+    ES: {
         desc_placeholder_chrono_mode: "¿En qué vas a trabajar?",
         desc_placeholder_manual_mode: "¿En qué has estado trabajando?",
         hover_chrono_mode: "Modo cronómetro",
@@ -48,7 +48,7 @@ const lang = {
         project_data_title: "Datos de proyecto",
         project_tasks_title: "Tareas de proyecto",
         project_owner: "Propietario",
-        project_hours: "Horas",
+        project_hours: "Horas imputadas",
         project_creation: "Creación",
         dashboard_date_dropdown_title: "Intervalo de tiempo",
         date_today: "Hoy",
