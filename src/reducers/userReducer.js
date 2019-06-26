@@ -2,6 +2,9 @@ import {
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
     LOGIN_USER_ATTEMPT,
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER_FAIL,
+    REGISTER_USER_ATTEMPT,
     LOGOUT_USER,
     REFRESH_TOKEN_ATTEMPT,
     REFRESH_TOKEN_FAIL,
@@ -38,6 +41,24 @@ export default function userReducer (state = initialState.userReducer, action){
                 error: {}
             }
         case LOGIN_USER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case REGISTER_USER_ATTEMPT:
+                return {
+                    ...state,
+                    loading: true,
+                    error: {}
+                }
+        case REGISTER_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: {}
+            }
+        case REGISTER_USER_FAIL:
             return {
                 ...state,
                 loading: false,

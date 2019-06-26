@@ -30,6 +30,24 @@ const API = {
             );
         },
 
+        register(email, password){
+            return fetch(api_url+"/auth/register", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }).then(
+                (response)=>response.json()
+            ).then(
+                (data) => data
+            );
+        },
+
         refreshToken(token){
             return fetch(api_url+"/auth/refresh", {
                 method: "POST",

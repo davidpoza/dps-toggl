@@ -3,7 +3,7 @@
 .form_signin {
     width: 100%;
     max-width: 420px;
-    padding: 50px 30px 50px 30px;
+    padding: 50px 30px 30px 30px;
     margin: 15vh auto;
     @media screen and (max-resolution: 199dpi) { //desktop
       border: 1px solid $primary-color;
@@ -15,11 +15,33 @@
       text-align: center;
       margin-bottom: 40px;
     }
+
+    h2{
+      color: grey;
+      font-size: 1em;
+      text-align: center;
+      font-weight: normal;
+      padding: 0 20px 0 20px;
+    }
+
     .form_label_group {
       position: relative;
       margin-bottom: 1rem;
     }
 
+    .p_login_link {
+      padding-top: 40px;
+      text-align: center;
+    }
+
+    a:link, a:hover, a:visited{
+      color: $primary-color;
+      font-weight: bold;
+    }
+
+    .invalid_form_control{
+      background-color: #ffe2e8;
+    }
   }
 
 

@@ -10,7 +10,10 @@ import {
     CLEAN_USER_MESSAGE,
     FETCH_USERS_ATTEMPT,
     FETCH_USERS_FAIL,
-    FETCH_USERS_SUCCESS
+    FETCH_USERS_SUCCESS,
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER_FAIL,
+    REGISTER_USER_ATTEMPT
 } from './types';
 
 
@@ -30,6 +33,20 @@ export function loginUserSuccess(userData){
 export function loginUserError(error){
     return {
         type: LOGIN_USER_FAIL,
+        payload: error
+    }
+}
+
+export function registerUserSuccess(userData){
+    return {
+        type: REGISTER_USER_SUCCESS,
+        payload: userData
+    }
+}
+
+export function registerUserError(error){
+    return {
+        type: REGISTER_USER_FAIL,
         payload: error
     }
 }
@@ -85,14 +102,35 @@ export function loginUser(email, password, history){
 
         api.user.login(email, password).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(loginUserSuccess(data.data));
                     history.push("/");
-                }                    
+                }
                 else if(data.error) //error en la peticion
                     dispatch(loginUserError(data.error))
-            }                          
+            }
+        ).catch(
+            (error) => { //error en fetch, entonces error en la conexion
+                dispatch(loginUserError(error));
+        });
+    }
+}
+
+export function registerUser(email, password, history){
+    return (dispatch) => {
+        dispatch({
+            type: REGISTER_USER_ATTEMPT
+        });
+
+        api.user.register(email, password).then(
+            (data) => {
+                if(data.data){
+                    dispatch(registerUserSuccess(data.data));
+                    history.push("/login");
+                }
+                else if(data.error) //error en la peticion
+                    dispatch(registerUserError(data.error))
+            }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(loginUserError(error));
@@ -108,13 +146,12 @@ export function refreshToken(token){
 
         api.user.refreshToken(token).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(refreshTokenSuccess(data.data.token));
-                }                    
+                }
                 else if(data.error) //error en la peticion
                     dispatch(refreshTokenError(data.error))
-            }                          
+            }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(refreshTokenError(error));
@@ -131,13 +168,12 @@ export function fetchUsers(token, user_id){
 
         api.user.fetchUsers(token, user_id).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
-                if(data.data){                    
+                if(data.data){
                     dispatch(fetchUsersSuccess(data.data));
-                }                    
+                }
                 else if(data.error) //error en la peticion
                     dispatch(fetchUsersError(data.error))
-            }                          
+            }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(refreshTokenError(error));
