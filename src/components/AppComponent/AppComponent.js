@@ -15,9 +15,13 @@ class AppComponent extends Component{
         return(
             <div className={"container-flex " + styles.containerflex}>
                 <div className={"row " + styles.row}>
-                    <div className={"col-auto  " + styles.menu}>
-                        <MenuComponent />
-                    </div>
+                    {
+                        this.props.token ?
+                        <div className={"col-auto  " + styles.menu}>
+                            <MenuComponent />
+                        </div> :
+                        null
+                    }
                     <div className={"col d-flex flex-column p-0 " + styles.content}>
                         <MainSectionContainer />
                     </div>

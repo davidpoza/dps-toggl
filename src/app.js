@@ -9,7 +9,7 @@ import {HashRouter} from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 
-import AppComponent from './components/AppComponent/AppComponent';
+import AppContainer from './components/AppComponent/AppContainer';
 import configureStore from './store/configureStore';
 import './store/configureStore';
 import initialState from './reducers/initialState';
@@ -21,7 +21,7 @@ ReactDOM.render(
 
 <Provider store={store}>
     <HashRouter>
-        <AppComponent />
+        <AppContainer />
     </HashRouter>
 </Provider>,
 
