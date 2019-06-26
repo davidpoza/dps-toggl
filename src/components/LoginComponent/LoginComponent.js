@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import config from '../../config/config';
 import lang from '../../config/lang';
 import styles from './LoginComponent.scss';
+import logo from '../../images/logo_small.png';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
 
@@ -57,6 +58,7 @@ class LoginComponent extends Component{
         else
             return(
                 <form className={styles.form_signin}>
+                    <img src={logo} />
                     <h1>{lang[config.lang].login_section_h1}</h1>
                     <LoadingComponent isLoading={this.props.user.loading} />
 
