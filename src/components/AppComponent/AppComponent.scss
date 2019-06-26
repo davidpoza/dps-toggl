@@ -31,7 +31,8 @@ body{
 
 
 .content{
-    background-color: white;
+    background: white;
+    background: linear-gradient(to top, rgb(197, 177, 224) 0%, rgb(255, 255, 255) 40%);
     width: calc(100% - 160px);
 }
 
