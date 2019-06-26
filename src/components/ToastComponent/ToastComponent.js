@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import styles from './ToastComponent.scss';
 
 
-/** Este componente muestra mensajes flotantes apilados en la esquina inferior derecha 
+/** Este componente muestra mensajes flotantes apilados en la esquina inferior derecha
  * usando bootstrap toast.
 */
 class ToastComponent extends Component{
     constructor(props){
         super(props);
-  
+
         this.thereAreMessages = this.thereAreMessages.bind(this);
         this.emptyMessages = this.emptyMessages.bind(this);
     }
@@ -19,17 +19,17 @@ class ToastComponent extends Component{
     componentDidMount() {
         this.emptyMessages();
     }
-    
+
     componentDidUpdate(){
         if (this.thereAreMessages()){
             $(this.toast).toast("show");
-            setTimeout(()=>this.emptyMessages(), 1000);
+            setTimeout(()=>this.emptyMessages(), 2000);
         }
         else{
             $(this.toast).toast("hide");
-            
+
         }
-           
+
     }
 
     emptyMessages(){
@@ -49,7 +49,7 @@ class ToastComponent extends Component{
 
                 <div className={"toast " + styles.mytoast} ref={element => this.toast = element} role="alert" aria-live="assertive" aria-atomic="true" data-delay="6000">
                     <div className={"toast-header " + styles.header}>
-                        <i className="fas fa-exclamation-triangle"></i> 
+                        <i className="fas fa-exclamation-triangle"></i>
                         <strong className="mr-auto">Error</strong>
                         <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

@@ -3,9 +3,10 @@ import {Route} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
+
 import styles from './MainSectionComponent.scss';
 import LoginContainer from '../LoginComponent/LoginContainer';
-
+import SignupContainer from '../SignupComponent/SignupContainer';
 import PrivateRoute from '../PrivateRouteComponent/PrivateRouteComponent';
 import ConfigComponent from '../ConfigComponent/ConfigComponent';
 import ToastComponent from '../ToastComponent/ToastComponent';
@@ -24,7 +25,7 @@ class MainSectionComponent extends Component{
     render(){
         return(
             <div>
-                
+
                 <PrivateRoute exact path="/" component={TimerSectionContainer} component_props = {{}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionContainer} component_props ={{}}/>
@@ -32,18 +33,19 @@ class MainSectionComponent extends Component{
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <PrivateRoute exact path="/dashboard" component={DashboardSectionContainer} component_props = {{}} />
                 <Route path="/login" component={LoginContainer} />
+                <Route path="/signup" component={SignupContainer} />
 
                     <div className={styles.toasts}>
-                        <ToastComponent 
+                        <ToastComponent
                         taskMessage={this.props.task_error_message}
                         userMessage={this.props.user_error_message}
                         projectMessage={this.props.project_error_message}
-                        tagMessage={this.props.tag_error_message} 
+                        tagMessage={this.props.tag_error_message}
                         userActions={this.props.userActions}
                         taskActions={this.props.taskActions}
                         projectActions={this.props.projectActions}
                         tagActions={this.props.tagActions}/>
-                    </div>                 
+                    </div>
 
             </div>
         )

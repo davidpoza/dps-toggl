@@ -2,14 +2,19 @@ import config from '../config/config.js';
 import lang from '../config/lang.js';
 
 const utils = {
+    validEmail: (email) => {
+        let re = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return re.test(email);
+    },
+
     /** Convierte un cantidad de segundos transcurridos a una cadena hh:mm:ss */
     secondsToFormatedString(time){
         let aux = time;
         let hours = parseInt(time / 3600);
-        aux = time % 3600;       
+        aux = time % 3600;
         let min = parseInt(aux / 60);
         let sec = aux % 60;
-    
+
         return `${this.pad(hours,2)}:${this.pad(min,2)}:${this.pad(sec,2)}`;
     },
 
@@ -57,7 +62,7 @@ const utils = {
     standarizeDate(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
     },
-    
+
     /** Convierte un objeto Date a una cadena YYYY-MM-DD */
     removeHour(date){
         return `${date.getFullYear()}-${this.pad(date.getMonth()+1,2)}-${this.pad(date.getDate(),2)}`;
@@ -129,7 +134,7 @@ const utils = {
             let start_in_secs = parseInt(sec1) + parseInt(min1*60) + parseInt(hour1*60*60);
             let end_in_secs = parseInt(sec2) + parseInt(min2*60) + parseInt(hour2*60*60);
             res += end_in_secs-start_in_secs;
-        });       
+        });
         return(this.secondsToFormatedString(res));
     },
 
@@ -187,7 +192,7 @@ const utils = {
              function hex(x) {
                   return ("0" + parseInt(x).toString(16)).slice(-2);
              }
-             return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]); 
+             return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
         }
     },
 
@@ -207,7 +212,7 @@ const utils = {
     },
 
     /**recibe date en formato Date y devuleve la fecha pasados x días*/
-    addDaysToDate(date, days) {        
+    addDaysToDate(date, days) {
         date.setDate(date.getDate() + days);
         return date;
     },
@@ -217,10 +222,10 @@ const utils = {
         let next_month = new Date(date.getFullYear(), date.getMonth()+1, 1);
         return next_month;
     },
-    
+
     /**recibe fechas como objeto Date y devuelve un array de fechas en ese mismo formato
      * puede devolver un array de días por defecto o bien un array de meses.
-     * 
+     *
      * type: "days" o "months"
      */
     getDatesRange(startDate, stopDate, type="days") {
@@ -238,7 +243,7 @@ const utils = {
                 currentDate = this.getNextMonth(currentDate);
             }
         }
-                
+
         return dateArray;
     }
 }
