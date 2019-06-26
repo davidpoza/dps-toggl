@@ -6,6 +6,7 @@ import {NavLink} from 'react-router-dom';
 import config from '../../config/config';
 import lang from '../../config/lang';
 import styles from './SignupComponent.scss';
+import logo from '../../images/logo_small.png';
 import utils from '../../utils'
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
@@ -61,6 +62,7 @@ class SignupComponent extends Component{
         else
             return(
                 <form autoComplete="off" className={styles.form_signin}>
+                    <img src={logo} />
                     <h1>{lang[config.lang].signup_section_h1}</h1>
                     <h2>{lang[config.lang].signup_section_h2}</h2>
                     <LoadingComponent isLoading={this.props.user.loading} />
