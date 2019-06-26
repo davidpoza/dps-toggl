@@ -16,6 +16,7 @@ class AppContainer extends Component{
         return(
             <AppComponent
             token = {this.props.token}
+            admin = {this.props.admin}
             />
         )
     }
@@ -24,6 +25,7 @@ class AppContainer extends Component{
 function mapStateToProps (state) {
     return {
       token: state.userReducer.token,
+      admin: state.userReducer.admin
     }
   }
 

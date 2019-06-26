@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+
 
 import styles from './AppComponent.scss';
 import MenuComponent from '../MenuComponent/MenuComponent';
@@ -18,7 +19,7 @@ class AppComponent extends Component{
                     {
                         this.props.token ?
                         <div className={"col-auto  " + styles.menu}>
-                            <MenuComponent />
+                            <MenuComponent admin={this.props.admin?this.props.admin:false}/>
                         </div> :
                         null
                     }

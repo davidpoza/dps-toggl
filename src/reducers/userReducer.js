@@ -37,6 +37,7 @@ export default function userReducer (state = initialState.userReducer, action){
                 first_name: action.payload.first_name,
                 last_name: action.payload.last_name,
                 avatar: action.payload.avatar,
+                admin: action.payload.admin,
                 loading: false,
                 error: {}
             }
