@@ -13,7 +13,8 @@ import {
     FETCH_USERS_SUCCESS,
     REGISTER_USER_SUCCESS,
     REGISTER_USER_FAIL,
-    REGISTER_USER_ATTEMPT
+    REGISTER_USER_ATTEMPT,
+    CHANGE_USER_SORT
 } from './types';
 
 
@@ -92,6 +93,13 @@ export function cleanMessage(){
     }
 }
 
+export function changeSort(field){
+    return {
+        type: CHANGE_USER_SORT,
+        payload: {field}
+    }
+}
+
 /* Action creators asíncronos - thunks */
 
 export function loginUser(email, password, history){
@@ -160,13 +168,13 @@ export function refreshToken(token){
 }
 
 //devuelve todos los usuarios menos a sí mismo
-export function fetchUsers(token, user_id){
+export function fetchUsers(token){
     return (dispatch) => {
         dispatch({
             type: FETCH_USERS_ATTEMPT
         });
 
-        api.user.fetchUsers(token, user_id).then(
+        api.user.fetchUsers(token).then(
             (data) => {
                 if(data.data){
                     dispatch(fetchUsersSuccess(data.data));

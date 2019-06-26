@@ -129,10 +129,9 @@ export function fetchProjectById(token, project_id, user_id){
 
         api.project.fetchProjectById(token, project_id).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchProjectSuccess(data.data));
-                    return api.user.fetchUsers(token, user_id);
+                    return api.user.fetchUsers(token);
                 }
                 else if(data.error)
                     dispatch(fetchProjectError(data.error))

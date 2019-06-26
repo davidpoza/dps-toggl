@@ -15,7 +15,7 @@ class ProjectListComponent extends Component{
 
         this.state = {
 
-        };        
+        };
     }
 
     componentDidUpdate(prevProps){
@@ -30,28 +30,33 @@ class ProjectListComponent extends Component{
         return(
             <div className="d-flex flex-column">
             <div className={styles.header}>
-                <div className={"container-flex "}>
+                <div className={"container-flex " + styles.paddings}>
                     <div className={"row justify-content-between " } >
-                        <div className={"col-6"} >
-                            {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"name")}></i>          
+                        { !utils.isMobile() ?
+                        <div className={"col-6"} onClick={this.handleChangeSort.bind(this,"name")}>
+                            {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
+                        </div>:
+                        <div className={"col-12"} onClick={this.handleChangeSort.bind(this,"name")}>
+                        {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
                         </div>
+                        }
                         { !utils.isMobile() &&
-                            <div className={"col-2"} >
-                                {lang[config.lang].th_project_created} <i className={this.props.sortBy!="date" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"date")}></i>          
+                            <div className={"col-2"} onClick={this.handleChangeSort.bind(this,"date")}>
+                                {lang[config.lang].th_project_created} <i className={this.props.sortBy!="date" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
                             </div>
                         }
                         { !utils.isMobile() &&
-                            <div className={"col-2"} >
-                                {lang[config.lang].th_project_hours} <i className={this.props.sortBy!="hours" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"hours")}></i>          
+                            <div className={"col-2"} onClick={this.handleChangeSort.bind(this,"hours")}>
+                                {lang[config.lang].th_project_hours} <i className={this.props.sortBy!="hours" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
                             </div>
                         }
-                        { !utils.isMobile() &&  
-                            <div className={"col-2"} >
-                                {lang[config.lang].th_project_tasks} <i className={this.props.sortBy!="tasks" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} onClick={this.handleChangeSort.bind(this,"tasks")}></i>          
-                            </div> 
-                        }                    
+                        { !utils.isMobile() &&
+                            <div className={"col-2"} onClick={this.handleChangeSort.bind(this,"tasks")}>
+                                {lang[config.lang].th_project_tasks} <i className={this.props.sortBy!="tasks" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
+                            </div>
+                        }
                     </div>
-                </div> 
+                </div>
                </div>
                <ul className={"p-0 container-flex "+styles.list }>
                {
@@ -61,7 +66,7 @@ class ProjectListComponent extends Component{
                }
                </ul>
             </div>
-          
+
 
         )
     }

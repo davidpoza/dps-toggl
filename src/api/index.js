@@ -83,7 +83,7 @@ const API = {
         },
 
         //devuelve todos los usuarios menos a sí mismo
-        fetchUsers(token, user_id){
+        fetchUsers(token){
             return fetch(api_url+"/users", {
                 method: "GET",
                 headers: {

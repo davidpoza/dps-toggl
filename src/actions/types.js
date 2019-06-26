@@ -15,6 +15,9 @@ export const FETCH_USERS_FAIL = "FETCH_USERS_FAIL";
 export const FETCH_USERS_ATTEMPT = "FETCH_USERS_ATTEMPT";
 
 export const LOGOUT_USER = "LOGOUT_USER";
+
+export const CHANGE_USER_SORT = "CHANGE_USER_SORT";
+
 export const CLEAN_USER_MESSAGE = "CLEAN_USER_MESSAGE";
 ///////////////////////////////////////////////////
 export const CREATE_TASK_ATTEMPT = "TASK_CREATE_ATTEMPT";

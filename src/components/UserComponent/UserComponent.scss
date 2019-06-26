@@ -1,0 +1,27 @@
+@import "../../defaults.scss";
+
+.user{
+    border-bottom: 1px solid lightgrey;
+    cursor: pointer;
+    padding: 20px;
+
+    &:hover{
+        background-color: #fafafa;
+    }
+
+    .avatar{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        @media screen and (max-resolution: 199dpi) { //desktop
+            width: 50px;
+            height: 50px;
+        }
+        @media screen and (min-resolution: 200dpi) { //mobile
+            width: 25px;
+            height: 25px;
+        }
+    }
+}
+

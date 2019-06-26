@@ -30,10 +30,10 @@ class ProjectComponent extends Component{
         return(
             <li className={"row m-0 m-lg-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project._id)}>
                 { utils.isMobile() ?
-                <div className={"col-12 "} >
+                <div className={"col-12 pl-0"} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
                 </div>:
-                <div className={"col-6 "} >
+                <div className={"col-6 pl-0"} >
                     <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
                 </div>
                 }

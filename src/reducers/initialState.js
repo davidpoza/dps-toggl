@@ -3,12 +3,16 @@ const initialState = {
         id: null,
         first_name: null,
         last_name: null,
-        avatar_url: null,
+        avatar: null,
         email: null,
         token: null,
+        admin: false,
+        need_refreshing: false,
         loading: false,
         users_id: [],
         users_entities: [],
+        sortBy: 'email',
+        order: 'asc',
         error: {}
     },
     taskReducer: {
@@ -38,7 +42,10 @@ const initialState = {
         error: {}
     },
     dashboardReducer: {
-        data: []
+        data: [],
+        preset: "preset_week",
+        loading: false,
+        error: {}
     }
 };
 
