@@ -6,7 +6,7 @@ import lang from '../../config/lang';
 import styles from './UserSectionComponent.scss';
 import utils from '../../utils';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import ProjectListComponent from '../ProjectListComponent/ProjectListComponent';
+import UserListComponent from '../UserListComponent/UserListComponent';
 
 class UserSectionComponent extends Component{
     constructor(props){
@@ -17,29 +17,20 @@ class UserSectionComponent extends Component{
             colorPicker:  null
         }
         this.handleOpenModal = this.handleOpenModal.bind(this);
-        this.handleColorPick = this.handleColorPick.bind(this);
         this.handleCreateProject = this.handleCreateProject.bind(this);
         this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
     }
 
     componentDidMount(){
-        this.props.projectActions.fetchUserProjects(this.props.user.token);
+        this.props.userActions.fetchUsers(this.props.user.token);
 
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado un nuevo proyecto y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
         if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.projectActions.fetchUserProjects(this.props.user.token);
+            this.props.userActions.fetchUsers(this.props.user.token);
         }
-    }
-
-    //cuando marcamos un color, se cambia en el estado el color elegido para el nuevo proyecto
-    handleColorPick(e){
-        let project_color = utils.rgb2hex(window.getComputedStyle(e.target).color);
-        this.setState({
-            colorPicker: project_color
-        });
     }
 
     //cada vez que se abre el modal de creacion de proyecot escoge un color aleatorio del array de colores del config
@@ -72,11 +63,11 @@ class UserSectionComponent extends Component{
                     <button className="btn-lg btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}><i className="fas fa-plus-circle"></i></button>
                 </div>
                 <div className={"flex-grow-1 " + styles.projectlist}>
-                    <ProjectListComponent
+                    <UserListComponent
                     user={this.props.user}
-                    projects={this.props.projects}
+                    users={this.props.users}
                     history={this.props.history}
-                    projectActions={this.props.projectActions}
+                    userActions={this.props.userActions}
                     order={this.props.order}
                     sortBy={this.props.sortBy}
                     />
@@ -127,10 +118,9 @@ class UserSectionComponent extends Component{
 UserSectionComponent.propTypes = {
     user:PropTypes.object.isRequired,
     user_loading: PropTypes.bool.isRequired,
-    project_loading: PropTypes.bool.isRequired,
     need_refreshing: PropTypes.bool.isRequired,
-    projects: PropTypes.array.isRequired,
-    projectActions: PropTypes.object.isRequired,
+    users: PropTypes.array.isRequired,
+    userActions: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     order: PropTypes.string.isRequired,
     sortBy: PropTypes.string.isRequired

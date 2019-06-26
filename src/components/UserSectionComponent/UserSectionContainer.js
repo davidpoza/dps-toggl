@@ -19,20 +19,16 @@ class UserSectionContainer extends Component{
         super(props);
     }
 
-    componentWillMount(){
-
-    }
 
     render(){
         return(
             <UserSectionComponent
             user={this.props.user}
             user_loading={this.props.user_loading}
-            project_loading={this.props.project_loading}
             need_refreshing={this.props.need_refreshing}
-            projects={this.props.projects}
+            users={this.props.users}
             history={this.props.history}
-            projectActions={this.props.projectActions}
+            userActions={this.props.userActions}
             order={this.props.order}
             sortBy={this.props.sortBy}
             />
@@ -40,39 +36,32 @@ class UserSectionContainer extends Component{
     }
 }
 
-function sortBy(field="id", order="asc"){
-  if (field=="id")
-    return(
-    (a,b)=>{
-      if(a.id > b.id) return order=="asc"?1:-1;
-      else if (a.id < b.id) return order=="asc"?-1:1;
-      else return 0;
-    })
-  else if (field=="name")
+function sortBy(field="email", order="asc"){
+  if (field=="email")
     return(
     (a,b)=>{
       if(order == "asc")
-        return(a.name.localeCompare(b.name));
+        return(a.email.localeCompare(b.email));
       else if(order == "desc")
-        return(b.name.localeCompare(a.name));
+        return(b.email.localeCompare(a.email));
     })
-  else if (field=="tasks")
+  else if (field=="first_name")
     return(
     (a,b)=>{
-      if(a.tasks.length > b.tasks.length) return order=="asc"?1:-1;
-      else if (a.tasks.length < b.tasks.length) return order=="asc"?-1:1;
-      else{ //si tienen mismo numero de tareas ordenamos alfabéticamente
-        return(a.name.localeCompare(b.name))
-      };
+      if(order == "asc")
+        return(a.first_name.localeCompare(b.first_name));
+      else if(order == "desc")
+        return(b.first_name.localeCompare(a.first_name));
     })
-   else if (field=="hours")
+    else if (field=="last_name")
     return(
     (a,b)=>{
-      if(a.hours > b.hours) return order=="asc"?1:-1;
-      else if (a.hours < b.hours) return order=="asc"?-1:1;
-      else return 0;
+      if(order == "asc")
+        return(a.last_name.localeCompare(b.last_name));
+      else if(order == "desc")
+        return(b.last_name.localeCompare(a.last_name));
     })
-    else if (field=="date") //el formato estándar yyyy-mm-dd se ordena alfabéticamente
+    else if (field=="created_on") //el formato estándar yyyy-mm-dd se ordena alfabéticamente
       return(
       (a,b)=>{
         if(order == "asc")
@@ -83,34 +72,22 @@ function sortBy(field="id", order="asc"){
 }
 
 function mapStateToProps (state) {
-    let projects = state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p])
-    .sort(sortBy(state.projectReducer.sortBy, state.projectReducer.order));
-    projects.forEach(p=>{ //hacemos el recuento de horas
-      if(p.tasks)
-        p.hours = p.tasks.reduce((prev, curr)=>{
-          curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-          return(prev+curr);
-      },0);
-      else
-        p.hours = 0;
-    });
+    let users = state.userReducer.users_id.map(p=>state.userReducer.users_entities[p])
+    .sort(sortBy(state.userReducer.sortBy, state.userReducer.order));
+
     return {
       user: state.userReducer,
-      need_refreshing: state.projectReducer.need_refreshing,
+      need_refreshing: state.userReducer.need_refreshing,
       user_loading: state.userReducer.loading,
-      project_loading: state.projectReducer.loading,
-      projects: projects,
-      order: state.projectReducer.order,
-      sortBy: state.projectReducer.sortBy
+      users: users,
+      order: state.userReducer.order,
+      sortBy: state.userReducer.sortBy
     }
   }
 
   function mapDispatchToProps (dispatch) {
     return {
       userActions: bindActionCreators(userActions, dispatch),
-      taskActions: bindActionCreators(taskActions, dispatch),
-      projectActions: bindActionCreators(projectActions, dispatch),
-      tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
 

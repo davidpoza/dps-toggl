@@ -12,7 +12,8 @@ import {
     CLEAN_USER_MESSAGE,
     FETCH_USERS_ATTEMPT,
     FETCH_USERS_FAIL,
-    FETCH_USERS_SUCCESS
+    FETCH_USERS_SUCCESS,
+    CHANGE_USER_SORT
 } from '../actions/types';
 
 import initialState from './initialState';
@@ -111,6 +112,12 @@ export default function userReducer (state = initialState.userReducer, action){
             return {
                 ...state,
                 error: {}
+            }
+        case CHANGE_USER_SORT:
+            return {
+                ...state,
+                sortBy: action.payload.field,
+                order: state.order=="asc"?"desc":"asc"
             }
         default:
             return state;

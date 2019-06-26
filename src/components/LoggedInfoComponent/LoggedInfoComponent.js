@@ -30,7 +30,7 @@ class LoggedInfoComponent extends Component{
         this.refreshToken();
         if(this.state.setInterval == null)
             this.setState({
-                setInterval: setInterval(this.refreshToken, 4*60*1000) //ponemos el refresco del token jwt a 4 minutos
+                setInterval: setInterval(this.refreshToken, 20*60*1000) //ponemos el refresco del token jwt a 4 minutos
             });
     }
 

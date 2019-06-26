@@ -40,15 +40,8 @@ class ProjectSectionContainer extends Component{
     }
 }
 
-function sortBy(field="id", order="asc"){
-  if (field=="id")
-    return(
-    (a,b)=>{
-      if(a.id > b.id) return order=="asc"?1:-1;
-      else if (a.id < b.id) return order=="asc"?-1:1;
-      else return 0;
-    })
-  else if (field=="name")
+function sortBy(field="name", order="asc"){
+  if (field=="name")
     return(
     (a,b)=>{
       if(order == "asc")
