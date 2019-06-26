@@ -55,6 +55,7 @@ const lang = {
         menu_users: "Usuarios",
         menu_config: "Configuración",
         tag_section_title: "Etiquetas",
+        user_section_title: "Usuarios",
         btn_new_tag: "Nueva etiqueta",
         btn_update_tag: "Modificar etiqueta",
         btn_delete_tag: "Eliminar etiqueta",

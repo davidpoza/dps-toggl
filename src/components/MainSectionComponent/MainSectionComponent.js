@@ -14,6 +14,7 @@ import TimerSectionContainer from '../TimerSectionComponent/TimerSectionContaine
 import ProjectSectionContainer from '../ProjectSectionComponent/ProjectSectionContainer';
 import ProjectDetailSectionContainer from '../ProjectDetailSectionComponent/ProjectDetailSectionContainer';
 import TagSectionContainer from '../TagSectionComponent/TagSectionContainer';
+import UserSectionContainer from '../UserSectionComponent/UserSectionContainer';
 import DashboardSectionContainer from '../DashboardSectionComponent/DashboardSectionContainer';
 
 
@@ -30,6 +31,7 @@ class MainSectionComponent extends Component{
                 <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/tags" component={TagSectionContainer} component_props ={{}}/>
+                <PrivateRoute exact path="/users" component={UserSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <PrivateRoute exact path="/dashboard" component={DashboardSectionContainer} component_props = {{}} />
                 <Route path="/login" component={LoginContainer} />
