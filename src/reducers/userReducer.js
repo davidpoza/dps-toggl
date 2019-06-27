@@ -19,6 +19,9 @@ import {
     FETCH_USER_ATTEMPT,
     FETCH_USER_FAIL,
     FETCH_USER_SUCCESS,
+    DELETE_USER_ATTEMPT,
+    DELETE_USER_FAIL,
+    DELETE_USER_SUCCESS,
     CHANGE_USER_SORT
 } from '../actions/types';
 
@@ -192,6 +195,30 @@ export default function userReducer (state = initialState.userReducer, action){
                 }
             }
         case FETCH_USER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case DELETE_USER_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {}
+            }
+        case DELETE_USER_SUCCESS:
+            let new_users_entities = Object.assign({},state.users_entities);
+            let new_users_id = Object.assign({},state.users_id);
+            delete new_users_entities[action.payload._id];
+            new_users_id = new_users_id.filter(e=>e!=action.payload._id);
+            return {
+                ...state,
+                loading: false,
+                users_entities: new_users_entities,
+                users_id: new_users_id,
+                error: {}
+            }
+        case DELETE_USER_FAIL:
             return {
                 ...state,
                 loading: false,
