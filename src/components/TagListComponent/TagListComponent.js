@@ -10,17 +10,11 @@ class TagListComponent extends Component{
         super(props);
 
 
-
         this.state = {
 
-        };        
+        };
     }
 
-    componentDidUpdate(prevProps){
-
-    }
-
-    
 
     render(){
         return(
@@ -28,8 +22,7 @@ class TagListComponent extends Component{
                {
                    this.props.tags.map((t,index)=><TagComponent ctx={this.props.ctx} key={"tag"+index} tag={t} onOpenDeleteModal={this.props.onOpenDeleteModal} onOpenUpdateModal={this.props.onOpenUpdateModal}/>)
                }
-               </ul>        
-
+               </ul>
         )
     }
 }
