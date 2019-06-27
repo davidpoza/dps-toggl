@@ -134,7 +134,25 @@ const API = {
             ).then(
                 (data) => data
             );
-        }
+        },
+
+        deleteUser(token, task_id){
+            return fetch(api_url+"/users/"+task_id, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                function(response){
+                    if(response.status == 200)
+                        return {data: {_id: task_id}};
+                    else
+                        return {error: {message: "Error on delete user"}};
+                }
+            );
+        },
 
     },
     task: {
@@ -173,7 +191,7 @@ const API = {
                 }
             }).then(
                 function(response){
-                    if(response.status == 200) //204 (no-content) es el codigo de exito en el borrado segun directus
+                    if(response.status == 200)
                         return {data: {_id: task_id}};
                     else
                         return {error: {message: "Error on delete task"}};
@@ -266,48 +284,6 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             }).then(
-                (response)=>response.json()
-            ).then(
-                (data) => data
-            );
-        },
-
-
-        /*
-        Elimina todas las relaciones user-project que existan
-        */
-        deleteUserProjectRelations(token, user_id, project_id){
-            return fetch(api_url+"/items/tasks?filter[project][eq]="+project_id, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            })
-            .then(
-                (response)=>response.json()
-            ).then(
-                (data)=>{
-                    if(data.data){
-                        let tasks_id = data.data.reduce((prev,curr, index)=>{ return (index==0? curr.id:prev+","+curr.id) }, "" );
-                        return fetch(api_url+"/items/tasks/"+tasks_id, {
-                            method: "PATCH",
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json",
-                                "Authorization": "Bearer "+ token
-                            },
-                            body: JSON.stringify({project:null})
-                        })
-                    }
-                    else if(data.error){
-                        throw data.error;
-                    }
-                }
-
-            )
-            .then(
                 (response)=>response.json()
             ).then(
                 (data) => data

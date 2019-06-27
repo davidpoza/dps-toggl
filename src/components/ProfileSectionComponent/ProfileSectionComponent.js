@@ -25,8 +25,8 @@ class ProfileSectionComponent extends Component{
             avatar: this.props.profile.avatar
         }
         this.handleOnChange = this.handleOnChange.bind(this);
-        this.handleSaveProfile = this.handleSaveProfile.bind(this);
-        this.handleDeleteProfile = this.handleSaveProfile.bind(this);
+        this.handleSaveUser = this.handleSaveUser.bind(this);
+        this.handleDeleteUser = this.handleDeleteUser.bind(this);
     }
 
     componentDidMount(){
@@ -51,13 +51,13 @@ class ProfileSectionComponent extends Component{
         }
     }
 
-    handleDeleteProfile(){
-        //this.props.userActions.deleteUser(this.props.user.token, this.props.profile._id);
+    handleDeleteUser(){
+        this.props.userActions.deleteUser(this.props.user.token, this.props.profile._id);
         $(this.modal.current).modal('hide');
         this.props.history.push("/users");
     }
 
-    handleSaveProfile(){
+    handleSaveUser(){
         let update = {};
         update["first_name"] = this.state.first_name;
         update["last_name"] = this.state.last_name;
@@ -88,8 +88,11 @@ class ProfileSectionComponent extends Component{
                     <div className={"d-flex justify-content-between "+styles.header}>
                         <h1>{lang[config.lang].profile_section_title}</h1>
                         <div>
-                            <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal" title={lang[config.lang].btn_title_delete_user}><i className="fas fa-trash"></i></button>
-                            <button className="btn btn-primary p-3" onClick={this.handleSaveProfile}><i className="fas fa-save" title={lang[config.lang].btn_title_save_user}></i></button>
+                            {
+                                this.props.profile._id != this.props.user.id &&
+                                <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal" title={lang[config.lang].btn_title_delete_user}><i className="fas fa-trash"></i></button>
+                            }
+                            <button className="btn btn-primary p-3" onClick={this.handleSaveUser}><i className="fas fa-save" title={lang[config.lang].btn_title_save_user}></i></button>
                         </div>
                     </div>
                     <div className={"flex-grow-1 " + styles.profile}>
@@ -137,7 +140,7 @@ class ProfileSectionComponent extends Component{
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
-                            <button type="button" className="btn btn-danger" onClick={this.handleDeleteProject}>{lang[config.lang].btn_confirm_delete}</button>
+                            <button type="button" className="btn btn-danger" onClick={this.handleDeleteUser}>{lang[config.lang].btn_confirm_delete}</button>
                         </div>
                         </div>
                     </div>

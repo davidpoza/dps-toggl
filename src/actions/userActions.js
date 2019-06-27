@@ -20,6 +20,9 @@ import {
     REGISTER_USER_SUCCESS,
     REGISTER_USER_FAIL,
     REGISTER_USER_ATTEMPT,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL,
+    DELETE_USER_ATTEMPT,
     CHANGE_USER_SORT
 } from './types';
 
@@ -54,6 +57,20 @@ export function registerUserSuccess(userData){
 export function registerUserError(error){
     return {
         type: REGISTER_USER_FAIL,
+        payload: error
+    }
+}
+
+export function deleteUserSuccess(userData){
+    return {
+        type: DELETE_USER_SUCCESS,
+        payload: userData
+    }
+}
+
+export function deleteUserError(error){
+    return {
+        type: DELETE_USER_FAIL,
         payload: error
     }
 }
@@ -261,6 +278,27 @@ export function updateUser(token, user_id, data){
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(updateUserError(error));
+        });
+    }
+}
+
+export function deleteUser(token, user_id){
+    return (dispatch) => {
+        dispatch({
+            type: DELETE_USER_ATTEMPT
+        });
+
+        api.user.deleteUser(token, user_id).then(
+            (data) => {
+                if(data.data){
+                    dispatch(deleteUserSuccess(data.data));
+                }
+                else if(data.error) //error en la peticion
+                    dispatch(deleteUserError(data.error))
+            }
+        ).catch(
+            (error) => { //error en fetch, entonces error en la conexion
+                dispatch(deleteUserError(error));
         });
     }
 }

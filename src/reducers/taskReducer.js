@@ -183,23 +183,6 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 error: action.payload
             }
-        // case FETCH_DATES_ATTEMPT:
-        //     return {
-        //         ...state,
-        //         loading: true,
-        //         error: {}
-        //     }
-        // case FETCH_DATES_SUCCESS:
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //     }
-        // case FETCH_DATES_FAIL:
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //         error: action.payload
-        //     }
         case CLEAN_TASK_MESSAGE:
             return {
                 ...state,
