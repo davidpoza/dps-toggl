@@ -1,17 +1,17 @@
 @import "../../defaults.scss";
 
 .header{
-    padding: 20px;
-
     @media screen and (max-resolution: 199dpi) { //desktop
         min-height: 100px;
         height: 8vh;
+        padding: 1rem 2rem 2rem 2rem;
     }
     @media screen and (min-resolution: 200dpi) { //mobile
         height: calc(var(--vh, 1vh) * 13); //fix para chrome mobile
         min-height: 90px;
+        padding: 0.5rem 0.5rem 2rem 0.5rem;
     }
-     
+
 }
 
 .content{
@@ -19,7 +19,7 @@
     background-color: white;
     @media screen and (max-resolution: 199dpi) {//desktop
         height: 92vh;
-    }  
+    }
 
     @media screen and (min-resolution: 200dpi) {//mobile
         height: calc(var(--vh, 1vh) * 87); //fix para chrome mobile
@@ -30,7 +30,7 @@
 .barchart_height{
     @media screen and (max-resolution: 199dpi) {//desktop
         height: 50%;
-    }  
+    }
 
     @media screen and (min-resolution: 200dpi) {//mobile
         height: 400px;
@@ -40,7 +40,7 @@
 .piechart_height{
     @media screen and (max-resolution: 199dpi) {//desktop
         height: 50%;
-    }  
+    }
 
     @media screen and (min-resolution: 200dpi) {//mobile
         height: 200px;
@@ -52,7 +52,7 @@
 }
 
 .dropdown{
-    
+
     text-align: center;
     @media screen and (max-resolution: 199dpi) { //desktop
         width: 550px;
@@ -62,7 +62,7 @@
         font-size: 1.5em;
     }
 
-    
+
 }
 
 .date_preset_container{
@@ -80,11 +80,11 @@
         @media screen and (max-resolution: 199dpi) {//desktop
             display: inline;
             margin: 10px;
-        }  
-    
+        }
+
         @media screen and (min-resolution: 200dpi) {//mobile
             display: block;
-            
+
         }
     }
 }

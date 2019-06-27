@@ -96,7 +96,45 @@ const API = {
             ).then(
                 (data) => data
             );
+        },
+
+        fetchUser(token, user_id){
+            return fetch(api_url+"/users/"+user_id, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            }).then(
+                (response)=>response.json()
+            ).then(
+                (data) => data
+            );
+        },
+
+        updateUser(token, user_id, data){
+            //subimos un form-data en lugar del json habitual
+            let form_data = new FormData();
+            if(data.avatar)
+                form_data.append("avatar", data.avatar);
+            form_data.append("first_name", data.first_name);
+            form_data.append("last_name", data.last_name);
+
+            return fetch(api_url+"/users/"+user_id, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: form_data,
+            }).then(
+                (response)=>response.json()
+            ).then(
+                (data) => data
+            );
         }
+
     },
     task: {
         //en tags_id viene un array de ids

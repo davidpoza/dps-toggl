@@ -13,6 +13,12 @@ import {
     FETCH_USERS_ATTEMPT,
     FETCH_USERS_FAIL,
     FETCH_USERS_SUCCESS,
+    UPDATE_USER_ATTEMPT,
+    UPDATE_USER_FAIL,
+    UPDATE_USER_SUCCESS,
+    FETCH_USER_ATTEMPT,
+    FETCH_USER_FAIL,
+    FETCH_USER_SUCCESS,
     CHANGE_USER_SORT
 } from '../actions/types';
 
@@ -118,6 +124,51 @@ export default function userReducer (state = initialState.userReducer, action){
                 ...state,
                 sortBy: action.payload.field,
                 order: state.order=="asc"?"desc":"asc"
+            }
+        case UPDATE_USER_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                error: {},
+                need_refreshing: false
+            }
+        case UPDATE_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                //modificar las entidades almacenadas en el store de redux
+                error: {},
+                need_refreshing: true
+            }
+        case UPDATE_USER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case FETCH_USER_ATTEMPT:
+            return {
+                ...state,
+                loading: true,
+                need_refreshing: false,
+                error: {}
+            }
+        case FETCH_USER_SUCCESS:
+            action.payload = normalize(action.payload, schemas.userEntity);
+            let new_users_entities = Object.assign({},state.users_entities);
+            new_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
+            return {
+                ...state,
+                loading: false,
+                users_entities: new_users_entities,
+                need_refreshing: true,
+                error: {}
+            }
+        case FETCH_USER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
             }
         default:
             return state;
