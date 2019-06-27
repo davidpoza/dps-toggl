@@ -77,8 +77,8 @@ class ProjectDetailSectionComponent extends Component{
                     <div className={"d-flex justify-content-between "+styles.header}>
                         <h1>{lang[config.lang].project_detail_section_title}</h1>
                         <div>
-                            <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal"><i className="fas fa-trash"></i></button>
-                            <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject}><i className="fas fa-save"></i></button>
+                            <button className="btn btn-danger p-3 mr-2" data-toggle="modal" data-target="#deleteModal" title={lang[config.lang].btn_title_delete_project}><i className="fas fa-trash"></i></button>
+                            <button className="btn btn-primary p-3" onClick={this.handleOnSaveProject} title={lang[config.lang].btn_title_save_project}><i className="fas fa-save"></i></button>
                         </div>
                     </div>
                     <div className={"flex-grow-1 " + styles.project_detail}>
