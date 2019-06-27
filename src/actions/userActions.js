@@ -11,6 +11,12 @@ import {
     FETCH_USERS_ATTEMPT,
     FETCH_USERS_FAIL,
     FETCH_USERS_SUCCESS,
+    FETCH_USER_ATTEMPT,
+    FETCH_USER_FAIL,
+    FETCH_USER_SUCCESS,
+    UPDATE_USER_ATTEMPT,
+    UPDATE_USER_FAIL,
+    UPDATE_USER_SUCCESS,
     REGISTER_USER_SUCCESS,
     REGISTER_USER_FAIL,
     REGISTER_USER_ATTEMPT,
@@ -62,6 +68,34 @@ export function fetchUsersSuccess(userData){
 export function fetchUsersError(error){
     return {
         type: FETCH_USERS_FAIL,
+        payload: error
+    }
+}
+
+export function fetchUserSuccess(userData){
+    return {
+        type: FETCH_USER_SUCCESS,
+        payload: userData
+    }
+}
+
+export function fetchUserError(error){
+    return {
+        type: FETCH_USER_FAIL,
+        payload: error
+    }
+}
+
+export function updateUserSuccess(userData){
+    return {
+        type: UPDATE_USER_SUCCESS,
+        payload: userData
+    }
+}
+
+export function updateUserError(error){
+    return {
+        type: UPDATE_USER_FAIL,
         payload: error
     }
 }
@@ -184,7 +218,49 @@ export function fetchUsers(token){
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
-                dispatch(refreshTokenError(error));
+                dispatch(fetchUsersError(error));
+        });
+    }
+}
+
+export function fetchUserById(token, user_id){
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_USER_ATTEMPT
+        });
+
+        api.user.fetchUser(token, user_id).then(
+            (data) => {
+                if(data.data){
+                    dispatch(fetchUserSuccess(data.data));
+                }
+                else if(data.error) //error en la peticion
+                    dispatch(fetchUserError(data.error))
+            }
+        ).catch(
+            (error) => { //error en fetch, entonces error en la conexion
+                dispatch(fetchUserError(error));
+        });
+    }
+}
+
+export function updateUser(token, user_id, data){
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_USER_ATTEMPT
+        });
+
+        api.user.updateUser(token, user_id, data).then(
+            (data) => {
+                if(data.data){
+                    dispatch(updateUserSuccess(data.data));
+                }
+                else if(data.error) //error en la peticion
+                    dispatch(updateUserError(data.error))
+            }
+        ).catch(
+            (error) => { //error en fetch, entonces error en la conexion
+                dispatch(updateUserError(error));
         });
     }
 }

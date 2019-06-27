@@ -14,7 +14,7 @@ class UserComponent extends Component{
 
 
    handleOnClick(id){
-        this.props.history.push("/projects/"+id);
+        this.props.history.push("/profile/"+id);
    }
 
     render(){

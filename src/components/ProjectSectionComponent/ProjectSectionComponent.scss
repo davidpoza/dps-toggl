@@ -1,16 +1,17 @@
 @import "../../defaults.scss";
 
 .header{
-    padding: 20px;
     @media screen and (max-resolution: 199dpi) { //desktop
         height: 10vh;
         min-height: 100px;
-    } 
+        padding: 1rem 2rem 2rem 2rem;
+    }
     @media screen and (min-resolution: 200dpi) { //mobile
         height: calc(var(--vh, 1vh) * 13); //fix para chrome mobile
         min-height: 90px;
-    } 
-    
+        padding: 0.5rem 0.5rem 2rem 0.5rem;
+    }
+
 }
 
 .projectlist{

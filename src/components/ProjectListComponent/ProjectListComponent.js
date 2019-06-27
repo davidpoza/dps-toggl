@@ -33,7 +33,7 @@ class ProjectListComponent extends Component{
                 <div className={"container-flex " + styles.paddings}>
                     <div className={"row justify-content-between " } >
                         { !utils.isMobile() ?
-                        <div className={"col-6"} onClick={this.handleChangeSort.bind(this,"name")}>
+                        <div className={"col-6 pl-0"} onClick={this.handleChangeSort.bind(this,"name")}>
                             {lang[config.lang].th_project_name} <i className={this.props.sortBy!="name" ? "fas fa-sort" : this.props.order =="asc" ?"fas fa-sort-up":"fas fa-sort-down"} ></i>
                         </div>:
                         <div className={"col-12"} onClick={this.handleChangeSort.bind(this,"name")}>
