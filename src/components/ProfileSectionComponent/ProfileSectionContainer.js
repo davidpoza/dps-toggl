@@ -37,7 +37,21 @@ class ProfileSectionContainer extends Component{
 
 function mapStateToProps (state, ownProps) {
     //denormalización
-       let profile= state.userReducer.users_entities[ownProps.match.params.user_id];
+      let profile;
+      if(ownProps.match.params.user_id === undefined)
+        profile = {
+          _id: state.userReducer.id,
+          active: state.userReducer.active,
+          admin: state.userReducer.admin,
+          avatar: state.userReducer.avatar,
+          created_on: state.userReducer.created_on,
+          updated_on: state.userReducer.updated_on,
+          email: state.userReducer.email,
+          first_name: state.userReducer.first_name,
+          last_name: state.userReducer.last_name
+        };
+      else
+        profile= state.userReducer.users_entities[ownProps.match.params.user_id];
       //  project_detail.members = project_detail.members.filter(e=>e != state.userReducer.id); //nos quitamos a nosotros mismos de la lista
       //  project_detail.members_entities = Object.keys(state.userReducer.users_entities).length > 0 ? project_detail.members.map(e=>state.userReducer.users_entities[e]) : null;
       //  if(project_detail.tasks){
@@ -55,9 +69,8 @@ function mapStateToProps (state, ownProps) {
     return {
       profile: profile,
       user: state.userReducer,
-      need_refreshing: state.projectReducer.need_refreshing,
+      need_refreshing: state.userReducer.need_refreshing,
       user_loading: state.userReducer.loading,
-      project_loading: state.projectReducer.loading,
       projects: state.projectReducer.projects_id.map(p=>state.projectReducer.projects_entities[p]),
       projects_entities: state.projectReducer.projects_entities,
       users: state.userReducer.users_id.map(u=>(state.userReducer.users_entities[u])),

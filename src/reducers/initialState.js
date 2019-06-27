@@ -5,6 +5,8 @@ const initialState = {
         last_name: null,
         avatar: null,
         email: null,
+        created_on: null,
+        updated_on: null,
         token: null,
         admin: false,
         need_refreshing: false,

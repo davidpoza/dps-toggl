@@ -35,8 +35,19 @@ class ProfileSectionComponent extends Component{
 
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.need_refreshing && this.props.need_refreshing){
+        if (!prevProps.need_refreshing && this.props.need_refreshing)
             this.props.userActions.fetchUserById(this.props.user.token, this.props.profile._id);
+
+            //para cargar los datos de nuestro perfil cuando venimos de la vista perfil de otro usuario
+        else if(prevProps.profile._id != this.props.profile._id){
+            this.setState({
+                email: this.props.profile.email,
+                first_name: this.props.profile.first_name,
+                last_name: this.props.profile.last_name,
+                admin: this.props.profile.admin,
+                active: this.props.profile.active,
+                avatar: this.props.profile.avatar,
+            });
         }
     }
 
@@ -54,7 +65,10 @@ class ProfileSectionComponent extends Component{
             update["avatar"] = this.userAvatarInput.current.files[0];
 
         this.props.userActions.updateUser(this.props.user.token, this.props.profile._id, update);
-        this.props.history.push("/users");
+        if(this.props.profile._id == this.props.user.id) //si estamos salvando nuestro propio perfil
+            this.props.history.push("/");
+        else
+            this.props.history.push("/users");
     }
 
     handleOnChange(e){
@@ -105,7 +119,8 @@ class ProfileSectionComponent extends Component{
                         <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
                         <h2>{lang[config.lang].user_data_title}</h2>
                         <ul className="p-0">
-                        <li className={styles.li}>{lang[config.lang].user_creation}: {utils.standarDateToHuman(this.props.profile.created_on)}</li>
+                        <li className={styles.li}><strong>{lang[config.lang].user_creation}</strong>: {utils.standarDateToHumanExtended(this.props.profile.created_on)}</li>
+                        <li className={styles.li}><strong>{lang[config.lang].user_update}</strong>: {this.props.profile.updated_on ? utils.standarDateToHumanExtended(this.props.profile.updated_on): lang[config.lang].not_available}</li>
                         </ul>
                         </div>
 

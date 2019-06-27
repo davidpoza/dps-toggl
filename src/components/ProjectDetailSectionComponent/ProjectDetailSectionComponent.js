@@ -105,9 +105,9 @@ class ProjectDetailSectionComponent extends Component{
                         <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
                         <h2>{lang[config.lang].project_data_title}</h2>
                         <ul className="p-0">
-                        <li className={styles.li}>{lang[config.lang].project_creation}: {utils.standarDateToHuman(this.props.project_detail.created_on)}</li>
-                        <li className={styles.li}>{lang[config.lang].project_owner}: {this.props.project_detail.owner.first_name} {this.props.project_detail.owner.last_name}</li>
-                        <li className={styles.li}>{lang[config.lang].project_hours}: {this.props.project_detail.hours}h.</li>
+                        <li className={styles.li}><strong>{lang[config.lang].project_creation}</strong>: {utils.standarDateToHuman(this.props.project_detail.created_on)}</li>
+                        <li className={styles.li}><strong>{lang[config.lang].project_owner}</strong>: {this.props.project_detail.owner.first_name} {this.props.project_detail.owner.last_name}</li>
+                        <li className={styles.li}><strong>{lang[config.lang].project_hours}</strong>: {this.props.project_detail.hours}h.</li>
                         </ul>
                         </div>
 

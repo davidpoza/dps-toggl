@@ -23,6 +23,7 @@ const lang = {
         user_last_name_input: "Apellidos",
         user_avatar_input: "Modificar avatar",
         user_creation: "Fecha de registro",
+        user_update: "Fecha última modificación",
         user_data_title: "Datos de usuario",
         user_email_placeholder: "Email de usuario",
         user_first_name_placeholder: "Nombre de usuario",
@@ -101,7 +102,8 @@ const lang = {
         months_array: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         months_short_array: ["EN", "FB", "MZ", "AB", "MY", "JN", "JL", "AG", "SE", "OC", "NV", "DC"],
         weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-        weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"]
+        weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"],
+        not_available: "No disponible"
     }
 };
 

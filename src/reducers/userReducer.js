@@ -45,6 +45,8 @@ export default function userReducer (state = initialState.userReducer, action){
                 last_name: action.payload.last_name,
                 avatar: action.payload.avatar,
                 admin: action.payload.admin,
+                created_on: action.payload.created_on,
+                updated_on: action.payload.updated_on,
                 loading: false,
                 error: {}
             }
@@ -133,12 +135,26 @@ export default function userReducer (state = initialState.userReducer, action){
                 need_refreshing: false
             }
         case UPDATE_USER_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                //modificar las entidades almacenadas en el store de redux
-                error: {},
-                need_refreshing: true
+            action.payload = normalize(action.payload, schemas.userEntity);
+            if(action.payload.result == state.id) //si estamos actualizando nuestro perfil
+                return {
+                    ...state,
+                    loading: false,
+                    first_name: action.payload.entities.users[action.payload.result].first_name,
+                    updated_on: action.payload.entities.users[action.payload.result].updated_on,
+                    avatar: action.payload.entities.users[action.payload.result].avatar,
+                    error: {},
+                    need_refreshing: true
+                }
+            else{
+                let new_users_entities = Object.assign({},state.users_entities);
+                new_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
+                return {
+                    ...state,
+                    loading: false,
+                    users_entities: new_users_entities,
+                    error: {}
+                }
             }
         case UPDATE_USER_FAIL:
             return {
@@ -150,19 +166,30 @@ export default function userReducer (state = initialState.userReducer, action){
             return {
                 ...state,
                 loading: true,
-                need_refreshing: false,
                 error: {}
             }
         case FETCH_USER_SUCCESS:
             action.payload = normalize(action.payload, schemas.userEntity);
-            let new_users_entities = Object.assign({},state.users_entities);
-            new_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
-            return {
-                ...state,
-                loading: false,
-                users_entities: new_users_entities,
-                need_refreshing: true,
-                error: {}
+            if(action.payload.result == state.id){ //si estamos haciendo fetch a nuestro perfil
+                return {
+                    ...state,
+                    loading: false,
+                    avatar: action.payload.entities.users[action.payload.result].avatar,
+                    first_name: action.payload.entities.users[action.payload.result].first_name,
+                    last_name: action.payload.entities.users[action.payload.result].last_name,
+                    updated_on: action.payload.entities.users[action.payload.result].updated_on,
+                    error: {}
+                }
+            }
+            else{
+                let new_users_entities = Object.assign({},state.users_entities);
+                new_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
+                return {
+                    ...state,
+                    loading: false,
+                    users_entities: new_users_entities,
+                    error: {}
+                }
             }
         case FETCH_USER_FAIL:
             return {
