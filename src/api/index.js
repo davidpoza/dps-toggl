@@ -123,6 +123,7 @@ const API = {
 
             return fetch(api_url+"/users/"+user_id, {
                 method: "PUT",
+                //la cabecera Content-Type se añade automaticamente cuando enviamos un objeto FormData
                 headers: {
                     "Accept": "application/json",
                     "Authorization": "Bearer " + token

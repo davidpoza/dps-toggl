@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 
@@ -30,7 +31,7 @@ class LoggedInfoComponent extends Component{
         this.refreshToken();
         if(this.state.setInterval == null)
             this.setState({
-                setInterval: setInterval(this.refreshToken, 20*60*1000) //ponemos el refresco del token jwt a 4 minutos
+                setInterval: setInterval(this.refreshToken, 10*60*1000) //ponemos el refresco del token jwt a 10 minutos
             });
     }
 
@@ -66,7 +67,7 @@ class LoggedInfoComponent extends Component{
 
                 }
                 <div className="dropdown-menu">
-                    <a className="dropdown-item" href="#">{lang[config.lang].profile}</a>
+                    <Link className="dropdown-item" to="/profile">{lang[config.lang].profile}</Link>
                     <a className="dropdown-item" onClick={this.props.userActions.logoutUser}>Logout</a>
                 </div>
             </div>

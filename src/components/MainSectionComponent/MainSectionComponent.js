@@ -30,7 +30,7 @@ class MainSectionComponent extends Component{
                 <PrivateRoute exact path="/" component={TimerSectionContainer} component_props = {{}}/>
                 <PrivateRoute exact path="/projects" component={ProjectSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/projects/:project_id" component={ProjectDetailSectionContainer} component_props ={{}}/>
-                <PrivateRoute exact path="/profile/:user_id" component={ProfileSectionContainer} component_props ={{}}/>
+                <PrivateRoute exact path="/profile/:user_id?" component={ProfileSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/tags" component={TagSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/users" component={UserSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />

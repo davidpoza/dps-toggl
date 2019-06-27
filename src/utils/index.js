@@ -18,6 +18,14 @@ const utils = {
         return `${this.pad(hours,2)}:${this.pad(min,2)}:${this.pad(sec,2)}`;
     },
 
+    /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril, 15:30 */
+    standarDateToHumanExtended(date){
+        let d = new Date(date);
+        let months = lang[config.lang].months_array;
+        let weekDays = lang[config.lang].weekdays_array;
+        return `${weekDays[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}, ${this.pad(d.getHours(),2)}:${this.pad(d.getMinutes(),2)}`;
+    },
+
     /** Convierte una cadena estándar: YYYY-MM-DD a una cadena del tipo Viernes 13 de Abril */
     standarDateToHuman(date){
         let d = new Date(date);
