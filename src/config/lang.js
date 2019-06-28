@@ -107,7 +107,8 @@ const lang = {
         months_short_array: ["EN", "FB", "MZ", "AB", "MY", "JN", "JL", "AG", "SE", "OC", "NV", "DC"],
         weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
         weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"],
-        not_available: "No disponible"
+        not_available: "No disponible",
+        load_more: "Cargar más"
     }
 };
 

@@ -21,18 +21,15 @@ export default function dashboardReducer (state = initialState.dashboardReducer,
                 loading: true,
                 error: {}
             }
-        break;
-
         case FETCH_DASHBOARD_BAR_DATA_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        break;
-
         case FETCH_DASHBOARD_BAR_DATA_SUCCESS:
-            action.payload.data = normalize(action.payload.data, schemas.dateSchema);
+            let total_tasks = action.payload.data.total;
+            action.payload.data = normalize(action.payload.data.dates, schemas.dateSchema);
             return {
                 ...state,
                 loading: false,
@@ -40,9 +37,9 @@ export default function dashboardReducer (state = initialState.dashboardReducer,
                 preset: action.payload.preset,
                 date_start: action.payload.date_start,
                 date_end: action.payload.date_end,
+                total_tasks: total_tasks,
                 error: {}
             }
-        break;
         default:
             return state;
     }

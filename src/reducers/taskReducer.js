@@ -14,15 +14,14 @@ import {
     UPDATE_TASK_SUCCESS,
     UPDATE_TASK_VISUALLY,
     CLEAN_TASK_MESSAGE,
-    FETCH_DATES_ATTEMPT,
-    FETCH_DATES_FAIL,
-    FETCH_DATES_SUCCESS,
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_FAIL,
     FETCH_TASK_SUCCESS,
     COLLAPSE_DATE,
     LOGOUT_USER,
-    UPDATE_DATE_VISUALLY
+    UPDATE_DATE_VISUALLY,
+    LOAD_MORE_TASKS,
+    RESET_LIMIT
 } from '../actions/types';
 
 import utils from '../utils';
@@ -35,6 +34,16 @@ import initialState from './initialState';
 
 export default function taskReducer (state = initialState.taskReducer, action){
     switch(action.type){
+        case LOAD_MORE_TASKS:
+            return {
+                ...state,
+                timer_section_load_limit: state.timer_section_load_limit + action.payload
+            }
+        case RESET_LIMIT:
+            return {
+                ...state,
+                timer_section_load_limit: 7
+            }
         case CREATE_TASK_ATTEMPT:
             return {//vamos a extender una objeto vacio con una copia del estado con el spread operator, es como usar Object.assign
                 ...state,
@@ -160,7 +169,8 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case FETCH_TASKS_SUCCESS:
-            action.payload = normalize(action.payload, schemas.dateSchema);
+            let total_tasks = action.payload.total;
+            action.payload = normalize(action.payload.dates, schemas.dateSchema);
 
             //el flag collapsed debe mantenerse en el valor que tuviera en el estado
             if(state.dates_entities)
@@ -175,6 +185,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 dates_id: action.payload.result,
                 tasks_entities: action.payload.entities.tasks,
                 tasks_tags_entities: action.payload.entities.tags,
+                total_tasks: total_tasks,
                 need_refreshing: false
             }
         case FETCH_TASKS_FAIL:

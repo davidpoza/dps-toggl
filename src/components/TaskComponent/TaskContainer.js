@@ -80,6 +80,7 @@ class TaskContainer extends Component{
             tasks_entities={this.props.tasks_entities}
             taskActions={this.props.taskActions}
             onResume={this.props.onResume}
+            limit={this.props.limit}
             />
           )
         }
@@ -115,7 +116,8 @@ function mapStateToProps (state, props) {
       }),
       tasks_tags_entities: state.taskReducer.tasks_tags_entities,
       projects: state.projectReducer.projects_id.map(e=>state.projectReducer.projects_entities[e]),
-      projects_entities: state.projectReducer.projects_entities
+      projects_entities: state.projectReducer.projects_entities,
+      limit: state.taskReducer.timer_section_load_limit
     }
   }
 
