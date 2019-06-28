@@ -43,7 +43,7 @@
     -webkit-box-shadow: none;
     box-shadow: none;
   }
- 
+
 }
 
 .menu{
@@ -53,6 +53,25 @@
 .projectlist{
   margin:0;
   padding:0;
+  height: 160px;
+  overflow-y: scroll;
+}
+
+.projectlist::-webkit-scrollbar-track
+{
+	background-color: #F5F5F5;
+}
+
+.projectlist::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.projectlist::-webkit-scrollbar-thumb
+{
+	background-color: $primary-color;
+	border: none;
 }
 
 .item{
@@ -61,5 +80,5 @@
     margin-right: 15px;
     pointer-events: none;
   }
-  
+
 }
