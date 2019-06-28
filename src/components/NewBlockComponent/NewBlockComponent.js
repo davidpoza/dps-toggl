@@ -17,25 +17,6 @@ class NewBlockComponent extends Component{
     constructor(props){
         super(props);
 
-        this.chronoResetBtn = React.createRef();
-        this.chronoModeBtn = React.createRef();
-        this.manualModeBtn = React.createRef();
-        this.NewBlockComponent = React.createRef();
-
-        this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
-        this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
-        this.handleOnClickCreate = this.handleOnClickCreate.bind(this);
-        this.handleOnClickStart = this.handleOnClickStart.bind(this);
-        this.handleOnClickReset = this.handleOnClickReset.bind(this);
-        this.incCounter = this.incCounter.bind(this);
-        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
-        this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
-        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
-        this.handleHourChange = this.handleHourChange.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.resumeTask = this.resumeTask.bind(this);
-        this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
-
         this.state = {
             placeholder: lang[config.lang].desc_placeholder_chrono_mode,
             description: "",
@@ -53,6 +34,26 @@ class NewBlockComponent extends Component{
             date: new Date(),
 
         };
+
+        this.chronoResetBtn = React.createRef();
+        this.chronoModeBtn = React.createRef();
+        this.manualModeBtn = React.createRef();
+        this.NewBlockComponent = React.createRef();
+        this.createBtn = React.createRef();
+
+        this.handleOnClickCronoMode = this.handleOnClickCronoMode.bind(this);
+        this.handleOnClickManualMode = this.handleOnClickManualMode.bind(this);
+        this.handleOnClickCreate = this.handleOnClickCreate.bind(this);
+        this.handleOnClickStart = this.handleOnClickStart.bind(this);
+        this.handleOnClickReset = this.handleOnClickReset.bind(this);
+        this.incCounter = this.incCounter.bind(this);
+        this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        this.handleOnClickProjectSelector = this.handleOnClickProjectSelector.bind(this);
+        this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
+        this.handleHourChange = this.handleHourChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.resumeTask = this.resumeTask.bind(this);
+        this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
     }
 
 
@@ -73,7 +74,6 @@ class NewBlockComponent extends Component{
             $(this.manualModeBtn.current).popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
             $(this.chronoResetBtn.current).popover({content: lang[config.lang].hover_stop_chrono, trigger: "hover"});
         }
-
     }
 
     componentDidUpdate(prevProps){
@@ -151,6 +151,7 @@ class NewBlockComponent extends Component{
             mode: "chrono",
             placeholder: lang[config.lang].desc_placeholder_chrono_mode
         });
+        this.createBtn.current.disabled = false;
     }
 
     /** Al hacer click en botón de modo manual */
@@ -159,6 +160,10 @@ class NewBlockComponent extends Component{
             mode: "manual",
             placeholder: lang[config.lang].desc_placeholder_manual_mode
         });
+        if(this.state.description == "")
+            this.createBtn.current.disabled = true;
+        else
+            this.createBtn.current.disabled = false;
         this.updateStartEndHours();
     }
 
@@ -173,28 +178,29 @@ class NewBlockComponent extends Component{
      * LLama a un action creator asíncrono para crear la tarea
     */
     handleOnClickCreate(){
-       if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
-            if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
-                this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags, this.props.user.id);
-                this.setState({
-                    description: "",
-                    project_selected_name: null,
-                    project_selected_color: null,
-                    project_selected_id: null,
-                    tags: this.props.tags.map((e)=>{
-                        e.checked = false;
-                        return e;
-                    })
-                });
+        if(this.state.description != "")
+            if(utils.validateHour(this.state.start_hour) && utils.validateHour(this.state.end_hour)){
+                if(utils.hourIsGreater(this.state.end_hour,this.state.start_hour)){
+                    this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), this.state.start_hour+":00", this.state.end_hour+":00", this.state.project_selected_id, this.state.tags, this.props.user.id);
+                    this.setState({
+                        description: "",
+                        project_selected_name: null,
+                        project_selected_color: null,
+                        project_selected_id: null,
+                        tags: this.props.tags.map((e)=>{
+                            e.checked = false;
+                            return e;
+                        })
+                    });
+                    this.createBtn.current.disabled = true;
+                }
+                else{
+                    this.props.taskActions.createTaskError({message:lang[config.lang].err_end_hour_before});
+                }
             }
             else{
-                this.props.taskActions.createTaskError({message:lang[config.lang].err_end_hour_before});
+                this.props.taskActions.createTaskError({message:lang[config.lang].err_hour_format});
             }
-        }
-        else{
-            this.props.taskActions.createTaskError({message:lang[config.lang].err_hour_format});
-        }
-
     }
 
     /** Al hacer click en el botón reset/borrar cuando estamos en modo cronómetros y hay una cuenta en marcha. */
@@ -236,7 +242,7 @@ class NewBlockComponent extends Component{
                 chrono_status: "running"
             })
         }
-        else if(this.state.chrono_status == "running"){  // paramos contador
+        else if(this.state.chrono_status == "running" && this.state.description != ""){  // paramos contador
           let end_seconds = utils.getHourInSecFromDate(new Date());
           let start_seconds = end_seconds-this.state.time;
           this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags, this.props.user.id);
@@ -264,6 +270,13 @@ class NewBlockComponent extends Component{
 
     /** Se ejecuta cada vez que modificamos el input de descripción de nueva tarea */
     handleOnChangeInput(e){
+        if(e.target.value == "" && this.state.mode == "chrono" && this.state.chrono_status=="running"){
+            this.createBtn.current.disabled = true;
+        }
+        else if(e.target.value == "" && this.state.mode == "manual")
+            this.createBtn.current.disabled = true;
+        else if(e.target.value != "")
+            this.createBtn.current.disabled = false;
         this.setState({
             description: e.target.value
         });
@@ -271,7 +284,14 @@ class NewBlockComponent extends Component{
 
     handleOnKeyPress(e){
         if(event.keyCode == 13){
-            this.state.mode == "chrono" ? this.handleOnClickStart() : this.handleOnClickCreate()
+            if(this.state.mode == "manual" && this.state.description != "")
+                this.handleOnClickCreate();
+            else if(this.state.mode == "chrono"){
+                if(this.state.chrono_status == "paused")
+                    this.handleOnClickStart();
+                if(this.state.chrono_status == "running" && this.state.description != "")
+                    this.handleOnClickStart();
+            }
         }
     }
 
@@ -313,7 +333,7 @@ class NewBlockComponent extends Component{
 
                         <div className="col-auto col-lg-auto order-3 order-lg-5 p-0 d-flex">
 
-                                    <button id="btn-create-block" className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
+                                    <button id="btn-create-block" ref={this.createBtn} className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate
                                     }>
                                         { this.state.mode == "chrono" ?

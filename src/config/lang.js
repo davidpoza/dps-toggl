@@ -8,6 +8,7 @@ const lang = {
         hover_chrono_mode: "Modo cronómetro",
         hover_manual_mode: "Modo manual",
         hover_stop_chrono: "Parar cuenta y borrar tarea",
+        hover_create_disabled: "Debes escribir una descripción",
         err_end_hour_before: "La hora de finalización debe ser posterior a la de inicio.",
         err_hour_format: "Formato de hora no válido. Debe ser del tipo HH:MM.",
         aditional_menu_opt_delete: "Borrar",

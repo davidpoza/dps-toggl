@@ -47,6 +47,9 @@
   &:active {
     color: $quaternary-color;
   }
+  &:disabled {
+    color: rgb(207, 207, 207);
+  }
 }
 
 .btn_create{
