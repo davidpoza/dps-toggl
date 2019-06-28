@@ -15,7 +15,7 @@ class BarChartComponent extends Component{
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
         this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
-        this.formatData = this.formatData.bind(this);   
+        this.formatData = this.formatData.bind(this);
     }
 
     presetToTitle(preset){
@@ -56,13 +56,13 @@ class BarChartComponent extends Component{
             timeUnit = "months";
         dates = utils.getDatesRange(start_date, end_date, timeUnit);
         if(timeUnit == "months"){
-            if(data.entities.dates)           
+            if(data.entities.dates)
             Object.keys(data.entities.dates).forEach(d=>{
                 if(!date_entities_as_months[utils.standarDateToHumanMonth(d)])
                     date_entities_as_months[utils.standarDateToHumanMonth(d)] = Object.assign({}, data.entities.dates[d]);
                 else //acumulamos las tareas de un mismo mes
-                    date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks = 
-                        [...date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks, 
+                    date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks =
+                        [...date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks,
                          ...data.entities.dates[d].tasks
                         ];
             });
@@ -84,7 +84,7 @@ class BarChartComponent extends Component{
                                 return(prev+curr);
                               },0);
                             d[pname+"Color"] = data.entities.projects[t.project].color;
-                            
+
                         }
                         else{
                             d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
@@ -100,6 +100,7 @@ class BarChartComponent extends Component{
                     delete d.tasks;
                     delete d.time;
                     delete d.collapsed;
+                    delete d.task_count;
                 }
                 else
                     d = {date:utils.standarDateToHumanShort(d)};
@@ -121,7 +122,7 @@ class BarChartComponent extends Component{
                                 return(Math.floor((prev+curr) * 10) / 10);
                               },0);
                             d[pname+"Color"] = data.entities.projects[t.project].color;
-                            
+
                         }
                         else{
                             d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
@@ -137,13 +138,14 @@ class BarChartComponent extends Component{
                     delete d.tasks;
                     delete d.time;
                     delete d.collapsed;
+                    delete d.task_count;
                 }
                 else
                     d = {date:d};
                 return d;
-            }         
-            
-            
+            }
+
+
         })
     }
 
@@ -156,8 +158,10 @@ class BarChartComponent extends Component{
                 keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
                 keys.push("Sin proyecto");
             }
+            else //aunque no venga ningun proyecto, al menos tiene que existir un valor en de keys para la gráfica.
+                keys.push("Sin proyecto");
             console.log(this.formatData(this.props.preset, this.props.start_date, this.props.end_date, this.props.data));
-            console.log(keys);        
+            console.log(keys);
             return(
                 <div>
                     <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
@@ -172,7 +176,7 @@ class BarChartComponent extends Component{
                             "left": 55
                         }}
                         padding={utils.isMobile()?0.0:0.3}
-                        colors={(d)=>(d.data[d.id+"Color"])}       
+                        colors={(d)=>(d.data[d.id+"Color"])}
                         borderColor={{
                             "from": "color",
                             "modifiers": [

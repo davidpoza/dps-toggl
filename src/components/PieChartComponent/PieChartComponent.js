@@ -15,7 +15,7 @@ class BarChartComponent extends Component{
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
         this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
-        this.formatData = this.formatData.bind(this);   
+        this.formatData = this.formatData.bind(this);
 
         this.data = [
             {
@@ -85,16 +85,17 @@ class BarChartComponent extends Component{
         let projects = {};
         let array_result = [];
         let sin_proyecto = {id:"Sin proyecto", label:"Sin proyecto", value:0, color:"#fafafa"};
-        if(data.entities.projects && data.entities.tasks){
-            Object.keys(data.entities.projects).forEach(p=>{
-                projects[p]={id:data.entities.projects[p].name, label:data.entities.projects[p].name, value:0, color:data.entities.projects[p].color};
-            });
+        if(data.entities.tasks){
+            if(data.entities.projects)
+                Object.keys(data.entities.projects).forEach(p=>{
+                    projects[p]={id:data.entities.projects[p].name, label:data.entities.projects[p].name, value:0, color:data.entities.projects[p].color};
+                });
             projects["null"]=sin_proyecto;
             Object.keys(data.entities.tasks).forEach(t=>{
                 //vamos sumando las horas de cada tarea a su proyecto
                 projects[data.entities.tasks[t].project]["value"]+=utils.diffHoursBetHours(data.entities.tasks[t].start_hour, data.entities.tasks[t].end_hour);
             });
-            
+
             Object.keys(projects).forEach(p=>{
                 if(projects[p].value>0)
                 array_result.push({
@@ -158,8 +159,8 @@ class BarChartComponent extends Component{
                         animate={true}
                         motionStiffness={90}
                         motionDamping={15}
-                        
-                    
+
+
                     />
 
                 </div>
