@@ -5,29 +5,40 @@ import PropTypes from 'prop-types';
 import TaskListContainer from '../TaskListComponent/TaskListContainer';
 import styles from './TaskDatesComponent.scss';
 import utils from '../../utils';
+import config from '../../config/config';
+import lang from '../../config/lang';
 
 
 class TaskDatesComponent extends Component{
     constructor(props){
         super(props);
+        this.handleOnClickLoadMore = this.handleOnClickLoadMore.bind(this);
+        if (window.performance) {
+            if (performance.navigation.type == 1) //page is reloaded
+                this.props.taskActions.resetLimit();
+          }
     }
 
     //también hacemos un fetchTasks al montar el componente lista.
     componentDidMount(){
-            this.props.taskActions.fetchTasks(this.props.token);
+        this.props.taskActions.fetchTasks(this.props.token, this.props.limit);
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
-        if (!prevProps.need_refreshing && this.props.need_refreshing){
-            this.props.taskActions.fetchTasks(this.props.token);
+        if (!prevProps.need_refreshing && this.props.need_refreshing)
+            return this.props.taskActions.fetchTasks(this.props.token, this.props.limit);
 
-        }
-
+        if(prevProps.limit < this.props.limit)
+            return this.props.taskActions.fetchTasks(this.props.token, this.props.limit);
     }
 
     handleOnClick(date){
         this.props.taskActions.collapseDate(date);
+    }
+
+    handleOnClickLoadMore(){
+        this.props.taskActions.loadMore(7);
     }
 
     render(){
@@ -51,6 +62,11 @@ class TaskDatesComponent extends Component{
                    }, this)
                }
                </ul>
+               {
+                   //solo mostramos el boton de cargar mas si hay más tareas de las que estamos tomando con limit
+                   this.props.total_tasks > this.props.limit &&
+                   <p style={{textAlign: "center", margin: "20px"}}><button type="button" className="btn btn-info" onClick={this.handleOnClickLoadMore}>{lang[config.lang].load_more}</button></p>
+               }
             </div>
 
 

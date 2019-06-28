@@ -117,7 +117,7 @@ export default function projectReducer (state = initialState.projectReducer, act
                 loading: false,
                 error: action.payload
             }
-        case UPDATE_PROJECT_ATTEMPT:        
+        case UPDATE_PROJECT_ATTEMPT:
             return {
                 ...state,
                 loading: true,

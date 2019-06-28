@@ -26,6 +26,8 @@ const initialState = {
         tasks_tags_entities: [],
         need_refreshing: false,
         loading: false,
+        timer_section_load_limit: 7, //días que cargamos como máximo inicialmente
+        total_tasks: 0, //total de días que devuelve la consulta sin el limit
         error: {}
     },
     projectReducer: {
@@ -47,6 +49,7 @@ const initialState = {
         data: [],
         preset: "preset_week",
         loading: false,
+        total_tasks: 0, //total de días que devuelve la consulta sin el limit
         error: {}
     }
 };

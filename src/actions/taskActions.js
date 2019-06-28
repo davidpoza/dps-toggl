@@ -14,14 +14,13 @@ import {
     UPDATE_TASK_SUCCESS,
     UPDATE_TASK_VISUALLY,
     CLEAN_TASK_MESSAGE,
-    FETCH_DATES_ATTEMPT,
-    FETCH_DATES_SUCCESS,
-    FETCH_DATES_FAIL,
     FETCH_TASK_ATTEMPT,
     FETCH_TASK_SUCCESS,
     FETCH_TASK_FAIL,
     COLLAPSE_DATE,
-    UPDATE_DATE_VISUALLY
+    UPDATE_DATE_VISUALLY,
+    LOAD_MORE_TASKS,
+    RESET_LIMIT
 } from './types';
 
 import api from '../api';
@@ -100,6 +99,19 @@ export function fetchTasksError(error){
     }
 }
 
+export function loadMore(inc){
+    return {
+        type: LOAD_MORE_TASKS,
+        payload: inc
+    }
+}
+
+export function resetLimit(){
+    return {
+        type: RESET_LIMIT
+    }
+}
+
 
 export function updateTaskSuccess(taskData){
     return {
@@ -128,12 +140,7 @@ export function cleanMessage(){
     }
 }
 
-export function fetchDatesError(error){
-    return {
-        type: FETCH_DATES_FAIL,
-        payload: error
-    }
-}
+
 
 export function updateDateVisually(date, tasks_entities){
     return {
@@ -261,7 +268,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
  * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
-export function updateAndFetchTasks(token, task_id, user_id, description, date, start_hour, end_hour, project_id, tags){
+export function updateAndFetchTasks(token, task_id, description, date, start_hour, end_hour, project_id, tags, limit){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
@@ -270,10 +277,9 @@ export function updateAndFetchTasks(token, task_id, user_id, description, date, 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, tags)
         .then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token,user_id);
+                    this.fetchTasks(token, limit);
                 }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
@@ -291,13 +297,13 @@ export function updateAndFetchTasks(token, task_id, user_id, description, date, 
  * y luego encadena una consulta de las tasks para cada una de ellas.
  * Devuelve un array de objetos {date:string, tasks:array de objetos task}
  */
-export function fetchTasks(token){
+export function fetchTasks(token, limit){
     return (dispatch) => {
         dispatch({
-            type: FETCH_DATES_ATTEMPT
+            type: FETCH_TASKS_ATTEMPT
         });
 
-        api.task.fetchTasks(token)
+        api.task.fetchTasks(token, limit)
         .then((data) => dispatch(fetchTasksSuccess(data.data)))
         .catch((error) => dispatch(fetchTasksError(error)));
     }

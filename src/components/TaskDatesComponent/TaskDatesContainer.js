@@ -31,6 +31,8 @@ class TaskDatesContainer extends Component{
             projectActions={this.props.projectActions}
             tagActions={this.props.tagActions}
             onResume={this.props.onResume}
+            limit={this.props.limit}
+            total_tasks={this.props.total_tasks}
             />
         )
     }
@@ -44,6 +46,8 @@ function mapStateToProps (state) {
       user_id: state.userReducer.id,
       dates: state.taskReducer.dates_id.map(e=>state.taskReducer.dates_entities[e]),
       dates_entities: state.taskReducer.dates_entities,
+      total_tasks: state.taskReducer.total_tasks,
+      limit: state.taskReducer.timer_section_load_limit,
       need_refreshing: state.taskReducer.need_refreshing,
     }
   }

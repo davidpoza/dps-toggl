@@ -224,8 +224,14 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasks(token){
-            return fetch(api_url+"/tasks", {
+        fetchTasks(token, limit){
+            let url = "";
+            if(limit)
+                url = api_url+"/tasks?limit="+limit;
+            else
+                url = api_url+"/tasks";
+
+            return fetch(url, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -251,44 +257,8 @@ const API = {
             ).then(
                 (data) => data
             );
-        },
+        }
 
-        fetchTasksByDate(token, date, user_id){
-            return fetch(api_url+"/items/tasks?fields=*,project.*,tags.*,tags.tags_id.*,user.id&filter[user][eq]="+user_id+"&filter[date][eq]="+date, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            }).then(
-                (response)=>response.json()
-            ).then(
-                (data)=>{
-                    if(data.data != undefined)
-                        return {date: date, time: data.data.reduce((prev,curr)=>{
-                            curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                            return(prev+curr);
-                        },0), collapsed: false, tasks:data.data};
-                    else
-                        return {date: date, collapsed: false, tasks:[], error:data.error};
-                }
-            );
-        },
-        fetchTasksByProject(token, project_id){
-            return fetch(api_url+"/items/tasks?fields=*,project.*&filter[project.id][eq]="+project_id, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer "+ token
-                }
-            }).then(
-                (response)=>response.json()
-            ).then(
-                (data) => data
-            );
-        },
     },
 
 
