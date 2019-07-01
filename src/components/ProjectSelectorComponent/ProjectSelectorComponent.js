@@ -94,8 +94,6 @@ class ProjectSelectorComponent extends Component{
                         return(<li id={"project"+e._id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e._id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e._id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
                     })}
                     </ul>
-                    <div className="dropdown-divider"></div>
-                    <button type="button" className="btn btn-primary w-100">Crear nuevo proyecto</button>
                 </div>
             </div>
         )
