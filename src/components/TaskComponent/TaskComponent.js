@@ -35,7 +35,6 @@ class TaskComponent extends Component{
         this.handleOnShowDatePicker = this.handleOnShowDatePicker.bind(this);
         this.closeDatePicker = this.closeDatePicker.bind(this);
         this.dropdown = React.createRef();
-        this.datepicker = React.createRef();
 
         /**
          * tags: almacena un array de tags con las propiedades:
@@ -51,6 +50,7 @@ class TaskComponent extends Component{
             tags: [],
             start_hour: utils.removeSeconds(this.props.task.start_hour),
             end_hour: utils.removeSeconds(this.props.task.end_hour),
+            show_datepicker: false
         }
     }
 
@@ -87,12 +87,19 @@ class TaskComponent extends Component{
     }
 
     handleOnShowDatePicker(){
-        this.datepicker.current.style.display = "block";
+        //this.datepicker.current.style.display = "block";
+        this.setState({
+            show_datepicker: true
+        })
         this.closeDateDropdown();
+
     }
 
     closeDatePicker(){
-        this.datepicker.current.style.display = "none";
+        //this.datepicker.current.style.display = "none";
+        this.setState({
+            show_datepicker: false
+        })
     }
 
    /** Esta función hace un join de dos arrays:
@@ -406,17 +413,18 @@ class TaskComponent extends Component{
                 }
                 </div>
 
-                <div ref={this.datepicker} className={styles.datepicker}>
+                { this.state.show_datepicker &&
+                <div className={styles.datepicker}>
                     <DatePicker
                         inline
                         withPortal
                         locale={es}
-                        popperPlacement="left"
                         dateFormat="dd/MM/yyyy"
                         calendarClassName={styles.calendar}
                         selected={new Date(this.props.task.date)}
                         onSelect={this.handleOnChangeDate} />
                 </div>
+                }
 
                 <div className="col-auto order-2 order-lg-6 p-0">
                 <button style={this.state.hide_btns||this.props.children?{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project._id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
