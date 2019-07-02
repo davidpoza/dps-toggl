@@ -2,7 +2,12 @@
 
 .task{
     border-bottom: 1px solid lightgrey;
-    padding: 20px;
+    @media screen and (max-width: $large-device) {
+      padding: 10px;
+    }
+    @media screen and (min-width: $large-device) {
+      padding: 20px;
+    }
 
     &:hover{
         background-color: #fafafa;
@@ -25,8 +30,14 @@
 }
 
 .dates{
-    padding-left: 20px;
-    padding-right: 20px;
+
+    @media screen and (max-width: $large-device) {
+      font-size: 0.9em;
+    }
+    @media screen and (min-width: $large-device) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
 }
 
 .desc{

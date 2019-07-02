@@ -157,7 +157,7 @@ const API = {
     },
     task: {
         //en tags_id viene un array de ids
-        createTask(token, description, date, start_hour, end_hour, project_id, tags_id, user_id){
+        createTask(token, description, date, start_hour, end_hour, project_id, tags_id, hour_value, user_id){
             let array_tags_obj = [];
             return fetch(api_url+"/tasks", {
                 method: "POST",
@@ -173,7 +173,8 @@ const API = {
                     end_hour,
                     project: project_id,
                     tags: tags_id,
-                    user: user_id
+                    user: user_id,
+                    hour_value: parseInt(hour_value)
                 })
             }).then(
                 (response)=>response.json()

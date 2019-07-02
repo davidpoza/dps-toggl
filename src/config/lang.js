@@ -30,6 +30,7 @@ const lang = {
         user_first_name_placeholder: "Nombre de usuario",
         user_last_name_placeholder: "Apellidos de usuario",
         title_delete_user_modal: "¿Desea borrar el usuario?",
+        hour_value_input: "Importe/Hora",
         login_section_h1: "Iniciar sesión",
         login_section_btn_login: "Login",
         login_section_btn_signup: "Nuevo usuario",

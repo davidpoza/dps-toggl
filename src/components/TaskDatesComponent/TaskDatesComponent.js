@@ -49,9 +49,9 @@ class TaskDatesComponent extends Component{
                    this.props.dates && this.props.dates.map((e,index) => {
                         return (
                                 <li className={styles.date} key={"date_group_"+index}>
-                                <div className={"d-flex justify-content-between"}>
+                                <div className={"d-flex justify-content-between "+styles.header}>
                                     <h2>{ e.collapsed?<i className="fas fa-plus-square" onClick={this.handleOnClick.bind(this,e.date)}></i>:<i className="fas fa-minus-square" onClick={this.handleOnClick.bind(this,e.date)}></i> } {utils.standarDateToHuman(e.date)}</h2>
-                                    <div className="p-3">{e.time}h.</div>
+                                    <div>{e.time}h.</div>
                                 </div>
 
                                 { !e.collapsed &&

@@ -66,7 +66,8 @@ class TagSelectorComponent extends Component{
 
 
     render(){
-        return(<div className={"btn-group dropleft"}>
+        let cadena = "";
+        return(<div className={this.props.displayAsLabel == true ? "btn-group dropleft":"btn-group dropleft "+styles.dropleft}>
                 {
                     this.props.displayAsLabel != true ?
                     <button className={this.state.active ? styles.btn_activated:styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
@@ -79,11 +80,14 @@ class TagSelectorComponent extends Component{
                                 {
                                     this.state.tags.filter((e)=>(e.checked)).map((e,index, arr)=>{
                                     if(index == arr.length -1)
-                                        return utils.isMobile() ? e.name.substring(0,4) : e.name
+                                        cadena+= utils.isMobile() ? e.name.substring(0,4) : e.name
                                     else
-                                        return utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ","
+                                        cadena+= utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ","
                                     })
+
                                 }
+                                {utils.isMobile()?cadena.substring(0,16):cadena.substring(0,20)}
+                                {(cadena.length > 16 && utils.isMobile() || cadena.length > 20 && !utils.isMobile()) && <span>...</span>}
                                 </button>
 
                             ):

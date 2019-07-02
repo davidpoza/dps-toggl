@@ -6,6 +6,14 @@
     background-color: #ffffff;
     h2{
         font-size: 0.9em;
-        padding: 15px;
+    }
+
+    .header{
+        @media screen and (max-width: $large-device) {
+          padding: 10px;
+        }
+        @media screen and (min-width: $large-device) {
+          padding: 20px;
+        }
     }
   }

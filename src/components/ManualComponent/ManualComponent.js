@@ -11,7 +11,7 @@ import utils from '../../utils';
 
 class ManualComponent extends Component{
     constructor(props){
-        super(props); 
+        super(props);
 
 
     }
@@ -20,23 +20,23 @@ class ManualComponent extends Component{
         return(
             <div>
                 {utils.isMobile() ?
-                <DatePicker 
-                    locale={es} 
-                    className={styles.date_input} 
+                <DatePicker
+                    locale={es}
+                    className={styles.date_input}
                     dateFormat="dd/MM/yyyy"
                     selected={this.props.date}
                     onChange={this.props.handleDateChange}
                     popperPlacement="bottom"
                 /> :
-                <DatePicker 
-                    locale={es} 
-                    className={styles.date_input} 
+                <DatePicker
+                    locale={es}
+                    className={styles.date_input}
                     dateFormat="dd/MM/yyyy"
                     selected={this.props.date}
                     onChange={this.props.handleDateChange}
                 />
                 }
-                
+
                 <input id="start_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.start_hour}/>
                 <i className="fas fa-long-arrow-alt-right"></i>
                 <input id="end_hour" onChange={this.props.handleHourChange} className={styles.hour_input} maxLength="5" value={this.props.end_hour}/>
