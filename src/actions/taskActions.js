@@ -163,7 +163,6 @@ export function createTask(token, desc, date, start_hour, end_hour, project_id, 
 
         api.task.createTask(token, desc, date, start_hour, end_hour, project_id, tags_id, hour_value, user_id).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(createTaskSuccess(data.data));
                 }
@@ -207,7 +206,6 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags).then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
                 }
@@ -227,16 +225,15 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
  * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTask.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
-export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
+export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags){
     return (dispatch) => {
         dispatch({
             type: UPDATE_TASK_ATTEMPT
         });
 
-        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags)
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags)
         .then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
                     dispatch({
@@ -250,7 +247,6 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
         )
         .then(
             (data) => {
-                //directus devuelve los errores en una objeto error y los datos en uno data
                 if(data.data){
                     dispatch(fetchTaskSuccess(data.data));
                 }

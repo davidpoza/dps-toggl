@@ -201,12 +201,13 @@ const API = {
         },
         //en add_tags viene un array de ObjectId de los tags que queremos añadir
         //en delete_tags viene un array de ObjectId de los tags que queremos eliminar
-        updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
+        updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags){
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
             if(date!=null) composingBody.date = date;
             if(start_hour!=null) composingBody.start_hour = start_hour;
             if(end_hour!=null) composingBody.end_hour = end_hour;
+            if(hour_value!=null) composingBody.hour_value = parseInt(hour_value);
             if(project_id!=-1) composingBody.project = project_id;
             if(add_tags!=null) composingBody.add_tags = add_tags;
             if(delete_tags!=null) composingBody.delete_tags = delete_tags;
