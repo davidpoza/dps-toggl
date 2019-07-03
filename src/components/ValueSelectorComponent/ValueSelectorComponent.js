@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
-
+import onClickOutside from "react-onclickoutside";
 
 
 import styles from './ValueSelectorComponent.scss';
@@ -13,13 +13,13 @@ import lang from '../../config/lang';
 class ValueSelectorComponent extends Component{
     constructor(props){
         super(props);
-        console.log(":"+this.props.value);
         this.state = {
             value: this.props.value? this.props.value:0,
             active: (this.props.value && this.props.value != 0) ? true:false //lo activamos cuando hay un número escrito
         }
-
+        this.dropdown = React.createRef();
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
+        this.toggleVisibility = this.toggleVisibility.bind(this);
     }
 
     componentDidUpdate(prevProps){
@@ -36,30 +36,43 @@ class ValueSelectorComponent extends Component{
             value: e.target.value,
             active: (e.target.value.length > 0 && e.target.value != 0) ? true:false
         });
-        this.props.onChange(e);
+    }
+
+    handleClickOutside(e){
+        if(this.dropdown.current.style.display != "" && this.dropdown.current.style.display != "none"){
+            this.dropdown.current.style.display = "none";
+            this.props.onChangeValue(this.state.value);
+        }
+    };
+
+    toggleVisibility(){
+        if(this.dropdown.current.style.display == "" || this.dropdown.current.style.display == "none")
+            this.dropdown.current.style.display = "block";
+        else
+            this.dropdown.current.style.display = "none";
     }
 
     render(){
         return(<div className={this.props.displayAsLabel == true ? "btn-group dropleft":"btn-group dropleft "+styles.dropleft}>
                 {
                     this.props.displayAsLabel != true ?
-                    <button className={this.state.active ? styles.btn_activated:styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    <button className={this.state.active ? styles.btn_activated:styles.btn} type="button" onClick={this.toggleVisibility}>
                         <i className="fas fa-euro-sign"></i>
                     </button> :
-                    <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span id="dropdownMenuButton">
                         {
                             this.state.value && !utils.isMobile() ?
                             <div className={styles.hour_value_div}>{this.state.value}</div>:<div className={styles.hour_value_empty}></div>
                         }
-                        <button className={this.state.active ? styles.btn_activated:styles.btn} >
+                        <button className={this.state.active ? styles.btn_activated:styles.btn} onClick={this.toggleVisibility}>
                             <i className="fas fa-euro-sign"></i>
                         </button>
                     </span>
                 }
 
-                <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
+                <div ref={this.dropdown} className={"dropdown-menu " + styles.menu } >
                     <label>{lang[config.lang].hour_value_input}</label>
-                    <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" value={this.state.value} type="number" min="0" />
+                    <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  value={this.state.value} type="number" min="0" />
                 </div>
             </div>
         )
@@ -72,4 +85,4 @@ ValueSelectorComponent.propTypes = {
 }
 
 
-export default ValueSelectorComponent;
+export default onClickOutside(ValueSelectorComponent);

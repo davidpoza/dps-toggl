@@ -23,6 +23,7 @@ class TaskComponent extends Component{
         this.handleOnChangeDesc = this.handleOnChangeDesc.bind(this);
         this.handleOnBlurDesc = this.handleOnBlurDesc.bind(this);
         this.handleOnChangeProject = this.handleOnChangeProject.bind(this);
+        this.handleOnChangeHourValue = this.handleOnChangeHourValue.bind(this);
         this.handleOnClickTagSelector = this.handleOnClickTagSelector.bind(this);
         this.composeTagsListState = this.composeTagsListState.bind(this);
         this.handleUpdateTaskVisually = this.handleUpdateTaskVisually.bind(this);
@@ -51,6 +52,7 @@ class TaskComponent extends Component{
             tags: [],
             start_hour: utils.removeSeconds(this.props.task.start_hour),
             end_hour: utils.removeSeconds(this.props.task.end_hour),
+            hour_value: this.props.task.hour_value,
             show_datepicker: false
         }
     }
@@ -62,13 +64,7 @@ class TaskComponent extends Component{
         this.composeTagsListState();
    }
 
-   componentDidMount(){
-
-   }
-
    componentDidUpdate(prevProps){
-        //if(prevProps.task.tags != this.props.task.tags)
-
         if(prevProps.task._id != this.props.task._id){
             this.composeTagsListState();
             this.setState({
@@ -334,6 +330,12 @@ class TaskComponent extends Component{
         }
     }
 
+    handleOnChangeHourValue(value){
+        this.setState({
+            hour_value: value
+        });
+    }
+
     handleOnToggle(toggle_id, toggle_span_id){
         $( "#"+ toggle_id).toggle();
         $( "#"+ toggle_span_id).toggleClass( styles.toggled );
@@ -351,7 +353,7 @@ class TaskComponent extends Component{
 
                 {!this.props.children?
                 <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">
-                    <ValueSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} value={this.props.task.hour_value} />
+                    <ValueSelectorComponent displayAsLabel={true} onChangeValue={this.handleOnChangeHourValue} value={this.props.task.hour_value} />
                 </div>
                 : !utils.isMobile()?
                 <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">

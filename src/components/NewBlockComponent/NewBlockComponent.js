@@ -131,9 +131,9 @@ class NewBlockComponent extends Component{
     }
 
     //recupera el valor de importe por hora que asignamos a la tarea a través de ValueSelectorComponent
-    handleOnChangeHourValue(e){
+    handleOnChangeHourValue(value){
         this.setState({
-            hour_value: e.target.value
+            hour_value: value
         });
     }
 
@@ -341,7 +341,7 @@ class NewBlockComponent extends Component{
                         </div>
 
                         <div className="col-auto col-lg-auto order-4 order-lg-4 p-1">
-                            <ValueSelectorComponent value={this.state.hour_value} onChange={this.handleOnChangeHourValue} />
+                            <ValueSelectorComponent value={this.state.hour_value} onChangeValue={this.handleOnChangeHourValue} />
                         </div>
 
                         <div className={"col p-0 col-lg-auto order-6 order-lg-4 text-right "+styles.manual_component}>
