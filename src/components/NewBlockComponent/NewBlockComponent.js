@@ -328,30 +328,30 @@ class NewBlockComponent extends Component{
             <div className="container-flex" >
                 <div className={"row align-items-center justify-content-between " + styles.box} >
 
-                        <div className="col-8 col-sm-9 col-md-10 col-lg order-1 order-lg-1 p-0">
+                        <div className="col-8 col-sm-7 col-md-7 col-lg order-1 order-lg-1 p-0">
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description} onKeyPress={this.handleOnKeyPress}></input>
                         </div>
 
-                        <div className="col-4 col-lg-auto order-6 order-lg-2 p-1">
+                        <div className="col-4 col-md-auto col-lg-auto order-6 order-md-2 order-lg-2 p-1">
                             <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects}/>
                         </div>
 
-                        <div className="col-1 col-lg-auto order-5 order-lg-3 py-1 px-0 px-lg-1">
+                        <div className="col-1 col-md-auto col-lg-auto order-5 order-md-3 order-lg-3 py-1 px-0 px-lg-1">
                             <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
                         </div>
 
-                        <div className="col-auto col-lg-auto order-4 order-lg-4 p-1">
+                        <div className="col-auto col-lg-auto order-4 order-md-4 order-lg-4 p-1">
                             <ValueSelectorComponent value={this.state.hour_value} onChangeValue={this.handleOnChangeHourValue} />
                         </div>
 
-                        <div className={"col p-0 col-lg-auto order-6 order-lg-4 text-right "+styles.manual_component}>
+                        <div className={"col p-0 col-md-auto col-lg-auto order-6 order-md-4 order-lg-4 text-right "+styles.manual_component}>
                         { this.state.mode == "chrono" ?
                             <ChronometerComponent time={this.state.time} />:
                             <ManualComponent handleDateChange={this.handleDateChange} handleHourChange={this.handleHourChange} date={this.state.date} start_hour={this.state.start_hour} end_hour={this.state.end_hour}/>
                         }
                         </div>
 
-                        <div className="col-auto col-lg-auto order-3 order-lg-5 p-1 d-flex">
+                        <div className="col-auto col-lg-auto order-3 order-md-5 order-lg-5 p-1 d-flex">
 
                                     <button id="btn-create-block" ref={this.createBtn} className={this.state.chrono_status=="running"? styles.btn_stop:styles.btn_create} onClick={
                                         this.state.mode == "chrono" ? this.handleOnClickStart : this.handleOnClickCreate

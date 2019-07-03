@@ -97,7 +97,7 @@ class ProfileSectionComponent extends Component{
                     </div>
                     <div className={"flex-grow-1 " + styles.profile}>
 
-                        <div className={ !utils.isMobile() ? "d-flex justify-content-between ml-2 ml-lg-5":"d-flex flex-column my-2 my-lg-5 mx-2 mx-lg-5"}>
+                        <div className={ "d-flex flex-column flex-md-row justify-content-md-between my-2 mx-2 ml-md-5 ml-lg-5" }>
                             <div className={"order-1 order-lg-0 "+styles.inputs}>
                                 <div className={styles.form_label_group}>
                                     <label htmlFor="inputEmail">{lang[config.lang].user_email_input}</label>
@@ -116,10 +116,10 @@ class ProfileSectionComponent extends Component{
                                     <input id="inputAvatar" className={styles.input} type="file" ref={this.userAvatarInput} onChange={this.handleOnChange} />
                                 </div>
                             </div>
-                            <img className={"align-self-center align-self-lg-start order-0 order-lg-1 my-2 my-lg-0 mx-2 mx-lg-5 "+styles.avatar} src={config.api_url+"/users/avatar/"+this.state.avatar} />
+                            <img className={"align-self-center align-self-lg-start order-0 order-md-1 order-lg-1 my-2 my-md-0 my-lg-0 mx-2 mx-md-5 mx-lg-5 "+styles.avatar} src={config.api_url+"/users/avatar/"+this.state.avatar} />
                         </div>
 
-                        <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                        <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
                         <h2>{lang[config.lang].user_data_title}</h2>
                         <ul className="p-0">
                         <li className={styles.li}><strong>{lang[config.lang].user_creation}</strong>: {utils.standarDateToHumanExtended(this.props.profile.created_on)}</li>

@@ -82,7 +82,7 @@ class TagSelectorComponent extends Component{
                                     if(index == arr.length -1)
                                         cadena+= utils.isMobile() ? e.name.substring(0,4) : e.name
                                     else
-                                        cadena+= utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ","
+                                        cadena+= utils.isMobile() ? e.name.substring(0,4) + "," : e.name + ", "
                                     })
 
                                 }

@@ -66,12 +66,12 @@ class ProjectSectionComponent extends Component{
 
     render(){
         return(
-            <div className={"d-flex flex-column justify-content-start h-100"}>
+            <div className={"d-flex flex-column justify-content-start h-100"} style={{backgroundColor: "white"}}>
                 <div className={"d-flex justify-content-between "+styles.header}>
                     <h1>{lang[config.lang].project_section_title}</h1>
                     <button className="btn-lg btn-primary" data-toggle="modal" data-target="#projectCreateModal" onClick={this.handleOpenModal}><i className="fas fa-plus-circle"></i></button>
                 </div>
-                <div className={"flex-grow-1 " + styles.projectlist}>
+                <div className={"flex-grow-1 ml-md-3 " + styles.projectlist}>
                     <ProjectListComponent
                     user={this.props.user}
                     projects={this.props.projects}

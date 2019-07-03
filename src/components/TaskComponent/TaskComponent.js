@@ -345,7 +345,7 @@ class TaskComponent extends Component{
     render(){
         return(
             <li className={this.props.child? "row m-1 justify-content-between " + styles.child_task:"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.props.children?null:this.handleOnMouseOver} onMouseOut={this.props.children?null:this.handleOnMouseOut}>
-                <div className={this.props.children? "col-9 col-lg-4 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc:"col-10 col-lg-4 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc} >
+                <div className={this.props.children? "col-9 col-md-3 col-lg-3 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc:"col-10 col-md-3 col-lg-3 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc} >
                     <div className={"w-100 "}>
                             {this.props.toggle_id && <span id={this.props.toggle_id+"-span"} onClick={this.handleOnToggle.bind(this, this.props.toggle_id, this.props.toggle_id+"-span")} className={styles.toggle}>{this.props.children.length+1}</span>}
                                 <input style={{width:this.props.children?"80%":"100%"}}  className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc}/>
@@ -363,7 +363,7 @@ class TaskComponent extends Component{
                 }
 
                 {!this.props.children?
-                    <div className={this.props.task.project!=null ? "col-4 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 " : "col-4 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 text-right "}>
+                    <div className={this.props.task.project!=null ? "col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 " : "col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 text-right "}>
                         {this.props.task.project!=null ?
                         <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
                         :
@@ -371,22 +371,22 @@ class TaskComponent extends Component{
                         }
                     </div>
                     : !utils.isMobile()?
-                    <div className={"col-4 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 "}>
+                    <div className={"col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 "}>
                     </div>:null
 
                 }
 
                 {!this.props.children?
-                <div className="col-4 px-0 py-1 col-lg-2 order-3 order-lg-3">
+                <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
                     <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
                 </div>
                 : !utils.isMobile()?
-                <div className="col-4 px-0 py-1 col-lg-2 order-3 order-lg-3">
+                <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
                 </div>:null
                 }
 
                 {!utils.isMobile() && !this.props.children ?
-                    <div className={"col-auto col-lg-auto order-lg-5 px-0 py-1 " + styles.dates}>
+                    <div className={"col-auto col-lg-auto order-md-5 order-lg-5 px-0 py-1 " + styles.dates}>
 
                             <input
                                 className={styles.input_hour}
@@ -403,7 +403,7 @@ class TaskComponent extends Component{
                                 size="5" maxLength="5"
                             />
                     </div> : !utils.isMobile() && this.props.children &&
-                    <div className={"col-auto col-lg-auto order-lg-5 px-0 py-1 " + styles.dates}>
+                    <div className={"col-auto col-lg-auto order-md-5 order-lg-5 px-0 py-1 " + styles.dates}>
                             <span
                                 className={styles.input_hour}
                             >{utils.removeSeconds(this.props.children[this.props.children.length-1].start_hour)}</span>
@@ -433,7 +433,7 @@ class TaskComponent extends Component{
                 </div>
                 }
 
-                <div className="col-auto order-2 order-lg-7 px-0 py-1">
+                <div className="col-auto order-2 order-md-7 order-lg-7 px-0 py-1">
                 <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project._id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
                 <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.handleOnClickDateBtn:null} aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className={"dropdown-menu "+styles.dropdown_menu} ref={this.dropdown}>

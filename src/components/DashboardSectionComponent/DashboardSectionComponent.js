@@ -193,7 +193,7 @@ class DashboardSectionComponent extends Component{
                         <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
                     }
                     </div>
-                    <div>
+                    <div className="p-md-3">
                         <ul className={styles.project_list}>
                         {this.props.data.entities &&
                         this.props.data.entities.projects &&
