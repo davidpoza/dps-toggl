@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/davidpoza/dps-toggl#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
     "@nivo/bar": "^0.56.2",
     "@nivo/pie": "^0.56.2",
     "cross-env": "^5.2.0",
