@@ -74,6 +74,8 @@ const lang = {
         menu_config: "Configuración",
         tag_section_title: "Etiquetas",
         user_section_title: "Usuarios",
+        reports_section_title: "Informes",
+        reports_filters_bar: "Filtrar",
         btn_new_tag: "Nueva etiqueta",
         btn_update_tag: "Modificar etiqueta",
         btn_delete_tag: "Eliminar etiqueta",
@@ -110,7 +112,10 @@ const lang = {
         weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
         weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"],
         not_available: "No disponible",
-        load_more: "Cargar más"
+        load_more: "Cargar más",
+        project_selector_search: "Buscar proyecto",
+        project_selector_no_project: "Sin proyecto",
+        total_results: "Fechas encontradas"
     }
 };
 

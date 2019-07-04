@@ -163,6 +163,19 @@ export function loginUser(email, password, history){
             (data) => {
                 if(data.data){
                     dispatch(loginUserSuccess(data.data));
+                    //cargamos todas las entidades de usuario que nos permiten
+                    dispatch({
+                        type: FETCH_USERS_ATTEMPT
+                    });
+                    api.user.fetchUsers(data.data.token).then(
+                        (data) => {
+                            if(data.data){
+                                dispatch(fetchUsersSuccess(data.data));
+                            }
+                            else if(data.error) //error en la peticion
+                                dispatch(fetchUsersError(data.error))
+                        }
+                    );
                     history.push("/");
                 }
                 else if(data.error) //error en la peticion

@@ -1,27 +1,25 @@
 import {
-    CREATE_TASK_ATTEMPT,
-    CREATE_TASK_FAIL,
-    CREATE_TASK_SUCCESS,
-    FETCH_TASKS_ATTEMPT,
-    FETCH_TASKS_FAIL,
-    FETCH_TASKS_SUCCESS,
-    DELETE_TASK_ATTEMPT,
-    DELETE_TASK_FAIL,
-    DELETE_TASK_SUCCESS,
-    DELETE_TASK_VISUALLY,
-    UPDATE_TASK_ATTEMPT,
-    UPDATE_TASK_FAIL,
-    UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_VISUALLY,
-    CLEAN_TASK_MESSAGE,
-    FETCH_TASK_ATTEMPT,
-    FETCH_TASK_FAIL,
-    FETCH_TASK_SUCCESS,
-    COLLAPSE_DATE,
+    REPORT_FETCH_TASKS_ATTEMPT,
+    REPORT_FETCH_TASKS_FAIL,
+    REPORT_FETCH_TASKS_SUCCESS,
+    REPORT_DELETE_TASK_ATTEMPT,
+    REPORT_DELETE_TASK_FAIL,
+    REPORT_DELETE_TASK_SUCCESS,
+    REPORT_DELETE_TASK_VISUALLY,
+    REPORT_UPDATE_TASK_ATTEMPT,
+    REPORT_UPDATE_TASK_FAIL,
+    REPORT_UPDATE_TASK_SUCCESS,
+    REPORT_UPDATE_TASK_VISUALLY,
+    REPORT_CLEAN_TASK_MESSAGE,
+    REPORT_FETCH_TASK_ATTEMPT,
+    REPORT_FETCH_TASK_FAIL,
+    REPORT_FETCH_TASK_SUCCESS,
+    REPORT_COLLAPSE_DATE,
+    REPORT_UPDATE_DATE_VISUALLY,
+    REPORT_LOAD_MORE_TASKS,
+    REPORT_RESET_LIMIT,
     LOGOUT_USER,
-    UPDATE_DATE_VISUALLY,
-    LOAD_MORE_TASKS,
-    RESET_LIMIT
+    REPORT_CHANGE_FILTERS
 } from '../actions/types';
 
 import utils from '../utils';
@@ -32,52 +30,32 @@ import initialState from './initialState';
 
 
 
-export default function taskReducer (state = initialState.taskReducer, action){
+export default function reportReducer (state = initialState.reportReducer, action){
     switch(action.type){
-        case LOAD_MORE_TASKS:
+        case REPORT_LOAD_MORE_TASKS:
             return {
                 ...state,
                 timer_section_load_limit: state.timer_section_load_limit + action.payload
             }
-        case RESET_LIMIT:
+        case REPORT_RESET_LIMIT:
             return {
                 ...state,
                 timer_section_load_limit: 7
             }
-        case CREATE_TASK_ATTEMPT:
-            return {//vamos a extender una objeto vacio con una copia del estado con el spread operator, es como usar Object.assign
-                ...state,
-                loading: true,
-                need_refreshing: false,
-                error: {}
-            }
-        case CREATE_TASK_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                need_refreshing: true,
-                error: {}
-            }
-        case CREATE_TASK_FAIL:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
-            }
-        case DELETE_TASK_ATTEMPT:
+        case REPORT_DELETE_TASK_ATTEMPT:
             return {
                 ...state,
                 loading: true,
                 need_refreshing: false,
                 error: {}
             }
-        case DELETE_TASK_SUCCESS:
+        case REPORT_DELETE_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: {}
             }
-        case DELETE_TASK_VISUALLY:
+        case REPORT_DELETE_TASK_VISUALLY:
             let new_dates_entities_deleted = Object.assign({}, state.dates_entities);
             let new_tasks_entities_deleted = Object.assign({}, state.tasks_entities);
             new_dates_entities_deleted[action.payload.task_date].tasks = new_dates_entities_deleted[action.payload.task_date].tasks.filter(t=>(t!=action.payload.task_id));
@@ -96,44 +74,44 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 tasks_entities: new_tasks_entities_deleted,
                 error: {}
             }
-        case DELETE_TASK_FAIL:
+        case REPORT_DELETE_TASK_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        case UPDATE_TASK_ATTEMPT:
+        case REPORT_UPDATE_TASK_ATTEMPT:
             return {
                 ...state,
                 loading: true,
                 error: {}
             }
-        case UPDATE_TASK_SUCCESS:
+        case REPORT_UPDATE_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 error: {}
             }
-        case UPDATE_TASK_VISUALLY:
+        case REPORT_UPDATE_TASK_VISUALLY:
             return {
                 ...state,
                 loading: false,
                 tasks_entities: action.payload,
                 error: {}
             }
-        case UPDATE_TASK_FAIL:
+        case REPORT_UPDATE_TASK_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        case FETCH_TASK_ATTEMPT:
+        case REPORT_FETCH_TASK_ATTEMPT:
             return {
                 ...state,
                 loading: true,
                 error: {}
             }
-        case FETCH_TASK_SUCCESS:
+        case REPORT_FETCH_TASK_SUCCESS:
             action.payload = normalize(action.payload, schemas.taskEntity);
             let new_tasks_entities = Object.assign({}, state.tasks_entities);
             new_tasks_entities[action.payload.result] = action.payload.entities.tasks[action.payload.result];
@@ -155,23 +133,26 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 tasks_tags_entities: new_tasks_tags_entities,
                 need_refreshing: false
             }
-        case FETCH_TASK_FAIL:
+        case REPORT_FETCH_TASK_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        case FETCH_TASKS_ATTEMPT:
+        case REPORT_FETCH_TASKS_ATTEMPT:
             return {
                 ...state,
                 loading: true,
                 //tasks: [],
                 error: {}
             }
-        case FETCH_TASKS_SUCCESS:
-            let total_tasks = action.payload.total;
+        case REPORT_FETCH_TASKS_SUCCESS:
+            let total_results = action.payload.total;
+            let all_projects = action.payload.projects;
+            let all_tags = action.payload.tags;
             action.payload = normalize(action.payload.dates, schemas.dateSchema);
-
+            all_tags = normalize(all_tags, schemas.tagsSchema);
+            all_projects = normalize(all_projects, schemas.projectsSchema);
             //el flag collapsed debe mantenerse en el valor que tuviera en el estado
             if(state.dates_entities)
             Object.keys(state.dates_entities).forEach(key=>{
@@ -184,30 +165,33 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 dates_entities: action.payload.entities.dates,
                 dates_id: action.payload.result,
                 tasks_entities: action.payload.entities.tasks,
-                tasks_tags_entities: action.payload.entities.tags,
-                projects_entities: action.payload.entities.projects,
-                total_tasks: total_tasks,
+                tags_entities: all_tags.entities.tags, //aquí cargaremos los tags de todos los usuarios
+                tags_id: all_tags.result,
+                projects_entities: all_projects.entities.projects, //aquí cargaremos los projects de todos los usuarios
+                projects_id: all_projects.result,
+               // tasks_tags_entities: action.payload.entities.tags,
+               total_results: total_results,
                 need_refreshing: false
             }
-        case FETCH_TASKS_FAIL:
+        case REPORT_FETCH_TASKS_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        case CLEAN_TASK_MESSAGE:
+        case REPORT_CLEAN_TASK_MESSAGE:
             return {
                 ...state,
                 error: {}
             }
-        case COLLAPSE_DATE:
+        case REPORT_COLLAPSE_DATE:
             let new_dates_entities = Object.assign({},state.dates_entities);
             new_dates_entities[action.payload].collapsed=new_dates_entities[action.payload].collapsed?false:true
             return {
                 ...state,
                 dates_entities: new_dates_entities
             }
-        case UPDATE_DATE_VISUALLY:
+        case REPORT_UPDATE_DATE_VISUALLY:
             let new_dates_entities_updated_time = Object.assign({},state.dates_entities);
             let tasks = new_dates_entities_updated_time[action.payload.date].tasks.map(t=>action.payload.tasks_entities[t]);
             new_dates_entities_updated_time[action.payload.date].time = tasks.reduce((prev,curr)=>{
@@ -218,9 +202,16 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 ...state,
                 dates_entities: new_dates_entities_updated_time
             }
+        case REPORT_CHANGE_FILTERS:
+            return {
+                ...state,
+                preset: action.payload.date_preset,
+                date_start: action.payload.date_start,
+                date_end: action.payload.date_end,
+            }
         case LOGOUT_USER:
             return {
-                ...initialState.taskReducer
+                ...initialState.reportReducer
             }
         default:
             return state;

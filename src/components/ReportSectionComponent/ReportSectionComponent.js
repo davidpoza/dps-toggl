@@ -6,14 +6,16 @@ import es from 'date-fns/locale/es';
 import utils from '../../utils';
 import config from '../../config/config';
 import lang from '../../config/lang';
-import styles from './DashboardSectionComponent.scss';
+import styles from './ReportSectionComponent.scss';
 
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import BarChartComponent from '../BarChartComponent/BarChartComponent';
-import PieChartComponent from '../PieChartComponent/PieChartComponent';
+import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
+import TaskDatesReportContainer from '../TaskDatesReportComponent/TaskDatesReportContainer';
+import { DiffieHellman } from 'crypto';
 
 
-class DashboardSectionComponent extends Component{
+
+class ReportSectionComponent extends Component{
     constructor(props){
         super(props);
         this.dropdown = React.createRef();
@@ -22,9 +24,16 @@ class DashboardSectionComponent extends Component{
         this.handleOnChangeStartDate = this.handleOnChangeStartDate.bind(this);
         this.handleOnChangeEndDate = this.handleOnChangeEndDate.bind(this);
         this.handleOnChangePresetDate = this.handleOnChangePresetDate.bind(this);
+        this.handleOnFilterByProject = this.handleOnFilterByProject.bind(this);
+        this.handleOnResetFilterByProject = this.handleOnResetFilterByProject.bind(this);
         this.state = {
+            //filtros por defecto
             start_date: null, //objeto Date
             end_date: null, //objeto Date
+            user_id: "all",
+            project_id: null,
+            project_selected_name: null,
+            project_selected_color: null,
             preset: ""
         }
     }
@@ -32,17 +41,16 @@ class DashboardSectionComponent extends Component{
     componentDidMount(){
         // por defecto mostramos el último preset que usamos o en caso de no existir last_preset, el intervalo de la última semana
         this.handleOnChangePresetDate(this.props.preset ? this.props.preset : "preset_last_week");
-
     }
 
     componentDidUpdate(prevProps, prevState){
         //hacemos la consulta cada vez que cambian las fechas
-       if(prevState.start_date != this.state.start_date || prevState.end_date != this.state.end_date){
-           this.props.dashboardActions.fetchBarData(this.props.token, this.state.start_date, this.state.end_date, this.state.preset);
+       if(prevState.start_date != this.state.start_date ||
+        prevState.end_date != this.state.end_date ||
+        prevState.project_id != this.state.project_id){
+           this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
+           this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_id, this.state.project_id, null);
        }
-
-
-
     }
 
     handleOnClickDateBtn(){
@@ -74,7 +82,7 @@ class DashboardSectionComponent extends Component{
     handleOnChangePresetDate(preset){
         if(typeof preset == "object")preset=preset.target.id;
         let start_date=this.props.date_start ? new Date(this.props.date_start): "";
-        let end_date=this.props.date_end ? new Date(this.props.date_end): "";
+        let end_date=this.props.date_end ? new Date(this.props.date_end) : "";
         let today = new Date(Date.now());
         let day = today.getDay()==0?7:today.getDay();
         switch(preset){
@@ -135,11 +143,36 @@ class DashboardSectionComponent extends Component{
         });
     }
 
+
+    handleOnFilterByProject(project_id, project_name, project_color){
+        let project = {};
+        if(project_id == -1) //el id=-1 lo hemos reservado para la opción sin proyecto
+            this.setState({
+                project_id: -1,
+                project_selected_name: lang[config.lang].project_selector_no_project,
+                project_selected_color: "lightgrey"
+            });
+        else
+            this.setState({
+                project_id: project_id,
+                project_selected_name: project_name,
+                project_selected_color: project_color
+            });
+    }
+
+    handleOnResetFilterByProject(){
+        this.setState({
+            project_id: null,
+            project_selected_name: null,
+            project_selected_color: null
+        })
+    }
+
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between "+styles.header}>
-                    <h1>{lang[config.lang].dashboard_section_title}</h1>
+                    <h1>{lang[config.lang].reports_section_title}</h1>
                     <div className="btn-group dropleft">
                         <button className="btn-lg btn-primary" type="button" id="dropdownMenuButton" onClick={this.handleOnClickDateBtn} >
                             <i className="fas fa-calendar-alt"></i>
@@ -187,41 +220,29 @@ class DashboardSectionComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className={styles.content}>
-                    <div className={"p-0 p-xl-5 "+styles.barchart_height}>
-                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
-                        <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
-                    }
-                    </div>
-                    <div className="p-md-3">
-                        <ul className={styles.project_list}>
-                        {this.props.data.entities &&
-                        this.props.data.entities.projects &&
-                        Object.keys(this.props.data.entities.projects).map((p,index)=>{
-                            return (
-                                <li key={"pli"+index}><i className="fas fa-circle" style={{color: this.props.data.entities.projects[p].color}}></i> {this.props.data.entities.projects[p].name}</li>
-                            )
-                        })}
-                        </ul>
 
+                <div className={"d-flex flex-row justify-content-between "+styles.filters_bar}>
+                    <div>
+                        <span className={styles.filter_span}>{lang[config.lang].reports_filters_bar}:</span> <ProjectSelectorComponent onClick={this.handleOnFilterByProject} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects} onReset={this.handleOnResetFilterByProject}/>
                     </div>
-
-                    <div className={"p-0 p-xl-5 "+styles.piechart_height}>
-                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
-                        <PieChartComponent data={this.props.data}/>
-                    }
+                    <div>
+                        <span className={styles.filter_span}>{lang[config.lang].total_results}: {this.props.total_results}</span>
                     </div>
                 </div>
 
-                <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
+                <div className={"flex-grow-1 " + styles.tasklist}>
+                    <TaskDatesReportContainer/>
+                </div>
+
+                <LoadingComponent isLoading={this.props.user_loading||this.props.report_loading||this.props.project_loading} />
             </div>
         )
     }
 }
 
-DashboardSectionComponent.propTypes = {
+ReportSectionComponent.propTypes = {
     user_loading: PropTypes.bool.isRequired,
-    task_loading: PropTypes.bool.isRequired,
+    report_loading: PropTypes.bool.isRequired,
     project_loading: PropTypes.bool.isRequired,
     tag_loading: PropTypes.bool.isRequired,
     userActions: PropTypes.object.isRequired,
@@ -230,4 +251,4 @@ DashboardSectionComponent.propTypes = {
     tagActions: PropTypes.object.isRequired,
 }
 
-export default DashboardSectionComponent;
+export default ReportSectionComponent;

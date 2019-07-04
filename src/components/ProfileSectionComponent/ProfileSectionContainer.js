@@ -38,7 +38,7 @@ class ProfileSectionContainer extends Component{
 function mapStateToProps (state, ownProps) {
     //denormalización
       let profile;
-      if(ownProps.match.params.user_id === undefined)
+      if(ownProps.match.params.user_id === undefined || ownProps.match.params.user_id == state.userReducer.id)
         profile = {
           _id: state.userReducer.id,
           active: state.userReducer.active,

@@ -226,12 +226,37 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasks(token, limit){
+        fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids){
             let url = "";
+            let params = {};
+            url = api_url+"/tasks";
+
             if(limit)
-                url = api_url+"/tasks?limit="+limit;
-            else
-                url = api_url+"/tasks";
+                params["limit"] = limit;
+
+            if(date_start)
+                params["date_start"] = date_start;
+
+            if(date_end)
+                params["date_end"] = date_end;
+
+            if(user_id)
+                params["user_id"] = user_id;
+
+            if(project_id)
+                params["project_id"] = project_id;
+
+            let params_array = Object.keys(params);
+            if(params_array.length > 0){
+                let params_string = "";
+                for(let i=0; i<params_array.length; i++){
+                    if(i==0)
+                        params_string += "?"+params_array[i]+"="+params[params_array[i]];
+                    else
+                        params_string += "&"+params_array[i]+"="+params[params_array[i]];
+                }
+                url += params_string;
+            }
 
             return fetch(url, {
                 method: "GET",
@@ -300,7 +325,7 @@ const API = {
         },
 
         fetchProjects(token){
-            return fetch(api_url+"/items/projects", {
+            return fetch(api_url+"/projects?user_id=all", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -378,6 +403,20 @@ const API = {
     tag: {
         fetchUserTags(token){
             return fetch(api_url+"/tags", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                (response)=>response.json()
+            ).then(
+                (data) => data
+            );
+        },
+        fetchTags(token){
+            return fetch(api_url+"/tags?user_id=all", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

@@ -17,6 +17,7 @@ import ProfileSectionContainer from '../ProfileSectionComponent/ProfileSectionCo
 import TagSectionContainer from '../TagSectionComponent/TagSectionContainer';
 import UserSectionContainer from '../UserSectionComponent/UserSectionContainer';
 import DashboardSectionContainer from '../DashboardSectionComponent/DashboardSectionContainer';
+import ReportSectionContainer from '../ReportSectionComponent/ReportSectionContainer';
 
 
 class MainSectionComponent extends Component{
@@ -35,6 +36,7 @@ class MainSectionComponent extends Component{
                 <PrivateRoute exact path="/users" component={UserSectionContainer} component_props ={{}}/>
                 <PrivateRoute exact path="/config" component={ConfigComponent} />
                 <PrivateRoute exact path="/dashboard" component={DashboardSectionContainer} component_props = {{}} />
+                <PrivateRoute exact path="/reports" component={ReportSectionContainer} component_props = {{}} />
                 <Route path="/login" component={LoginContainer} />
                 <Route path="/signup" component={SignupContainer} />
 

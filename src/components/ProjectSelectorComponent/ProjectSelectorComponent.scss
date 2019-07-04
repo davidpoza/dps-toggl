@@ -85,6 +85,18 @@
 
 }
 
-.dropleft{
+.reset{
+  background-color: transparent;
+  border: none;
+  color: grey;
+
+}
+
+.dropleft_null{
   width: 3ch;
+  vertical-align: baseline;
+}
+
+.dropleft{
+  vertical-align: baseline;
 }

@@ -3,46 +3,29 @@ import PropTypes from 'prop-types';
 
 
 import TaskListContainer from '../TaskListComponent/TaskListContainer';
-import styles from './TaskDatesComponent.scss';
+import styles from './TaskDatesReportComponent.scss';
 import utils from '../../utils';
 import config from '../../config/config';
 import lang from '../../config/lang';
 
 
-class TaskDatesComponent extends Component{
+class TaskDatesReportComponent extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            limit: this.props.limit
-        }
         this.handleOnClickLoadMore = this.handleOnClickLoadMore.bind(this);
-        if (window.performance) {
-            if (performance.navigation.type == 1){ //page is reloaded
-                this.props.taskActions.resetLimit();
-            }
-        }
-    }
-
-    //también hacemos un fetchTasks al montar el componente lista.
-    componentDidMount(){
-        this.props.taskActions.fetchTasks(this.props.token, this.state.limit);
     }
 
     //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
     componentDidUpdate(prevProps) {
-        if (!prevProps.need_refreshing && this.props.need_refreshing)
-            return this.props.taskActions.fetchTasks(this.props.token, this.props.limit);
+        // if (!prevProps.need_refreshing && this.props.need_refreshing)
+        // this.props.reportActions.fetchTasks(this.props.token, null, this.props.start_date, this.props.end_date, this.props.date_preset, null, null, null);
 
-        if(prevProps.limit != this.props.limit){
-            this.props.taskActions.fetchTasks(this.props.token, this.props.limit);
-            this.setState({
-                limit: this.props.limit
-            });
-        }
+        // if(prevProps.limit < this.props.limit)
+        // this.props.reportActions.fetchTasks(this.props.token, null, this.props.start_date, this.props.end_date, this.props.date_preset, null, null, null);
     }
 
     handleOnClick(date){
-        this.props.taskActions.collapseDate(date);
+        this.props.reportActions.collapseDate(date);
     }
 
     handleOnClickLoadMore(){
@@ -64,12 +47,14 @@ class TaskDatesComponent extends Component{
 
                                 { !e.collapsed &&
                                     <TaskListContainer
-                                    container="TaskDatesComponent"
+                                    container="TaskDatesReportComponent"
                                     date={e.date}
-                                    tasks_entities={this.props.tasks_entities}
                                     dates_entities={this.props.dates_entities}
-                                    limit={this.props.limit}
-                                    tasks_tags_entities={this.props.tasks_tags_entities}
+                                    tasks_entities={this.props.tasks_entities}
+                                    tasks_tags_entities={this.props.tags_entities}
+                                    projects_entities={this.props.projects_entities}
+                                    tags_id={this.props.tags_id}
+                                    projects_id={this.props.projects_id}
                                     onUpdate={this.handleUpdateTaskVisually}
                                     onResume={this.props.onResume || null}/>
                                 }
@@ -91,13 +76,13 @@ class TaskDatesComponent extends Component{
 }
 
 
-TaskDatesComponent.propTypes = {
+TaskDatesReportComponent.propTypes = {
     token: PropTypes.string.isRequired,
     user_id: PropTypes.string.isRequired,
     dates: PropTypes.array.isRequired,
     need_refreshing: PropTypes.bool.isRequired,
-    taskActions: PropTypes.object.isRequired,
+    reportActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
 }
 
-export default TaskDatesComponent;
+export default TaskDatesReportComponent;

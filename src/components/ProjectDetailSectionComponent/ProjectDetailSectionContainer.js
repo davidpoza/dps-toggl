@@ -41,14 +41,14 @@ function mapStateToProps (state, ownProps) {
     //denormalización
        let project_detail= state.projectReducer.projects_entities[ownProps.match.params.project_id];
        project_detail.members = project_detail.members.filter(e=>e != state.userReducer.id); //nos quitamos a nosotros mismos de la lista
-       project_detail.members_entities = Object.keys(state.userReducer.users_entities).length > 0 ? project_detail.members.map(e=>state.userReducer.users_entities[e]) : null;
+       project_detail.members_entities = state.projectReducer.users_entities ? project_detail.members.map(e=>state.projectReducer.users_entities[e]) : null;
        if(project_detail.tasks){
           project_detail.hours = project_detail.tasks.reduce((prev, curr)=>{
             curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
             return(prev+curr);
           },0);
           project_detail.tasks = project_detail.tasks.map(t=>{
-            t.user_entity = state.userReducer.users_entities[t.user];
+            t.user_entity = t.user;//state.projectReducer.users_entities[t.user];
             return t;
           });
        }

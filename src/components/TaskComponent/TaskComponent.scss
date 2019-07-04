@@ -132,3 +132,19 @@
   .datepicker{
     z-index: 99999;
   }
+
+  .user{
+    font-size: 0.6em;
+    color: $quaternary-color;
+    margin: 0 !important;
+
+    a:link, a:visited{
+      color: $quaternary-color;
+    }
+    a:hover{
+      color: $secondary-color;
+      text-decoration: none;
+    }
+
+  }
+

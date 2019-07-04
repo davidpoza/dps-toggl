@@ -181,6 +181,7 @@ export default function userReducer (state = initialState.userReducer, action){
                     first_name: action.payload.entities.users[action.payload.result].first_name,
                     last_name: action.payload.entities.users[action.payload.result].last_name,
                     updated_on: action.payload.entities.users[action.payload.result].updated_on,
+                    users_entities: action.payload.entities.users,
                     error: {}
                 }
             }
