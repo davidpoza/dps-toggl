@@ -115,6 +115,8 @@ const lang = {
         load_more: "Cargar más",
         project_selector_search: "Buscar proyecto",
         project_selector_no_project: "Sin proyecto",
+        user_filter_search: "Buscar usuario",
+        description_filter_search: "Buscar descripción",
         total_results: "Fechas encontradas"
     }
 };

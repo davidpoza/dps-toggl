@@ -41,6 +41,7 @@ class ReportSectionContainer extends Component{
             user_id={this.props.user_id}
             data={this.props.data}
             projects={this.props.projects}
+            users={this.props.users}
             total_results={this.props.total_results}
             />
         )
@@ -48,6 +49,21 @@ class ReportSectionContainer extends Component{
 }
 
 function mapStateToProps (state) {
+  //mapeamos los objetos del array tal y como los requiere CheckboxFilterComponent
+  let projects_filter_component = state.reportReducer.projects_id.map(e=>{
+    e = state.reportReducer.projects_entities[e];
+    e.id = e._id;
+    e.label = e.name;
+    return e;
+  });
+
+  let users_filter_component = state.userReducer.users_id.map(e=>{
+    e = state.userReducer.users_entities[e];
+    e.label = e.email;
+    e.id = e._id;
+    return e;
+  });
+
     return {
       user_loading: state.userReducer.loading,
       report_loading: state.reportReducer.loading,
@@ -59,7 +75,8 @@ function mapStateToProps (state) {
       token: state.userReducer.token,
       user_id: state.userReducer.id,
       data: state.dashboardReducer.data,
-      projects: state.reportReducer.projects_id.map(e=>state.reportReducer.projects_entities[e]),
+      projects: projects_filter_component,
+      users: users_filter_component,
       total_results: state.reportReducer.total_results
     }
   }

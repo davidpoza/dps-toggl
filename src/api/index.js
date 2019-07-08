@@ -226,9 +226,12 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids){
+        fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
             let url = "";
             let params = {};
+            let projects_params = [];
+            let users_params = [];
+
             url = api_url+"/tasks";
 
             if(limit)
@@ -240,11 +243,14 @@ const API = {
             if(date_end)
                 params["date_end"] = date_end;
 
-            if(user_id)
-                params["user_id"] = user_id;
+            if(user_ids)
+                user_ids.forEach(p=>users_params.push(p));
 
-            if(project_id)
-                params["project_id"] = project_id;
+            if(project_ids)
+                project_ids.forEach(p=>projects_params.push(p));
+
+            if(description)
+                params["description"] = description;
 
             let params_array = Object.keys(params);
             if(params_array.length > 0){
@@ -254,6 +260,22 @@ const API = {
                         params_string += "?"+params_array[i]+"="+params[params_array[i]];
                     else
                         params_string += "&"+params_array[i]+"="+params[params_array[i]];
+                }
+                if(projects_params.length > 0){
+                    for(let i=0; i<projects_params.length; i++){
+                        if(i==0 && params_array.length == 0) //en el primer id, si no hay otros parámetros debemos comenzar con ? en lugar de &
+                            params_string += "?project_id"+"="+projects_params[i];
+                        else
+                            params_string += "&project_id"+"="+projects_params[i];
+                    }
+                }
+                if(users_params.length > 0){
+                    for(let i=0; i<users_params.length; i++){
+                        if(i==0 && params_array.length == 0) //en el primer id, si no hay otros parámetros debemos comenzar con ? en lugar de &
+                            params_string += "?user_id"+"="+users_params[i];
+                        else
+                            params_string += "&user_id"+"="+users_params[i];
+                    }
                 }
                 url += params_string;
             }

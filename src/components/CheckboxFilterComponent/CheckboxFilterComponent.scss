@@ -1,0 +1,96 @@
+@import "../../defaults.scss";
+
+.label{
+  font-size: 1.1em;
+  padding: 0px 4px 0px 4px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ebebeb;
+  @media screen and (max-width: $large-device) {
+    line-height: 1.9em;
+    font-size: 0.8em;
+  }
+
+}
+
+.btn{
+  color: lightgrey;
+  font-size: 1.1em;
+  padding: 0;
+  margin: 4px;
+  background: none;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    color: grey;
+  }
+  &:active {
+    color: grey;
+  }
+
+}
+
+.btn_activated{
+  @extend .btn;
+  color: grey;
+}
+
+
+.search_input{
+
+  &:focus {
+    outline: none !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+}
+
+.menu{
+  padding: 20px;
+}
+
+.list{
+    margin:0;
+    padding:0;
+    height: 160px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar-track
+    {
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar
+    {
+        width: 6px;
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        background-color: $primary-color;
+        border: none;
+    }
+}
+
+
+.item{
+  cursor: pointer;
+  i{
+    margin-right: 15px;
+    pointer-events: none;
+  }
+
+}
+
+input[type=checkbox]{
+  margin-right: 10px;
+  pointer-events: none;
+}
+
+.btn_group{
+  vertical-align: baseline;
+}

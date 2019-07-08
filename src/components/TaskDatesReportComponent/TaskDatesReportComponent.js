@@ -15,15 +15,6 @@ class TaskDatesReportComponent extends Component{
         this.handleOnClickLoadMore = this.handleOnClickLoadMore.bind(this);
     }
 
-    //ese flag de refresco lo modificamos cuando se ha creado una nueva task y hay que pedir un listado nuevo
-    componentDidUpdate(prevProps) {
-        // if (!prevProps.need_refreshing && this.props.need_refreshing)
-        // this.props.reportActions.fetchTasks(this.props.token, null, this.props.start_date, this.props.end_date, this.props.date_preset, null, null, null);
-
-        // if(prevProps.limit < this.props.limit)
-        // this.props.reportActions.fetchTasks(this.props.token, null, this.props.start_date, this.props.end_date, this.props.date_preset, null, null, null);
-    }
-
     handleOnClick(date){
         this.props.reportActions.collapseDate(date);
     }

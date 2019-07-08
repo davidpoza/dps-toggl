@@ -242,7 +242,7 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
             (data) => {
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids);
+                    this.fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids, description);
                 }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
@@ -256,7 +256,7 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
 }
 
 
-export function fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids){
+export function fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
     let date_start_std = date_start? utils.standarizeDate(date_start):null;
     let date_end_std = date_end? utils.standarizeDate(date_end):null;
 
@@ -265,7 +265,7 @@ export function fetchTasks(token, limit, date_start, date_end, user_id, project_
             type: REPORT_FETCH_TASKS_ATTEMPT
         });
 
-        api.task.fetchTasks(token, limit, date_start_std, date_end_std, user_id, project_id, tags_ids)
+        api.task.fetchTasks(token, limit, date_start_std, date_end_std, user_ids, project_ids, tags_ids, description)
         .then((data) => {
             //also fetch all projects and all tags
             Promise.all([api.project.fetchProjects(token), api.tag.fetchTags(token)])

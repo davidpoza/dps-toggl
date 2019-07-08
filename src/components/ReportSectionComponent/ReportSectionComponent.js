@@ -9,9 +9,10 @@ import lang from '../../config/lang';
 import styles from './ReportSectionComponent.scss';
 
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
+import CheckboxFilterComponent from '../CheckboxFilterComponent/CheckboxFilterComponent';
 import TaskDatesReportContainer from '../TaskDatesReportComponent/TaskDatesReportContainer';
-import { DiffieHellman } from 'crypto';
+import TextFilterComponent from '../TextFilterComponent/TextFilterComponent';
+
 
 
 
@@ -25,15 +26,16 @@ class ReportSectionComponent extends Component{
         this.handleOnChangeEndDate = this.handleOnChangeEndDate.bind(this);
         this.handleOnChangePresetDate = this.handleOnChangePresetDate.bind(this);
         this.handleOnFilterByProject = this.handleOnFilterByProject.bind(this);
+        this.handleOnFilterByUser = this.handleOnFilterByUser.bind(this);
+        this.handleOnFilterByDesc = this.handleOnFilterByDesc.bind(this);
         this.handleOnResetFilterByProject = this.handleOnResetFilterByProject.bind(this);
         this.state = {
             //filtros por defecto
             start_date: null, //objeto Date
             end_date: null, //objeto Date
-            user_id: "all",
-            project_id: null,
-            project_selected_name: null,
-            project_selected_color: null,
+            description: null,
+            user_ids: null,
+            project_ids: null, //array de ids de proyectos que estamos filtrando
             preset: ""
         }
     }
@@ -47,9 +49,11 @@ class ReportSectionComponent extends Component{
         //hacemos la consulta cada vez que cambian las fechas
        if(prevState.start_date != this.state.start_date ||
         prevState.end_date != this.state.end_date ||
-        prevState.project_id != this.state.project_id){
+        prevState.project_ids != this.state.project_ids ||
+        prevState.user_ids != this.state.user_ids ||
+        prevState.description != this.state.description){
            this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
-           this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_id, this.state.project_id, null);
+           this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
        }
     }
 
@@ -143,28 +147,27 @@ class ReportSectionComponent extends Component{
         });
     }
 
+    handleOnFilterByUser(ids_array){
+        this.setState({
+            user_ids: ids_array
+        });
+    }
 
-    handleOnFilterByProject(project_id, project_name, project_color){
-        let project = {};
-        if(project_id == -1) //el id=-1 lo hemos reservado para la opción sin proyecto
-            this.setState({
-                project_id: -1,
-                project_selected_name: lang[config.lang].project_selector_no_project,
-                project_selected_color: "lightgrey"
-            });
-        else
-            this.setState({
-                project_id: project_id,
-                project_selected_name: project_name,
-                project_selected_color: project_color
-            });
+    handleOnFilterByProject(ids_array){
+        this.setState({
+            project_ids: ids_array
+        });
+    }
+
+    handleOnFilterByDesc(desc){
+        this.setState({
+            description: desc
+        });
     }
 
     handleOnResetFilterByProject(){
         this.setState({
-            project_id: null,
-            project_selected_name: null,
-            project_selected_color: null
+            project_ids: null
         })
     }
 
@@ -223,7 +226,10 @@ class ReportSectionComponent extends Component{
 
                 <div className={"d-flex flex-row justify-content-between "+styles.filters_bar}>
                     <div>
-                        <span className={styles.filter_span}>{lang[config.lang].reports_filters_bar}:</span> <ProjectSelectorComponent onClick={this.handleOnFilterByProject} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects} onReset={this.handleOnResetFilterByProject}/>
+                        <span className={styles.filter_span}>{lang[config.lang].reports_filters_bar}:</span>
+                        <CheckboxFilterComponent list={this.props.projects} list_checked={this.state.project_ids==null?[]:this.state.project_ids} apply_filter_callback={this.handleOnFilterByProject} reset_filter_callback={this.handleOnFilterByProject} icon="fa-folder-open" placeholder={lang[config.lang].project_selector_search+"..."} />
+                        <CheckboxFilterComponent list={this.props.users} list_checked={this.state.user_ids==null?[]:this.state.user_ids} apply_filter_callback={this.handleOnFilterByUser} reset_filter_callback={this.handleOnFilterByProject} icon="fa-users" placeholder={lang[config.lang].user_filter_search+"..."} />
+                        <TextFilterComponent apply_filter_callback={this.handleOnFilterByDesc} icon="fa-font" placeholder={lang[config.lang].description_filter_search+"..."} />
                     </div>
                     <div>
                         <span className={styles.filter_span}>{lang[config.lang].total_results}: {this.props.total_results}</span>

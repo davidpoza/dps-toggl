@@ -115,10 +115,13 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 error: {}
             }
         case UPDATE_TASK_VISUALLY:
+            action.payload = normalize(action.payload, [schemas.taskEntity]);
             return {
+
                 ...state,
                 loading: false,
-                tasks_entities: action.payload,
+                tasks_entities: action.payload.entities.tasks,
+                //project_entities: action.payload.entities.projects,
                 error: {}
             }
         case UPDATE_TASK_FAIL:
@@ -153,6 +156,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 tasks_entities: new_tasks_entities,
                 tasks_tags_entities: new_tasks_tags_entities,
+                projects_entities: Object.assign(action.payload.entities.projects, state.projects_entities),
                 need_refreshing: false
             }
         case FETCH_TASK_FAIL:
