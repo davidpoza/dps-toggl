@@ -84,7 +84,7 @@ class BarChartComponent extends Component{
     formatData(data){
         let projects = {};
         let array_result = [];
-        let sin_proyecto = {id:"Sin proyecto", label:"Sin proyecto", value:0, color:"#fafafa"};
+        let sin_proyecto = {id:"Sin proyecto", label:"Sin proyecto", value:0, color:"#e7e7e6"};
         if(data.entities.tasks){
             if(data.entities.projects)
                 Object.keys(data.entities.projects).forEach(p=>{

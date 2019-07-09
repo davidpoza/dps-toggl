@@ -94,7 +94,7 @@ class BarChartComponent extends Component{
                                     curr = 0;
                                 return(prev+curr);
                               },0);
-                            d["Sin proyectoColor"] = "#fafafa"
+                            d["Sin proyectoColor"] = "#e7e7e6"
                         }
                     })
                     delete d.tasks;
@@ -132,7 +132,7 @@ class BarChartComponent extends Component{
                                     curr = 0;
                                 return(Math.floor((prev+curr) * 10) / 10);
                               },0);
-                            d["Sin proyectoColor"] = "#fafafa"
+                            d["Sin proyectoColor"] = "#e7e7e6"
                         }
                     })
                     delete d.tasks;
