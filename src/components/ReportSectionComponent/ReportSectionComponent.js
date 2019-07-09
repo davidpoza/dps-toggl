@@ -232,7 +232,7 @@ class ReportSectionComponent extends Component{
                         <TextFilterComponent apply_filter_callback={this.handleOnFilterByDesc} icon="fa-font" placeholder={lang[config.lang].description_filter_search+"..."} />
                     </div>
                     <div>
-                        <span className={styles.filter_span}>{!utils.isMobile()?lang[config.lang].total_results+": ":"x"}{this.props.total_results}</span>
+                        <span className={styles.filter_span}>{!utils.isMobile()?lang[config.lang].total_results+": ":"Total: "}{this.props.total_results}</span>
                     </div>
                 </div>
 
