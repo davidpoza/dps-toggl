@@ -12,8 +12,8 @@ import LoadingComponent from '../LoadingComponent/LoadingComponent';
 import CheckboxFilterComponent from '../CheckboxFilterComponent/CheckboxFilterComponent';
 import TaskDatesReportContainer from '../TaskDatesReportComponent/TaskDatesReportContainer';
 import TextFilterComponent from '../TextFilterComponent/TextFilterComponent';
-
-
+import BarChartComponent from '../BarChartComponent/BarChartComponent';
+import PieChartComponent from '../PieChartComponent/PieChartComponent';
 
 
 class ReportSectionComponent extends Component{
@@ -29,6 +29,10 @@ class ReportSectionComponent extends Component{
         this.handleOnFilterByUser = this.handleOnFilterByUser.bind(this);
         this.handleOnFilterByDesc = this.handleOnFilterByDesc.bind(this);
         this.handleOnResetFilterByProject = this.handleOnResetFilterByProject.bind(this);
+        this.toggleMode = this.toggleMode.bind(this);
+        this.switchChart = this.switchChart.bind(this);
+        this.formatDataToBarChart = this.formatDataToBarChart.bind(this);
+
         this.state = {
             //filtros por defecto
             start_date: null, //objeto Date
@@ -36,7 +40,13 @@ class ReportSectionComponent extends Component{
             description: null,
             user_ids: null,
             project_ids: null, //array de ids de proyectos que estamos filtrando
-            preset: ""
+            preset: "",
+            mode: "detail", //detail or summary
+            summary_chart: "imputed_hours", //imputed_hours or billed_amount
+            //data for charts
+            pie_data: [],
+            bar_data: [],
+            bar_keys: []
         }
     }
 
@@ -54,7 +64,16 @@ class ReportSectionComponent extends Component{
         prevState.description != this.state.description){
            this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
            this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
-       }
+        }
+        if(prevProps.entities != this.props.entities || prevState.summary_chart != this.state.summary_chart){
+            let bar_obj = this.formatDataToBarChart(this.state.preset, this.state.summary_chart, this.state.start_date, this.state.end_date, this.props.entities);
+            let pie_data = this.formatDataToPieChart(this.state.summary_chart, this.props.entities);
+            this.setState({
+                pie_data: pie_data,
+                bar_data: bar_obj.dates || [],
+                bar_keys: bar_obj.bar_keys || []
+            });
+        }
     }
 
     handleOnClickDateBtn(){
@@ -171,6 +190,230 @@ class ReportSectionComponent extends Component{
         })
     }
 
+    toggleMode(){
+        if(this.state.mode == "detail")
+            this.setState({mode: "summary"})
+        else if(this.state.mode == "summary")
+            this.setState({mode: "detail"})
+    }
+
+    switchChart(){
+        if(this.state.summary_chart == "billed_amount")
+            this.setState({summary_chart: "imputed_hours"})
+        else if(this.state.summary_chart == "imputed_hours")
+            this.setState({summary_chart: "billed_amount"})
+    }
+
+    /**
+     * Calculates total imputed hours per project or total billed amount per project, depending on
+     * chart_type param.
+     *
+     * @param {*} preset: string with defines date range: eg. "preset_last_week"
+     * @param {*} chart_type: string with type of calculation for ordinates of chart. The are two options: billed_amount or imputed_hours
+     * @param {*} start_date: Date object
+     * @param {*} end_date: Date object
+     * @param {*} entities: object with the following normalized arrays of entities:
+     *
+     *      {
+     *          "dates": []
+     *          "tasks": []
+     *          "projects":[]
+     *      }
+     *
+     * @returns Object with the following structure:
+     *      {
+     *          dates: Array of objects:
+     *              {
+     *                  date: string with x value (abscissas)
+     *              }
+     *          bar_keys: Array of strings with the chart keys. eg. proyecto1, proyecto2
+     *      }
+     */
+    formatDataToBarChart(preset, chart_type, start_date, end_date, entities){
+        let dates = [];
+        let date_entities_as_months = {};
+        let timeUnit = "days";
+        let keys = [];
+
+        if(start_date == null || end_date == null)
+            return({dates: [], bar_keys:keys});
+
+        if(entities.projects){
+            keys = Object.keys(entities.projects).map(p=>entities.projects[p].name);
+            keys.push("Sin proyecto");
+        }
+        else //aunque no venga ningun proyecto, al menos tiene que existir un valor en de keys para la gráfica.
+            keys.push("Sin proyecto");
+
+        if(preset == "preset_year" || preset == "preset_last_year" || utils.diffHoursBetDatesAsDays(start_date, end_date)>31)
+            timeUnit = "months";
+        dates = utils.getDatesRange(start_date, end_date, timeUnit);
+        if(timeUnit == "months"){
+            if(entities.dates)
+            Object.keys(entities.dates).forEach(d=>{
+                if(!date_entities_as_months[utils.standarDateToHumanMonth(d)])
+                    date_entities_as_months[utils.standarDateToHumanMonth(d)] = Object.assign({}, entities.dates[d]);
+                else //acumulamos las tareas de un mismo mes
+                    date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks =
+                        [...date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks,
+                         ...entities.dates[d].tasks
+                        ];
+            });
+        }
+        dates = dates.map(d=>{
+            if(timeUnit=="days"){
+                if(entities.dates && entities.dates[d]){
+                    d = Object.assign({},entities.dates[d]);
+                    d.date=utils.standarDateToHumanShort(d.date);
+                    d.tasks = d.tasks.map(t=>entities.tasks[t]);
+                    d.tasks.forEach(t=>{
+                        if(t.project){
+                            let pname = entities.projects[t.project].name;
+                            d[pname] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == t.project){
+                                    if(chart_type == "imputed_hours")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                    else if(chart_type == "billed_amount")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00") * curr.hour_value;
+                                }
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10); //redondeo a un decimal
+                              },0);
+                            d[pname+"Color"] = entities.projects[t.project].color;
+
+                        }
+                        else{
+                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == null){
+                                    if(chart_type == "imputed_hours")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                    else if(chart_type == "billed_amount")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00") * curr.hour_value;
+                                }
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10); //redondeo a un decimal
+                              },0);
+                            d["Sin proyectoColor"] = "#e7e7e6"
+                        }
+                    })
+                    delete d.tasks;
+                    delete d.time;
+                    delete d.collapsed;
+                    delete d.task_count;
+                }
+                else
+                    d = {date:utils.standarDateToHumanShort(d)};
+                return d;
+            }
+            else if(timeUnit=="months"){
+                if(date_entities_as_months && date_entities_as_months[d]){
+                    d = Object.assign({},date_entities_as_months[d]);
+                    d.date=utils.standarDateToHumanMonth(d.date);
+                    d.tasks = d.tasks.map(t=>entities.tasks[t]);
+                    d.tasks.forEach(t=>{
+                        if(t.project){
+                            let pname = entities.projects[t.project].name;
+                            d[pname] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == t.project){
+                                    if(chart_type == "imputed_hours")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                    else if(chart_type == "billed_amount")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00") * curr.hour_value;
+                                }
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10); //redondeo a un decimal
+                              },0);
+                            d[pname+"Color"] = entities.projects[t.project].color;
+
+                        }
+                        else{
+                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
+                                if(curr.project == null){
+                                    if(chart_type == "imputed_hours")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
+                                    else if(chart_type == "billed_amount")
+                                        curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00") * curr.hour_value;
+                                }
+                                else
+                                    curr = 0;
+                                return(Math.floor((prev+curr) * 10) / 10); //redondeo a un decimal
+                              },0);
+                            d["Sin proyectoColor"] = "#e7e7e6"
+                        }
+                    })
+                    delete d.tasks;
+                    delete d.time;
+                    delete d.collapsed;
+                    delete d.task_count;
+                }
+                else
+                    d = {date:d};
+                return d;
+            }
+            return dates;
+        })
+        return({dates,bar_keys:keys});
+    }
+
+    /**
+     * Calculates total
+     * @param {*} chart_type: string with type of calculation for ordinates of chart. The are two options: billed_amount or imputed_hours
+     * @param {*} entities: object with the following normalized arrays of entities:
+     *
+     *      {
+     *          "dates": []
+     *          "tasks": []
+     *          "projects":[]
+     *      }
+     * @returns Object array with following structure:
+     *      {
+     *          id:"PROYECTo B!!!"
+     *          label:"PROYECTo B!!!"
+     *          value:7.3
+     *          color:"#51c93d"
+     *      }
+     */
+    formatDataToPieChart(chart_type, entities){
+        let projects = {};
+        let array_result = [];
+        let sin_proyecto = {id:"Sin proyecto", label:"Sin proyecto", value:0, color:"#e7e7e6"};
+
+        if(!entities)
+            return array_result;
+
+        if(entities.tasks){
+            if(entities.projects)
+                Object.keys(entities.projects).forEach(p=>{
+                    projects[p]={id:entities.projects[p].name, label:entities.projects[p].name, value:0, color:entities.projects[p].color};
+                });
+            projects["null"]=sin_proyecto;
+            Object.keys(entities.tasks).forEach(t=>{
+                //vamos sumando las horas o euros de cada tarea a su proyecto
+                if(chart_type == "imputed_hours")
+                    projects[entities.tasks[t].project]["value"] += utils.diffHoursBetHours(entities.tasks[t].start_hour, entities.tasks[t].end_hour)
+                else if(chart_type == "billed_amount")
+                    projects[entities.tasks[t].project]["value"] += utils.diffHoursBetHours(entities.tasks[t].start_hour, entities.tasks[t].end_hour) * entities.tasks[t].hour_value;
+            });
+
+            Object.keys(projects).forEach(p=>{
+                if(projects[p].value>0)
+                array_result.push({
+                    id: projects[p].id,
+                    label: projects[p].label,
+                    value: Math.floor(projects[p].value * 10) / 10, //redondeo a un decimal
+                    color: projects[p].color
+                })
+            }); //convertimos el objeto a un array de objetos
+        }
+        if(array_result.length == 0){
+            array_result.push(sin_proyecto);
+        }
+        return array_result;
+    }
+
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
@@ -226,7 +469,7 @@ class ReportSectionComponent extends Component{
 
                 <div className={"d-flex flex-row justify-content-between "+styles.filters_bar}>
                     <div>
-                        <div className={styles.btn}><i className="far fa-chart-bar"></i></div>
+                        <button onClick={this.toggleMode} className={styles.btn}><i className={this.state.mode == "detail"? "fas fa-chart-bar":"fas fa-list"}></i></button>
                         <CheckboxFilterComponent list={this.props.projects} list_checked={this.state.project_ids==null?[]:this.state.project_ids} apply_filter_callback={this.handleOnFilterByProject} reset_filter_callback={this.handleOnFilterByProject} icon="fa-folder-open" placeholder={lang[config.lang].project_selector_search+"..."} />
                         <CheckboxFilterComponent list={this.props.users} list_checked={this.state.user_ids==null?[]:this.state.user_ids} apply_filter_callback={this.handleOnFilterByUser} reset_filter_callback={this.handleOnFilterByProject} icon="fa-users" placeholder={lang[config.lang].user_filter_search+"..."} />
                         <TextFilterComponent apply_filter_callback={this.handleOnFilterByDesc} icon="fa-font" placeholder={lang[config.lang].description_filter_search+"..."} />
@@ -236,9 +479,44 @@ class ReportSectionComponent extends Component{
                     </div>
                 </div>
 
-                <div className={"flex-grow-1 " + styles.tasklist}>
+                {
+                    this.state.mode == "detail" ?
+                    <div className={"flex-grow-1 " + styles.tasklist}>
                     <TaskDatesReportContainer/>
-                </div>
+                    </div> :
+                    this.state.mode == "summary" &&
+                    <div className={"flex-grow-1 " + styles.tasklist}>
+                        <div className={"p-0 p-xl-5 "+styles.barchart}>
+                            <h2>{this.state.summary_chart == "imputed_hours" ? lang[config.lang].h2_imputed_hours : lang[config.lang].h2_billed_amount}</h2>
+                            <div className={"pt-1 px-1 px-md-5 px-lg-5"}>
+                                <button className={styles.btn_switch_chart} onClick={this.switchChart}>
+                                    <i className={this.state.summary_chart == "imputed_hours" ? "fas fa-clock":"fas fa-euro-sign"}></i>
+                                    {this.state.summary_chart == "billed_amount" ? lang[config.lang].btn_show_imputed_hours : lang[config.lang].btn_show_billed_amount}
+                                </button>
+                            </div>
+                            {this.state.bar_data.length != 0 && this.state.bar_keys.length != 0 &&
+                                <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.state.bar_data} keys={this.state.bar_keys} ordinates_label={this.state.summary_chart == "imputed_hours" ? lang[config.lang].hours : lang[config.lang].euros}/>
+                            }
+                        </div>
+
+                        <div className="p-md-3">
+                            <ul className={styles.project_list}>
+                            {this.state.pie_data &&
+                            this.state.pie_data.map((p,index)=>{
+                                return (
+                                    <li key={"pli"+index}><i className="fas fa-circle" style={{color: p.color}}></i> {p.label}</li>
+                                )
+                            })}
+                            </ul>
+                        </div>
+
+                        <div className={"p-0 p-xl-5 "+styles.piechart}>
+                        {this.state.pie_data.length != 0 &&
+                            <PieChartComponent data={this.state.pie_data}/>
+                        }
+                        </div>
+                    </div>
+                }
 
                 <LoadingComponent isLoading={this.props.user_loading||this.props.report_loading||this.props.project_loading} />
             </div>

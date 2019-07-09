@@ -52,8 +52,16 @@
     &:active {
       color: grey;
     }
-
   }
+
+.btn_switch_chart{
+    border-radius: 3px;
+    border: none;
+
+    i{
+        margin-right: 5px;
+    }
+}
 
 .tasklist{
     background-color: #fafbfc;
@@ -86,9 +94,12 @@
     }
 }
 
-.barchart_height{
+.barchart{
+    h2{
+        text-align: center;
+    }
     @media screen and (max-resolution: 199dpi) {//desktop
-        height: 50%;
+        height: 40%;
     }
 
     @media screen and (min-resolution: 200dpi) {//mobile
@@ -96,9 +107,9 @@
     }
 }
 
-.piechart_height{
+.piechart{
     @media screen and (max-resolution: 199dpi) {//desktop
-        height: 50%;
+        height: 30%;
     }
 
     @media screen and (min-resolution: 200dpi) {//mobile
@@ -144,5 +155,25 @@
     border: 1px solid #f0f4ed;
     &:hover{
         font-weight: bold;
+    }
+}
+
+.project_list{
+    list-style-type: none;
+    margin-top: 40px;
+    @media screen and (min-resolution: 200dpi) {//mobile
+        margin-top: 90px;
+        margin-bottom: 0px;
+    }
+    li{
+        @media screen and (max-resolution: 199dpi) {//desktop
+            display: inline;
+            margin: 10px;
+        }
+
+        @media screen and (min-resolution: 200dpi) {//mobile
+            display: block;
+
+        }
     }
 }

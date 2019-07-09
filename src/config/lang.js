@@ -117,7 +117,13 @@ const lang = {
         project_selector_no_project: "Sin proyecto",
         user_filter_search: "Buscar usuario",
         description_filter_search: "Buscar descripción",
-        total_results: "Fechas encontradas"
+        total_results: "Fechas encontradas",
+        btn_show_billed_amount: "Ver facturación",
+        btn_show_imputed_hours: "Ver horas imputadas",
+        h2_billed_amount: "Facturación",
+        h2_imputed_hours: "Horas imputadas",
+        hours: "Horas",
+        euros: "Euros"
     }
 };
 

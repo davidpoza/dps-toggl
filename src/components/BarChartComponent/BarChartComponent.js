@@ -2,20 +2,45 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import { ResponsiveBar } from '@nivo/bar'
 
-
-
 import styles from './BarChartComponent.scss';
 import utils from '../../utils';
 import config from '../../config/config';
 import lang from '../../config/lang';
 
 
+/**Properties
+ * ==========
+ * -preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.state.bar_data} keys={this.state.bar_keys}
+ * -start_date: Date object
+ * -end_date: Date object
+ * -ordinates_label: String with the label used for ordinates axis.
+ * -preset: string with configuration no determine time range. Posible values:
+ *
+ *      "preset_custom"
+ *      "preset_today"
+ *      "preset_week"
+ *      "preset_month"
+ *      "preset_year"
+ *      "preset_yerterday"
+ *      "preset_last_week"
+ *      "preset_last_month"
+ *      "preset_last_year"
+ *
+ * -keys: Array of string, with diferents keys of the chart
+ * -data: Array of objects with the following content:
+ *
+ *      {
+ *       "key name": key_value, i.e. y value (ordinate) [number]
+ *       "key name+Color": #FFFFFF; //whatever hex color
+ *       "date": x value (abscissa) [string]
+ *      }
+*/
+
 class BarChartComponent extends Component{
     constructor(props){
         super(props);
         this.presetToTitle = this.presetToTitle.bind(this);
         this.getTimeUnitsForPreset = this.getTimeUnitsForPreset.bind(this);
-        this.formatData = this.formatData.bind(this);
     }
 
     presetToTitle(preset){
@@ -48,126 +73,14 @@ class BarChartComponent extends Component{
 
 
 
-    formatData(preset, start_date, end_date, data){
-        let dates = [];
-        let date_entities_as_months = {};
-        let timeUnit = "days";
-        if(preset == "preset_year" || preset == "preset_last_year" || utils.diffHoursBetDatesAsDays(start_date, end_date)>31)
-            timeUnit = "months";
-        dates = utils.getDatesRange(start_date, end_date, timeUnit);
-        if(timeUnit == "months"){
-            if(data.entities.dates)
-            Object.keys(data.entities.dates).forEach(d=>{
-                if(!date_entities_as_months[utils.standarDateToHumanMonth(d)])
-                    date_entities_as_months[utils.standarDateToHumanMonth(d)] = Object.assign({}, data.entities.dates[d]);
-                else //acumulamos las tareas de un mismo mes
-                    date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks =
-                        [...date_entities_as_months[utils.standarDateToHumanMonth(d)].tasks,
-                         ...data.entities.dates[d].tasks
-                        ];
-            });
-        }
-        return dates.map(d=>{
-            if(timeUnit=="days"){
-                if(data.entities.dates && data.entities.dates[d]){
-                    d = Object.assign({},data.entities.dates[d]);
-                    d.date=utils.standarDateToHumanShort(d.date);
-                    d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
-                    d.tasks.forEach(t=>{
-                        if(t.project){
-                            let pname = data.entities.projects[t.project].name;
-                            d[pname] = d.tasks.reduce((prev, curr)=>{
-                                if(curr.project == t.project)
-                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                                else
-                                    curr = 0;
-                                return(prev+curr);
-                              },0);
-                            d[pname+"Color"] = data.entities.projects[t.project].color;
-
-                        }
-                        else{
-                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
-                                if(curr.project == null)
-                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                                else
-                                    curr = 0;
-                                return(prev+curr);
-                              },0);
-                            d["Sin proyectoColor"] = "#e7e7e6"
-                        }
-                    })
-                    delete d.tasks;
-                    delete d.time;
-                    delete d.collapsed;
-                    delete d.task_count;
-                }
-                else
-                    d = {date:utils.standarDateToHumanShort(d)};
-                return d;
-            }
-            else if(timeUnit=="months"){
-                if(date_entities_as_months && date_entities_as_months[d]){
-                    d = Object.assign({},date_entities_as_months[d]);
-                    d.date=utils.standarDateToHumanMonth(d.date);
-                    d.tasks = d.tasks.map(t=>data.entities.tasks[t]);
-                    d.tasks.forEach(t=>{
-                        if(t.project){
-                            let pname = data.entities.projects[t.project].name;
-                            d[pname] = d.tasks.reduce((prev, curr)=>{
-                                if(curr.project == t.project)
-                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                                else
-                                    curr = 0;
-                                return(Math.floor((prev+curr) * 10) / 10);
-                              },0);
-                            d[pname+"Color"] = data.entities.projects[t.project].color;
-
-                        }
-                        else{
-                            d["Sin proyecto"] = d.tasks.reduce((prev, curr)=>{
-                                if(curr.project == null)
-                                    curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-                                else
-                                    curr = 0;
-                                return(Math.floor((prev+curr) * 10) / 10);
-                              },0);
-                            d["Sin proyectoColor"] = "#e7e7e6"
-                        }
-                    })
-                    delete d.tasks;
-                    delete d.time;
-                    delete d.collapsed;
-                    delete d.task_count;
-                }
-                else
-                    d = {date:d};
-                return d;
-            }
-
-
-        })
-    }
-
-
-
     render(){
-        if(this.props.data){
-            let keys = [];
-            if(this.props.data.entities.projects){
-                keys = Object.keys(this.props.data.entities.projects).map(p=>this.props.data.entities.projects[p].name);
-                keys.push("Sin proyecto");
-            }
-            else //aunque no venga ningun proyecto, al menos tiene que existir un valor en de keys para la gráfica.
-                keys.push("Sin proyecto");
-            console.log(this.formatData(this.props.preset, this.props.start_date, this.props.end_date, this.props.data));
-            console.log(keys);
+        if(this.props.data && this.props.keys){
             return(
                 <div>
-                    <h2 className="text-center">{this.presetToTitle(this.props.preset)}</h2>
+                    <h2 className={styles.h2}>{this.presetToTitle(this.props.preset)}</h2>
                     <ResponsiveBar
-                        data={this.formatData(this.props.preset, this.props.start_date, this.props.end_date, this.props.data)}
-                        keys={keys}
+                        data={this.props.data}
+                        keys={this.props.keys}
                         indexBy="date"
                         margin={{
                             "top": 20,
@@ -200,7 +113,7 @@ class BarChartComponent extends Component{
                             "tickSize": 5,
                             "tickPadding": 5,
                             "tickRotation": 0,
-                            "legend": "horas",
+                            "legend": this.props.ordinates_label,
                             "legendPosition": "middle",
                             "legendOffset": -40
                         }}
