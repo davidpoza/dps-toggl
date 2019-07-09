@@ -118,7 +118,7 @@ class ProfileSectionComponent extends Component{
                             </div>
                             <img className={"align-self-center align-self-lg-start order-0 order-md-1 order-lg-1 my-2 my-md-0 my-lg-0 mx-2 mx-md-5 mx-lg-5 "+styles.avatar} src={config.api_url+"/users/avatar/"+this.state.avatar} />
                         </div>
-
+              
                         <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
                         <h2>{lang[config.lang].user_data_title}</h2>
                         <ul className="p-0">
