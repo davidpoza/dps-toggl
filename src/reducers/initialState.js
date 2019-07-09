@@ -30,9 +30,26 @@ const initialState = {
         total_tasks: 0, //total de días que devuelve la consulta sin el limit
         error: {}
     },
+    reportReducer: {
+        tasks_id: [],
+        tasks_entities: [],
+        dates: [],
+        dates_id: [],
+        dates_entities: [],
+        tags_entities: [],
+        projects_entities: [],
+        tags_id: [],
+        projects_id: [],
+        preset: "preset_month",
+        need_refreshing: false,
+        loading: false,
+        total_results: 0, //total de días que devuelve la consulta sin el limit
+        error: {}
+    },
     projectReducer: {
         projects_id: [],
         projects_entities: [],
+        users_entities: [],
         need_refreshing: false,
         loading: false,
         sortBy: 'id',

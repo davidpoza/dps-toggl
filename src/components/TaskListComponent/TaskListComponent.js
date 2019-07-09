@@ -15,7 +15,18 @@ class TaskListComponent extends Component{
                {
                    this.props.tasks.map((e,index) => {
                         if(e.parent == -1)
-                        return (<TaskContainer key={index} task_id={e.id} task_children={e.children} onResume={this.props.onResume}/>)
+                        return (<TaskContainer
+                            container={this.props.container}
+                            key={index}
+                            task_id={e.id}
+                            task_children={e.children}
+                            tasks_entities={this.props.tasks_entities}
+                            tasks_tags_entities={this.props.tasks_tags_entities}
+                            projects_entities={this.props.projects_entities}
+                            tags_id={this.props.tags_id}
+                            projects_id={this.props.projects_id}
+                            limit={this.props.limit}
+                            onResume={this.props.onResume || null}/>)
                    })
                }
                </ul>

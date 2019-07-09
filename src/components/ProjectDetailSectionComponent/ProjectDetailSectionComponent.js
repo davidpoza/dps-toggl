@@ -82,7 +82,7 @@ class ProjectDetailSectionComponent extends Component{
                         </div>
                     </div>
                     <div className={"flex-grow-1 " + styles.project_detail}>
-                        <div className="d-flex justify-content-between my-2 my-lg-5 mx-2 mx-lg-5">
+                        <div className="d-flex justify-content-between my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5">
                             <input className={styles.input} type="text" ref={this.projectNameInput} placeholder={lang[config.lang].project_name_placeholder} value={this.state.project_name} onChange={this.handleOnChange} />
                             <div className="dropdown">
                                 <button className={"btn dropdown-toggle "+styles.dropdown_btn} type="button" id="dropdownProjectColorButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,7 +102,7 @@ class ProjectDetailSectionComponent extends Component{
                                 </div>
                             </div>
                         </div>
-                        <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                        <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
                         <h2>{lang[config.lang].project_data_title}</h2>
                         <ul className="p-0">
                         <li className={styles.li}><strong>{lang[config.lang].project_creation}</strong>: {utils.standarDateToHuman(this.props.project_detail.created_on)}</li>
@@ -111,7 +111,7 @@ class ProjectDetailSectionComponent extends Component{
                         </ul>
                         </div>
 
-                        <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                        <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
                             <h2>{lang[config.lang].members_title}</h2>
                             {
                                 this.props.project_detail.owner._id == this.props.user.id && //si somos el propietario del proyecto
@@ -138,14 +138,14 @@ class ProjectDetailSectionComponent extends Component{
                             </ul>
                         </div>
 
-                        <div className="my-2 my-lg-5 mx-2 mx-lg-5 ">
+                        <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
                         <h2>{lang[config.lang].project_tasks_title}</h2>
                         <ul className="p-0">
                         {this.props.project_detail.tasks.map((t,index)=>
                             {
                                 return(
                                 <li className={styles.li} key={"task"+index}>
-                                <div className="d-flex justify-content-between">
+                                <div className="d-flex flex-column flex-md-row justify-content-between">
                                     <div>{t.desc} ({t.user_entity? t.user_entity.email : "propia"})</div>
                                     <div>{utils.standarDateToSpanish(t.date)} ({utils.diffHoursBetDates(t.start_hour,t.end_hour)})</div>
                                 </div>

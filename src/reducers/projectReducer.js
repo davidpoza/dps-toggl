@@ -38,6 +38,7 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 loading: false,
                 projects_entities: action.payload.entities.projects,
+                users_entities: action.payload.entities.users,
                 projects_id: action.payload.result,
                 need_refreshing: false
             }
@@ -88,6 +89,7 @@ export default function projectReducer (state = initialState.projectReducer, act
                 ...state,
                 loading: false,
                 projects_entities: new_projects_entities,
+                users_entities: action.payload.entities.users,
                 error: {}
             }
         case FETCH_PROJECT_FAIL:

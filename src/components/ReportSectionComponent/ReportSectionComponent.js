@@ -6,14 +6,17 @@ import es from 'date-fns/locale/es';
 import utils from '../../utils';
 import config from '../../config/config';
 import lang from '../../config/lang';
-import styles from './DashboardSectionComponent.scss';
+import styles from './ReportSectionComponent.scss';
 
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import BarChartComponent from '../BarChartComponent/BarChartComponent';
-import PieChartComponent from '../PieChartComponent/PieChartComponent';
+import CheckboxFilterComponent from '../CheckboxFilterComponent/CheckboxFilterComponent';
+import TaskDatesReportContainer from '../TaskDatesReportComponent/TaskDatesReportContainer';
+import TextFilterComponent from '../TextFilterComponent/TextFilterComponent';
 
 
-class DashboardSectionComponent extends Component{
+
+
+class ReportSectionComponent extends Component{
     constructor(props){
         super(props);
         this.dropdown = React.createRef();
@@ -22,9 +25,17 @@ class DashboardSectionComponent extends Component{
         this.handleOnChangeStartDate = this.handleOnChangeStartDate.bind(this);
         this.handleOnChangeEndDate = this.handleOnChangeEndDate.bind(this);
         this.handleOnChangePresetDate = this.handleOnChangePresetDate.bind(this);
+        this.handleOnFilterByProject = this.handleOnFilterByProject.bind(this);
+        this.handleOnFilterByUser = this.handleOnFilterByUser.bind(this);
+        this.handleOnFilterByDesc = this.handleOnFilterByDesc.bind(this);
+        this.handleOnResetFilterByProject = this.handleOnResetFilterByProject.bind(this);
         this.state = {
+            //filtros por defecto
             start_date: null, //objeto Date
             end_date: null, //objeto Date
+            description: null,
+            user_ids: null,
+            project_ids: null, //array de ids de proyectos que estamos filtrando
             preset: ""
         }
     }
@@ -32,17 +43,18 @@ class DashboardSectionComponent extends Component{
     componentDidMount(){
         // por defecto mostramos el último preset que usamos o en caso de no existir last_preset, el intervalo de la última semana
         this.handleOnChangePresetDate(this.props.preset ? this.props.preset : "preset_last_week");
-
     }
 
     componentDidUpdate(prevProps, prevState){
         //hacemos la consulta cada vez que cambian las fechas
-       if(prevState.start_date != this.state.start_date || prevState.end_date != this.state.end_date){
-           this.props.dashboardActions.fetchBarData(this.props.token, this.state.start_date, this.state.end_date, this.state.preset);
+       if(prevState.start_date != this.state.start_date ||
+        prevState.end_date != this.state.end_date ||
+        prevState.project_ids != this.state.project_ids ||
+        prevState.user_ids != this.state.user_ids ||
+        prevState.description != this.state.description){
+           this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
+           this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
        }
-
-
-
     }
 
     handleOnClickDateBtn(){
@@ -74,7 +86,7 @@ class DashboardSectionComponent extends Component{
     handleOnChangePresetDate(preset){
         if(typeof preset == "object")preset=preset.target.id;
         let start_date=this.props.date_start ? new Date(this.props.date_start): "";
-        let end_date=this.props.date_end ? new Date(this.props.date_end): "";
+        let end_date=this.props.date_end ? new Date(this.props.date_end) : "";
         let today = new Date(Date.now());
         let day = today.getDay()==0?7:today.getDay();
         switch(preset){
@@ -135,11 +147,35 @@ class DashboardSectionComponent extends Component{
         });
     }
 
+    handleOnFilterByUser(ids_array){
+        this.setState({
+            user_ids: ids_array
+        });
+    }
+
+    handleOnFilterByProject(ids_array){
+        this.setState({
+            project_ids: ids_array
+        });
+    }
+
+    handleOnFilterByDesc(desc){
+        this.setState({
+            description: desc
+        });
+    }
+
+    handleOnResetFilterByProject(){
+        this.setState({
+            project_ids: null
+        })
+    }
+
     render(){
         return(
             <div className={"d-flex flex-column justify-content-start h-100"}>
                 <div className={"d-flex justify-content-between "+styles.header}>
-                    <h1>{lang[config.lang].dashboard_section_title}</h1>
+                    <h1>{lang[config.lang].reports_section_title}</h1>
                     <div className="btn-group dropleft">
                         <button className="btn-lg btn-primary" type="button" id="dropdownMenuButton" onClick={this.handleOnClickDateBtn} >
                             <i className="fas fa-calendar-alt"></i>
@@ -187,41 +223,32 @@ class DashboardSectionComponent extends Component{
                         </div>
                     </div>
                 </div>
-                <div className={styles.content}>
-                    <div className={"p-0 p-xl-5 "+styles.barchart_height}>
-                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
-                        <BarChartComponent preset={this.state.preset} start_date={this.state.start_date} end_date={this.state.end_date} data={this.props.data}/>
-                    }
-                    </div>
-                    <div className="p-md-3">
-                        <ul className={styles.project_list}>
-                        {this.props.data.entities &&
-                        this.props.data.entities.projects &&
-                        Object.keys(this.props.data.entities.projects).map((p,index)=>{
-                            return (
-                                <li key={"pli"+index}><i className="fas fa-circle" style={{color: this.props.data.entities.projects[p].color}}></i> {this.props.data.entities.projects[p].name}</li>
-                            )
-                        })}
-                        </ul>
 
+                <div className={"d-flex flex-row justify-content-between "+styles.filters_bar}>
+                    <div>
+                        <span className={styles.filter_span}>{lang[config.lang].reports_filters_bar}:</span>
+                        <CheckboxFilterComponent list={this.props.projects} list_checked={this.state.project_ids==null?[]:this.state.project_ids} apply_filter_callback={this.handleOnFilterByProject} reset_filter_callback={this.handleOnFilterByProject} icon="fa-folder-open" placeholder={lang[config.lang].project_selector_search+"..."} />
+                        <CheckboxFilterComponent list={this.props.users} list_checked={this.state.user_ids==null?[]:this.state.user_ids} apply_filter_callback={this.handleOnFilterByUser} reset_filter_callback={this.handleOnFilterByProject} icon="fa-users" placeholder={lang[config.lang].user_filter_search+"..."} />
+                        <TextFilterComponent apply_filter_callback={this.handleOnFilterByDesc} icon="fa-font" placeholder={lang[config.lang].description_filter_search+"..."} />
                     </div>
-
-                    <div className={"p-0 p-xl-5 "+styles.piechart_height}>
-                    {this.state.start_date && this.state.end_date && Object.keys(this.props.data).length!=0 &&
-                        <PieChartComponent data={this.props.data}/>
-                    }
+                    <div>
+                        <span className={styles.filter_span}>{lang[config.lang].total_results}: {this.props.total_results}</span>
                     </div>
                 </div>
 
-                <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
+                <div className={"flex-grow-1 " + styles.tasklist}>
+                    <TaskDatesReportContainer/>
+                </div>
+
+                <LoadingComponent isLoading={this.props.user_loading||this.props.report_loading||this.props.project_loading} />
             </div>
         )
     }
 }
 
-DashboardSectionComponent.propTypes = {
+ReportSectionComponent.propTypes = {
     user_loading: PropTypes.bool.isRequired,
-    task_loading: PropTypes.bool.isRequired,
+    report_loading: PropTypes.bool.isRequired,
     project_loading: PropTypes.bool.isRequired,
     tag_loading: PropTypes.bool.isRequired,
     userActions: PropTypes.object.isRequired,
@@ -230,4 +257,4 @@ DashboardSectionComponent.propTypes = {
     tagActions: PropTypes.object.isRequired,
 }
 
-export default DashboardSectionComponent;
+export default ReportSectionComponent;

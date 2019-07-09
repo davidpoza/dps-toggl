@@ -2,9 +2,9 @@
 
 .header{
     @media screen and (max-resolution: 199dpi) { //desktop
-        min-height: 100px;
-        height: 8vh;
-        padding: 1rem 1rem 2rem 1rem ;
+        min-height: 80px;
+        height: 6vh;
+        padding: 1rem 1rem 1rem 1rem ;
     }
     @media screen and (min-resolution: 200dpi) { //mobile
         height: calc(var(--vh, 1vh) * 13); //fix para chrome mobile
@@ -14,16 +14,36 @@
 
 }
 
-.content{
+.filters_bar{
+    text-align: center;
+    box-shadow: 0px 5px 5px lightgrey;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    @media screen and (max-resolution: 199dpi) { //desktop
+        min-height: 30px;
+        height: 3vh;
+        padding: 0rem 1rem 0rem 1rem;
+    }
+    @media screen and (min-resolution: 200dpi) { //mobile
+        height: calc(var(--vh, 1vh) * 3); //fix para chrome mobile
+        min-height: 30px;
+        padding: 0rem 1rem 0rem 1rem;
+    }
+}
+
+.tasklist{
+    background-color: #fafbfc;
     overflow-y: scroll;
-    background-color: white;
-    @media screen and (max-resolution: 199dpi) {//desktop
-        height: 92vh;
+
+    @media screen and (max-resolution: 199dpi) {
+        height: 91vh;
     }
 
-    @media screen and (min-resolution: 200dpi) {//mobile
-        height: calc(var(--vh, 1vh) * 87); //fix para chrome mobile
+    @media screen and (min-resolution: 200dpi) {
+        height: calc(var(--vh, 1vh) * 84); //fix para chrome mobile
     }
+
 
     &::-webkit-scrollbar-track
     {
@@ -41,7 +61,6 @@
         background-color: $primary-color;
         border: none;
     }
-
 }
 
 .barchart_height{
@@ -86,24 +105,8 @@
     font-size: 0.8em;
 }
 
-.project_list{
-    list-style-type: none;
-    margin-top: 40px;
-    @media screen and (min-resolution: 200dpi) {//mobile
-        margin-top: 60px;
-        margin-bottom: 0px;
-    }
-    li{
-        @media screen and (max-resolution: 199dpi) {//desktop
-            display: inline;
-            margin: 10px;
-        }
-
-        @media screen and (min-resolution: 200dpi) {//mobile
-            display: block;
-
-        }
-    }
+.filter_span{
+    vertical-align: text-bottom;
 }
 
 .date_preset{

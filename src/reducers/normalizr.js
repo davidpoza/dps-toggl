@@ -7,7 +7,7 @@ export const tagsSchema = [tagEntity];
 export const userEntity = new schema.Entity("users", {}, { idAttribute: '_id' });
 export const usersSchema = [userEntity];
 
-export const projectEntity = new schema.Entity("projects", {/*members: [userEntity],*/ /*tasks:[taskEntity]*/}, { idAttribute: '_id' });
+export const projectEntity = new schema.Entity("projects", {members: [userEntity]}, { idAttribute: '_id' });
 export const projectsSchema = [projectEntity];
 
 export const taskEntity = new schema.Entity("tasks", {project: projectEntity, tags:[tagEntity]}, { idAttribute: '_id' });

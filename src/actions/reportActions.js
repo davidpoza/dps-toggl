@@ -1,100 +1,85 @@
 import {
-    CREATE_TASK_ATTEMPT,
-    CREATE_TASK_FAIL,
-    CREATE_TASK_SUCCESS,
-    FETCH_TASKS_ATTEMPT,
-    FETCH_TASKS_FAIL,
-    FETCH_TASKS_SUCCESS,
-    DELETE_TASK_ATTEMPT,
-    DELETE_TASK_FAIL,
-    DELETE_TASK_SUCCESS,
-    DELETE_TASK_VISUALLY,
-    UPDATE_TASK_ATTEMPT,
-    UPDATE_TASK_FAIL,
-    UPDATE_TASK_SUCCESS,
-    UPDATE_TASK_VISUALLY,
-    CLEAN_TASK_MESSAGE,
-    FETCH_TASK_ATTEMPT,
-    FETCH_TASK_SUCCESS,
-    FETCH_TASK_FAIL,
-    COLLAPSE_DATE,
-    UPDATE_DATE_VISUALLY,
-    LOAD_MORE_TASKS,
-    RESET_LIMIT
+    REPORT_FETCH_TASKS_ATTEMPT,
+    REPORT_FETCH_TASKS_FAIL,
+    REPORT_FETCH_TASKS_SUCCESS,
+    REPORT_CHANGE_FILTERS,
+    REPORT_DELETE_TASK_ATTEMPT,
+    REPORT_DELETE_TASK_FAIL,
+    REPORT_DELETE_TASK_SUCCESS,
+    REPORT_DELETE_TASK_VISUALLY,
+    REPORT_UPDATE_TASK_ATTEMPT,
+    REPORT_UPDATE_TASK_FAIL,
+    REPORT_UPDATE_TASK_SUCCESS,
+    REPORT_UPDATE_TASK_VISUALLY,
+    REPORT_CLEAN_TASK_MESSAGE,
+    REPORT_FETCH_TASK_ATTEMPT,
+    REPORT_FETCH_TASK_FAIL,
+    REPORT_FETCH_TASK_SUCCESS,
+    REPORT_COLLAPSE_DATE,
+    REPORT_UPDATE_DATE_VISUALLY,
+    REPORT_LOAD_MORE_TASKS,
+    REPORT_RESET_LIMIT,
 } from './types';
 
 import api from '../api';
+import utils from '../utils';
 
 
 /* Action creators síncronos */
 
 
-export function createTaskSuccess(taskData){
-    return {
-        type: CREATE_TASK_SUCCESS,
-        payload: taskData
-    }
-}
-
-export function createTaskError(error){
-    return {
-        type: CREATE_TASK_FAIL,
-        payload: error
-    }
-}
-
 export function collapseDate(date){
     return {
-        type: COLLAPSE_DATE,
+        type: REPORT_COLLAPSE_DATE,
         payload: date
     }
 }
 
 export function deleteTaskSuccess(taskData){
     return {
-        type: DELETE_TASK_SUCCESS,
+        type: REPORT_DELETE_TASK_SUCCESS,
         payload: taskData
     }
 }
 
 export function deleteTaskError(error){
     return {
-        type: DELETE_TASK_FAIL,
+        type: REPORT_DELETE_TASK_FAIL,
         payload: error
     }
 }
 
 export function deleteTasksVisually(task_id, task_date){
     return {
-        type: DELETE_TASK_VISUALLY,
+        type: REPORT_DELETE_TASK_VISUALLY,
         payload: {task_id, task_date}
     }
 }
 
 export function fetchTaskSuccess(taskData){
     return {
-        type: FETCH_TASK_SUCCESS,
+        type: REPORT_FETCH_TASK_SUCCESS,
         payload: taskData
     }
 }
 
 export function fetchTaskError(error){
     return {
-        type: FETCH_TASK_FAIL,
+        type: REPORT_FETCH_TASK_FAIL,
         payload: error
     }
 }
 
 export function fetchTasksSuccess(taskData){
     return {
-        type: FETCH_TASKS_SUCCESS,
+        type: REPORT_FETCH_TASKS_SUCCESS,
         payload: taskData
     }
 }
 
 export function fetchTasksError(error){
     return {
-        type: FETCH_TASKS_FAIL,
+        type: REPORT_FETCH_TASKS_FAIL,
         payload: error
     }
 }
@@ -115,21 +100,21 @@ export function resetLimit(){
 
 export function updateTaskSuccess(taskData){
     return {
-        type: UPDATE_TASK_SUCCESS,
+        type: REPORT_UPDATE_TASK_SUCCESS,
         payload: taskData
     }
 }
 
 export function updateTaskError(error){
     return {
-        type: UPDATE_TASK_FAIL,
+        type: REPORT_UPDATE_TASK_FAIL,
         payload: error
     }
 }
 
 export function updateTasksVisually(taskData){
     return {
-        type: UPDATE_TASK_VISUALLY,
+        type: REPORT_UPDATE_TASK_VISUALLY,
         payload: taskData
     }
 }
@@ -144,42 +129,24 @@ export function cleanMessage(){
 
 export function updateDateVisually(date, tasks_entities){
     return {
-        type: UPDATE_DATE_VISUALLY,
+        type: REPORT_UPDATE_DATE_VISUALLY,
         payload: {date, tasks_entities}
     }
 }
 
-/* Action creators asíncronos - thunks */
-
-//recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
-export function createTask(token, desc, date, start_hour, end_hour, project_id, tags, hour_value, user_id){
-    let tags_id;
-    if(tags!=null )
-        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e._id});
-    return (dispatch) => {
-        dispatch({
-            type: CREATE_TASK_ATTEMPT
-        });
-
-        api.task.createTask(token, desc, date, start_hour, end_hour, project_id, tags_id, hour_value, user_id).then(
-            (data) => {
-                if(data.data){
-                    dispatch(createTaskSuccess(data.data));
-                }
-                else if(data.error)
-                    dispatch(createTaskError(data.error))
-            }
-        ).catch(
-            (error) => {
-                dispatch(createTaskError(error));
-        });
+export function changeFilters(date_start, date_end, date_preset){
+    return {
+        type: REPORT_CHANGE_FILTERS,
+        payload: {date_start, date_end, date_preset}
     }
 }
+
+
 
 export function deleteTask(token, task_id){
     return (dispatch) => {
         dispatch({
-            type: DELETE_TASK_ATTEMPT
+            type: REPORT_DELETE_TASK_ATTEMPT
         });
 
         api.task.deleteTask(token, task_id).then(
@@ -198,13 +165,13 @@ export function deleteTask(token, task_id){
 }
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
-export function updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags){
+export function updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
     return (dispatch) => {
         dispatch({
-            type: UPDATE_TASK_ATTEMPT
+            type: REPORT_UPDATE_TASK_ATTEMPT
         });
 
-        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags).then(
+        api.task.updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags).then(
             (data) => {
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
@@ -228,7 +195,7 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
 export function updateAndFetchTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags){
     return (dispatch) => {
         dispatch({
-            type: UPDATE_TASK_ATTEMPT
+            type: REPORT_UPDATE_TASK_ATTEMPT
         });
 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags)
@@ -237,7 +204,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
                     dispatch({
-                        type: FETCH_TASK_ATTEMPT
+                        type: REPORT_FETCH_TASK_ATTEMPT
                     });
                     return api.task.fetchTask(token, task_id);
                 }
@@ -267,7 +234,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
 export function updateAndFetchTasks(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags, limit){
     return (dispatch) => {
         dispatch({
-            type: UPDATE_TASK_ATTEMPT
+            type: REPORT_UPDATE_TASK_ATTEMPT
         });
 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags)
@@ -275,7 +242,7 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
             (data) => {
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token, limit);
+                    this.fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids, description);
                 }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
@@ -289,18 +256,25 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
 }
 
 
-/** Consulta todas las fechas distintas usango gruopby
- * y luego encadena una consulta de las tasks para cada una de ellas.
- * Devuelve un array de objetos {date:string, tasks:array de objetos task}
- */
-export function fetchTasks(token, limit){
+export function fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
+    let date_start_std = date_start? utils.standarizeDate(date_start):null;
+    let date_end_std = date_end? utils.standarizeDate(date_end):null;
+
     return (dispatch) => {
         dispatch({
-            type: FETCH_TASKS_ATTEMPT
+            type: REPORT_FETCH_TASKS_ATTEMPT
         });
 
-        api.task.fetchTasks(token, limit, null, null, null, null, null, null)
-        .then((data) => dispatch(fetchTasksSuccess(data.data)))
+        api.task.fetchTasks(token, limit, date_start_std, date_end_std, user_ids, project_ids, tags_ids, description)
+        .then((data) => {
+            //also fetch all projects and all tags
+            Promise.all([api.project.fetchProjects(token), api.tag.fetchTags(token)])
+            .then(projectsandtags=>{
+                data.data.projects = projectsandtags[0].data;
+                data.data.tags = projectsandtags[1].data;
+                dispatch(fetchTasksSuccess(data.data))
+            });
+        })
         .catch((error) => dispatch(fetchTasksError(error)));
     }
 }

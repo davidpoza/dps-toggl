@@ -25,12 +25,15 @@ class MenuComponent extends Component{
                         <li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/dashboard"><span className = "fa-li"><i className="fas fa-chart-bar"></i></span><span className={styles.item_text}>{lang[config.lang].menu_dashboard}</span></NavLink></li>
                         <li className={styles.li}><NavLink activeClassName={styles.is_active} to="/projects"><span className = "fa-li"><i className="fas fa-folder-open"></i></span><span className={styles.item_text}>{lang[config.lang].menu_projects}</span></NavLink></li>
                         <li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/tags"><span className = "fa-li"><i className="fas fa-tags"></i></span><span className={styles.item_text}>{lang[config.lang].menu_tags}</span></NavLink></li>
-                        <li className={styles.li}><span className = "fa-li"><i className="fas fa-file-alt"></i></span><span className={styles.item_text}>{lang[config.lang].menu_reports}</span></li>
+                        {
+                            this.props.admin &&
+                            <li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/reports"><span className = "fa-li"><i className="fas fa-file-alt"></i></span><span className={styles.item_text}>{lang[config.lang].menu_reports}</span></NavLink></li>
+                        }
                         {
                             this.props.admin &&
                             <li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/users"><span className = "fa-li"><i className="fas fa-users"></i></span><span className={styles.item_text}>{lang[config.lang].menu_users}</span></NavLink></li>
                         }
-                        <li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/config"><span className = "fa-li"><i className="fas fa-cogs"></i></span><span className={styles.item_text}>{lang[config.lang].menu_config}</span></NavLink></li>
+                        {/*<li className={styles.li}><NavLink exact={true} activeClassName={styles.is_active} to="/config"><span className = "fa-li"><i className="fas fa-cogs"></i></span><span className={styles.item_text}>{lang[config.lang].menu_config}</span></NavLink></li>*/}
                     </ul>
 
                 </div>

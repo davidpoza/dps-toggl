@@ -47,6 +47,9 @@
   &:active {
     color: $quaternary-color;
   }
+  &:disabled {
+    color: rgb(207, 207, 207);
+  }
 }
 
 .btn_create{
@@ -63,4 +66,8 @@
 .btn_stop{
   @extend .btn_create;
   color: red;
+}
+
+.manual_component{
+  font-size: 0.8em;
 }

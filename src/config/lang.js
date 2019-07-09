@@ -8,6 +8,7 @@ const lang = {
         hover_chrono_mode: "Modo cronómetro",
         hover_manual_mode: "Modo manual",
         hover_stop_chrono: "Parar cuenta y borrar tarea",
+        hover_create_disabled: "Debes escribir una descripción",
         err_end_hour_before: "La hora de finalización debe ser posterior a la de inicio.",
         err_hour_format: "Formato de hora no válido. Debe ser del tipo HH:MM.",
         aditional_menu_opt_delete: "Borrar",
@@ -22,13 +23,14 @@ const lang = {
         user_first_name_input: "Nombre",
         user_last_name_input: "Apellidos",
         user_avatar_input: "Modificar avatar",
-        user_creation: "Fecha de registro",
-        user_update: "Fecha última modificación",
+        user_creation: "Registrado",
+        user_update: "Modificado",
         user_data_title: "Datos de usuario",
         user_email_placeholder: "Email de usuario",
         user_first_name_placeholder: "Nombre de usuario",
         user_last_name_placeholder: "Apellidos de usuario",
         title_delete_user_modal: "¿Desea borrar el usuario?",
+        hour_value_input: "Importe/Hora",
         login_section_h1: "Iniciar sesión",
         login_section_btn_login: "Login",
         login_section_btn_signup: "Nuevo usuario",
@@ -72,6 +74,8 @@ const lang = {
         menu_config: "Configuración",
         tag_section_title: "Etiquetas",
         user_section_title: "Usuarios",
+        reports_section_title: "Informes",
+        reports_filters_bar: "Filtrar",
         btn_new_tag: "Nueva etiqueta",
         btn_update_tag: "Modificar etiqueta",
         btn_delete_tag: "Eliminar etiqueta",
@@ -108,7 +112,12 @@ const lang = {
         weekdays_array: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
         weekdays_short_array: ["D", "L", "M", "X", "J", "V", "S"],
         not_available: "No disponible",
-        load_more: "Cargar más"
+        load_more: "Cargar más",
+        project_selector_search: "Buscar proyecto",
+        project_selector_no_project: "Sin proyecto",
+        user_filter_search: "Buscar usuario",
+        description_filter_search: "Buscar descripción",
+        total_results: "Fechas encontradas"
     }
 };
 

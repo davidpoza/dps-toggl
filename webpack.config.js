@@ -25,7 +25,7 @@ module.exports = {
                         loader: 'babel-loader',
                     }
                 ]
-            },        
+            },
             {
                 test: /\.scss$/,
                 include: entryPath,
@@ -42,7 +42,7 @@ module.exports = {
                     },
                     {
                         loader: 'sass-loader'
-                    }                    
+                    }
                 ]
            },
            {
@@ -58,7 +58,7 @@ module.exports = {
                 },
                 {
                     loader: 'sass-loader'
-                }                    
+                }
             ]
            },
            {
@@ -71,7 +71,7 @@ module.exports = {
                     options: {
                         modules: false
                     }
-                }                  
+                }
             ]
            },
            {
@@ -87,7 +87,7 @@ module.exports = {
                 },
                 {
                     loader: 'sass-loader'
-                }                    
+                }
             ]
            },
            {
@@ -119,9 +119,10 @@ module.exports = {
             filename: "index.html"
         }),
         new CopyPlugin([
-            { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "./lib" },
-            { from: "./node_modules/jquery/dist/jquery.min.js", to: "./lib" },
+            { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "./lib/bootstrap" },
+            { from: "./node_modules/jquery/dist/jquery.min.js", to: "./lib/jquery" },
+            { from: "./node_modules/@fortawesome/fontawesome-free", to: "./lib/font_awesome" },
             { from: "./src/images/favicon.ico", to: "./" },
         ]),
-    ]    
+    ]
 }

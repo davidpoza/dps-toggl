@@ -157,7 +157,7 @@ const API = {
     },
     task: {
         //en tags_id viene un array de ids
-        createTask(token, description, date, start_hour, end_hour, project_id, tags_id, user_id){
+        createTask(token, description, date, start_hour, end_hour, project_id, tags_id, hour_value, user_id){
             let array_tags_obj = [];
             return fetch(api_url+"/tasks", {
                 method: "POST",
@@ -173,7 +173,8 @@ const API = {
                     end_hour,
                     project: project_id,
                     tags: tags_id,
-                    user: user_id
+                    user: user_id,
+                    hour_value: parseInt(hour_value)
                 })
             }).then(
                 (response)=>response.json()
@@ -200,12 +201,13 @@ const API = {
         },
         //en add_tags viene un array de ObjectId de los tags que queremos añadir
         //en delete_tags viene un array de ObjectId de los tags que queremos eliminar
-        updateTask(token, task_id, description, date, start_hour, end_hour, project_id, add_tags, delete_tags){
+        updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags){
             let composingBody = {};
             if(description!=null) composingBody.desc = description;
             if(date!=null) composingBody.date = date;
             if(start_hour!=null) composingBody.start_hour = start_hour;
             if(end_hour!=null) composingBody.end_hour = end_hour;
+            if(hour_value!=null) composingBody.hour_value = parseInt(hour_value);
             if(project_id!=-1) composingBody.project = project_id;
             if(add_tags!=null) composingBody.add_tags = add_tags;
             if(delete_tags!=null) composingBody.delete_tags = delete_tags;
@@ -224,12 +226,59 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasks(token, limit){
+        fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
             let url = "";
+            let params = {};
+            let projects_params = [];
+            let users_params = [];
+
+            url = api_url+"/tasks";
+
             if(limit)
-                url = api_url+"/tasks?limit="+limit;
-            else
-                url = api_url+"/tasks";
+                params["limit"] = limit;
+
+            if(date_start)
+                params["date_start"] = date_start;
+
+            if(date_end)
+                params["date_end"] = date_end;
+
+            if(user_ids)
+                user_ids.forEach(p=>users_params.push(p));
+
+            if(project_ids)
+                project_ids.forEach(p=>projects_params.push(p));
+
+            if(description)
+                params["description"] = description;
+
+            let params_array = Object.keys(params);
+            if(params_array.length > 0){
+                let params_string = "";
+                for(let i=0; i<params_array.length; i++){
+                    if(i==0)
+                        params_string += "?"+params_array[i]+"="+params[params_array[i]];
+                    else
+                        params_string += "&"+params_array[i]+"="+params[params_array[i]];
+                }
+                if(projects_params.length > 0){
+                    for(let i=0; i<projects_params.length; i++){
+                        if(i==0 && params_array.length == 0) //en el primer id, si no hay otros parámetros debemos comenzar con ? en lugar de &
+                            params_string += "?project_id"+"="+projects_params[i];
+                        else
+                            params_string += "&project_id"+"="+projects_params[i];
+                    }
+                }
+                if(users_params.length > 0){
+                    for(let i=0; i<users_params.length; i++){
+                        if(i==0 && params_array.length == 0) //en el primer id, si no hay otros parámetros debemos comenzar con ? en lugar de &
+                            params_string += "?user_id"+"="+users_params[i];
+                        else
+                            params_string += "&user_id"+"="+users_params[i];
+                    }
+                }
+                url += params_string;
+            }
 
             return fetch(url, {
                 method: "GET",
@@ -298,7 +347,7 @@ const API = {
         },
 
         fetchProjects(token){
-            return fetch(api_url+"/items/projects", {
+            return fetch(api_url+"/projects?user_id=all", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -376,6 +425,20 @@ const API = {
     tag: {
         fetchUserTags(token){
             return fetch(api_url+"/tags", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+ token
+                }
+            }).then(
+                (response)=>response.json()
+            ).then(
+                (data) => data
+            );
+        },
+        fetchTags(token){
+            return fetch(api_url+"/tags?user_id=all", {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

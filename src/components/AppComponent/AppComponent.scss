@@ -6,6 +6,14 @@ body{
     margin:0;
     padding:0;
     height: 100%;
+
+    h1{
+        color: $primary-color;
+    }
+
+    h2{
+        color: $primary-color;
+    }
 }
 /*********************************************************************/
 
@@ -18,6 +26,7 @@ body{
 .menu{
     color: white;
     background-color: $quaternary-color;
+    z-index: 9999;
 
     @media screen and (min-width: $large-device) {
         min-width: 160px;
