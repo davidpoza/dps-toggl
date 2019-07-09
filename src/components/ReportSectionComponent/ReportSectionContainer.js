@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import config from '../../config/config';
+import lang from '../../config/lang';
 import * as userActions from '../../actions/userActions'
 import * as taskActions from '../../actions/taskActions'
 import * as projectActions from '../../actions/projectActions'
@@ -50,17 +52,19 @@ class ReportSectionContainer extends Component{
 
 function mapStateToProps (state) {
   //mapeamos los objetos del array tal y como los requiere CheckboxFilterComponent
+
   let projects_filter_component = state.reportReducer.projects_id.map(e=>{
     e = state.reportReducer.projects_entities[e];
-    e.id = e._id;
-    e.label = e.name;
+    if(!e.id) e.id = e._id;
+    if(!e.label) e.label = e.name;
     return e;
   });
+  projects_filter_component.unshift({id:-1,label:lang[config.lang].project_selector_no_project, color: "#a9a9a9"});
 
   let users_filter_component = state.userReducer.users_id.map(e=>{
     e = state.userReducer.users_entities[e];
-    e.label = e.email;
-    e.id = e._id;
+    if(!e.id) e.id = e._id;
+    if(!e.label) e.label = e.email;
     return e;
   });
 

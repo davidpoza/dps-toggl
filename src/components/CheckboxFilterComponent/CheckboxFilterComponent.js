@@ -100,7 +100,7 @@ class CheckboxFilterComponent extends Component{
     handleClickOutside(e){
         if(this.dropdown.current.style.display != "" && this.dropdown.current.style.display != "none"){
             this.dropdown.current.style.display = "none";
-            let array_ids = this.state.list.filter(e=>e.checked).map(e=>e._id);
+            let array_ids = this.state.list.filter(e=>e.checked).map(e=>e.id);
             this.props.apply_filter_callback(array_ids); //pasamos un array con los ids de elementos marcados
             this.setState({
                 value: ""
@@ -114,7 +114,7 @@ class CheckboxFilterComponent extends Component{
             this.dropdown.current.style.display = "block";
         else{
             this.dropdown.current.style.display = "none";
-            let array_ids = this.state.list.filter(e=>e.checked).map(e=>e._id);
+            let array_ids = this.state.list.filter(e=>e.checked).map(e=>e.id);
             this.props.apply_filter_callback(array_ids);
         }
     }
