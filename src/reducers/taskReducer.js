@@ -156,7 +156,7 @@ export default function taskReducer (state = initialState.taskReducer, action){
                 loading: false,
                 tasks_entities: new_tasks_entities,
                 tasks_tags_entities: new_tasks_tags_entities,
-                projects_entities: Object.assign(action.payload.entities.projects, state.projects_entities),
+                projects_entities: Object.assign(action.payload.entities.projects || {}, state.projects_entities),
                 need_refreshing: false
             }
         case FETCH_TASK_FAIL:
