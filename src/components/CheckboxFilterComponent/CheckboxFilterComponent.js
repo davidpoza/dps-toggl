@@ -10,7 +10,7 @@ import lang from '../../config/lang';
 
 /**Properties
  * apply_filter_callback                   : handler function called on lost lost focus and close dropdown
- *                                           The handler must have the next prototype:
+ *                                           The handler must have the following prototype:
  *       handler(ids_array)                  handler will receive an array of checked elements ids.
  *
  * reset_filter_callback: handle function called from parent when click on reset filter button.

@@ -9,7 +9,7 @@ import styles from './ProjectSelectorComponent.scss';
 
 /**Properties
  * onClick               : handler function called on selecting a project.
- *                         The handler must have the next prototype:
+ *                         The handler must have the following prototype:
  *       handler(project_id, project_name, project_color)
  *
  * onReset               : To use as filter input, with a button to reset filter which triggers this handle function no remove filter

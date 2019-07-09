@@ -41,7 +41,7 @@ class ReportSectionContainer extends Component{
             date_end={this.props.date_end}
             token={this.props.token}
             user_id={this.props.user_id}
-            data={this.props.data}
+            entities={this.props.entities}
             projects={this.props.projects}
             users={this.props.users}
             total_results={this.props.total_results}
@@ -78,7 +78,7 @@ function mapStateToProps (state) {
       date_end: state.reportReducer.date_end,
       token: state.userReducer.token,
       user_id: state.userReducer.id,
-      data: state.dashboardReducer.data,
+      entities: { projects:state.reportReducer.projects_entities, tasks:state.reportReducer.tasks_entities, dates: state.reportReducer.dates_entities},
       projects: projects_filter_component,
       users: users_filter_component,
       total_results: state.reportReducer.total_results
