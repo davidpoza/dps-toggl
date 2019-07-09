@@ -32,6 +32,29 @@
     }
 }
 
+.btn{
+    display: inline-flex;
+    position: relative;
+    color: lightgrey;
+    font-size: 1.1em;
+    padding: 0;
+    margin: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color: grey;
+    }
+    &:active {
+      color: grey;
+    }
+
+  }
+
 .tasklist{
     background-color: #fafbfc;
     overflow-y: scroll;

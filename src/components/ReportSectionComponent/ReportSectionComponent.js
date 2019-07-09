@@ -226,7 +226,7 @@ class ReportSectionComponent extends Component{
 
                 <div className={"d-flex flex-row justify-content-between "+styles.filters_bar}>
                     <div>
-                        {!utils.isMobile() && <span className={styles.filter_span}>{lang[config.lang].reports_filters_bar}:</span>}
+                        <div className={styles.btn}><i className="far fa-chart-bar"></i></div>
                         <CheckboxFilterComponent list={this.props.projects} list_checked={this.state.project_ids==null?[]:this.state.project_ids} apply_filter_callback={this.handleOnFilterByProject} reset_filter_callback={this.handleOnFilterByProject} icon="fa-folder-open" placeholder={lang[config.lang].project_selector_search+"..."} />
                         <CheckboxFilterComponent list={this.props.users} list_checked={this.state.user_ids==null?[]:this.state.user_ids} apply_filter_callback={this.handleOnFilterByUser} reset_filter_callback={this.handleOnFilterByProject} icon="fa-users" placeholder={lang[config.lang].user_filter_search+"..."} />
                         <TextFilterComponent apply_filter_callback={this.handleOnFilterByDesc} icon="fa-font" placeholder={lang[config.lang].description_filter_search+"..."} />

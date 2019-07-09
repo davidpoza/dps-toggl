@@ -20,5 +20,12 @@
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     padding: 1px 6px 2px 6px;
+    @media screen and (max-resolution: 199dpi) {
+      width: 25ch;
+    }
+
+    @media screen and (min-resolution: 200dpi) {
+      width: 18ch;
+    }
   }
 }
