@@ -91,16 +91,12 @@ class TaskComponent extends Component{
     }
 
     handleOnShowDatePicker(){
-        //this.datepicker.current.style.display = "block";
         this.setState({
             show_datepicker: true
         })
-        this.closeDateDropdown();
-
     }
 
     closeDatePicker(){
-        //this.datepicker.current.style.display = "none";
         this.setState({
             show_datepicker: false
         })
@@ -205,7 +201,6 @@ class TaskComponent extends Component{
             this.props.reportActions.deleteTask(this.props.token, this.props.task._id); //llama al api
             this.props.reportActions.deleteTasksVisually(this.props.task._id, this.props.task.date);
         }
-        this.closeDateDropdown();
     }
 
     /**
@@ -313,7 +308,6 @@ class TaskComponent extends Component{
             this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit)
         else if(this.props.container == "TaskDatesReportComponent")
             this.props.reportActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit)
-        this.closeDateDropdown();
         this.closeDatePicker();
     }
 
@@ -488,14 +482,16 @@ class TaskComponent extends Component{
                 }
 
                 <div className="col-auto order-2 order-md-7 order-lg-7 px-0 py-1">
+                <div className="dropdown">
                 {this.props.onResume &&
                     <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project._id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
                 }
-                <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.handleOnClickDateBtn:null} aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
                     <div className={"dropdown-menu "+styles.dropdown_menu} ref={this.dropdown}>
                         <a className={"dropdown-item "+styles.menu_item} id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
                         <a className={"dropdown-item "+styles.menu_item} id={"btn-datepicker-"+this.props.task.id} onClick={this.handleOnShowDatePicker}>{lang[config.lang].aditional_menu_opt_change_date}</a>
                     </div>
+                </div>
                 </div>
             </li>
         )
