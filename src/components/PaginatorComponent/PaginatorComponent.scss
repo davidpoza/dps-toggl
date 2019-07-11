@@ -1,0 +1,50 @@
+@import "../../defaults.scss";
+
+.paginator{
+    text-align: right;
+    padding: 10px;
+}
+
+.page{
+    display: inline-block;
+    text-align: center;
+    min-width: 25px;
+    background-color: #e8e3ee;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    margin: 4px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $primary-color;
+        border: 1px solid $secondary-color;
+        color: white;
+    }
+}
+
+.page_range{
+    display: inline-block;
+    margin: 4px;
+    background-color: lightgrey;
+}
+
+.active_page{
+    @extend .page;
+    font-weight: bold;
+    background-color: $primary-color;
+    color: white;
+}
+
+
+.btn{
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    background-color: $primary-color;
+    color: white;
+    height: 28px;
+    margin: 4px;
+    &:hover{
+        border: 1px solid $secondary-color;
+    }
+}

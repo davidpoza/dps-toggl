@@ -123,7 +123,10 @@ const lang = {
         h2_billed_amount: "Facturación",
         h2_imputed_hours: "Horas imputadas",
         hours: "Horas",
-        euros: "Euros"
+        euros: "Euros",
+        paginator_label: "Páginas",
+        paginator_next_label: "Siguiente",
+        paginator_previous_label: "Anterior"
     }
 };
 

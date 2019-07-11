@@ -45,6 +45,7 @@ class ReportSectionContainer extends Component{
             projects={this.props.projects}
             users={this.props.users}
             total_results={this.props.total_results}
+            page={this.props.match.params.page}
             />
         )
     }
