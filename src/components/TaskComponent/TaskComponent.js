@@ -307,7 +307,7 @@ class TaskComponent extends Component{
         if(this.props.container == "TaskDatesComponent")
             this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit)
         else if(this.props.container == "TaskDatesReportComponent")
-            this.props.reportActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit)
+            this.props.reportActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit, this.props.skip)
         this.closeDatePicker();
     }
 

@@ -46,19 +46,22 @@ class PaginatorComponent extends Component{
             else if(i == (current_page+1) && (number_of_pages-current_page) < range)
                 pags.push(<Link key={"link_page_"+i} to={this.props.base_url+i}><button key={"page_"+i} className={i==current_page? styles.active_page:styles.page}>{i}</button></Link>);
         }
-        return(
-            <div className={styles.paginator}>
-                {
-                    current_page > 1 &&
-                    <Link key={"link_previous_page"} to={this.props.base_url+previous_page}><button className={styles.btn}><i className="fas fa-arrow-left"></i></button></Link>
-                }
-                {pags}
-                {
-                    current_page < number_of_pages &&
-                    <Link key={"link_next_page"} to={this.props.base_url+next_page}><button className={styles.btn}><i className="fas fa-arrow-right"></i> {!utils.isMobile() && lang[config.lang].paginator_next_label}</button></Link>
-                }
-            </div>
-        );
+        if(number_of_pages > 1)
+            return(
+                <div className={styles.paginator}>
+                    {
+                        current_page > 1 &&
+                        <Link key={"link_previous_page"} to={this.props.base_url+previous_page}><button className={styles.btn}><i className="fas fa-arrow-left"></i></button></Link>
+                    }
+                    {pags}
+                    {
+                        current_page < number_of_pages &&
+                        <Link key={"link_next_page"} to={this.props.base_url+next_page}><button className={styles.btn}><i className="fas fa-arrow-right"></i> {!utils.isMobile() && lang[config.lang].paginator_next_label}</button></Link>
+                    }
+                </div>
+            )
+        else
+            return null;
     }
 }
 

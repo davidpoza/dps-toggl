@@ -62,9 +62,16 @@ class ReportSectionComponent extends Component{
         prevState.end_date != this.state.end_date ||
         prevState.project_ids != this.state.project_ids ||
         prevState.user_ids != this.state.user_ids ||
-        prevState.description != this.state.description){
-           this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
-           this.props.reportActions.fetchTasks(this.props.token, null, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
+        prevState.description != this.state.description ||
+        prevState.mode != this.state.mode){
+            if(this.state.mode == "detail"){
+                this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
+                this.props.reportActions.fetchTasks(this.props.token, config.records_per_page, (this.props.page-1)*config.records_per_page, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
+            }
+            else if(this.state.mode == "summary"){
+                this.props.reportActions.changeFilters(this.state.start_date, this.state.end_date, this.state.preset);
+                this.props.reportActions.fetchTasks(this.props.token, null, 0, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
+            }
         }
         if(prevProps.entities != this.props.entities || prevState.summary_chart != this.state.summary_chart){
             let bar_obj = this.formatDataToBarChart(this.state.preset, this.state.summary_chart, this.state.start_date, this.state.end_date, this.props.entities);
@@ -75,6 +82,8 @@ class ReportSectionComponent extends Component{
                 bar_keys: bar_obj.bar_keys || []
             });
         }
+        if(prevProps.page != this.props.page)
+            this.props.reportActions.fetchTasks(this.props.token, config.records_per_page, (this.props.page-1)*config.records_per_page, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
     }
 
     handleOnClickDateBtn(){
@@ -484,7 +493,7 @@ class ReportSectionComponent extends Component{
                     this.state.mode == "detail" ?
                     <div className={"flex-grow-1 " + styles.tasklist}>
                         <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
-                        <TaskDatesReportContainer/>
+                        <TaskDatesReportContainer limit={config.records_per_page} skip={0}/>
                         <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
                     </div> :
                     this.state.mode == "summary" &&

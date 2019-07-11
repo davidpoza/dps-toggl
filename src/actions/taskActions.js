@@ -299,7 +299,7 @@ export function fetchTasks(token, limit){
             type: FETCH_TASKS_ATTEMPT
         });
 
-        api.task.fetchTasks(token, limit, null, null, null, null, null, null)
+        api.task.fetchTasks(token, limit, 0, null, null, null, null, null, null)
         .then((data) => dispatch(fetchTasksSuccess(data.data)))
         .catch((error) => dispatch(fetchTasksError(error)));
     }

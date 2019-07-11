@@ -91,6 +91,7 @@ class TaskContainer extends Component{
             reportActions={this.props.reportActions}
             onResume={this.props.onResume || null}
             limit={this.props.limit}
+            skip={this.props.skip}
             container={this.props.container}
             />
           )

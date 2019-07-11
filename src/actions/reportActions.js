@@ -231,7 +231,7 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
  * Anida dos promesas del cliente api para realizarlas secuencialmente: updateTask y fetchTasks.
    Para cada una despacha 2 de 3 actions posibles: ATTEMPT, SUCCESS, FAIL.
  */
-export function updateAndFetchTasks(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags, limit){
+export function updateAndFetchTasks(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags, limit, skip){
     return (dispatch) => {
         dispatch({
             type: REPORT_UPDATE_TASK_ATTEMPT
@@ -242,7 +242,7 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
             (data) => {
                 if(data.data){
                     dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token, limit, date_start, date_end, user_id, project_id, tags_ids, description);
+                    this.fetchTasks(token, limit, skip, date_start, date_end, user_id, project_id, tags_ids, description);
                 }
                 else if(data.error)
                     dispatch(updateTaskError(data.error))
@@ -256,7 +256,7 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
 }
 
 
-export function fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
+export function fetchTasks(token, limit, skip, date_start, date_end, user_ids, project_ids, tags_ids, description){
     let date_start_std = date_start? utils.standarizeDate(date_start):null;
     let date_end_std = date_end? utils.standarizeDate(date_end):null;
 
@@ -265,7 +265,7 @@ export function fetchTasks(token, limit, date_start, date_end, user_ids, project
             type: REPORT_FETCH_TASKS_ATTEMPT
         });
 
-        api.task.fetchTasks(token, limit, date_start_std, date_end_std, user_ids, project_ids, tags_ids, description)
+        api.task.fetchTasks(token, limit, skip, date_start_std, date_end_std, user_ids, project_ids, tags_ids, description)
         .then((data) => {
             //also fetch all projects and all tags
             Promise.all([api.project.fetchProjects(token), api.tag.fetchTags(token)])
