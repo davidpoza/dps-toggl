@@ -15,6 +15,7 @@ const initialState = {
         users_entities: [],
         sortBy: 'email',
         order: 'asc',
+        current_task_start_hour: null,
         error: {}
     },
     taskReducer: {

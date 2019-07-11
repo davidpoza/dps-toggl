@@ -12,8 +12,6 @@ import ProfileSectionComponent from './ProfileSectionComponent';
 
 
 
-
-
 class ProfileSectionContainer extends Component{
     constructor(props){
         super(props);
@@ -53,20 +51,6 @@ function mapStateToProps (state, ownProps) {
         };
       else
         profile= state.userReducer.users_entities[ownProps.match.params.user_id];
-      //  project_detail.members = project_detail.members.filter(e=>e != state.userReducer.id); //nos quitamos a nosotros mismos de la lista
-      //  project_detail.members_entities = Object.keys(state.userReducer.users_entities).length > 0 ? project_detail.members.map(e=>state.userReducer.users_entities[e]) : null;
-      //  if(project_detail.tasks){
-      //     project_detail.hours = project_detail.tasks.reduce((prev, curr)=>{
-      //       curr = utils.diffHoursBetHours(curr?curr.start_hour:"00:00:00", curr?curr.end_hour:"00:00:00")
-      //       return(prev+curr);
-      //     },0);
-      //     project_detail.tasks = project_detail.tasks.map(t=>{
-      //       t.user_entity = state.userReducer.users_entities[t.user];
-      //       return t;
-      //     });
-      //  }
-      // else
-      //   p.hours = 0;
     return {
       profile: profile,
       user: state.userReducer,

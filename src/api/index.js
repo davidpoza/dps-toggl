@@ -118,9 +118,16 @@ const API = {
             let form_data = new FormData();
             if(data.avatar)
                 form_data.append("avatar", data.avatar);
-            form_data.append("first_name", data.first_name);
-            form_data.append("last_name", data.last_name);
-
+            if(data.first_name)
+                form_data.append("first_name", data.first_name);
+            if(data.last_name)
+                form_data.append("last_name", data.last_name);
+            if(data.active)
+                form_data.append("active", data.active);
+            if(data.admin)
+                form_data.append("admin", data.admin);
+            if(data.current_task_start_hour !== undefined)
+                form_data.append("current_task_start_hour", data.current_task_start_hour);
             return fetch(api_url+"/users/"+user_id, {
                 method: "PUT",
                 //la cabecera Content-Type se añade automaticamente cuando enviamos un objeto FormData
