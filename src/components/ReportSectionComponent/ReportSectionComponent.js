@@ -14,6 +14,7 @@ import TaskDatesReportContainer from '../TaskDatesReportComponent/TaskDatesRepor
 import TextFilterComponent from '../TextFilterComponent/TextFilterComponent';
 import BarChartComponent from '../BarChartComponent/BarChartComponent';
 import PieChartComponent from '../PieChartComponent/PieChartComponent';
+import PaginatorComponent from '../PaginatorComponent/PaginatorComponent';
 
 
 class ReportSectionComponent extends Component{
@@ -482,7 +483,9 @@ class ReportSectionComponent extends Component{
                 {
                     this.state.mode == "detail" ?
                     <div className={"flex-grow-1 " + styles.tasklist}>
-                    <TaskDatesReportContainer/>
+                        <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
+                        <TaskDatesReportContainer/>
+                        <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
                     </div> :
                     this.state.mode == "summary" &&
                     <div className={"flex-grow-1 " + styles.tasklist}>

@@ -66,6 +66,7 @@
 .tasklist{
     background-color: #fafbfc;
     overflow-y: scroll;
+    padding-bottom: 40px;
 
     @media screen and (max-resolution: 199dpi) {
         height: 91vh;
