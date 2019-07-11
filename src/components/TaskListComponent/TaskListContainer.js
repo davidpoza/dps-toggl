@@ -32,6 +32,7 @@ class TaskListContainer extends Component{
             projects_id={this.props.projects_id}
             tags_id={this.props.tags_id}
             limit={this.props.limit}
+            skip={this.props.skip}
             onResume={this.props.onResume || null}
             />
         )

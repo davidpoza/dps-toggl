@@ -68,6 +68,7 @@ function mapStateToProps (state) {
     if(!e.label) e.label = e.email;
     return e;
   });
+  users_filter_component.unshift({id:state.userReducer.id,label:state.userReducer.email});
 
     return {
       user_loading: state.userReducer.loading,

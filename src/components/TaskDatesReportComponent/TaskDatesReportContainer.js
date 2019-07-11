@@ -40,6 +40,7 @@ class ReportResultsContainer extends Component{
             date_end={this.props.date_end}
             date_preset={this.props.date_preset}
             limit={this.props.limit}
+            skip={this.props.skip}
             total_tasks={this.props.total_tasks}
             />
         )

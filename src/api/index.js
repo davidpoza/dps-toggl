@@ -226,7 +226,7 @@ const API = {
                 (data) => data
             );
         },
-        fetchTasks(token, limit, date_start, date_end, user_ids, project_ids, tags_ids, description){
+        fetchTasks(token, limit, skip, date_start, date_end, user_ids, project_ids, tags_ids, description){
             let url = "";
             let params = {};
             let projects_params = [];
@@ -236,6 +236,9 @@ const API = {
 
             if(limit)
                 params["limit"] = limit;
+
+            if(skip)
+                params["skip"] = skip;
 
             if(date_start)
                 params["date_start"] = date_start;

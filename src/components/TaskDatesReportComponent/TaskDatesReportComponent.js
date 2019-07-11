@@ -47,18 +47,16 @@ class TaskDatesReportComponent extends Component{
                                     tags_id={this.props.tags_id}
                                     projects_id={this.props.projects_id}
                                     onUpdate={this.handleUpdateTaskVisually}
-                                    onResume={this.props.onResume || null}/>
+                                    onResume={this.props.onResume || null}
+                                    limit={this.props.limit}
+                                    skip={this.props.skip}
+                                    />
                                 }
                                 </li>
                         )
                    }, this)
                }
                </ul>
-               {
-                   //solo mostramos el boton de cargar mas si hay más tareas de las que estamos tomando con limit
-                   this.props.total_tasks > this.props.limit &&
-                   <p style={{textAlign: "center", margin: "20px"}}><button type="button" className="btn btn-info" onClick={this.handleOnClickLoadMore}>{lang[config.lang].load_more}</button></p>
-               }
             </div>
 
 
