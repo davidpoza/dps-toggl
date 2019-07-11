@@ -15,24 +15,25 @@ import NewBlockComponent from './NewBlockComponent';
 
 class NewBlockContainer extends Component{
     constructor(props){
-        super(props);        
+        super(props);
     }
 
     componentWillMount(){
 
-    }    
+    }
     render(){
-    
-      
+
+
         return(
-            <NewBlockComponent 
+            <NewBlockComponent
             ref={this.props.setRef}
             projects={this.props.projects}
             tags={this.props.tags}
             user={this.props.user}
             taskActions={this.props.taskActions}
+            userActions={this.props.userActions}
             projectActions={this.props.projectActions}
-            tagActions={this.props.tagActions}            
+            tagActions={this.props.tagActions}
             />
         )
     }
@@ -46,13 +47,14 @@ function mapStateToProps (state) {
       tasks_tags_entities: state.taskReducer.tasks_tags_entities,
     }
   }
-  
+
   function mapDispatchToProps (dispatch) {
     return {
       taskActions: bindActionCreators(taskActions, dispatch),
+      userActions: bindActionCreators(userActions, dispatch),
       projectActions: bindActionCreators(projectActions, dispatch),
       tagActions: bindActionCreators(tagActions, dispatch),
     }
   }
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(NewBlockContainer);

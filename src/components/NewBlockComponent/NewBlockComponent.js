@@ -30,7 +30,7 @@ class NewBlockComponent extends Component{
             project_selected_id: null,
             tags: [], // listado los id de los tag que hemos seleccionado
             start_date: new Date(),    //borrar
-            start_hour: null,
+            start_hour: this.props.user.current_task_start_hour,
             end_hour: null,
             hour_value: 0,
             date: new Date(),
@@ -60,18 +60,11 @@ class NewBlockComponent extends Component{
     }
 
 
-    updateStartEndHours(){
-        this.start = new Date(Date.now());
-        this.end = new Date();
-        this.end.setHours(this.start.getHours()+1);
-        this.setState({
-            start_hour: utils.getHourFromDate(this.start),
-            end_hour: utils.getHourFromDate(this.end)
-        });
-    }
-
     componentDidMount(){
-        this.updateStartEndHours();
+        if(this.state.start_hour != null)
+            this.handleOnClickStart();
+        else
+            this.updateStartEndHours();
         if(!utils.isMobile()){ //en móvil no existe hover y se queda fijo, asi que no lo aplico en ese caso
             $(this.chronoModeBtn.current).popover({content: lang[config.lang].hover_chrono_mode, trigger: "hover"});
             $(this.manualModeBtn.current).popover({content: lang[config.lang].hover_manual_mode, trigger: "hover"});
@@ -97,6 +90,16 @@ class NewBlockComponent extends Component{
     componentWillUnmount(){
         if(this.state.set_interval != null)
             clearInterval(this.state.set_interval)
+    }
+
+    updateStartEndHours(){
+        this.start = new Date(Date.now());
+        this.end = new Date();
+        this.end.setHours(this.start.getHours()+1);
+        this.setState({
+            start_hour: utils.getHourFromDate(this.start),
+            end_hour: utils.getHourFromDate(this.end)
+        });
     }
 
     /** Al producirse un click en un proyecto del dropdown del ProjectSelectorComponent */
@@ -225,12 +228,17 @@ class NewBlockComponent extends Component{
             project_selected_color: null,
             project_selected_id: null,
             hour_value: 0,
+            start_hour: null,
             tags: this.props.tags.map((e)=>{ //desmarco todos los tags
                 e.checked = false;
                 return e;
             })
         });
         document.title = config.app_title;
+        this.createBtn.current.disabled = false;
+        let update = {};
+        update["current_task_start_hour"] = null;
+        this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
     }
 
     /** Se ejecuta en cada disparo del timer de intervalo configurado en el this.state.set_interval */
@@ -250,29 +258,49 @@ class NewBlockComponent extends Component{
     */
     handleOnClickStart(){
         if(this.state.chrono_status == "paused"){ //iniciamos contador
+            let counter_date = new Date(Date.now());
+            let hour = "";
+            let min = "";
+            if(this.props.user.current_task_start_hour != null){
+                hour = utils.getHour(this.state.start_hour);
+                min = utils.getMinutes(this.state.start_hour);
+                counter_date = new Date(counter_date.getFullYear(), counter_date.getMonth(), counter_date.getDate(), hour, min);
+            }
             this.setState({
-                chrono_status: "running"
-            })
+                chrono_status: "running",
+                time: this.props.user.current_task_start_hour!=null? Math.floor(Date.now()/1000) - Math.floor(counter_date.getTime()/1000):0
+            });
+            this.createBtn.current.disabled = this.state.description == "" ? true:false;
+
+            if(this.state.start_hour){
+                let update = {};
+                update["current_task_start_hour"] = this.state.start_hour + ":00";
+                this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
+            }
         }
         else if(this.state.chrono_status == "running" && this.state.description != ""){  // paramos contador
-          let end_seconds = utils.getHourInSecFromDate(new Date());
-          let start_seconds = end_seconds-this.state.time;
-          this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags, this.state.hour_value, this.props.user.id);
-          this.setState({
-                chrono_status: "paused",
-                time: 0,
-                description: "",
-                project_selected_name: null,
-                project_selected_color: null,
-                project_selected_id: null,
-                hour_value: 0,
-                tags: this.props.tags.map((e)=>{
-                    e.checked = false;
-                    return e;
-                })
-            },()=>{
-                document.title = config.app_title;
-            });
+            let end_seconds = utils.getHourInSecFromDate(new Date());
+            let start_seconds = end_seconds-this.state.time;
+            this.props.taskActions.createTask(this.props.user.token, this.state.description, utils.standarizeDate(this.state.date), utils.secondsToFormatedString(start_seconds), utils.secondsToFormatedString(end_seconds), this.state.project_selected_id, this.state.tags, this.state.hour_value, this.props.user.id);
+            this.setState({
+                  chrono_status: "paused",
+                  time: 0,
+                  description: "",
+                  project_selected_name: null,
+                  project_selected_color: null,
+                  project_selected_id: null,
+                  hour_value: 0,
+                  start_hour: null,
+                  tags: this.props.tags.map((e)=>{
+                      e.checked = false;
+                      return e;
+                  })
+              },()=>{
+                  document.title = config.app_title;
+              });
+              let update = {};
+              update["current_task_start_hour"] = null;
+              this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
         }
         if(this.state.set_interval == null){
             this.setState({
