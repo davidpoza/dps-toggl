@@ -73,14 +73,24 @@ class ReportSectionComponent extends Component{
                 this.props.reportActions.fetchTasks(this.props.token, null, 0, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
             }
         }
-        if(prevProps.entities != this.props.entities || prevState.summary_chart != this.state.summary_chart){
-            let bar_obj = this.formatDataToBarChart(this.state.preset, this.state.summary_chart, this.state.start_date, this.state.end_date, this.props.entities);
-            let pie_data = this.formatDataToPieChart(this.state.summary_chart, this.props.entities);
-            this.setState({
-                pie_data: pie_data,
-                bar_data: bar_obj.dates || [],
-                bar_keys: bar_obj.bar_keys || []
-            });
+        if(prevProps.entities.dates != this.props.entities.dates || prevState.summary_chart != this.state.summary_chart){
+            if(this.state.mode == "summary"){
+                let bar_obj = this.formatDataToBarChart(this.state.preset, this.state.summary_chart, this.state.start_date, this.state.end_date, this.props.entities);
+                let pie_data = this.formatDataToPieChart(this.state.summary_chart, this.props.entities);
+                this.setState({
+                    pie_data: pie_data,
+                    bar_data: bar_obj.dates || [],
+                    bar_keys: bar_obj.bar_keys || []
+                });
+            }
+            else{
+                this.setState({
+                    pie_data: [],
+                    bar_data: [],
+                    bar_keys: []
+                });
+            }
+
         }
         if(prevProps.page != this.props.page)
             this.props.reportActions.fetchTasks(this.props.token, config.records_per_page, (this.props.page-1)*config.records_per_page, this.state.start_date, this.state.end_date, this.state.user_ids, this.state.project_ids, null, this.state.description);
