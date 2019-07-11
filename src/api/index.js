@@ -120,6 +120,8 @@ const API = {
                 form_data.append("avatar", data.avatar);
             form_data.append("first_name", data.first_name);
             form_data.append("last_name", data.last_name);
+            form_data.append("active", data.active);
+            form_data.append("admin", data.admin);
 
             return fetch(api_url+"/users/"+user_id, {
                 method: "PUT",

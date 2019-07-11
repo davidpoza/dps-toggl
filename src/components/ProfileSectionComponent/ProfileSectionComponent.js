@@ -27,6 +27,8 @@ class ProfileSectionComponent extends Component{
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSaveUser = this.handleSaveUser.bind(this);
         this.handleDeleteUser = this.handleDeleteUser.bind(this);
+        this.toggleStatus = this.toggleStatus.bind(this);
+        this.toggleAdminLevel = this.toggleAdminLevel.bind(this);
     }
 
     componentDidMount(){
@@ -61,6 +63,8 @@ class ProfileSectionComponent extends Component{
         let update = {};
         update["first_name"] = this.state.first_name;
         update["last_name"] = this.state.last_name;
+        update["active"] = this.state.active;
+        update["admin"] = this.state.admin;
         if(this.userAvatarInput.current.files.length == 1)
             update["avatar"] = this.userAvatarInput.current.files[0];
 
@@ -82,6 +86,20 @@ class ProfileSectionComponent extends Component{
             });
     }
 
+    toggleStatus(){
+        if(this.state.active)
+            this.setState({active:false});
+        else
+            this.setState({active:true});
+    }
+
+    toggleAdminLevel(){
+        if(this.state.admin)
+            this.setState({admin:false});
+        else
+            this.setState({admin:true});
+    }
+
     render(){
             return(
                 <div className={"d-flex flex-column justify-content-start h-100"}>
@@ -96,7 +114,7 @@ class ProfileSectionComponent extends Component{
                         </div>
                     </div>
                     <div className={"flex-grow-1 " + styles.profile}>
-
+                        <h2 className="my-2 mx-2 ml-md-5 ml-lg-5">{lang[config.lang].user_personal_data_h2}</h2>
                         <div className={ "d-flex flex-column flex-md-row justify-content-md-between my-2 mx-2 ml-md-5 ml-lg-5" }>
                             <div className={"order-1 order-lg-0 "+styles.inputs}>
                                 <div className={styles.form_label_group}>
@@ -118,13 +136,20 @@ class ProfileSectionComponent extends Component{
                             </div>
                             <img className={"align-self-center align-self-lg-start order-0 order-md-1 order-lg-1 my-2 my-md-0 my-lg-0 mx-2 mx-md-5 mx-lg-5 "+styles.avatar} src={config.api_url+"/users/avatar/"+this.state.avatar} />
                         </div>
-              
+
                         <div className="my-2 my-lg-5 mx-2 mx-md-5 mx-lg-5 ">
-                        <h2>{lang[config.lang].user_data_title}</h2>
-                        <ul className="p-0">
-                        <li className={styles.li}><strong>{lang[config.lang].user_creation}</strong>: {utils.standarDateToHumanExtended(this.props.profile.created_on)}</li>
-                        <li className={styles.li}><strong>{lang[config.lang].user_update}</strong>: {this.props.profile.updated_on ? utils.standarDateToHumanExtended(this.props.profile.updated_on): lang[config.lang].not_available}</li>
-                        </ul>
+                            <h2>{lang[config.lang].user_account_data_h2}</h2>
+                            <ul className="p-0">
+                            <li className={styles.li}><strong>{lang[config.lang].user_creation}</strong>: {utils.standarDateToHumanExtended(this.props.profile.created_on)}</li>
+                            <li className={styles.li}><strong>{lang[config.lang].user_update}</strong>: {this.props.profile.updated_on ? utils.standarDateToHumanExtended(this.props.profile.updated_on): lang[config.lang].not_available}</li>
+                            {
+                                this.props.user.admin == true &&
+                                <div>
+                                    <li className={styles.li}><strong>{lang[config.lang].user_activate_checkbox}</strong>: <span onClick={this.toggleStatus}>{this.state.active ? <i className="far fa-check-square"></i>:<i className="far fa-square"></i>}</span></li>
+                                    <li className={styles.li}><strong>{lang[config.lang].user_admin_level}</strong>: <span onClick={this.toggleAdminLevel}>{this.state.admin ? <i className="far fa-check-square"></i>:<i className="far fa-square"></i>}</span></li>
+                                </div>
+                            }
+                            </ul>
                         </div>
 
 
