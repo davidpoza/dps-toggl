@@ -51,6 +51,7 @@ export default function userReducer (state = initialState.userReducer, action){
                 created_on: action.payload.created_on,
                 updated_on: action.payload.updated_on,
                 current_task_start_hour: action.payload.current_task_start_hour,
+                current_task_desc: action.payload.current_task_desc,
                 loading: false,
                 error: {}
             }
@@ -148,6 +149,7 @@ export default function userReducer (state = initialState.userReducer, action){
                     updated_on: action.payload.entities.users[action.payload.result].updated_on,
                     avatar: action.payload.entities.users[action.payload.result].avatar,
                     current_task_start_hour: action.payload.entities.users[action.payload.result].current_task_start_hour,
+                    current_task_desc: action.payload.entities.users[action.payload.result].current_task_desc,
                     error: {},
                     need_refreshing: true
                 }

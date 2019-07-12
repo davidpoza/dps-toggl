@@ -20,7 +20,7 @@ class NewBlockComponent extends Component{
 
         this.state = {
             placeholder: lang[config.lang].desc_placeholder_chrono_mode,
-            description: "",
+            description: this.props.user.current_task_desc == null ? "":this.props.user.current_task_desc,
             mode: "chrono",
             time: 0, //seconds,
             chrono_status: "paused", //paused, running
@@ -238,6 +238,7 @@ class NewBlockComponent extends Component{
         this.createBtn.current.disabled = false;
         let update = {};
         update["current_task_start_hour"] = null;
+        update["current_task_desc"] = null;
         this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
     }
 
@@ -266,15 +267,21 @@ class NewBlockComponent extends Component{
                 min = utils.getMinutes(this.state.start_hour);
                 counter_date = new Date(counter_date.getFullYear(), counter_date.getMonth(), counter_date.getDate(), hour, min);
             }
+            let time = this.props.user.current_task_start_hour!=null? Math.floor(Date.now()/1000) - Math.floor(counter_date.getTime()/1000):0;
+            if(time < 0){ //si la tarea se empezó el día anterior, reseteamos el contador
+                this.handleOnClickReset();
+                return;
+            }
             this.setState({
                 chrono_status: "running",
-                time: this.props.user.current_task_start_hour!=null? Math.floor(Date.now()/1000) - Math.floor(counter_date.getTime()/1000):0
+                time: time
             });
             this.createBtn.current.disabled = this.state.description == "" ? true:false;
 
             if(this.state.start_hour){
                 let update = {};
-                update["current_task_start_hour"] = this.state.start_hour + ":00";
+                update["current_task_start_hour"] = this.state.start_hour.length == 5? this.state.start_hour + ":00" : this.state.start_hour;
+                update["current_task_desc"] = this.state.description;
                 this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
             }
         }
@@ -300,6 +307,7 @@ class NewBlockComponent extends Component{
               });
               let update = {};
               update["current_task_start_hour"] = null;
+              update["current_task_desc"] = null;
               this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
         }
         if(this.state.set_interval == null){

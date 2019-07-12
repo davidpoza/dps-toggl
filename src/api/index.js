@@ -128,6 +128,8 @@ const API = {
                 form_data.append("admin", data.admin);
             if(data.current_task_start_hour !== undefined)
                 form_data.append("current_task_start_hour", data.current_task_start_hour);
+            if(data.current_task_desc !== undefined)
+                form_data.append("current_task_desc", data.current_task_desc);
             return fetch(api_url+"/users/"+user_id, {
                 method: "PUT",
                 //la cabecera Content-Type se añade automaticamente cuando enviamos un objeto FormData

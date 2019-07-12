@@ -16,6 +16,7 @@ const initialState = {
         sortBy: 'email',
         order: 'asc',
         current_task_start_hour: null,
+        current_task_desc: null,
         error: {}
     },
     taskReducer: {
