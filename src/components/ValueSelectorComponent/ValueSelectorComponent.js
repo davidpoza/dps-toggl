@@ -53,7 +53,7 @@ class ValueSelectorComponent extends Component{
     }
 
     render(){
-        return(<div className={this.props.displayAsLabel == true ? "btn-group dropleft":"btn-group dropleft "+styles.dropleft}>
+        return(<div className={this.props.displayAsLabel == true ? "btn-group dropleft":"btn-group dropright "+styles.dropdown}>
                 {
                     this.props.displayAsLabel != true ?
                     <button className={this.state.active ? styles.btn_activated:styles.btn} type="button" onClick={this.toggleVisibility}>
