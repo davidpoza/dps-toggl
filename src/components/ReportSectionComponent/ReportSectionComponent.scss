@@ -63,7 +63,7 @@
     }
 }
 
-.tasklist{
+.task_list{
     background-color: #fafbfc;
     overflow-y: scroll;
     padding-bottom: 40px;
@@ -161,9 +161,9 @@
 
 .project_list{
     list-style-type: none;
-    margin-top: 40px;
+    margin-top: 100px;
     @media screen and (min-resolution: 200dpi) {//mobile
-        margin-top: 90px;
+        margin-top: 110px;
         margin-bottom: 0px;
     }
     li{
