@@ -501,16 +501,16 @@ class ReportSectionComponent extends Component{
 
                 {
                     this.state.mode == "detail" ?
-                    <div className={"flex-grow-1 " + styles.tasklist}>
+                    <div className={"flex-grow-1 " + styles.task_list}>
                         <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
                         <TaskDatesReportContainer limit={config.records_per_page} skip={0}/>
                         <PaginatorComponent base_url="/reports/" total_records={this.props.total_results} current_page={this.props.page || 1} records_per_page={config.records_per_page}/>
                     </div> :
                     this.state.mode == "summary" &&
-                    <div className={"flex-grow-1 " + styles.tasklist}>
+                    <div className={"flex-grow-1 " + styles.task_list}>
                         <div className={"p-0 p-xl-5 "+styles.barchart}>
                             <h2>{this.state.summary_chart == "imputed_hours" ? lang[config.lang].h2_imputed_hours : lang[config.lang].h2_billed_amount}</h2>
-                            <div className={"pt-1 px-1 px-md-5 px-lg-5"}>
+                            <div className={"pt-1 px-3 px-md-5 px-lg-5"}>
                                 <button className={styles.btn_switch_chart} onClick={this.switchChart}>
                                     <i className={this.state.summary_chart == "imputed_hours" ? "fas fa-clock":"fas fa-euro-sign"}></i>
                                     {this.state.summary_chart == "billed_amount" ? lang[config.lang].btn_show_imputed_hours : lang[config.lang].btn_show_billed_amount}

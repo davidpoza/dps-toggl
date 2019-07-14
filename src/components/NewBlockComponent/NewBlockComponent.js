@@ -364,7 +364,7 @@ class NewBlockComponent extends Component{
             <div className="container-flex" >
                 <div className={"row align-items-center justify-content-between " + styles.box} >
 
-                        <div className="col-8 col-sm-7 col-md-7 col-lg order-1 order-lg-1 p-0">
+                        <div className="col-8 col-sm-10 col-md-7 col-lg order-1 order-lg-1 p-0">
                             <input className={styles.description} id="task-description" autoComplete="false" onChange={this.handleOnChangeInput} placeholder={this.state.placeholder} value={this.state.description} onKeyPress={this.handleOnKeyPress}></input>
                         </div>
 
@@ -372,7 +372,7 @@ class NewBlockComponent extends Component{
                             <ProjectSelectorComponent onClick={this.handleOnClickProjectSelector} project_selected_name={this.state.project_selected_name} project_selected_color={this.state.project_selected_color} projects={this.props.projects}/>
                         </div>
 
-                        <div className="col-1 col-md-auto col-lg-auto order-5 order-md-3 order-lg-3 py-1 px-0 px-lg-1">
+                        <div className="col-auto col-md-auto col-lg-auto order-5 order-md-3 order-lg-3 py-1 px-0 px-lg-1">
                             <TagSelectorComponent onClick={this.handleOnClickTagSelector} tags={this.state.tags} />
                         </div>
 
