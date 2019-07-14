@@ -13,8 +13,12 @@
     min-height: 80px;
     height: 8vh;
   }
-  @media screen and (min-resolution: 200dpi) { //mobile
+  @media screen and (min-resolution: 200dpi) and (orientation:portrait) { //mobile
     height: calc(var(--vh, 1vh) * 17); //fix para chrome mobile
+  }
+
+  @media screen and (min-resolution: 200dpi) and (orientation:landscape) { //mobile
+    height: calc(var(--vh, 1vh) * 28); //fix para chrome mobile
   }
 }
 

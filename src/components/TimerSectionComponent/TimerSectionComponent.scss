@@ -5,8 +5,12 @@
     overflow-y: scroll;
     //background-color: blue;
 
-    @media screen and (min-resolution: 200dpi) {
+    @media screen and (min-resolution: 200dpi) and (orientation:portrait) {
         height: calc(var(--vh, 1vh) * 83); //fix para chrome mobile
+    }
+
+    @media screen and (min-resolution: 200dpi) and (orientation:landscape) {
+        height: calc(var(--vh, 1vh) * 72); //fix para chrome mobile
     }
 
     @media screen and (max-resolution: 199dpi) {

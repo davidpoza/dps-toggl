@@ -7,7 +7,10 @@
         height: 8vh;
         min-height: 80px;
     }
-    @media screen and (min-resolution: 200dpi) { //mobile
+    @media screen and (min-resolution: 200dpi) and (orientation: portrait){ //mobile
+        height: calc(var(--vh, 1vh) * 9); //fix para chrome mobile
+    }
+    @media screen and (min-resolution: 200dpi) and (orientation: landscape){ //mobile
         height: calc(var(--vh, 1vh) * 9); //fix para chrome mobile
     }
     cursor: pointer;
@@ -22,8 +25,12 @@
         height: 82vh;
     }
 
-    @media screen and (min-resolution: 200dpi) { //mobile
+    @media screen and (min-resolution: 200dpi) and (orientation:portrait) { //mobile
         height: calc(var(--vh, 1vh) * 77); //fix para chrome mobile
+    }
+
+    @media screen and (min-resolution: 200dpi) and (orientation:landscape){ //mobile
+        height: calc(var(--vh, 1vh) * 67); //fix para chrome mobile
     }
 
     &::-webkit-scrollbar-track
