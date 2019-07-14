@@ -281,7 +281,7 @@ class NewBlockComponent extends Component{
             if(this.state.start_hour){
                 let update = {};
                 update["current_task_start_hour"] = this.state.start_hour.length == 5? this.state.start_hour + ":00" : this.state.start_hour;
-                update["current_task_desc"] = this.state.description;
+                update["current_task_desc"] = this.state.description.length > 0 ? his.state.description:null;
                 this.props.userActions.updateUser(this.props.user.token, this.props.user.id, update);
             }
         }
