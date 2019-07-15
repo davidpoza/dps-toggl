@@ -143,7 +143,8 @@ class ProfileSectionComponent extends Component{
                             <li className={styles.li}><strong>{lang[config.lang].user_creation}</strong>: {utils.standarDateToHumanExtended(this.props.profile.created_on)}</li>
                             <li className={styles.li}><strong>{lang[config.lang].user_update}</strong>: {this.props.profile.updated_on ? utils.standarDateToHumanExtended(this.props.profile.updated_on): lang[config.lang].not_available}</li>
                             {
-                                this.props.user.admin == true &&
+                                //no mostramos estos campos para nosotros mismos
+                                this.props.user.admin == true && this.props.user.id != this.props.profile._id &&
                                 <div>
                                     <li className={styles.li}><strong>{lang[config.lang].user_activate_checkbox}</strong>: <span onClick={this.toggleStatus}>{this.state.active ? <i className="far fa-check-square"></i>:<i className="far fa-square"></i>}</span></li>
                                     <li className={styles.li}><strong>{lang[config.lang].user_admin_level}</strong>: <span onClick={this.toggleAdminLevel}>{this.state.admin ? <i className="far fa-check-square"></i>:<i className="far fa-square"></i>}</span></li>
