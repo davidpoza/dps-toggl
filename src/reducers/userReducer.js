@@ -146,6 +146,7 @@ export default function userReducer (state = initialState.userReducer, action){
                     ...state,
                     loading: false,
                     first_name: action.payload.entities.users[action.payload.result].first_name,
+                    last_name: action.payload.entities.users[action.payload.result].last_name,
                     updated_on: action.payload.entities.users[action.payload.result].updated_on,
                     avatar: action.payload.entities.users[action.payload.result].avatar,
                     current_task_start_hour: action.payload.entities.users[action.payload.result].current_task_start_hour,
