@@ -177,25 +177,27 @@ export default function userReducer (state = initialState.userReducer, action){
             }
         case FETCH_USER_SUCCESS:
             action.payload = normalize(action.payload, schemas.userEntity);
+            let fetch_user_users_entities = Object.assign({},state.users_entities);
+            fetch_user_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
             if(action.payload.result == state.id){ //si estamos haciendo fetch a nuestro perfil
                 return {
                     ...state,
                     loading: false,
-                    avatar: action.payload.entities.users[action.payload.result].avatar,
-                    first_name: action.payload.entities.users[action.payload.result].first_name,
-                    last_name: action.payload.entities.users[action.payload.result].last_name,
-                    updated_on: action.payload.entities.users[action.payload.result].updated_on,
-                    users_entities: action.payload.entities.users,
+                    avatar: fetch_user_users_entities[action.payload.result].avatar,
+                    first_name: fetch_user_users_entities[action.payload.result].first_name,
+                    last_name: fetch_user_users_entities[action.payload.result].last_name,
+                    updated_on: fetch_user_users_entities[action.payload.result].updated_on,
+                    active: fetch_user_users_entities[action.payload.result].active,
+                    admin: fetch_user_users_entities[action.payload.result].admin,
+                    users_entities: fetch_user_users_entities,
                     error: {}
                 }
             }
             else{
-                let new_users_entities = Object.assign({},state.users_entities);
-                new_users_entities[action.payload.result] = action.payload.entities.users[action.payload.result];
                 return {
                     ...state,
                     loading: false,
-                    users_entities: new_users_entities,
+                    users_entities: fetch_user_users_entities,
                     error: {}
                 }
             }
