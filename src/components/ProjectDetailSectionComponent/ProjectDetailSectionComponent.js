@@ -124,7 +124,7 @@ class ProjectDetailSectionComponent extends Component{
                                     return(
                                     <li className={styles.member} key={"member"+index}>
                                     <div className="d-flex justify-content-between">
-                                        {e.first_name} {e.last_name}
+                                        {e.first_name} {e.last_name} {e.first_name != "" && "-"} {e.email}
                                         {
                                             this.props.project_detail.owner._id == this.props.user.id && //si somos el propietario del proyecto
                                                 <i title={lang[config.lang].delete_project_member} className="fas fa-user-minus" onClick={this.handleOnDeleteMember.bind(this,e._id)}></i>
