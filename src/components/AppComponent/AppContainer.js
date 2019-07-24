@@ -1,11 +1,7 @@
-import React, {Component} from 'react'
-import { connect } from 'react-redux';
+import React, {Component} from "react";
+import { connect } from "react-redux";
 
-import AppComponent from './AppComponent';
-
-
-
-
+import AppComponent from "./AppComponent";
 
 class AppContainer extends Component{
     constructor(props){
@@ -15,19 +11,19 @@ class AppContainer extends Component{
     render(){
         return(
             <AppComponent
-            token = {this.props.token}
-            admin = {this.props.admin}
+                token = {this.props.token}
+                admin = {this.props.admin}
             />
-        )
+        );
     }
 }
 
 function mapStateToProps (state) {
     return {
-      token: state.userReducer.token,
-      admin: state.userReducer.admin
-    }
-  }
+        token: state.userReducer.token,
+        admin: state.userReducer.admin
+    };
+}
 
 
 export default connect(mapStateToProps, null)(AppContainer);

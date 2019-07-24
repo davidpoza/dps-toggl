@@ -1,13 +1,11 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
-import PropTypes from 'prop-types';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./LoggedInfoComponent.scss";
 
-
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './LoggedInfoComponent.scss';
-import avatar from '../../images/avatar_sample.jpg'
 
 class LoggedInfoComponent extends Component{
     constructor(props){
@@ -16,7 +14,7 @@ class LoggedInfoComponent extends Component{
 
         this.state = {
             setInterval: null
-        }
+        };
     }
 
     /**llama al thunk de redux que hace una petición al api para refrescar el token jwt */
@@ -38,13 +36,13 @@ class LoggedInfoComponent extends Component{
     /**Limpiamos los setInterval para que no se acumulen durante la navegación entre routes */
     componentWillUnmount(){
         if(this.state.setInterval != null)
-            clearInterval(this.state.setInterval)
+            clearInterval(this.state.setInterval);
     }
 
     render(){
         return(
             <div className={"d-flex justify-content-between " + styles.box}>
-                 <div>
+                <div>
                     {this.props.user.token != null ?
                         (
                             <div className={styles.username}>
@@ -59,7 +57,7 @@ class LoggedInfoComponent extends Component{
 
                         )
                     }
-                 </div>
+                </div>
                 { this.props.user.token == null ?
                     (<div></div>):
 
@@ -71,13 +69,13 @@ class LoggedInfoComponent extends Component{
                     <a className="dropdown-item" onClick={this.props.userActions.logoutUser}>Logout</a>
                 </div>
             </div>
-        )
+        );
     }
 }
 
 LoggedInfoComponent.propTypes = {
     user: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired
-}
+};
 
 export default LoggedInfoComponent;

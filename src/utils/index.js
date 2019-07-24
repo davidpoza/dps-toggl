@@ -1,5 +1,5 @@
-import config from '../config/config.js';
-import lang from '../config/lang.js';
+import config from "../config/config.js";
+import lang from "../config/lang.js";
 
 const utils = {
     validEmail: (email) => {
@@ -104,7 +104,7 @@ const utils = {
         return this.pad(date.getHours(),2)+":"+this.pad(date.getMinutes(),2)+":"+this.pad(date.getSeconds(),2);
     },
 
-   /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
+    /** Dado un objeto Date devuelve una cadena con la hora en el formato HH:MM:SS */
     getHourInSecFromDate(date){
         return (parseInt(date.getHours())*3600+parseInt(date.getMinutes())*60+parseInt(date.getSeconds()));
     },
@@ -164,7 +164,7 @@ const utils = {
         return(Math.floor(total_min/60 * 10) / 10); //truncamos a un decimal
     },
 
-       /** Devuelve true si se ejecuta desde un navegador movil.
+    /** Devuelve true si se ejecuta desde un navegador movil.
      * from detectmobilebrowsers.com)
     */
     isMobile() {
@@ -192,15 +192,16 @@ const utils = {
         return Math.floor((Math.random() * b) + a);
     },
 
+    decimal2hex(x) {
+        return ("0" + parseInt(x).toString(16)).slice(-2);
+    },
+
     rgb2hex(rgb) {
         if (  rgb.search("rgb") == -1 ) {
-             return rgb;
+            return rgb;
         } else {
-             rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-             function hex(x) {
-                  return ("0" + parseInt(x).toString(16)).slice(-2);
-             }
-             return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+            rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+            return "#" + decimal2hex(rgb[1]) + decimal2hex(rgb[2]) + decimal2hex(rgb[3]);
         }
     },
 
@@ -254,7 +255,7 @@ const utils = {
 
         return dateArray;
     }
-}
+};
 
 
 export default utils;

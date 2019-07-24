@@ -1,6 +1,5 @@
-import fetch from 'isomorphic-fetch'; //para compatibilidad de fetch con navegadores antiguos
-import utils from '../utils';
-import config from '../config/config';
+import fetch from "isomorphic-fetch"; //para compatibilidad de fetch con navegadores antiguos
+import config from "../config/config";
 const api_url = config.api_url;
 
 const API = {
@@ -21,7 +20,7 @@ const API = {
             ).then(
                 (data) => {
                     if(data.data)
-                        return(API.user.getUserInfo(data.data.token))
+                        return(API.user.getUserInfo(data.data.token));
                     else if(data.error)
                         throw data.error;
                 }
@@ -387,7 +386,7 @@ const API = {
                 (response)=>response.json()
             ).then(
                 (data) => data
-            )
+            );
         },
 
         deleteProject(token, project_id){
@@ -524,13 +523,13 @@ const API = {
                     "Authorization": "Bearer "+ token
                 }
             })
-            .then(response => response.json())
-            .then(data => data.data)
-            .catch(err => err)
+                .then(response => response.json())
+                .then(data => data.data)
+                .catch(err => err);
         },
 
 
     }
-}
+};
 
 export default API;

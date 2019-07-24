@@ -21,9 +21,9 @@ import {
     UPDATE_DATE_VISUALLY,
     LOAD_MORE_TASKS,
     RESET_LIMIT
-} from './types';
+} from "./types";
 
-import api from '../api';
+import api from "../api";
 
 
 /* Action creators síncronos */
@@ -33,83 +33,83 @@ export function createTaskSuccess(taskData){
     return {
         type: CREATE_TASK_SUCCESS,
         payload: taskData
-    }
+    };
 }
 
 export function createTaskError(error){
     return {
         type: CREATE_TASK_FAIL,
         payload: error
-    }
+    };
 }
 
 export function collapseDate(date){
     return {
         type: COLLAPSE_DATE,
         payload: date
-    }
+    };
 }
 
 export function deleteTaskSuccess(taskData){
     return {
         type: DELETE_TASK_SUCCESS,
         payload: taskData
-    }
+    };
 }
 
 export function deleteTaskError(error){
     return {
         type: DELETE_TASK_FAIL,
         payload: error
-    }
+    };
 }
 
 export function deleteTasksVisually(task_id, task_date){
     return {
         type: DELETE_TASK_VISUALLY,
         payload: {task_id, task_date}
-    }
+    };
 }
 
 export function fetchTaskSuccess(taskData){
     return {
         type: FETCH_TASK_SUCCESS,
         payload: taskData
-    }
+    };
 }
 
 export function fetchTaskError(error){
     return {
         type: FETCH_TASK_FAIL,
         payload: error
-    }
+    };
 }
 
 export function fetchTasksSuccess(taskData){
     return {
         type: FETCH_TASKS_SUCCESS,
         payload: taskData
-    }
+    };
 }
 
 export function fetchTasksError(error){
     return {
         type: FETCH_TASKS_FAIL,
         payload: error
-    }
+    };
 }
 
 export function loadMore(inc){
     return {
         type: LOAD_MORE_TASKS,
         payload: inc
-    }
+    };
 }
 
 export function resetLimit(){
     return {
         type: RESET_LIMIT
-    }
+    };
 }
 
 
@@ -117,27 +117,27 @@ export function updateTaskSuccess(taskData){
     return {
         type: UPDATE_TASK_SUCCESS,
         payload: taskData
-    }
+    };
 }
 
 export function updateTaskError(error){
     return {
         type: UPDATE_TASK_FAIL,
         payload: error
-    }
+    };
 }
 
 export function updateTasksVisually(taskData){
     return {
         type: UPDATE_TASK_VISUALLY,
         payload: taskData
-    }
+    };
 }
 
 export function cleanMessage(){
     return {
         type: CLEAN_TASK_MESSAGE,
-    }
+    };
 }
 
 
@@ -146,7 +146,7 @@ export function updateDateVisually(date, tasks_entities){
     return {
         type: UPDATE_DATE_VISUALLY,
         payload: {date, tasks_entities}
-    }
+    };
 }
 
 /* Action creators asíncronos - thunks */
@@ -155,7 +155,7 @@ export function updateDateVisually(date, tasks_entities){
 export function createTask(token, desc, date, start_hour, end_hour, project_id, tags, hour_value, user_id){
     let tags_id;
     if(tags!=null )
-        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e._id});
+        tags_id = tags.filter((e)=>(e.checked)).map((e)=>{return e._id;});
     return (dispatch) => {
         dispatch({
             type: CREATE_TASK_ATTEMPT
@@ -167,13 +167,13 @@ export function createTask(token, desc, date, start_hour, end_hour, project_id, 
                     dispatch(createTaskSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(createTaskError(data.error))
+                    dispatch(createTaskError(data.error));
             }
         ).catch(
             (error) => {
                 dispatch(createTaskError(error));
-        });
-    }
+            });
+    };
 }
 
 export function deleteTask(token, task_id){
@@ -188,13 +188,13 @@ export function deleteTask(token, task_id){
                     dispatch(deleteTaskSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(deleteTaskError(data.error))
+                    dispatch(deleteTaskError(data.error));
             }
         ).catch(
             (error) => {
                 dispatch(deleteTaskError(error));
-        });
-    }
+            });
+    };
 }
 
 //recibimos un array de objetos tag completos y el cliente api espera solo una array de ids
@@ -210,15 +210,15 @@ export function updateTask(token, task_id, description, date, start_hour, end_ho
                     dispatch(updateTaskSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(updateTaskError(data.error))
+                    dispatch(updateTaskError(data.error));
             }
         ).catch(
             (error) => {
                 dispatch(updateTaskError(error));
-        });
+            });
 
 
-    }
+    };
 }
 
 /**
@@ -232,32 +232,32 @@ export function updateAndFetchTask(token, task_id, description, date, start_hour
         });
 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags)
-        .then(
-            (data) => {
-                if(data.data){
-                    dispatch(updateTaskSuccess(data.data));
-                    dispatch({
-                        type: FETCH_TASK_ATTEMPT
-                    });
-                    return api.task.fetchTask(token, task_id);
+            .then(
+                (data) => {
+                    if(data.data){
+                        dispatch(updateTaskSuccess(data.data));
+                        dispatch({
+                            type: FETCH_TASK_ATTEMPT
+                        });
+                        return api.task.fetchTask(token, task_id);
+                    }
+                    else if(data.error)
+                        dispatch(updateTaskError(data.error));
                 }
-                else if(data.error)
-                    dispatch(updateTaskError(data.error))
-            }
-        )
-        .then(
-            (data) => {
-                if(data.data){
-                    dispatch(fetchTaskSuccess(data.data));
+            )
+            .then(
+                (data) => {
+                    if(data.data){
+                        dispatch(fetchTaskSuccess(data.data));
+                    }
+                    else if(data.error)
+                        dispatch(fetchTaskError(data.error));
                 }
-                else if(data.error)
-                    dispatch(fetchTaskError(data.error))
-            }
-        ).catch(
-            (error) => {
-                dispatch(updateTaskError(error));
-        });
-    }
+            ).catch(
+                (error) => {
+                    dispatch(updateTaskError(error));
+                });
+    };
 }
 
 /**
@@ -271,21 +271,21 @@ export function updateAndFetchTasks(token, task_id, description, date, start_hou
         });
 
         api.task.updateTask(token, task_id, description, date, start_hour, end_hour, hour_value, project_id, add_tags, delete_tags)
-        .then(
-            (data) => {
-                if(data.data){
-                    dispatch(updateTaskSuccess(data.data));
-                    this.fetchTasks(token, limit);
+            .then(
+                (data) => {
+                    if(data.data){
+                        dispatch(updateTaskSuccess(data.data));
+                        this.fetchTasks(token, limit);
+                    }
+                    else if(data.error)
+                        dispatch(updateTaskError(data.error));
                 }
-                else if(data.error)
-                    dispatch(updateTaskError(data.error))
-            }
-        )
-        .catch(
-            (error) => {
-                dispatch(updateTaskError(error));
-        });
-    }
+            )
+            .catch(
+                (error) => {
+                    dispatch(updateTaskError(error));
+                });
+    };
 }
 
 
@@ -300,8 +300,8 @@ export function fetchTasks(token, limit){
         });
 
         api.task.fetchTasks(token, limit, 0, null, null, null, null, null, null)
-        .then((data) => dispatch(fetchTasksSuccess(data.data)))
-        .catch((error) => dispatch(fetchTasksError(error)));
-    }
+            .then((data) => dispatch(fetchTasksSuccess(data.data)))
+            .catch((error) => dispatch(fetchTasksError(error)));
+    };
 }
 

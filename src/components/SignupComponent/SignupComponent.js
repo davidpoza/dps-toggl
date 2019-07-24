@@ -1,14 +1,14 @@
-import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import {NavLink} from 'react-router-dom';
+import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
+import PropTypes from "prop-types";
+import {NavLink} from "react-router-dom";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './SignupComponent.scss';
-import logo from '../../images/logo_small.png';
-import utils from '../../utils'
-import LoadingComponent from '../LoadingComponent/LoadingComponent';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./SignupComponent.scss";
+import logo from "../../images/logo_small.png";
+import utils from "../../utils";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 
 class SignupComponent extends Component{
@@ -58,7 +58,7 @@ class SignupComponent extends Component{
 
     render(){
         if(this.props.user.token != null) //autenticado
-            return(<Redirect to="/" />)
+            return(<Redirect to="/" />);
         else
             return(
                 <form autoComplete="off" className={styles.form_signin}>
@@ -82,7 +82,7 @@ class SignupComponent extends Component{
                     <p className={styles.p_login_link}>{lang[config.lang].signup_section_i_already_have_an_account} <NavLink exact={true} to="/login">{lang[config.lang].signup_section_here}</NavLink></p>
                 </form>
 
-            )
+            );
     }
 }
 
@@ -90,7 +90,7 @@ SignupComponent.propTypes = {
     history: PropTypes.object.isRequired, //lo vamos a pasar al thunk de redux loginAction para redirigir después del login
     user: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired
-}
+};
 
 
 export default SignupComponent;

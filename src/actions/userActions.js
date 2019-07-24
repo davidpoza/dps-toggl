@@ -24,10 +24,10 @@ import {
     DELETE_USER_FAIL,
     DELETE_USER_ATTEMPT,
     CHANGE_USER_SORT
-} from './types';
+} from "./types";
 
 
-import api from '../api';
+import api from "../api";
 
 
 /* Action creators síncronos */
@@ -37,90 +37,90 @@ export function loginUserSuccess(userData){
     return {
         type: LOGIN_USER_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function loginUserError(error){
     return {
         type: LOGIN_USER_FAIL,
         payload: error
-    }
+    };
 }
 
 export function registerUserSuccess(userData){
     return {
         type: REGISTER_USER_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function registerUserError(error){
     return {
         type: REGISTER_USER_FAIL,
         payload: error
-    }
+    };
 }
 
 export function deleteUserSuccess(userData){
     return {
         type: DELETE_USER_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function deleteUserError(error){
     return {
         type: DELETE_USER_FAIL,
         payload: error
-    }
+    };
 }
 
 export function fetchUsersSuccess(userData){
     return {
         type: FETCH_USERS_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function fetchUsersError(error){
     return {
         type: FETCH_USERS_FAIL,
         payload: error
-    }
+    };
 }
 
 export function fetchUserSuccess(userData){
     return {
         type: FETCH_USER_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function fetchUserError(error){
     return {
         type: FETCH_USER_FAIL,
         payload: error
-    }
+    };
 }
 
 export function updateUserSuccess(userData){
     return {
         type: UPDATE_USER_SUCCESS,
         payload: userData
-    }
+    };
 }
 
 export function updateUserError(error){
     return {
         type: UPDATE_USER_FAIL,
         payload: error
-    }
+    };
 }
 
 export function logoutUser(){
     return {
         type: LOGOUT_USER
-    }
+    };
 }
 
 
@@ -128,27 +128,27 @@ export function refreshTokenSuccess(token){
     return {
         type: REFRESH_TOKEN_SUCCESS,
         payload: token
-    }
+    };
 }
 
 export function refreshTokenError(error){
     return {
         type: REFRESH_TOKEN_FAIL,
         payload: error
-    }
+    };
 }
 
 export function cleanMessage(){
     return {
         type: CLEAN_USER_MESSAGE,
-    }
+    };
 }
 
 export function changeSort(field){
     return {
         type: CHANGE_USER_SORT,
         payload: {field}
-    }
+    };
 }
 
 /* Action creators asíncronos - thunks */
@@ -173,19 +173,19 @@ export function loginUser(email, password, history){
                                 dispatch(fetchUsersSuccess(data.data));
                             }
                             else if(data.error) //error en la peticion
-                                dispatch(fetchUsersError(data.error))
+                                dispatch(fetchUsersError(data.error));
                         }
                     );
                     history.push("/");
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(loginUserError(data.error))
+                    dispatch(loginUserError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(loginUserError(error));
-        });
-    }
+            });
+    };
 }
 
 export function registerUser(email, password, history){
@@ -201,13 +201,13 @@ export function registerUser(email, password, history){
                     history.push("/login");
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(registerUserError(data.error))
+                    dispatch(registerUserError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(loginUserError(error));
-        });
-    }
+            });
+    };
 }
 
 export function refreshToken(token){
@@ -222,13 +222,13 @@ export function refreshToken(token){
                     dispatch(refreshTokenSuccess(data.data.token));
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(refreshTokenError(data.error))
+                    dispatch(refreshTokenError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(refreshTokenError(error));
-        });
-    }
+            });
+    };
 }
 
 //devuelve todos los usuarios menos a sí mismo
@@ -244,13 +244,13 @@ export function fetchUsers(token){
                     dispatch(fetchUsersSuccess(data.data));
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(fetchUsersError(data.error))
+                    dispatch(fetchUsersError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(fetchUsersError(error));
-        });
-    }
+            });
+    };
 }
 
 export function fetchUserById(token, user_id){
@@ -265,13 +265,13 @@ export function fetchUserById(token, user_id){
                     dispatch(fetchUserSuccess(data.data));
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(fetchUserError(data.error))
+                    dispatch(fetchUserError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(fetchUserError(error));
-        });
-    }
+            });
+    };
 }
 
 export function updateUser(token, user_id, data){
@@ -286,13 +286,13 @@ export function updateUser(token, user_id, data){
                     dispatch(updateUserSuccess(data.data));
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(updateUserError(data.error))
+                    dispatch(updateUserError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(updateUserError(error));
-        });
-    }
+            });
+    };
 }
 
 export function deleteUser(token, user_id){
@@ -307,12 +307,12 @@ export function deleteUser(token, user_id){
                     dispatch(deleteUserSuccess(data.data));
                 }
                 else if(data.error) //error en la peticion
-                    dispatch(deleteUserError(data.error))
+                    dispatch(deleteUserError(data.error));
             }
         ).catch(
             (error) => { //error en fetch, entonces error en la conexion
                 dispatch(deleteUserError(error));
-        });
-    }
+            });
+    };
 }
 

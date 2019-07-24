@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, {Component} from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import * as userActions from '../../actions/userActions'
-import * as taskActions from '../../actions/taskActions'
-import * as projectActions from '../../actions/projectActions'
-import * as tagActions from '../../actions/tagActions'
+import * as userActions from "../../actions/userActions";
+import * as taskActions from "../../actions/taskActions";
+import * as projectActions from "../../actions/projectActions";
+import * as tagActions from "../../actions/tagActions";
 
-import TagComponent from './TagComponent';
+import TagComponent from "./TagComponent";
 
 
 class TaskContainer extends Component{
@@ -15,22 +15,16 @@ class TaskContainer extends Component{
         super(props);
     }
 
-    componentWillMount(){
-
-    }
-
     render(){
-      
-      
         return(
             <TagComponent
-            token={this.props.token}
-            tag={this.props.tag}
-            tags={this.props.tags}
-            tasks_entities={this.props.tasks_entities}
-            tagActions={this.props.tagActions}           
+                token={this.props.token}
+                tag={this.props.tag}
+                tags={this.props.tags}
+                tasks_entities={this.props.tasks_entities}
+                tagActions={this.props.tagActions}
             />
-        )
+        );
     }
 }
 
@@ -38,31 +32,31 @@ function mapStateToProps (state, props) {
     //denormalizacion
     let task = Object.assign({}, state.taskReducer.tasks_entities[props.task_id]);
     task.tags = task.tags.map(t=>{
-      return state.taskReducer.tasks_tags_entities[t]; //tasks_tags_entities está cargado porque lo pide un componente hermano
+        return state.taskReducer.tasks_tags_entities[t]; //tasks_tags_entities está cargado porque lo pide un componente hermano
     },this);
     task.project = state.projectReducer.projects_entities[task.project]; //projects_entities está cargado porque lo pide un componente hermano
 
     return {
-      token: state.userReducer.token,
-      task: task,
-      tasks_entities:  state.taskReducer.tasks_entities,
-      tags_entities: state.tagReducer.tags_entities,
-      tags: state.tagReducer.tags_id.map(e=>{
-        return state.tagReducer.tags_entities[e];
-      }),
-      tasks_tags_entities: state.taskReducer.tasks_tags_entities,
-      projects: state.projectReducer.projects_id.map(e=>state.projectReducer.projects_entities[e]),
-      projects_entities: state.projectReducer.projects_entities
-    }
-  }
-  
-  function mapDispatchToProps (dispatch) {
+        token: state.userReducer.token,
+        task: task,
+        tasks_entities:  state.taskReducer.tasks_entities,
+        tags_entities: state.tagReducer.tags_entities,
+        tags: state.tagReducer.tags_id.map(e=>{
+            return state.tagReducer.tags_entities[e];
+        }),
+        tasks_tags_entities: state.taskReducer.tasks_tags_entities,
+        projects: state.projectReducer.projects_id.map(e=>state.projectReducer.projects_entities[e]),
+        projects_entities: state.projectReducer.projects_entities
+    };
+}
+
+function mapDispatchToProps (dispatch) {
     return {
-      userActions: bindActionCreators(userActions, dispatch),
-      taskActions: bindActionCreators(taskActions, dispatch),
-      projectActions: bindActionCreators(projectActions, dispatch),
-      tagActions: bindActionCreators(tagActions, dispatch),
-    }
-  }
-  
+        userActions: bindActionCreators(userActions, dispatch),
+        taskActions: bindActionCreators(taskActions, dispatch),
+        projectActions: bindActionCreators(projectActions, dispatch),
+        tagActions: bindActionCreators(tagActions, dispatch),
+    };
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(TaskContainer);

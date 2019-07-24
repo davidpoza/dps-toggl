@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 
-
-import styles from './AppComponent.scss';
-import MenuComponent from '../MenuComponent/MenuComponent';
-import MainSectionContainer from '../MainSectionComponent/MainSectionContainer';
+import styles from "./AppComponent.scss";
+import MenuComponent from "../MenuComponent/MenuComponent";
+import MainSectionContainer from "../MainSectionComponent/MainSectionContainer";
 
 class AppComponent extends Component{
     constructor(props){
@@ -12,7 +11,7 @@ class AppComponent extends Component{
 
         window.addEventListener("resize", function() {
             let vh = window.innerHeight * 0.01; //fix para calcular cuando vale 1vh en chrome mobile
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            document.documentElement.style.setProperty("--vh", `${vh}px`);
 
         }, false);
     }
@@ -22,10 +21,10 @@ class AppComponent extends Component{
                 <div className={"row " + styles.row}>
                     {
                         this.props.token ?
-                        <div className={"col-auto  " + styles.menu}>
-                            <MenuComponent admin={this.props.admin?this.props.admin:false}/>
-                        </div> :
-                        null
+                            <div className={"col-auto  " + styles.menu}>
+                                <MenuComponent admin={this.props.admin?this.props.admin:false}/>
+                            </div> :
+                            null
                     }
                     <div className={"col d-flex flex-column p-0 " + styles.content}>
                         <MainSectionContainer />
@@ -33,7 +32,7 @@ class AppComponent extends Component{
                 </div>
 
             </div>
-        )
+        );
     }
 }
 

@@ -1,12 +1,11 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './TagSectionComponent.scss';
-import utils from '../../utils';
-import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import TagListComponent from '../TagListComponent/TagListComponent';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./TagSectionComponent.scss";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import TagListComponent from "../TagListComponent/TagListComponent";
 
 class TagSectionComponent extends Component{
     constructor(props){
@@ -51,7 +50,7 @@ class TagSectionComponent extends Component{
 
     handleCreateTag(){
         this.props.tagActions.createTag(this.props.user.token, this.tagNameInputCreate.current.value, this.props.user.id);
-        $(this.modalCreateTag.current).modal('hide');
+        $(this.modalCreateTag.current).modal("hide");
         this.tagNameInputCreate.current.value = "";
     }
 
@@ -67,12 +66,12 @@ class TagSectionComponent extends Component{
 
     handleDeleteTag(){
         this.props.tagActions.deleteTag(this.props.user.token, this.state.tag_id);
-        $(this.modalDeleteTag.current).modal('hide');
+        $(this.modalDeleteTag.current).modal("hide");
     }
 
     handleUpdateTag(){
         this.props.tagActions.updateTag(this.props.user.token, this.state.tag_id, this.tagNameInputUpdate.current.value);
-        $(this.modalUpdateTag.current).modal('hide');
+        $(this.modalUpdateTag.current).modal("hide");
     }
 
     handleOpenDeleteModal(tag_id){
@@ -104,62 +103,62 @@ class TagSectionComponent extends Component{
 
                 {/**Modal para crear tag */}
                 <div className="modal fade" id="tagCreateModal" ref={this.modalCreateTag} tabIndex="-1" role="dialog" aria-labelledby="createTagLabel" aria-hidden="true" >
-                <div className="modal-dialog modal-lg" role="document">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="createTagLabel">{lang[config.lang].btn_new_tag}</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="createTagLabel">{lang[config.lang].btn_new_tag}</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className={"modal-body "+styles.modal_body}>
+                                <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder} onKeyPress={this.handleOnKeyPressForCreateModal}></input>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={this.handleCreateTag}>{lang[config.lang].btn_save_changes}</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className={"modal-body "+styles.modal_body}>
-                        <input className={styles.input} ref={this.tagNameInputCreate} placeholder={lang[config.lang].tag_name_placeholder} onKeyPress={this.handleOnKeyPressForCreateModal}></input>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={this.handleCreateTag}>{lang[config.lang].btn_save_changes}</button>
-                    </div>
-                    </div>
-                </div>
                 </div>
 
                 {/**Modal para modificar tag */}
                 <div className="modal fade" id="tagUpdateModal" ref={this.modalUpdateTag} tabIndex="-1" role="dialog" aria-labelledby="updateTagLabel" aria-hidden="true" onKeyPress={this.handleOnKeyPressForUpdateModal}>
-                <div className="modal-dialog modal-lg" role="document">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="updateTagLabel">{lang[config.lang].btn_update_tag}</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="updateTagLabel">{lang[config.lang].btn_update_tag}</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className={"modal-body "+styles.modal_body}>
+                                <input className={styles.input} ref={this.tagNameInputUpdate} placeholder={lang[config.lang].tag_name_placeholder}></input>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={this.handleUpdateTag}>{lang[config.lang].btn_save_changes}</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className={"modal-body "+styles.modal_body}>
-                        <input className={styles.input} ref={this.tagNameInputUpdate} placeholder={lang[config.lang].tag_name_placeholder}></input>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={this.handleUpdateTag}>{lang[config.lang].btn_save_changes}</button>
-                    </div>
-                    </div>
-                </div>
                 </div>
 
                 {/**Modal para borrar tag */}
                 <div className="modal fade" id="tagDeleteModal" ref={this.modalDeleteTag} tabIndex="-1" role="dialog" aria-labelledby="deleteTagLabel" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                    <div className="modal-content">
-                    <div className="modal-body">
-                        <h5 className="modal-title" id="deleteTagLabel">{lang[config.lang].btn_delete_tag}</h5>
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <h5 className="modal-title" id="deleteTagLabel">{lang[config.lang].btn_delete_tag}</h5>
 
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
+                                <button type="button" className="btn btn-danger" onClick={this.handleDeleteTag}>{lang[config.lang].btn_confirm_delete}</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">{lang[config.lang].btn_cancel}</button>
-                        <button type="button" className="btn btn-danger" onClick={this.handleDeleteTag}>{lang[config.lang].btn_confirm_delete}</button>
-                    </div>
-                    </div>
-                </div>
                 </div>
                 <LoadingComponent isLoading={this.props.user_loading||this.props.tag_loading} />
             </div>
-        )
+        );
     }
 }
 
@@ -171,7 +170,7 @@ TagSectionComponent.propTypes = {
     tags: PropTypes.array.isRequired,
     tagActions: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-}
+};
 
 
 export default TagSectionComponent;

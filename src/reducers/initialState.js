@@ -13,8 +13,8 @@ const initialState = {
         loading: false,
         users_id: [],
         users_entities: [],
-        sortBy: 'email',
-        order: 'asc',
+        sortBy: "email",
+        order: "asc",
         current_task_start_hour: null,
         current_task_desc: null,
         error: {}
@@ -54,8 +54,8 @@ const initialState = {
         users_entities: [],
         need_refreshing: false,
         loading: false,
-        sortBy: 'id',
-        order: 'asc',
+        sortBy: "id",
+        order: "asc",
         error: {}
     },
     tagReducer: {

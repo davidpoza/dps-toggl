@@ -1,12 +1,9 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './MemberSelectorComponent.scss';
-
-
-
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./MemberSelectorComponent.scss";
 
 
 class MemberSelectorComponent extends Component{
@@ -24,7 +21,7 @@ class MemberSelectorComponent extends Component{
             user_id: null, //id de usuario seleccionado
             value: "", //es el valor del input para filtrar
             isOverList: false
-        }
+        };
 
 
     }
@@ -84,9 +81,9 @@ class MemberSelectorComponent extends Component{
 
     render(){
         return(<div className={styles.autocomplete}>
-                 <input type="text" className={styles.input} placeholder={lang[config.lang].add_member_placeholder} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onChange={this.handleOnChangeInput} value={this.state.value} />
-                 {
-                    this.state.users.length >0 && <div className={styles.autocomplete_list}>
+            <input type="text" className={styles.input} placeholder={lang[config.lang].add_member_placeholder} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onChange={this.handleOnChangeInput} value={this.state.value} />
+            {
+                this.state.users.length >0 && <div className={styles.autocomplete_list}>
                     {this.state.users.map((e,index)=>{
                         return(
                             <div id={"user_"+index} key={"user_"+index} className={styles.autocomplete_item} onClick={this.handleOnSelect.bind(this,e._id)} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
@@ -95,18 +92,18 @@ class MemberSelectorComponent extends Component{
                             </div>
                         );
                     })}
-                    </div>
-                }
-            </div>
-        )
+                </div>
+            }
+        </div>
+        );
     }
 }
 
 MemberSelectorComponent.propTypes = {
- users: PropTypes.array.isRequired,
- userActions: PropTypes.object.isRequired,
- project_id: PropTypes.string.isRequired,
- onSelect: PropTypes.func.isRequired
-}
+    users: PropTypes.array.isRequired,
+    userActions: PropTypes.object.isRequired,
+    project_id: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired
+};
 
 export default MemberSelectorComponent;

@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
-import es from 'date-fns/locale/es';
+import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
-import {Link} from 'react-router-dom';
+import {Link} from "react-router-dom";
 
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './TaskComponent.scss';
-import ProjectSelectorComponent from '../ProjectSelectorComponent/ProjectSelectorComponent';
-import TagSelectorComponent from '../TagSelectorComponent/TagSelectorComponent';
-import ValueSelectorComponent from '../ValueSelectorComponent/ValueSelectorComponent';
+import utils from "../../utils";
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./TaskComponent.scss";
+import ProjectSelectorComponent from "../ProjectSelectorComponent/ProjectSelectorComponent";
+import TagSelectorComponent from "../TagSelectorComponent/TagSelectorComponent";
+import ValueSelectorComponent from "../ValueSelectorComponent/ValueSelectorComponent";
 
 
 class TaskComponent extends Component{
@@ -55,32 +55,32 @@ class TaskComponent extends Component{
             end_hour: utils.removeSeconds(this.props.task.end_hour),
             hour_value: this.props.task.hour_value,
             show_datepicker: false
-        }
+        };
     }
 
-   componentWillMount(){
+    componentWillMount(){
         this.setState({
             desc: this.props.task.desc
         });
         this.composeTagsListState();
-   }
+    }
 
-   componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps, prevState){
         if((prevProps.task.desc != this.props.task.desc ||
            prevProps.task.start_hour != this.props.task.start_hour ||
            prevProps.task.end_hour != this.props.task.end_hour ||
            prevProps.task.tags.length != this.props.task.tags.length ||
            prevProps.task.hour_value != this.props.task.hour_value)
-           ){
-               this.setState({
-                   desc: this.props.task.desc,
-                   start_hour: utils.removeSeconds(this.props.task.start_hour),
-                   end_hour: utils.removeSeconds(this.props.task.end_hour),
-                   hour_value: this.props.task.hour_value
-               });
-               this.composeTagsListState();
-           }
-   }
+        ){
+            this.setState({
+                desc: this.props.task.desc,
+                start_hour: utils.removeSeconds(this.props.task.start_hour),
+                end_hour: utils.removeSeconds(this.props.task.end_hour),
+                hour_value: this.props.task.hour_value
+            });
+            this.composeTagsListState();
+        }
+    }
 
     handleOnClickDateBtn(){
         (!this.dropdown.current.style.display || this.dropdown.current.style.display=="none")?this.dropdown.current.style.display="block":this.dropdown.current.style.display="none";
@@ -93,27 +93,27 @@ class TaskComponent extends Component{
     handleOnShowDatePicker(){
         this.setState({
             show_datepicker: true
-        })
+        });
     }
 
     closeDatePicker(){
         this.setState({
             show_datepicker: false
-        })
+        });
     }
 
-   /** Esta función hace un join de dos arrays:
+    /** Esta función hace un join de dos arrays:
     * - El array con todos los tags disponibles. (tendrán prop checked=false)
     * - El array con los tags que tiene asignados una tarea (tendrán prop checked=true y un relation_id)
     * El join se realiza con la propiedad id de que tienen los objetos de ambos arrays.
     * El relation_id es el id de la entrada que relaciona esa tag con ese task en la tabla tasks_tags, ya que
     * es una relación m:m
     */
-   composeTagsListState(){
+    composeTagsListState(){
 
         let all_tags = this.props.tags.map((e)=>{
             e.checked = false;
-            return e
+            return e;
         });
 
         all_tags = all_tags.filter(t=>t.user == this.props.user_id);
@@ -125,7 +125,7 @@ class TaskComponent extends Component{
                 // checked: true
                 _id: e._id,
                 checked: true
-            }});
+            };});
 
         /**
          * se concatenan ambos arrays.
@@ -145,9 +145,9 @@ class TaskComponent extends Component{
             hide_btns: true,
             tags: merged_tags
         });
-   }
+    }
 
-   /** Se dispara cuando hacemos click en una tarea y muestra los controles adicionales.    *
+    /** Se dispara cuando hacemos click en una tarea y muestra los controles adicionales.    *
     * Pensado para móviles donde no tenemos onMouseOver. */
     handleOnClick(){
         this.setState(
@@ -170,17 +170,17 @@ class TaskComponent extends Component{
     /**Al quitar el cursor de la tarea se ocultan los controles adicionales */
     handleOnMouseOut(){
         if(!this.state.hide_btns)
-        this.setState(
-            {
-                hide_btns: true
-            }
-        );
+            this.setState(
+                {
+                    hide_btns: true
+                }
+            );
     }
 
     handleOnChangeDesc(e){
         this.setState({
             desc: e.target.value
-        })
+        });
     }
 
     handleOnBlurDesc(e){
@@ -212,7 +212,7 @@ class TaskComponent extends Component{
     handleOnChangeProject(project_id, project_name, project_color){
         let project = {};
         if(project_id == -1) //el id=project0 lo hemos reservado para la opción sin proyecto que equivale a a ponerlo a null
-            project = null
+            project = null;
         else{
             project._id = project_id;
             project.color = project_color; //obtenemos el color del elemento seleccionado actualmente en el DOM
@@ -223,11 +223,11 @@ class TaskComponent extends Component{
         y acto seguido se realiza un fetch únicamente de la tarea que ha sido modificada
         */
         if(this.props.container == "TaskDatesComponent")
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, null, project!=null? project._id:null, null, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, null, project!=null? project._id:null, null, null);
         else if(this.props.container == "TaskDatesReportComponent")
-            this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, null, project!=null? project._id:null, null, null)
-       //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
-       this.handleUpdateTaskVisually(this.props.task._id, null, null, null, null, project!=null? project._id:null, null);
+            this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, null, project!=null? project._id:null, null, null);
+        //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
+        this.handleUpdateTaskVisually(this.props.task._id, null, null, null, null, project!=null? project._id:null, null);
     }
 
 
@@ -305,9 +305,9 @@ class TaskComponent extends Component{
 
     handleOnChangeDate(date){
         if(this.props.container == "TaskDatesComponent")
-            this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit)
+            this.props.taskActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit);
         else if(this.props.container == "TaskDatesReportComponent")
-            this.props.reportActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit, this.props.skip)
+            this.props.reportActions.updateAndFetchTasks(this.props.token, this.props.task._id, null, utils.standarizeDate(date), null, null, null, -1, null, null, this.props.limit, this.props.skip);
         this.closeDatePicker();
     }
 
@@ -330,9 +330,9 @@ class TaskComponent extends Component{
     handleOnBlurStartHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(this.state.end_hour, e.target.value)){
             if(this.props.container == "TaskDatesComponent")
-                this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, null, -1, null, null)
+                this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, null, -1, null, null);
             else if(this.props.container == "TaskDatesReportComponent")
-                this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, null, -1, null, null)
+                this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, e.target.value+":00", null, null, -1, null, null);
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task._id, null, null, e.target.value+":00", null, -1, null);
@@ -353,9 +353,9 @@ class TaskComponent extends Component{
     handleOnBlurEndHour(e){
         if(utils.validateHour(e.target.value) && utils.hourIsGreater(e.target.value, this.state.start_hour)){
             if(this.props.container == "TaskDatesComponent")
-                this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", null, -1, null, null)
+                this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", null, -1, null, null);
             else if(this.props.container == "TaskDatesReportComponent")
-                this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", null, -1, null, null)
+                this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, e.target.value+":00", null, -1, null, null);
 
             //actualizamos visualmente sin consultar a la api para ver el cambio instantáneamente.
             this.handleUpdateTaskVisually(this.props.task._id, null, null, null, e.target.value+":00", -1, null);
@@ -377,9 +377,9 @@ class TaskComponent extends Component{
             hour_value: value
         });
         if(this.props.container == "TaskDatesComponent")
-            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, value, -1, null, null)
+            this.props.taskActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, value, -1, null, null);
         else if(this.props.container == "TaskDatesReportComponent")
-            this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, value, -1, null, null)
+            this.props.reportActions.updateAndFetchTask(this.props.token, this.props.task._id, null, null, null, null, value, -1, null, null);
     }
 
     handleOnToggle(toggle_id, toggle_span_id){
@@ -392,80 +392,80 @@ class TaskComponent extends Component{
             <li className={this.props.child? "row m-1 justify-content-between " + styles.child_task:"row m-1 justify-content-between " + styles.task } onClick={utils.isMobile() ? this.handleOnClick : undefined} onMouseOver={this.props.children?null:this.handleOnMouseOver} onMouseOut={this.props.children?null:this.handleOnMouseOut}>
                 <div className={this.props.children? "col-9 col-md-3 col-lg-3 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc:"col-10 col-md-3 col-lg-3 col-xl-4 order-1 order-lg-1 p-0 " + styles.desc} >
                     <div className={"w-100 "}>
-                            {this.props.toggle_id && <span id={this.props.toggle_id+"-span"} onClick={this.handleOnToggle.bind(this, this.props.toggle_id, this.props.toggle_id+"-span")} className={styles.toggle}>{this.props.children.length+1}</span>}
-                            <input style={{width:this.props.children?"80%":"100%"}}  className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc} disabled={this.props.children!=null}/>
-                            { this.props.container == "TaskDatesReportComponent" &&
+                        {this.props.toggle_id && <span id={this.props.toggle_id+"-span"} onClick={this.handleOnToggle.bind(this, this.props.toggle_id, this.props.toggle_id+"-span")} className={styles.toggle}>{this.props.children.length+1}</span>}
+                        <input style={{width:this.props.children?"80%":"100%"}}  className={styles.input_desc} value={this.state.desc} onBlur={this.handleOnBlurDesc} onChange={this.handleOnChangeDesc} disabled={this.props.children!=null}/>
+                        { this.props.container == "TaskDatesReportComponent" &&
                             <p className={styles.user}><Link className={styles.user_link} to={"/profile/"+this.props.task.user._id}>{this.props.task.user.email}</Link></p>
-                            }
+                        }
                     </div>
                 </div>
 
                 {!this.props.children?
-                <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">
-                    <ValueSelectorComponent displayAsLabel={true} onChangeValue={this.handleOnChangeHourValue} value={this.props.task.hour_value} />
-                </div>
-                : !utils.isMobile()?
-                <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">
-                    <div style={{width: "6ch"}}> </div>
-                </div>:null
+                    <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">
+                        <ValueSelectorComponent displayAsLabel={true} onChangeValue={this.handleOnChangeHourValue} value={this.props.task.hour_value} />
+                    </div>
+                    : !utils.isMobile()?
+                        <div className="col-auto px-0 py-1 col-lg-auto order-5 order-lg-4">
+                            <div style={{width: "6ch"}}> </div>
+                        </div>:null
                 }
 
                 {!this.props.children?
                     <div className={this.props.task.project!=null ? "col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 " : "col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 text-right "}>
                         {this.props.task.project!=null ?
-                        <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
-                        :
-                        <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
+                            <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={this.props.task.project.name} project_selected_color={this.props.task.project.color} projects={this.props.projects}/>
+                            :
+                            <ProjectSelectorComponent onClick={this.handleOnChangeProject} project_selected_name={null} project_selected_color={null} projects={this.props.projects}/>
                         }
                     </div>
                     : !utils.isMobile()?
-                    <div className={"col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 "}>
-                    </div>:null
+                        <div className={"col-4 col-md-2 col-lg-2 col-xl-2 px-0 py-1 order-4 order-lg-2 "}>
+                        </div>:null
 
                 }
 
                 {!this.props.children?
-                <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
-                    <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
-                </div>
-                : !utils.isMobile()?
-                <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
-                </div>:null
+                    <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
+                        <TagSelectorComponent displayAsLabel={true} onClick={this.handleOnClickTagSelector} tags={this.state.tags}/>
+                    </div>
+                    : !utils.isMobile()?
+                        <div className="col-4 px-0 py-1 col-md-2 col-lg-2 order-3 order-lg-3">
+                        </div>:null
                 }
 
                 {!utils.isMobile() && !this.props.children ?
                     <div className={"col-auto col-lg-auto order-md-5 order-lg-5 px-0 py-1 " + styles.dates}>
 
-                            <input
-                                className={styles.input_hour}
-                                value={this.state.start_hour}
-                                onChange={this.handleOnChangeStartHour}
-                                onBlur={this.handleOnBlurStartHour}
-                                size="5" maxLength="5"
-                            />&nbsp;-&nbsp;
-                            <input
-                                className={styles.input_hour}
-                                value={this.state.end_hour}
-                                onChange={this.handleOnChangeEndHour}
-                                onBlur={this.handleOnBlurEndHour}
-                                size="5" maxLength="5"
-                            />
+                        <input
+                            className={styles.input_hour}
+                            value={this.state.start_hour}
+                            onChange={this.handleOnChangeStartHour}
+                            onBlur={this.handleOnBlurStartHour}
+                            size="5" maxLength="5"
+                        />&nbsp;-&nbsp;
+                        <input
+                            className={styles.input_hour}
+                            value={this.state.end_hour}
+                            onChange={this.handleOnChangeEndHour}
+                            onBlur={this.handleOnBlurEndHour}
+                            size="5" maxLength="5"
+                        />
                     </div> : !utils.isMobile() && this.props.children &&
                     <div className={"col-auto col-lg-auto order-md-5 order-lg-5 px-0 py-1 " + styles.dates}>
-                            <span
-                                className={styles.input_hour}
-                            >{utils.removeSeconds(this.props.children[this.props.children.length-1].start_hour)}</span>
+                        <span
+                            className={styles.input_hour}
+                        >{utils.removeSeconds(this.props.children[this.props.children.length-1].start_hour)}</span>
                             &nbsp;-&nbsp;
-                            <span
-                                className={styles.input_hour}
-                            >{utils.removeSeconds(utils.maxEndHourTasks([...this.props.children, this.props.task]))}</span>
+                        <span
+                            className={styles.input_hour}
+                        >{utils.removeSeconds(utils.maxEndHourTasks([...this.props.children, this.props.task]))}</span>
                     </div>
                 }
                 <div className={"col-auto order-6 order-lg-6 px-0 py-1 px-lg-2 " + styles.dates}>
-                {!this.props.children ?
-                    utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
-                    utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
-                }
+                    {!this.props.children ?
+                        utils.diffHoursBetDates(this.props.task.start_hour, this.props.task.end_hour):
+                        utils.diffHoursBetDatesArray([...this.props.children, this.props.task])
+                    }
                 </div>
 
                 { this.state.show_datepicker &&
@@ -482,19 +482,19 @@ class TaskComponent extends Component{
                 }
 
                 <div className="col-auto order-2 order-md-7 order-lg-7 px-0 py-1">
-                <div className="dropdown">
-                {this.props.onResume &&
+                    <div className="dropdown">
+                        {this.props.onResume &&
                     <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} onClick={!this.props.children?this.props.onResume.bind(this,this.state.desc, this.props.task.project!=null?this.props.task.project._id:-1, this.props.task.project!=null?this.props.task.project.name:null, this.props.task.project!=null?this.props.task.project.color:null, this.state.tags?this.state.tags:null):undefined}><i className="fas fa-play"></i></button>
-                }
-                <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
-                    <div className={"dropdown-menu "+styles.dropdown_menu} ref={this.dropdown}>
-                        <a className={"dropdown-item "+styles.menu_item} id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
-                        <a className={"dropdown-item "+styles.menu_item} id={"btn-datepicker-"+this.props.task.id} onClick={this.handleOnShowDatePicker}>{lang[config.lang].aditional_menu_opt_change_date}</a>
+                        }
+                        <button style={this.state.hide_btns?utils.isMobile()?{display:"none"}:{opacity:0}:{opacity:1}} className={styles.btn} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></button>
+                        <div className={"dropdown-menu "+styles.dropdown_menu} ref={this.dropdown}>
+                            <a className={"dropdown-item "+styles.menu_item} id={"btn-delete-"+this.props.task.id} onClick={this.handleOnDelete}>{lang[config.lang].aditional_menu_opt_delete}</a>
+                            <a className={"dropdown-item "+styles.menu_item} id={"btn-datepicker-"+this.props.task.id} onClick={this.handleOnShowDatePicker}>{lang[config.lang].aditional_menu_opt_change_date}</a>
+                        </div>
                     </div>
                 </div>
-                </div>
             </li>
-        )
+        );
     }
 }
 
@@ -508,7 +508,7 @@ TaskComponent.propTypes = {
     taskActions: PropTypes.object.isRequired,
     onResume: PropTypes.func,
     tasks_entities: PropTypes.object.isRequired
-}
+};
 
 
 export default TaskComponent;

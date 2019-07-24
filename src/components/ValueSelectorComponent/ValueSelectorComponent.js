@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import onClickOutside from "react-onclickoutside";
 
 
-import styles from './ValueSelectorComponent.scss';
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
+import styles from "./ValueSelectorComponent.scss";
+import utils from "../../utils";
+import config from "../../config/config";
+import lang from "../../config/lang";
 
 
 
@@ -16,7 +16,7 @@ class ValueSelectorComponent extends Component{
         this.state = {
             value: this.props.value? this.props.value:0,
             active: (this.props.value && this.props.value != 0) ? true:false //lo activamos cuando hay un número escrito
-        }
+        };
         this.dropdown = React.createRef();
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
         this.toggleVisibility = this.toggleVisibility.bind(this);
@@ -43,7 +43,7 @@ class ValueSelectorComponent extends Component{
             this.dropdown.current.style.display = "none";
             this.props.onChangeValue(this.state.value);
         }
-    };
+    }
 
     toggleVisibility(){
         if(this.dropdown.current.style.display == "" || this.dropdown.current.style.display == "none")
@@ -54,35 +54,35 @@ class ValueSelectorComponent extends Component{
 
     render(){
         return(<div className={this.props.displayAsLabel == true ? "btn-group dropleft":"btn-group dropright "+styles.dropdown}>
-                {
-                    this.props.displayAsLabel != true ?
+            {
+                this.props.displayAsLabel != true ?
                     <button className={this.state.active ? styles.btn_activated:styles.btn} type="button" onClick={this.toggleVisibility}>
                         <i className="fas fa-euro-sign"></i>
                     </button> :
                     <span id="dropdownMenuButton">
                         {
                             this.state.value && !utils.isMobile() ?
-                            <div className={styles.hour_value_div}>{this.state.value}</div>:<div className={styles.hour_value_empty}></div>
+                                <div className={styles.hour_value_div}>{this.state.value}</div>:<div className={styles.hour_value_empty}></div>
                         }
                         <button className={this.state.active ? styles.btn_activated:styles.btn} onClick={this.toggleVisibility}>
                             <i className="fas fa-euro-sign"></i>
                         </button>
                     </span>
-                }
+            }
 
-                <div ref={this.dropdown} className={"dropdown-menu " + styles.menu } >
-                    <label>{lang[config.lang].hour_value_input}</label>
-                    <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  value={this.state.value} type="number" min="0" />
-                </div>
+            <div ref={this.dropdown} className={"dropdown-menu " + styles.menu } >
+                <label>{lang[config.lang].hour_value_input}</label>
+                <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  value={this.state.value} type="number" min="0" />
             </div>
-        )
+        </div>
+        );
     }
 }
 
 
 ValueSelectorComponent.propTypes = {
 
-}
+};
 
 
 export default onClickOutside(ValueSelectorComponent);

@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './ProjectSelectorComponent.scss';
+import utils from "../../utils";
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./ProjectSelectorComponent.scss";
 
 
 /**Properties
@@ -33,7 +33,7 @@ class ProjectSelectorComponent extends Component{
         this.state = {
             projects: [],
             value: "" //es el valor del input para filtrar el listado de proyectos
-        }
+        };
 
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
     }
@@ -83,43 +83,43 @@ class ProjectSelectorComponent extends Component{
 
     render(){
         return(<div className={this.props.project_selected_name==null? "btn-group dropleft "+styles.dropleft_null:"btn-group dropleft "+styles.dropleft}>
-                {
-                    this.props.project_selected_name==null?
+            {
+                this.props.project_selected_name==null?
 
                     <button className={styles.btn} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i style={{verticalAlign:"baseline"}} className="fas fa-folder-open"></i>
                     </button>
                     :
                     <button className={styles.label} style={{color: this.props.project_selected_color}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    {!utils.isMobile() && <i style={{verticalAlign:"baseline"}} className="fas fa-circle"></i>} {utils.isMobile() && this.props.project_selected_name.length>12? this.props.project_selected_name.substr(0,12)+"...":this.props.project_selected_name}
+                        {!utils.isMobile() && <i style={{verticalAlign:"baseline"}} className="fas fa-circle"></i>} {utils.isMobile() && this.props.project_selected_name.length>12? this.props.project_selected_name.substr(0,12)+"...":this.props.project_selected_name}
                     </button>
-                }
-                {
-                    this.props.onReset && this.props.project_selected_name != null &&
+            }
+            {
+                this.props.onReset && this.props.project_selected_name != null &&
 
                     <button className={styles.reset} onClick={this.props.onReset}>
                         <i style={{verticalAlign:"baseline"}} className="fas fa-times-circle"></i>
                     </button>
-                }
+            }
 
 
 
-                <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
-                    <div className={"input-group "+styles.selector}>
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"><i className="fas fa-search"></i></span>
-                        </div>
-                        <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder={lang[config.lang].project_selector_search+"..."} value={this.state.value}/>
+            <div className={"dropdown-menu " + styles.menu } aria-labelledby="dropdownMenuButton" >
+                <div className={"input-group "+styles.selector}>
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1"><i className="fas fa-search"></i></span>
                     </div>
-                    <ul className={styles.projectlist}>
+                    <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input}  aria-describedby="basic-addon1" placeholder={lang[config.lang].project_selector_search+"..."} value={this.state.value}/>
+                </div>
+                <ul className={styles.projectlist}>
                     <li id={"project0"} className={"dropdown-item " + styles.item} onClick={this.handleOnSelect.bind(this, -1, null, null)} ><i style={{color: "lightgrey"}} className="fas fa-circle"></i> {lang[config.lang].project_selector_no_project}</li>
                     { this.state.projects.map((e, index)=>{
-                        return(<li id={"project"+e._id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e._id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e._id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>)
+                        return(<li id={"project"+e._id} key={"projectlist-"+index} onClick={this.handleOnSelect.bind(this, e._id, e.name, e.color)} className={"dropdown-item " + styles.item}><i id={"projectdot"+e._id} style={{color: e.color}} className="fas fa-circle"></i> {e.name}</li>);
                     })}
-                    </ul>
-                </div>
+                </ul>
             </div>
-        )
+        </div>
+        );
     }
 }
 
@@ -128,6 +128,6 @@ ProjectSelectorComponent.propTypes = {
     project_selected_name: PropTypes.string,
     project_selected_color: PropTypes.string,
     projects: PropTypes.array.isRequired,
-}
+};
 
 export default ProjectSelectorComponent;

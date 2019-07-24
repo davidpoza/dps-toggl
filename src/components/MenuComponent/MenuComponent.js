@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './MenuComponent.scss';
-import logo from '../../images/icon.png';
-import {NavLink} from 'react-router-dom';
-import LoggedInfoContainer from '../LoggedInfoComponent/LoggedInfoContainer';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./MenuComponent.scss";
+import logo from "../../images/icon.png";
+import {NavLink} from "react-router-dom";
+import LoggedInfoContainer from "../LoggedInfoComponent/LoggedInfoContainer";
 
 class MenuComponent extends Component{
     constructor(props){
@@ -41,12 +41,12 @@ class MenuComponent extends Component{
                 <LoggedInfoContainer />
 
             </div>
-        )
+        );
     }
 }
 
 MenuComponent.propTypes = {
     admin:PropTypes.bool.isRequired
-}
+};
 
 export default MenuComponent;

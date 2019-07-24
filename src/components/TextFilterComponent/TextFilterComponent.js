@@ -1,11 +1,7 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-
-import styles from './TextFilterComponent.scss';
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
+import styles from "./TextFilterComponent.scss";
 
 /**Properties
  * apply_filter_callback                   : handler function called on lost lost focus.
@@ -23,17 +19,8 @@ class TextFilterComponent extends Component{
         this.state = {
             value: "", //el valor del input de filtrado
             active: false
-        }
+        };
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
-    }
-
-    componentWillMount(){
-
-    }
-
-
-    componentDidUpdate(prevProps){
-
     }
 
     //se ejecuta onChange del input
@@ -50,7 +37,7 @@ class TextFilterComponent extends Component{
                 <i style={{verticalAlign:"baseline"}} className={this.state.active?styles.icon_active + " fas "+ this.props.icon : styles.icon + " fas "+ this.props.icon}></i>
                 <input className={styles.input} onBlur={this.props.apply_filter_callback.bind(this, this.state.value)} onChange={this.handleOnChangeInput} placeholder={this.props.placeholder} value={this.state.value}/>
             </div>
-        )
+        );
     }
 }
 
@@ -59,7 +46,7 @@ TextFilterComponent.propTypes = {
     placeholder: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired, //font-awesome icon identifier, example fa-tags
     apply_filter_callback: PropTypes.func.isRequired,
-}
+};
 
 
 export default TextFilterComponent;

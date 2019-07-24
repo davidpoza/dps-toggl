@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './LoginComponent.scss';
-import logo from '../../images/logo_small.png';
-import LoadingComponent from '../LoadingComponent/LoadingComponent';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./LoginComponent.scss";
+import logo from "../../images/logo_small.png";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 
 class LoginComponent extends Component{
@@ -54,7 +54,7 @@ class LoginComponent extends Component{
 
     render(){
         if(this.props.user.token != null) //autenticado
-            return(<Redirect to="/" />)
+            return(<Redirect to="/" />);
         else
             return(
                 <form className={styles.form_signin}>
@@ -77,7 +77,7 @@ class LoginComponent extends Component{
                     <button className="btn btn-lg btn-secondary btn-block" type="submit" onClick={this.handleOnClickSignup}>{lang[config.lang].login_section_btn_signup}</button>
                 </form>
 
-            )
+            );
     }
 }
 
@@ -85,7 +85,7 @@ LoginComponent.propTypes = {
     history: PropTypes.object.isRequired, //lo vamos a pasar al thunk de redux loginAction para redirigir después del login
     user: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired
-}
+};
 
 
 export default LoginComponent;

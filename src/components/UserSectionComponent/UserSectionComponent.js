@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import lang from '../../config/lang';
-import styles from './UserSectionComponent.scss';
-import utils from '../../utils';
-import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import UserListComponent from '../UserListComponent/UserListComponent';
+import config from "../../config/config";
+import lang from "../../config/lang";
+import styles from "./UserSectionComponent.scss";
+import utils from "../../utils";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import UserListComponent from "../UserListComponent/UserListComponent";
 
 class UserSectionComponent extends Component{
     constructor(props){
@@ -15,7 +15,7 @@ class UserSectionComponent extends Component{
         this.modal = React.createRef();
         this.state = {
             colorPicker:  null
-        }
+        };
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCreateProject = this.handleCreateProject.bind(this);
         this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
@@ -46,7 +46,7 @@ class UserSectionComponent extends Component{
 
     handleCreateProject(){
         this.props.projectActions.createProject(this.props.user.token, this.projectNameInput.current.value, this.state.colorPicker, this.props.user.id);
-        $(this.modal.current).modal('hide');
+        $(this.modal.current).modal("hide");
         this.projectNameInput.current.value = "";
     }
 
@@ -63,19 +63,19 @@ class UserSectionComponent extends Component{
                 </div>
                 <div className={"flex-grow-1 " + styles.projectlist}>
                     <UserListComponent
-                    user={this.props.user}
-                    users={this.props.users}
-                    history={this.props.history}
-                    userActions={this.props.userActions}
-                    order={this.props.order}
-                    sortBy={this.props.sortBy}
+                        user={this.props.user}
+                        users={this.props.users}
+                        history={this.props.history}
+                        userActions={this.props.userActions}
+                        order={this.props.order}
+                        sortBy={this.props.sortBy}
                     />
                 </div>
 
 
                 <LoadingComponent isLoading={this.props.user_loading||this.props.project_loading} />
             </div>
-        )
+        );
     }
 }
 
@@ -88,7 +88,7 @@ UserSectionComponent.propTypes = {
     history: PropTypes.object.isRequired,
     order: PropTypes.string.isRequired,
     sortBy: PropTypes.string.isRequired
-}
+};
 
 
 export default UserSectionComponent;

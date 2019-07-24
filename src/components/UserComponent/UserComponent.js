@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import config from '../../config/config';
-import utils from '../../utils';
-import styles from './UserComponent.scss';
-
+import config from "../../config/config";
+import utils from "../../utils";
+import styles from "./UserComponent.scss";
 
 
 class UserComponent extends Component{
@@ -12,10 +11,9 @@ class UserComponent extends Component{
         super(props);
     }
 
-
-   handleOnClick(id){
+    handleOnClick(id){
         this.props.history.push("/profile/"+id);
-   }
+    }
 
     render(){
         return(
@@ -24,13 +22,13 @@ class UserComponent extends Component{
                     <img className={styles.avatar} src={config.api_url+"/users/avatar/"+this.props.user.avatar}/>
                 </div>
                 { utils.isMobile() ?
-                <div className={"col-11"} >
-                    {this.props.user.email}
-                </div>:
-                <div className={"col-4"} >
-                    {(this.props.user.admin==true) ? <i className="fas fa-star"></i> : "" }
-                    {(this.props.user.admin==true) ? " "+this.props.user.email:this.props.user.email}
-                </div>
+                    <div className={"col-11"} >
+                        {this.props.user.email}
+                    </div>:
+                    <div className={"col-4"} >
+                        {(this.props.user.admin==true) ? <i className="fas fa-star"></i> : "" }
+                        {(this.props.user.admin==true) ? " "+this.props.user.email:this.props.user.email}
+                    </div>
                 }
                 { !utils.isMobile() &&
                 <div className={"col-2"} >
@@ -48,14 +46,14 @@ class UserComponent extends Component{
                 </div>
                 }
             </li>
-        )
+        );
     }
 }
 
 UserComponent.propTypes = {
     token: PropTypes.string.isRequired,
 
-}
+};
 
 
 export default UserComponent;

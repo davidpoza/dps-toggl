@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
-import { ResponsiveBar } from '@nivo/bar'
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { ResponsiveBar } from "@nivo/bar";
 
-import styles from './BarChartComponent.scss';
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
+import styles from "./BarChartComponent.scss";
+import utils from "../../utils";
+import config from "../../config/config";
+import lang from "../../config/lang";
 
 
 /**Properties
@@ -45,29 +45,29 @@ class BarChartComponent extends Component{
 
     presetToTitle(preset){
         switch(preset){
-            case "preset_custom": return lang[config.lang].date_custom;
-            case "preset_today": return lang[config.lang].date_today;
-            case "preset_week": return lang[config.lang].date_this_week;
-            case "preset_month": return lang[config.lang].date_this_month;
-            case "preset_year": return lang[config.lang].date_this_year;
-            case "preset_yerterday": return lang[config.lang].date_yesterday;
-            case "preset_last_week": return lang[config.lang].date_last_week;
-            case "preset_last_month": return lang[config.lang].date_last_month;
-            case "preset_last_year": return lang[config.lang].date_last_year;
+        case "preset_custom": return lang[config.lang].date_custom;
+        case "preset_today": return lang[config.lang].date_today;
+        case "preset_week": return lang[config.lang].date_this_week;
+        case "preset_month": return lang[config.lang].date_this_month;
+        case "preset_year": return lang[config.lang].date_this_year;
+        case "preset_yerterday": return lang[config.lang].date_yesterday;
+        case "preset_last_week": return lang[config.lang].date_last_week;
+        case "preset_last_month": return lang[config.lang].date_last_month;
+        case "preset_last_year": return lang[config.lang].date_last_year;
         }
     }
 
     getTimeUnitsForPreset(preset){
         switch(preset){
-            case "preset_custom": return lang[config.lang].time_unit_days;
-            case "preset_today": return lang[config.lang].time_unit_days;
-            case "preset_week": return lang[config.lang].time_unit_days;
-            case "preset_month": return lang[config.lang].time_unit_days;
-            case "preset_year": return lang[config.lang].time_unit_months;
-            case "preset_yerterday": return lang[config.lang].time_unit_days;
-            case "preset_last_week": return lang[config.lang].time_unit_days;
-            case "preset_last_month": return lang[config.lang].time_unit_days;
-            case "preset_last_year": return lang[config.lang].time_unit_months;
+        case "preset_custom": return lang[config.lang].time_unit_days;
+        case "preset_today": return lang[config.lang].time_unit_days;
+        case "preset_week": return lang[config.lang].time_unit_days;
+        case "preset_month": return lang[config.lang].time_unit_days;
+        case "preset_year": return lang[config.lang].time_unit_months;
+        case "preset_yerterday": return lang[config.lang].time_unit_days;
+        case "preset_last_week": return lang[config.lang].time_unit_days;
+        case "preset_last_month": return lang[config.lang].time_unit_days;
+        case "preset_last_year": return lang[config.lang].time_unit_months;
         }
     }
 
@@ -135,13 +135,13 @@ class BarChartComponent extends Component{
                     />
 
                 </div>
-            )
+            );
         }
     }
 }
 
 BarChartComponent.propTypes = {
 
-}
+};
 
 export default BarChartComponent;

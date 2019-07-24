@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import styles from './ConfigComponent.scss';
+import React, {Component} from "react";
+import styles from "./ConfigComponent.scss";
 
 
 class ConfigComponent extends Component{
@@ -11,7 +11,7 @@ class ConfigComponent extends Component{
             <div>
                 <h1>Configuración</h1>
             </div>
-        )
+        );
     }
 }
 

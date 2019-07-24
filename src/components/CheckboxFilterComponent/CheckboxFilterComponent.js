@@ -1,12 +1,9 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import onClickOutside from "react-onclickoutside";
 
+import styles from "./CheckboxFilterComponent.scss";
 
-import styles from './CheckboxFilterComponent.scss';
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
 
 /**Properties
  * apply_filter_callback                   : handler function called on lost lost focus and close dropdown
@@ -33,7 +30,7 @@ class CheckboxFilterComponent extends Component{
             active: false, // lo activamos cuando hay al menos un elemento chequeado
             list: [], //la lista de elementos que vamos a usar para mostrarlos como lista
             filtered_list: [], //la lista que vamos a listar en el dropdown, deben ser independientes para que no deseaparezcan elementos durante el filtrado
-        }
+        };
         this.dropdown = React.createRef();
         this.toggleVisibility = this.toggleVisibility.bind(this);
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this);
@@ -42,7 +39,7 @@ class CheckboxFilterComponent extends Component{
     componentWillMount(){
         if(this.props.list){
             //añadimos el flag checked a los objetos del array de elementos
-            let list = this.props.list.map(e=>{e.checked = false; return e;})
+            let list = this.props.list.map(e=>{e.checked = false; return e;});
 
             this.setState({
                 list: list,
@@ -54,7 +51,7 @@ class CheckboxFilterComponent extends Component{
     //cuando varía el parametro list => setState => redibujamos el componente
     componentDidUpdate(prevProps){
         if(prevProps.list != this.props.list){
-             //ahora marcamos aquellos elementos que vienen marcados previamente según indica this.props.list_checked.
+            //ahora marcamos aquellos elementos que vienen marcados previamente según indica this.props.list_checked.
             let list_checked = this.props.list_checked;
             let list = this.props.list.map(e=>{
                 if(list_checked.includes(e.id))
@@ -89,7 +86,7 @@ class CheckboxFilterComponent extends Component{
             if(e.id == id)
                 e.checked = e.checked ? false : true;
             return e;
-        })
+        });
         this.setState({
             value: "",
             list: new_list
@@ -106,7 +103,7 @@ class CheckboxFilterComponent extends Component{
                 value: ""
             });
         }
-    };
+    }
 
     //alterna la visibilidad del dropdown (lo abre o lo cierra)
     toggleVisibility(){
@@ -133,18 +130,18 @@ class CheckboxFilterComponent extends Component{
                         <input onChange={this.handleOnChangeInput} className={"form-control "+styles.search_input} placeholder={this.props.placeholder} value={this.state.value}/>
                     </div>
                     <ul className={styles.list}>
-                    { this.state.filtered_list && this.state.filtered_list.map((e, index)=>{
-                        return(
-                        <li id={"filter_element_"+e.id} key={"list-element-"+index} onClick={this.handleOnClick.bind(this, e.id)} className={"dropdown-item " + styles.item} style={{color: e.color}}>
-                         {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
-                         {e.label}
-                         </li>
-                         )
-                    })}
+                        { this.state.filtered_list && this.state.filtered_list.map((e, index)=>{
+                            return(
+                                <li id={"filter_element_"+e.id} key={"list-element-"+index} onClick={this.handleOnClick.bind(this, e.id)} className={"dropdown-item " + styles.item} style={{color: e.color}}>
+                                    {e.checked ? <i className ="far fa-check-square"></i>:<i className ="far fa-square"></i>}
+                                    {e.label}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -156,7 +153,7 @@ CheckboxFilterComponent.propTypes = {
     icon: PropTypes.string.isRequired, //font-awesome icon identifier, example fa-tags
     apply_filter_callback: PropTypes.func.isRequired,
     reset_filter_callback: PropTypes.func.isRequired,
-}
+};
 
 
 export default onClickOutside(CheckboxFilterComponent);

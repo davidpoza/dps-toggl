@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 
-import styles from './PaginatorComponent.scss';
-import utils from '../../utils';
-import config from '../../config/config';
-import lang from '../../config/lang';
+import styles from "./PaginatorComponent.scss";
+import utils from "../../utils";
+import config from "../../config/config";
+import lang from "../../config/lang";
 
 
 class PaginatorComponent extends Component{
@@ -14,9 +14,6 @@ class PaginatorComponent extends Component{
 
 
     }
-
-
-
 
     render(){
         let number_of_pages = Math.floor(this.props.total_records/this.props.records_per_page);
@@ -59,7 +56,7 @@ class PaginatorComponent extends Component{
                         <Link key={"link_next_page"} to={this.props.base_url+next_page}><button className={styles.btn}><i className="fas fa-arrow-right"></i> {!utils.isMobile() && lang[config.lang].paginator_next_label}</button></Link>
                     }
                 </div>
-            )
+            );
         else
             return null;
     }
@@ -67,6 +64,6 @@ class PaginatorComponent extends Component{
 
 PaginatorComponent.propTypes = {
 
-}
+};
 
 export default PaginatorComponent;

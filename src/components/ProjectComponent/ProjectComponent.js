@@ -1,41 +1,30 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import utils from '../../utils';
-import styles from './ProjectComponent.scss';
-
+import utils from "../../utils";
+import styles from "./ProjectComponent.scss";
 
 
 class ProjectComponent extends Component{
     constructor(props){
         super(props);
 
-
-
     }
 
-   componentWillMount(){
-
-   }
-
-   componentDidUpdate(prevProps){
-
-   }
-
-   handleOnClick(id){
+    handleOnClick(id){
         this.props.history.push("/projects/"+id);
-   }
+    }
 
     render(){
         return(
             <li className={"row m-0 m-lg-1 justify-content-between " + styles.project } onClick={this.handleOnClick.bind(this,this.props.project._id)}>
                 { utils.isMobile() ?
-                <div className={"col-12 pl-0"} >
-                    <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
-                </div>:
-                <div className={"col-6 pl-0"} >
-                    <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
-                </div>
+                    <div className={"col-12 pl-0"} >
+                        <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
+                    </div>:
+                    <div className={"col-6 pl-0"} >
+                        <i className="fas fa-circle" style={{color: this.props.project.color}}></i> {this.props.project.name}
+                    </div>
                 }
                 { !utils.isMobile() &&
                 <div className={"col-2 "} >
@@ -53,14 +42,14 @@ class ProjectComponent extends Component{
                 </div>
                 }
             </li>
-        )
+        );
     }
 }
 
 ProjectComponent.propTypes = {
     token: PropTypes.string.isRequired,
 
-}
+};
 
 
 export default ProjectComponent;

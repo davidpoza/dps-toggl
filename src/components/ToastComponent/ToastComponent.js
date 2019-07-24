@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import styles from './ToastComponent.scss';
+import styles from "./ToastComponent.scss";
 
 
 /** Este componente muestra mensajes flotantes apilados en la esquina inferior derecha
@@ -29,7 +29,6 @@ class ToastComponent extends Component{
             $(this.toast).toast("hide");
 
         }
-
     }
 
     emptyMessages(){
@@ -52,18 +51,18 @@ class ToastComponent extends Component{
                         <i className="fas fa-exclamation-triangle"></i>
                         <strong className="mr-auto">Error</strong>
                         <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div className="toast-body">
                         {this.props.userMessage ? this.props.userMessage :
-                         this.props.taskMessage ? this.props.taskMessage :
-                         this.props.projectMessage ? this.props.projectMessage :
-                         this.props.tagMessage}
+                            this.props.taskMessage ? this.props.taskMessage :
+                                this.props.projectMessage ? this.props.projectMessage :
+                                    this.props.tagMessage}
                     </div>
                 </div>
 
-            )
+            );
         return null;
     }
 }
@@ -74,6 +73,6 @@ ToastComponent.propTypes = {
     tagActions: PropTypes.object.isRequired,
     taskActions: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired,
-}
+};
 
 export default ToastComponent;

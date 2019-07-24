@@ -1,24 +1,24 @@
 
 import {
-FETCH_TAGS_ATTEMPT,
-FETCH_TAGS_FAIL,
-FETCH_TAGS_SUCCESS,
-CLEAN_TAG_MESSAGE,
-CREATE_TAG_ATTEMPT,
-CREATE_TAG_FAIL,
-CREATE_TAG_SUCCESS,
-DELETE_TAG_ATTEMPT,
-DELETE_TAG_FAIL,
-DELETE_TAG_SUCCESS,
-UPDATE_TAG_ATTEMPT,
-UPDATE_TAG_FAIL,
-UPDATE_TAG_SUCCESS,
-UPDATE_TAG_VISUALLY,
-DELETE_TAG_VISUALLY
-} from './types';
+    FETCH_TAGS_ATTEMPT,
+    FETCH_TAGS_FAIL,
+    FETCH_TAGS_SUCCESS,
+    CLEAN_TAG_MESSAGE,
+    CREATE_TAG_ATTEMPT,
+    CREATE_TAG_FAIL,
+    CREATE_TAG_SUCCESS,
+    DELETE_TAG_ATTEMPT,
+    DELETE_TAG_FAIL,
+    DELETE_TAG_SUCCESS,
+    UPDATE_TAG_ATTEMPT,
+    UPDATE_TAG_FAIL,
+    UPDATE_TAG_SUCCESS,
+    UPDATE_TAG_VISUALLY,
+    DELETE_TAG_VISUALLY
+} from "./types";
 
 
-import api from '../api';
+import api from "../api";
 
 
 
@@ -29,62 +29,62 @@ export function fetchTagsSuccess(tagData){
     return {
         type: FETCH_TAGS_SUCCESS,
         payload: tagData
-    }
+    };
 }
 
 export function fetchTagsError(error){
     return {
         type: FETCH_TAGS_FAIL,
         payload: error
-    }
+    };
 }
 
 export function createTagSuccess(tagData){
     return {
         type: CREATE_TAG_SUCCESS,
         payload: tagData
-    }
+    };
 }
 
 export function createTagError(error){
     return {
         type: CREATE_TAG_FAIL,
         payload: error
-    }
+    };
 }
 
 export function deleteTagSuccess(tagData){
     return {
         type: DELETE_TAG_SUCCESS,
         payload: tagData
-    }
+    };
 }
 
 export function deleteTagError(error){
     return {
         type: DELETE_TAG_FAIL,
         payload: error
-    }
+    };
 }
 
 export function updateTagSuccess(tagData){
     return {
         type: UPDATE_TAG_SUCCESS,
         payload: tagData
-    }
+    };
 }
 
 export function updateTagError(error){
     return {
         type: UPDATE_TAG_FAIL,
         payload: error
-    }
+    };
 }
 
 export function cleanMessage(){
     return {
         type: CLEAN_TAG_MESSAGE,
-    }
+    };
 }
 
 /* Action creators asíncronos - thunks */
@@ -102,14 +102,14 @@ export function createTag(token, name, user_id){
                     dispatch(createTagSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(createTagError(data.error))
+                    dispatch(createTagError(data.error));
             }
         )
-        .catch(
-            (error) => {
-                dispatch(createTagError(error));
-        });
-    }
+            .catch(
+                (error) => {
+                    dispatch(createTagError(error));
+                });
+    };
 }
 
 export function deleteTag(token, tag_id){
@@ -126,14 +126,14 @@ export function deleteTag(token, tag_id){
                 if(data.data)
                     dispatch(deleteTagSuccess(data.data));
                 if(data.error)
-                    dispatch(deleteTagError(data.error))
+                    dispatch(deleteTagError(data.error));
             }
         )
-        .catch(
-            (error) => {
-                dispatch(deleteTagError(error));
-        });
-    }
+            .catch(
+                (error) => {
+                    dispatch(deleteTagError(error));
+                });
+    };
 }
 
 export function updateTag(token, tag_id, tag_name){
@@ -152,15 +152,15 @@ export function updateTag(token, tag_id, tag_name){
                     dispatch(updateTagSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(updateTagError(data.error))
+                    dispatch(updateTagError(data.error));
             }
         ).catch(
             (error) => {
                 dispatch(updateTagError(error));
-        });
+            });
 
 
-    }
+    };
 }
 
 export function fetchUserTags(token){
@@ -176,12 +176,12 @@ export function fetchUserTags(token){
                     dispatch(fetchTagsSuccess(data.data));
                 }
                 else if(data.error)
-                    dispatch(fetchTagsError(data.error))
+                    dispatch(fetchTagsError(data.error));
             }
         ).catch(
             (error) => {
                 dispatch(fetchTagsError(error));
-        });
-    }
+            });
+    };
 }
 

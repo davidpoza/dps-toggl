@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import styles from './TimerSectionComponent.scss';
-
-import LoadingComponent from '../LoadingComponent/LoadingComponent';
-import NewBlockContainer from '../NewBlockComponent/NewBlockContainer';
-import TaskDatesContainer from '../TaskDatesComponent/TaskDatesContainer';
+import styles from "./TimerSectionComponent.scss";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import NewBlockContainer from "../NewBlockComponent/NewBlockContainer";
+import TaskDatesContainer from "../TaskDatesComponent/TaskDatesContainer";
 
 class TimerSectionComponent extends Component{
     constructor(props){
@@ -35,7 +34,7 @@ class TimerSectionComponent extends Component{
                 </div>
                 <LoadingComponent isLoading={this.props.user_loading|this.props.task_loading|this.props.project_loading|this.props.tag_loading} />
             </div>
-        )
+        );
     }
 }
 
@@ -48,6 +47,6 @@ TimerSectionComponent.propTypes = {
     taskActions: PropTypes.object.isRequired,
     projectActions: PropTypes.object.isRequired,
     tagActions: PropTypes.object.isRequired,
-}
+};
 
 export default TimerSectionComponent;
